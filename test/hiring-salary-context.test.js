@@ -46,6 +46,25 @@ test('known city can supply salary currency context', () => {
   assert.equal(salary.currencyCountry, 'UZ');
 });
 
+test('unambiguous Uzbek and Kazakh salary language can infer local currency', () => {
+  const uz = parseHiringSalaryWithContext('35 000 000 oylik', { currencyFallback: 'language' });
+  assert.ok(uz);
+  assert.equal(uz.currency, 'UZS');
+  assert.equal(uz.currencySource, 'language-default');
+
+  const kz = parseHiringSalaryWithContext('500 000 айлық', { currencyFallback: 'language' });
+  assert.ok(kz);
+  assert.equal(kz.currency, 'KZT');
+  assert.equal(kz.currencySource, 'language-default');
+});
+
+test('generic Russian salary text is not assigned a currency by language', () => {
+  const salary = parseHiringSalaryWithContext('зарплата 120 000 в месяц', { currencyFallback: 'language' });
+  assert.ok(salary);
+  assert.equal(salary.currency, null);
+  assert.equal(salary.currencySource, 'unknown');
+});
+
 test('local currency lookup accepts country aliases', () => {
   assert.equal(defaultCurrencyForCountry('Uzbekistan'), 'UZS');
   assert.equal(defaultCurrencyForCountry('Казахстан'), 'KZT');
