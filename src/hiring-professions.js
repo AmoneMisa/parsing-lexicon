@@ -1,4 +1,5 @@
 import { aliasesToRegex, normalizeForMatch } from './normalization.js';
+import { ROMANIAN_GROUP_ALIASES, ROMANIAN_PROFESSION_ALIASES, ROMANIAN_SENIORITY_ALIASES } from './hiring-professions-ro.js';
 
 const GROUP_DEFINITIONS = Object.freeze([
   ['software_development', 'engineering', ['software development', 'разработка', 'программирование', 'розробка', 'dasturlash', 'бағдарламалау']],
@@ -30,7 +31,8 @@ const GROUP_DEFINITIONS = Object.freeze([
   ['agriculture', 'trades', ['agriculture', 'farm', 'сельское хозяйство', 'агро']],
 ]);
 
-const GROUP_META = new Map(GROUP_DEFINITIONS.map(([canonical, family, aliases]) => [canonical, { family, aliases }]));
+const groupAliases = (canonical, aliases) => [...new Set([...aliases, ...(ROMANIAN_GROUP_ALIASES[canonical] || [])])];
+const GROUP_META = new Map(GROUP_DEFINITIONS.map(([canonical, family, aliases]) => [canonical, { family, aliases: groupAliases(canonical, aliases) }]));
 
 const rows = [
   // Software development
@@ -327,7 +329,7 @@ const rows = [
 
 function profession(canonical, group, strongAliases, weakAliases = []) {
   const meta = GROUP_META.get(group) || { family: 'other', aliases: [] };
-  const strong = [...new Set(strongAliases.filter(Boolean))];
+  const strong = [...new Set([...strongAliases, ...(ROMANIAN_PROFESSION_ALIASES[canonical] || [])].filter(Boolean))];
   const weak = [...new Set(weakAliases.filter(Boolean))];
   return Object.freeze({
     id: canonical,
@@ -349,7 +351,7 @@ export const PROFESSION_GROUPS = Object.freeze(GROUP_DEFINITIONS.map(([canonical
   id: `profession-group.${canonical}`,
   canonical,
   family,
-  aliases: Object.freeze(aliases),
+  aliases: Object.freeze(groupAliases(canonical, aliases)),
   professions: Object.freeze(PROFESSION_CATALOG.filter((item) => item.group === canonical).map((item) => item.canonical)),
 })));
 
@@ -365,7 +367,10 @@ export const SENIORITY_LEVELS = Object.freeze([
   { canonical: 'director', aliases: ['director','директор','директор департамента','директор напряму'], score: 0.9 },
   { canonical: 'vp', aliases: ['vice president','vp of','вице-президент','віце-президент'], score: 1 },
   { canonical: 'chief', aliases: ['chief officer','chief executive','chief technology','chief product','chief financial','chief marketing','chief operating'], score: 1 },
-].map((entry) => Object.freeze({ ...entry, re: aliasesToRegex(entry.aliases) })));
+].map((entry) => {
+  const aliases = [...new Set([...entry.aliases, ...(ROMANIAN_SENIORITY_ALIASES[entry.canonical] || [])])];
+  return Object.freeze({ ...entry, aliases: Object.freeze(aliases), re: aliasesToRegex(aliases) });
+}));
 
 export function matchProfessions(value, { limit = 5, allowWeak = true } = {}) {
   const text = String(value || '');

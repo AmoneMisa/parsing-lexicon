@@ -1,6 +1,7 @@
 import { CITIES as CENTRAL_ASIA_CITIES } from './geo.js';
 import { findCanonical } from './normalization.js';
 import { lexiconEntity } from './lexicon-core.js';
+import { RO_CITY_EXTENSIONS } from './romania-geography.js';
 
 const entity = (canonical, aliases, extra = {}) => lexiconEntity(canonical, aliases, extra);
 
@@ -37,7 +38,7 @@ export const UA_CITIES = Object.freeze([
   entity('Uman', { uk: ['Умань'], ru: ['Умань'], en: ['Uman'], ro: ['Uman'] }, { country: 'UA', type: 'city' }),
 ]);
 
-export const RO_CITIES = Object.freeze([
+const RO_CITIES_BASE = Object.freeze([
   entity('Bucharest', { ro: ['București', 'Bucuresti'], en: ['Bucharest'], ru: ['Бухарест'], uk: ['Бухарест'] }, { country: 'RO', type: 'city' }),
   entity('Cluj-Napoca', { ro: ['Cluj-Napoca', 'Cluj'], en: ['Cluj-Napoca', 'Cluj'], ru: ['Клуж-Напока', 'Клуж'], uk: ['Клуж-Напока'] }, { country: 'RO', type: 'city' }),
   entity('Timisoara', { ro: ['Timișoara', 'Timisoara'], en: ['Timisoara', 'Timișoara'], ru: ['Тимишоара'], uk: ['Тімішоара'] }, { country: 'RO', type: 'city' }),
@@ -51,6 +52,8 @@ export const RO_CITIES = Object.freeze([
   entity('Galati', { ro: ['Galați', 'Galati'], en: ['Galati', 'Galați'], ru: ['Галац'], uk: ['Галац'] }, { country: 'RO', type: 'city' }),
   entity('Arad', { ro: ['Arad'], en: ['Arad'], ru: ['Арад'], uk: ['Арад'] }, { country: 'RO', type: 'city' }),
 ]);
+
+export const RO_CITIES = Object.freeze([...RO_CITIES_BASE, ...RO_CITY_EXTENSIONS]);
 
 export const KG_CITIES = Object.freeze([
   entity('Bishkek', { ru: ['Бишкек'], en: ['Bishkek'], kk: ['Бішкек'], uzLatn: ['Bishkek'] }, { country: 'KG', type: 'city' }),

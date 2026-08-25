@@ -1,0 +1,47 @@
+import { lexiconEntity } from './lexicon-core.js';
+
+const city = (canonical, ro, aliases = []) => lexiconEntity(canonical, {
+  ro: [...new Set([ro, ...aliases])],
+  en: [canonical],
+}, { country: 'RO', type: 'city' });
+
+/** Romanian county seats and high-signal Bucharest metropolitan localities not covered by the core city seed. */
+export const RO_CITY_EXTENSIONS = Object.freeze([
+  city('Alba Iulia', 'Alba Iulia'),
+  city('Pitesti', 'Pitești', ['Pitesti']),
+  city('Bacau', 'Bacău', ['Bacau']),
+  city('Bistrita', 'Bistrița', ['Bistrita']),
+  city('Botosani', 'Botoșani', ['Botosani']),
+  city('Braila', 'Brăila', ['Braila']),
+  city('Buzau', 'Buzău', ['Buzau']),
+  city('Resita', 'Reșița', ['Resita']),
+  city('Calarasi', 'Călărași', ['Calarasi']),
+  city('Sfantu Gheorghe', 'Sfântu Gheorghe', ['Sfantu Gheorghe']),
+  city('Targoviste', 'Târgoviște', ['Targoviste']),
+  city('Giurgiu', 'Giurgiu'),
+  city('Targu Jiu', 'Târgu Jiu', ['Targu Jiu']),
+  city('Miercurea Ciuc', 'Miercurea Ciuc'),
+  city('Deva', 'Deva'),
+  city('Slobozia', 'Slobozia'),
+  city('Baia Mare', 'Baia Mare'),
+  city('Drobeta-Turnu Severin', 'Drobeta-Turnu Severin', ['Drobeta Turnu Severin', 'Turnu Severin']),
+  city('Targu Mures', 'Târgu Mureș', ['Targu Mures']),
+  city('Piatra Neamt', 'Piatra Neamț', ['Piatra Neamt']),
+  city('Slatina', 'Slatina'),
+  city('Satu Mare', 'Satu Mare'),
+  city('Zalau', 'Zalău', ['Zalau']),
+  city('Suceava', 'Suceava'),
+  city('Alexandria', 'Alexandria'),
+  city('Tulcea', 'Tulcea'),
+  city('Vaslui', 'Vaslui'),
+  city('Ramnicu Valcea', 'Râmnicu Vâlcea', ['Ramnicu Valcea']),
+  city('Focsani', 'Focșani', ['Focsani']),
+  city('Buftea', 'Buftea'),
+  city('Otopeni', 'Otopeni'),
+  city('Voluntari', 'Voluntari'),
+  city('Popesti-Leordeni', 'Popești-Leordeni', ['Popesti-Leordeni', 'Popesti Leordeni']),
+  city('Bragadiru', 'Bragadiru'),
+  city('Pantelimon', 'Pantelimon'),
+  city('Chitila', 'Chitila'),
+  city('Magurele', 'Măgurele', ['Magurele']),
+]);
