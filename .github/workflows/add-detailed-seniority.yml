@@ -1,0 +1,49 @@
+name: Complete shared seniority levels
+
+on:
+  push:
+    paths:
+      - '.github/workflows/add-detailed-seniority.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Add staff and principal seniority
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('src/hiring.js')
+          text = path.read_text()
+          old = "  group('lead', { ru: ['лид', 'тимлид', 'руководитель'], en: ['lead', 'team lead', 'tech lead'], uk: ['лід', 'тімлід', 'керівник'], ro: ['lead', 'team lead', 'lider de echipă', 'lider de echipa'], uzLatn: ['lead', 'team lead', 'yetakchi'], uzCyrl: ['лид', 'етакчи'], kk: ['lead', 'жетекші'] }),\n"
+          new = old + "  group('staff', { ru: ['staff engineer', 'стафф инженер'], en: ['staff', 'staff engineer', 'staff-level'], uk: ['staff engineer'], ro: ['staff engineer'], uzLatn: ['staff engineer'], uzCyrl: ['staff engineer'], kk: ['staff engineer'] }),\n  group('principal', { ru: ['principal engineer', 'принципал инженер'], en: ['principal', 'principal engineer', 'principal-level'], uk: ['principal engineer'], ro: ['principal engineer'], uzLatn: ['principal engineer'], uzCyrl: ['principal engineer'], kk: ['principal engineer'] }),\n"
+          if text.count(old) != 1:
+              raise SystemExit(f'lead seniority marker count: {text.count(old)}')
+          path.write_text(text.replace(old, new, 1))
+          PY
+          cat >> test/hiring-semantics.test.js <<'EOF'
+
+          test('shared seniority keeps staff and principal distinct', async () => {
+            const { matchSeniority } = await import('../src/index.js');
+            assert.equal(matchSeniority('Staff Frontend Engineer')?.canonical, 'staff');
+            assert.equal(matchSeniority('Principal Software Engineer')?.canonical, 'principal');
+          });
+          EOF
+      - run: npm test
+      - name: Commit validated seniority and remove temporary workflow
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/add-detailed-seniority.yml
+          git add src/hiring.js test/hiring-semantics.test.js
+          git commit -m "feat: add staff and principal seniority"
+          git push
