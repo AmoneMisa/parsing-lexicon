@@ -97,3 +97,74 @@ export function bucketVacancyText(value) {
   }
   return Object.freeze({ required: buckets.required.join(' '), optional: buckets.optional.join(' '), context: buckets.context.join(' '), noise: buckets.noise.join(' ') });
 }
+
+const CV_SECTION_HEADING_RE = /^\s*(profile|professional profile|summary|professional summary|about me|work experience|professional experience|experience|employment|employment history|projects?|pet projects?|hobbies|skills|technical skills|tech stack|education|languages?|contact|additional information)\s*:?[\s]*$/i;
+
+export function classifyCvSectionHeading(value) {
+  const heading = CV_SECTION_HEADING_RE.exec(String(value || '').trim())?.[1];
+  if (!heading) return null;
+  const normalized = heading.toLowerCase();
+  if (/work experience|professional experience|^experience$|employment/.test(normalized)) return 'experience';
+  if (/project|hobbies/.test(normalized)) return 'projects';
+  if (/profile|summary|about me/.test(normalized)) return 'profile';
+  if (/skills|tech stack/.test(normalized)) return 'skills';
+  if (/education/.test(normalized)) return 'education';
+  return 'other';
+}
+
+export function extractCvSection(value, wanted) {
+  const lines = String(value || '').replace(/\r/g, '').split('\n');
+  const collected = [];
+  let section = 'other';
+  let sawHeading = false;
+  for (const line of lines) {
+    const trimmed = line.trim();
+    const nextSection = classifyCvSectionHeading(trimmed);
+    if (nextSection) {
+      section = nextSection;
+      sawHeading = true;
+      continue;
+    }
+    if (section === wanted && trimmed) collected.push(trimmed);
+  }
+  return sawHeading ? collected.join('\n') : '';
+}
+
+function monthIndex(year, month = 1) {
+  return year * 12 + Math.max(1, Math.min(12, month)) - 1;
+}
+
+export function extractCvExperienceYears(value, referenceDate = new Date()) {
+  const raw = String(value || '');
+  const experienceSection = extractCvSection(raw, 'experience');
+  const datedSource = experienceSection || raw;
+  const intervals = [];
+  const ranges = /\b(19\d{2}|20\d{2})(?:[-/.](0?[1-9]|1[0-2]))?\s*(?:-|–|—|to)\s*(?:(present|current|now)|((?:19|20)\d{2})(?:[-/.](0?[1-9]|1[0-2]))?)/gi;
+  for (const match of datedSource.matchAll(ranges)) {
+    const startYear = Number(match[1]);
+    const startMonth = Number(match[2] || 1);
+    const endYear = match[3] ? referenceDate.getFullYear() : Number(match[4]);
+    const endMonth = match[3] ? referenceDate.getMonth() + 1 : Number(match[5] || 12);
+    if (!startYear || !endYear) continue;
+    const start = monthIndex(startYear, startMonth);
+    const end = monthIndex(endYear, endMonth);
+    if (end >= start && end - start <= 12 * 50) intervals.push([start, end]);
+  }
+  intervals.sort((a, b) => a[0] - b[0]);
+  const merged = [];
+  for (const interval of intervals) {
+    const last = merged[merged.length - 1];
+    if (!last || interval[0] > last[1] + 1) merged.push([...interval]);
+    else last[1] = Math.max(last[1], interval[1]);
+  }
+  const datedMonths = merged.reduce((sum, [start, end]) => sum + end - start + 1, 0);
+  const datedYears = datedMonths ? datedMonths / 12 : 0;
+  let explicitYears = 0;
+  const explicit = /\b(?:over|more than|at least|about|approximately|approx\.?|around)?\s*(\d{1,2}(?:[.,]\d)?)\+?\s*(?:years?|yrs?)\s+(?:of\s+)?(?:hands[- ]on\s+|professional\s+|commercial\s+)?experience\b/gi;
+  for (const match of raw.matchAll(explicit)) {
+    const years = Number(match[1]?.replace(',', '.'));
+    if (Number.isFinite(years) && years >= 0 && years <= 50) explicitYears = Math.max(explicitYears, years);
+  }
+  const result = Math.max(datedYears, explicitYears);
+  return result > 0 ? Math.round(result * 10) / 10 : null;
+}
