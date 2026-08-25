@@ -20,6 +20,7 @@ export type CandidatePostSignals = Readonly<{
   firstPerson: boolean;
   personalProfile: boolean;
   contact: boolean;
+  emptyRecommendation: boolean;
   sectionCount: number;
 }>;
 export function detectCandidatePostSignals(value: unknown): CandidatePostSignals;

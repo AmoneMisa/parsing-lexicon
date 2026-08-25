@@ -159,7 +159,7 @@ export function parseHiringSourceSalary(value) {
 export function parseCandidateSalary(value, country = '') {
   const field = extractCandidateStructuredField(value, 'salary', 140);
   if (!field) return null;
-  const defaultCurrency = { UZ: 'UZS', UA: 'UAH', KZ: 'KZT', KG: 'KGS', RO: 'RON' }[String(country || '').toUpperCase()] || null;
+  const defaultCurrency = defaultHiringCurrency(country);
   let parsed = parseHiringSourceSalary(field);
   if (!parsed || (parsed.min == null && parsed.max == null)) {
     const match = field.match(SOURCE_AMOUNT_RE);
@@ -215,6 +215,7 @@ const CV_MARKER_RE = /(?:резюме|resume|\bcv\b|curriculum vitae|анкет�
 const FIRST_PERSON_CANDIDATE_RE = /(?:^|\n)\s*[^\p{L}\p{N}\n]{0,6}(?:я[\s—,-]|я\s+(?:ищу|шукаю)(?![\p{L}\p{N}_])|(?:ищу|шукаю)(?![\p{L}\p{N}_])|men[\s,]|mening[\s,]|my name is|i am a|i'm a|ismim\b)/iu;
 const PERSONAL_PROFILE_RE = /(?:^|[^\p{L}\p{N}_])(?:(?:1[6-9]|[2-6]\d)\s*(?:лет|года?|рок(?:и|ів)?|years?\s+old)|(?:студент(?:ка|ом|кой)?|student))(?![\p{L}\p{N}_])/iu;
 const CANDIDATE_CONTACT_RE = /(?:\+?\d[\d\s()\-]{7,}|@[a-z0-9_]{4,}|(?:telegram|телефон|phone|tel|aloqa|murojaat|bog(?:'|’)lanish)\s*[:—-])/iu;
+const EMPTY_CANDIDATE_RECOMMENDATION_RE = /^(?:колеги[,!\s]*)?(?:вітаю[,!\s]*)?рекомендую\s+(?:класного\s+)?кандидат\p{L}*[.!\s]+(?:контакт\p{L}*\s+та\s+)?резюме\s+додаю\.?$/iu;
 const CANDIDATE_SECTION_PATTERNS = Object.freeze([
   /(?:опыт|досвід|experience|staj|tajriba|ish\s+tajribasi)/iu,
   /(?:skills|навыки|навички|умею|стек|stack|technologies|texnologiyalar|ko(?:'|’)nikmalar)/iu,
@@ -231,6 +232,7 @@ export function detectCandidatePostSignals(value) {
     firstPerson: FIRST_PERSON_CANDIDATE_RE.test(text),
     personalProfile: PERSONAL_PROFILE_RE.test(text),
     contact: CANDIDATE_CONTACT_RE.test(text),
+    emptyRecommendation: EMPTY_CANDIDATE_RECOMMENDATION_RE.test(text.replace(/\s+/g, ' ')),
     sectionCount: CANDIDATE_SECTION_PATTERNS.filter((pattern) => pattern.test(text)).length,
   });
 }
