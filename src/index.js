@@ -19,3 +19,6 @@ export * from './tashkent-pois.js';
 export * from './odesa-metropolitan.js';
 export * from './housing.js';
 export * from './hiring.js';
+export * from './money.js';
+export * from './hiring-professions.js';
+export * from './hiring-advanced.js';
