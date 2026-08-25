@@ -16,6 +16,8 @@
     "./geography": "./src/geography.js",
     "./locations": "./src/locations.js",
     "./landmarks": "./src/landmarks.js",
+    "./tashkent-colloquial": "./src/tashkent-colloquial.js",
+    "./tashkent-residential-complexes": "./src/tashkent-residential-complexes.js",
     "./housing": "./src/housing.js",
     "./hiring": "./src/hiring.js"
   },
