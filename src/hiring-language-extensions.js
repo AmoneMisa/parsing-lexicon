@@ -5,11 +5,43 @@ import { lexiconEntity } from './lexicon-core.js';
 const group = (canonical, aliases, extra = {}) => lexiconEntity(canonical, aliases, extra);
 
 /**
- * Language-level wording observed in real candidate feeds that is not part of
- * the generic CEFR/qualitative catalog yet. Keep source wording here rather
- * than in consuming applications.
+ * Source/feed wording and inflected qualitative levels that are intentionally
+ * kept out of consuming applications. Canonicals mirror the core language
+ * level taxonomy so callers receive one stable vocabulary.
  */
 export const LANGUAGE_LEVEL_EXTENSIONS = Object.freeze([
+  group('basic', {
+    ru: ['базовый', 'базовая', 'базовое', 'базового', 'базовой', 'базовом', 'базовым'],
+    en: ['basic'],
+    uk: ['базовий', 'базова', 'базове', 'базового'],
+    uzLatn: ["boshlang'ich", 'boshlang‘ich', 'boshlangʻich'],
+    uzCyrl: ['бошланғич'],
+    kk: ['бастапқы'],
+  }),
+  group('intermediate', {
+    ru: ['разговорный', 'разговорная', 'разговорное', 'разговорного', 'средний уровень', 'среднего уровня'],
+    en: ['intermediate', 'conversational'],
+    uk: ['розмовний', 'розмовна', 'середній рівень'],
+    uzLatn: ["o'rta daraja", 'o‘rta daraja', 'oʻrta daraja'],
+    uzCyrl: ['ўрта даража'],
+    kk: ['орта деңгей'],
+  }),
+  group('fluent', {
+    ru: ['свободный', 'свободная', 'свободное', 'свободного', 'свободное владение'],
+    en: ['fluent', 'full professional proficiency'],
+    uk: ['вільний', 'вільна', 'вільне володіння'],
+    uzLatn: ['erkin', 'erkin daraja'],
+    uzCyrl: ['эркин'],
+    kk: ['еркін'],
+  }),
+  group('native', {
+    ru: ['родной', 'родная', 'родного', 'родным', 'носитель языка'],
+    en: ['native', 'native speaker'],
+    uk: ['рідна', 'рідний', 'носій мови'],
+    uzLatn: ['ona tili'],
+    uzCyrl: ['она тили'],
+    kk: ['ана тілі'],
+  }),
   group('professional', {
     ru: [
       'профессиональный', 'профессиональная', 'профессиональное', 'профессиональные',
