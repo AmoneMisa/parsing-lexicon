@@ -17,6 +17,8 @@ test('candidate post signals cover multilingual structured and first-person CVs'
   const free = detectCandidatePostSignals('Ищу работу Frontend Developer. Мне 25 лет. Telegram: @dev_user');
   assert.equal(free.firstPerson, true);
   assert.equal(free.personalProfile, true);
+  const emptyRecommendation = detectCandidatePostSignals('Колеги, вітаю! Рекомендую класного кандидата. Резюме додаю.');
+  assert.equal(emptyRecommendation.emptyRecommendation, true);
 });
 
 test('structured candidate blocks reuse shared field aliases', () => {
