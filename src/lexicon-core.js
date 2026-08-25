@@ -5,6 +5,8 @@ export const LEXICON_LANGUAGES = Object.freeze([
   'ro',
   'uzLatn',
   'uzCyrl',
+  'kaaLat',
+  'kaaCyrl',
   'kk',
 ]);
 
