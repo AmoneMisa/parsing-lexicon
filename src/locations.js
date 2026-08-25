@@ -444,7 +444,7 @@ export function matchDictionaryLocation(text, countryCode, city = null) {
   const country = locationCities(countryCode);
   const cities = city && country[city] ? [[city, country[city]]] : Object.entries(country);
   for (const [cityName, data] of cities) {
-    for (const type of ['districts', 'microdistricts', 'metro', 'residentialComplexes', 'streets', 'landmarks']) {
+    for (const type of ['districts', 'microdistricts', 'residentialComplexes', 'metro', 'streets', 'landmarks']) {
       const match = (data[type] || []).find((entry) => entry.re.test(String(text || '')));
       if (match) return { city: cityName, type, name: match.name, aliases: match.aliases };
     }

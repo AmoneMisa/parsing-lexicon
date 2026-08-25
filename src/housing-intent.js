@@ -3,13 +3,14 @@ import { lexiconEntity } from './lexicon-core.js';
 
 const group = (canonical, aliases, extra = {}) => lexiconEntity(canonical, aliases, extra);
 const KK_RENT_OUT_ALIASES = Object.freeze(['жалға беремін', 'жалға беріледі']);
+const RO_SALE_OFFER_ALIASES = Object.freeze(['de vânzare', 'de vanzare']);
 
 export const HOUSING_ACTIONS = Object.freeze([
   group('sell', {
     ru: ['продам', 'продаю', 'продаётся', 'продается', 'выставил на продажу', 'выставила на продажу'],
     en: ['selling', 'for sale', 'selling apartment', 'selling house'],
     uk: ['продам', 'продаю', 'продається'],
-    ro: ['vând', 'vand', 'de vânzare', 'de vanzare', 'se vinde'],
+    ro: ['vând', 'vand', ...RO_SALE_OFFER_ALIASES, 'se vinde'],
     uzLatn: ['sotaman', 'sotiladi', 'sotuvga qoyildi', "sotuvga qo'yildi"],
     uzCyrl: ['сотаман', 'сотилади', 'сотувга қўйилди'],
     kk: ['сатамын', 'сатылады', 'сатылымға қойылды'],
@@ -70,7 +71,7 @@ export const HOUSING_DEAL_TYPES = Object.freeze([
     ru: ['продажа', 'продать', 'покупка'],
     en: ['sale', 'purchase'],
     uk: ['продаж', 'продати', 'купівля'],
-    ro: ['vânzare', 'vanzare', 'cumpărare', 'cumparare'],
+    ro: ['vânzare', 'vanzare', ...RO_SALE_OFFER_ALIASES, 'cumpărare', 'cumparare'],
     uzLatn: ['sotish', 'sotuv', 'sotib olish'],
     uzCyrl: ['сотиш', 'сотув', 'сотиб олиш'],
     kk: ['сату', 'сатып алу', 'сатылым'],

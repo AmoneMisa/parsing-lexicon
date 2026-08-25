@@ -1,5 +1,5 @@
 import { KZ_CITIES, UZ_CITIES } from './geo.js';
-import { aliasesOf, findCanonical } from './normalization.js';
+import { aliasesOf, findCanonical, normalizeForMatch } from './normalization.js';
 
 const freezeAliases = (aliases = {}) => Object.freeze(Object.fromEntries(
   Object.entries(aliases).map(([lang, values]) => [lang, Object.freeze([...new Set(values || [])])]),
@@ -23,10 +23,16 @@ function mergeCatalog(base, additions) {
       continue;
     }
     const languages = [...new Set([...Object.keys(previous.aliases || {}), ...Object.keys(item.aliases || {})])];
-    const aliases = Object.fromEntries(languages.map((lang) => [
-      lang,
-      [...new Set([...(previous.aliases?.[lang] || []), ...(item.aliases?.[lang] || [])])],
-    ]));
+    const aliases = Object.fromEntries(languages.map((lang) => {
+      const seen = new Set();
+      const values = [...(previous.aliases?.[lang] || []), ...(item.aliases?.[lang] || [])].filter((alias) => {
+        const key = normalizeForMatch(alias);
+        if (!key || seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+      return [lang, values];
+    }));
     const { aliases: _previousAliases, ...previousMeta } = previous;
     const { aliases: _itemAliases, ...itemMeta } = item;
     byCanonical.set(item.canonical, city(item.canonical, aliases, { ...previousMeta, ...itemMeta }));
