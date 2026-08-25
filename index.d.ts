@@ -21,6 +21,15 @@ export type ResidentialComplexEntry = Readonly<{
   ambiguous: boolean;
   re: RegExp;
 }>;
+export type PoiEntry = Readonly<{
+  canonical: string;
+  name: string;
+  category: string;
+  aliases: readonly string[];
+  re: RegExp;
+  contextRequired: boolean;
+  contextRe: RegExp | null;
+}>;
 export type AreaEntry = Readonly<{ name: string; aliases: readonly string[] }>;
 export type LocationCityDictionary = Readonly<{
   districts?: readonly LocationEntry[];
@@ -68,6 +77,19 @@ export const FULL_TASHKENT_AREAS: Readonly<Record<string, readonly AreaEntry[]>>
 export const TASHKENT_RESIDENTIAL_COMPLEXES: readonly ResidentialComplexEntry[];
 export function matchTashkentResidentialComplex(value: unknown): ResidentialComplexEntry | null;
 export function canonicalTashkentResidentialComplex(value: unknown): string | null;
+export const TASHKENT_PARKS: readonly PoiEntry[];
+export const TASHKENT_SQUARES: readonly PoiEntry[];
+export const TASHKENT_MARKETS: readonly PoiEntry[];
+export const TASHKENT_MALLS: readonly PoiEntry[];
+export const TASHKENT_ATTRACTIONS: readonly PoiEntry[];
+export const TASHKENT_CULTURAL_POIS: readonly PoiEntry[];
+export const TASHKENT_TRANSPORT_POIS: readonly PoiEntry[];
+export const TASHKENT_UNIVERSITIES: readonly PoiEntry[];
+export const TASHKENT_MEDICAL_POIS: readonly PoiEntry[];
+export const TASHKENT_LEGACY_LANDMARKS: readonly PoiEntry[];
+export const TASHKENT_POI_GROUPS: Readonly<Record<string, readonly PoiEntry[]>>;
+export const TASHKENT_LANDMARKS: readonly PoiEntry[];
+export function matchTashkentPoi(value: unknown, category?: string | null): PoiEntry | null;
 
 export const UZ_REGIONS: readonly LexiconEntity[];
 export const KZ_REGIONS: readonly LexiconEntity[];
