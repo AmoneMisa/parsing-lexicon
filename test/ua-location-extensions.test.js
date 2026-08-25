@@ -25,7 +25,7 @@ test('major Ukraine city extensions merge into the shared dictionary', () => {
   assert.equal(match('Kharkiv', 'residentialComplexes', 'ЖК Воробьёвы Горы'), 'Vorobiovi Hory');
   assert.equal(match('Odesa', 'districts', 'Малиновский район'), 'Khadzhybeiskyi');
   assert.equal(match('Dnipro', 'districts', 'Бабушкинский район'), 'Shevchenkivskyi');
-  assert.equal(match('Lviv', 'residentialComplexes', 'Avalon Yard'), 'Avalon');
+  assert.equal(match('Lviv', 'residentialComplexes', 'Avalon Yard'), 'Avalon Yard');
   assert.equal(match('Zaporizhzhia', 'microdistricts', 'Бабурка'), 'Baburka');
   assert.equal(match('Kryvyi Rih', 'microdistricts', '95-й квартал'), '95 Kvartal');
 });
