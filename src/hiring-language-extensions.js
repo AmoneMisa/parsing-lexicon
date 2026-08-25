@@ -1,4 +1,5 @@
 import { parseLanguageContext } from './hiring-context.js';
+import { LANGUAGE_LEVELS } from './hiring-languages.js';
 import { findAllCanonical } from './normalization.js';
 import { lexiconEntity } from './lexicon-core.js';
 
@@ -57,6 +58,8 @@ export const LANGUAGE_LEVEL_EXTENSIONS = Object.freeze([
   }),
 ]);
 
+const ALL_QUALITATIVE_LEVELS = Object.freeze([...LANGUAGE_LEVELS, ...LANGUAGE_LEVEL_EXTENSIONS]);
+
 function distanceToItem(match, item) {
   const itemStart = Number(item?.start || 0);
   const itemEnd = Number(item?.end || itemStart);
@@ -65,19 +68,72 @@ function distanceToItem(match, item) {
   return 0;
 }
 
-function extendedLevelNear(matches, item) {
-  return matches
-    .map((match) => ({ match, distance: distanceToItem(match, item) }))
-    .filter(({ distance }) => distance <= 45)
-    .sort((a, b) => a.distance - b.distance || a.match.start - b.match.start)[0]?.match.canonical || null;
+function cefrMatches(text) {
+  const out = [];
+  for (const match of text.matchAll(/(?<![\p{L}\p{N}])([ABC][12])(?![\p{L}\p{N}])/giu)) {
+    const start = match.index ?? 0;
+    out.push(Object.freeze({
+      canonical: match[1].toUpperCase(),
+      start,
+      end: start + match[0].length,
+      kind: 'cefr',
+    }));
+  }
+  return out;
+}
+
+function qualitativeMatches(text) {
+  const seen = new Set();
+  return findAllCanonical(text, ALL_QUALITATIVE_LEVELS)
+    .filter((match) => {
+      const key = `${match.start}:${match.end}:${match.canonical}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })
+    .map((match) => Object.freeze({ ...match, kind: 'level' }));
+}
+
+function nearestLanguageIndex(token, languages) {
+  let bestIndex = -1;
+  let bestDistance = Infinity;
+  for (let index = 0; index < languages.length; index += 1) {
+    const distance = distanceToItem(token, languages[index]);
+    if (distance < bestDistance) {
+      bestIndex = index;
+      bestDistance = distance;
+    }
+  }
+  return bestDistance <= 45 ? bestIndex : -1;
+}
+
+function bindLevels(text, languages) {
+  const bound = new Map();
+  const tokens = [...qualitativeMatches(text), ...cefrMatches(text)];
+  for (const token of tokens) {
+    const index = nearestLanguageIndex(token, languages);
+    if (index < 0) continue;
+    const item = languages[index];
+    const distance = distanceToItem(token, item);
+    const current = bound.get(index);
+    if (!current || distance < current.distance || (distance === current.distance && token.start < current.token.start)) {
+      bound.set(index, { token, distance });
+    }
+  }
+  return bound;
 }
 
 export function parseExtendedLanguageContext(value, options = {}) {
   const text = String(value || '');
   const parsed = parseLanguageContext(text, options);
-  const extendedLevels = findAllCanonical(text, LANGUAGE_LEVEL_EXTENSIONS);
-  return Object.freeze(parsed.map((item) => Object.freeze({
-    ...item,
-    level: item.level || item.cefr ? item.level : extendedLevelNear(extendedLevels, item),
-  })));
+  const bound = bindLevels(text, parsed);
+  return Object.freeze(parsed.map((item, index) => {
+    const token = bound.get(index)?.token;
+    if (!token) return item;
+    return Object.freeze({
+      ...item,
+      level: token.kind === 'level' ? token.canonical : null,
+      cefr: token.kind === 'cefr' ? token.canonical : null,
+    });
+  }));
 }
