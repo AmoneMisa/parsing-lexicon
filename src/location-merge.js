@@ -1,12 +1,18 @@
 import { aliasesToRegex, normalizeForMatch } from './normalization.js';
 
-const LOCATION_LIST_KEYS = Object.freeze([
+export const LOCATION_LIST_KEYS = Object.freeze([
   'districts',
   'microdistricts',
+  'mahallas',
+  'localAreas',
+  'suburbs',
+  'settlements',
   'metro',
   'residentialComplexes',
   'streets',
   'landmarks',
+  'pois',
+  'searchClusters',
 ]);
 
 export function locationEntry(name, ...aliases) {
