@@ -100,3 +100,9 @@ test('management, scope and degree semantics are extracted without scoring polic
     { level: 'bachelor', field: 'computer_science', equivalentExperience: true },
   );
 });
+
+test('shared employment lexicon recognizes legacy incomplete-employment wording', async () => {
+  const { EMPLOYMENT_TYPES, findCanonical } = await import('../src/index.js');
+  const partTime = EMPLOYMENT_TYPES.find(({ canonical }) => canonical === 'partTime');
+  assert.equal(findCanonical('неполная занятость, удаленно', [partTime], { partial: true })?.canonical, 'partTime');
+});

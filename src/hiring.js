@@ -66,7 +66,7 @@ export const EMPLOYMENT_TYPES = Object.freeze([
     uzLatn: ["to'liq bandlik", 'to‘liq bandlik', "to'liq kun", 'toliq ish kuni'], uzCyrl: ['тўлиқ бандлик', 'тўлиқ кун', 'тўлиқ иш куни'], kk: ['толық жұмыс күні', 'толық жұмыспен қамту'],
   }),
   group('partTime', {
-    ru: ['частичная занятость', 'неполный день', 'неполный рабочий день', 'подработка'], en: ['part time', 'part-time', 'part time employment'], uk: ['часткова зайнятість', 'неповний день', 'підробіток'], ro: ['part-time', 'jumătate de normă', 'jumatate de norma', 'program parțial', 'program partial'],
+    ru: ['частичная занятость', 'неполная занятость', 'неполный день', 'неполный рабочий день', 'подработка'], en: ['part time', 'part-time', 'part time employment'], uk: ['часткова зайнятість', 'неповний день', 'підробіток'], ro: ['part-time', 'jumătate de normă', 'jumatate de norma', 'program parțial', 'program partial'],
     uzLatn: ['yarim stavka', 'qisman bandlik', "qo'shimcha ish"], uzCyrl: ['ярим ставка', 'қисман бандлик', 'қўшимча иш'], kk: ['жартылай жұмыс', 'толық емес жұмыс күні', 'қосымша жұмыс'],
   }),
   group('contract', {
