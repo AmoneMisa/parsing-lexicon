@@ -1,4 +1,5 @@
 import { lexiconEntity } from './lexicon-core.js';
+import { HOUSING_DEAL_TYPES } from './housing-intent.js';
 const group = (canonical, aliases, extra = {}) => lexiconEntity(canonical, aliases, extra);
 
 export const ADDRESS_TERMS = Object.freeze({
@@ -45,22 +46,7 @@ export const ADDRESS_TERMS = Object.freeze({
   }),
 });
 
-export const DEAL_TYPES = Object.freeze([
-  group('sale', {
-    ru: ['продажа', 'продаётся', 'продается', 'продам', 'купить'], en: ['for sale', 'sale', 'selling'], uk: ['продаж', 'продається', 'продам', 'купити'], ro: ['vânzare', 'vanzare', 'de vânzare', 'de vanzare', 'se vinde'],
-    uzLatn: ['sotiladi', 'sotaman', 'sotuv', 'sotish', 'sotuvda'], uzCyrl: ['сотилади', 'сотаман', 'сотув', 'сотиш'], kk: ['сатылады', 'сатамын', 'сату', 'сатылым'],
-  }),
-  group('longRent', {
-    ru: ['аренда', 'сдаётся', 'сдается', 'сдам', 'снять', 'долгосрочно', 'помесячно', 'на длительный срок'], en: ['for rent', 'rent', 'long term', 'long-term rent', 'monthly'],
-    uk: ['оренда', 'здається', 'здам', 'зняти', 'довгостроково', 'довготривала оренда', 'помісячно'], ro: ['închiriere', 'inchiriere', 'de închiriat', 'de inchiriat', 'chirie', 'termen lung', 'pe termen lung', 'lunar'],
-    uzLatn: ['ijara', 'ijaraga', 'ijaraga beriladi', 'oyiga', 'uzoq muddatga'], uzCyrl: ['ижара', 'ижарага', 'ижарага берилади', 'ойига', 'узоқ муддатга'], kk: ['жалға', 'жалдау', 'жалға беріледі', 'айына', 'ұзақ мерзімге'],
-  }),
-  group('shortRent', {
-    ru: ['посуточно', 'посуточная', 'на сутки', 'на час', 'почасово'], en: ['daily rent', 'short term', 'short-term rent', 'per day', 'hourly'],
-    uk: ['подобово', 'погодинно', 'на добу', 'на годину', 'короткострокова оренда'], ro: ['regim hotelier', 'pe zi', 'zilnic', 'pe noapte', 'închiriere pe termen scurt', 'inchiriere pe termen scurt'],
-    uzLatn: ['kunlik', 'sutkaga', 'sutkalik', 'soatlik', 'kuniga'], uzCyrl: ['кунлик', 'суткага', 'суткалик', 'соатлик', 'кунига'], kk: ['тәулік', 'тәуліктік', 'тәулігіне', 'сағаттық', 'күндік'],
-  }),
-]);
+export const DEAL_TYPES = HOUSING_DEAL_TYPES;
 
 /** Occupancy is orthogonal to deal type: longRent + room/sharedRoom is valid. */
 export const HOUSING_OCCUPANCY_TYPES = Object.freeze([

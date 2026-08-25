@@ -6,6 +6,7 @@ function poi(name, category, aliases = [], options = {}) {
     canonical: name,
     name,
     category,
+    categories: Object.freeze([...new Set([category, ...(options.categories || [])])]),
     aliases: Object.freeze(all),
     re: aliasesToRegex(all),
     contextRequired: Boolean(options.contextRequired),
@@ -128,6 +129,8 @@ export const TASHKENT_TRANSPORT_POIS = Object.freeze([
   poi('Tashkent Bus Station', 'bus', ['Автовокзал Ташкент']),
 ]);
 
+const TASHKENT_MEDICAL_ACADEMY = poi('Tashkent Medical Academy', 'university', ['ТМА', 'Ташкентская медицинская академия'], { categories: ['medical'] });
+
 export const TASHKENT_UNIVERSITIES = Object.freeze([
   poi('National University of Uzbekistan', 'university', ['Национальный университет Узбекистана', 'NUUz', "O'zMU", 'O‘zMU', 'OʻzMU']),
   poi('University of World Economy and Diplomacy', 'university', ['Университет мировой экономики и дипломатии', 'UWED']),
@@ -137,7 +140,7 @@ export const TASHKENT_UNIVERSITIES = Object.freeze([
   poi('Tashkent State Technical University', 'university', ['ТашГТУ', 'ТГТУ']),
   poi('Tashkent State University of Economics', 'university', ['ТГЭУ', 'Ташкентский государственный экономический университет']),
   poi('Tashkent State University of Law', 'university', ['ТГЮУ', 'Ташкентский государственный юридический университет']),
-  poi('Tashkent Medical Academy', 'university', ['ТМА', 'Ташкентская медицинская академия']),
+  TASHKENT_MEDICAL_ACADEMY,
   poi('Tashkent University of Information Technologies', 'university', ['TUIT', 'ТУИТ']),
   poi('Webster University Tashkent', 'university', ['Webster']),
   poi('TEAM University', 'university'),
@@ -148,7 +151,7 @@ export const TASHKENT_UNIVERSITIES = Object.freeze([
 ]);
 
 export const TASHKENT_MEDICAL_POIS = Object.freeze([
-  poi('Tashkent Medical Academy', 'medical', ['Ташкентская медицинская академия', 'ТМА']),
+  TASHKENT_MEDICAL_ACADEMY,
   poi('Tashkent City Hospital No. 1', 'medical', ['1-я городская больница']),
   poi('Tashkent City Hospital No. 4', 'medical', ['4-я городская больница']),
   poi('Tashkent City Hospital No. 5', 'medical', ['5-я городская больница']),
@@ -182,7 +185,7 @@ export const TASHKENT_POI_GROUPS = Object.freeze({
 
 const seen = new Set();
 export const TASHKENT_LANDMARKS = Object.freeze(Object.values(TASHKENT_POI_GROUPS).flat().filter((entry) => {
-  const key = `${entry.category}:${entry.name}`;
+  const key = entry.name;
   if (seen.has(key)) return false;
   seen.add(key);
   return true;

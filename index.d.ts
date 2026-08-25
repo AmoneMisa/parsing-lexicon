@@ -51,6 +51,7 @@ export type PoiEntry = Readonly<{
   canonical: string;
   name: string;
   category: string;
+  categories?: readonly string[];
   aliases: readonly string[];
   re: RegExp;
   contextRequired: boolean;
@@ -76,7 +77,7 @@ export type SearchCluster = Readonly<{
   city?: string;
   members: readonly string[];
 }>;
-export type AreaEntry = Readonly<{ name: string; aliases: readonly string[] }>;
+export type AreaEntry = Readonly<{ canonical: string; name: string; type: 'local_area'; country: 'UZ'; city: 'Tashkent'; aliases: readonly string[] }>;
 export type LocationCityDictionary = Readonly<{
   districts?: readonly LocationEntry[];
   microdistricts?: readonly LocationEntry[];
@@ -349,3 +350,7 @@ export const EXPERIENCE_MODIFIERS: readonly LexiconEntity[];
 export function detectHiringNegativeIntent(value: unknown): Readonly<{ canonical: string; matched: string }> | null;
 export function classifyHiringIntent(value: unknown): Readonly<{ intent: 'candidate' | 'employer' | 'negative' | null; reason: string | null; matched: string | null; confidence: number }>;
 export function parseExperience(value: unknown): ExperienceParseResult | null;
+
+export * from './src/housing-context.js';
+export * from './src/hiring-context.js';
+export * from './src/housing-intent.js';

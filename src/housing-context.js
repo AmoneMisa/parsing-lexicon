@@ -138,6 +138,14 @@ export const LISTING_STATUS_TERMS = Object.freeze([
 
 const statusPriority = Object.freeze(['sold', 'rented', 'reserved', 'closed', 'outdated', 'active']);
 
+function resolveFloorConstraints(text) {
+  const values = all(text, FLOOR_CONSTRAINT_TERMS);
+  const out = new Set(values);
+  if (out.has('notFirst')) out.delete('first');
+  if (out.has('notLast')) out.delete('last');
+  return [...out];
+}
+
 export function parseHousingContext(value) {
   const text = String(value || '');
   if (!text.trim()) return deepFreeze({
@@ -158,7 +166,7 @@ export function parseHousingContext(value) {
     priceContext: first(text, PROPERTY_PRICE_CONTEXT),
     priceModifiers: all(text, PRICE_MODIFIERS),
     rentDuration: first(text, RENT_DURATION_TERMS),
-    floorConstraints: all(text, FLOOR_CONSTRAINT_TERMS),
+    floorConstraints: resolveFloorConstraints(text),
     furniture: first(text, FURNITURE_STATE_TERMS),
     tenantPolicies: {
       pets: first(text, PET_POLICY_TERMS),

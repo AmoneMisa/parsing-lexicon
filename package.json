@@ -31,7 +31,10 @@
     "./tashkent-pois": "./src/tashkent-pois.js",
     "./odesa-metropolitan": "./src/odesa-metropolitan.js",
     "./housing": "./src/housing.js",
-    "./housing-intent": "./src/housing-intent.js",
+    "./housing-intent": {
+      "types": "./src/housing-intent.d.ts",
+      "import": "./src/housing-intent.js"
+    },
     "./housing-context": {
       "types": "./src/housing-context.d.ts",
       "import": "./src/housing-context.js"
