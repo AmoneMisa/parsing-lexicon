@@ -15,6 +15,10 @@
     "./countries": "./src/countries.js",
     "./geo": "./src/geo.js",
     "./geography": "./src/geography.js",
+    "./geography-detection": {
+      "types": "./src/geography-detection.d.ts",
+      "import": "./src/geography-detection.js"
+    },
     "./central-asia": "./src/central-asia.js",
     "./ukraine": "./src/ukraine.js",
     "./location-merge": "./src/location-merge.js",
@@ -64,6 +68,10 @@
     "./hiring-requirements": {
       "types": "./src/hiring-requirements.d.ts",
       "import": "./src/hiring-requirements.js"
+    },
+    "./hiring-semantics": {
+      "types": "./src/hiring-semantics.d.ts",
+      "import": "./src/hiring-semantics.js"
     },
     "./money": "./src/money.js",
     "./hiring-professions": "./src/hiring-professions.js",
