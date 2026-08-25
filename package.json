@@ -18,6 +18,7 @@
     "./landmarks": "./src/landmarks.js",
     "./tashkent-colloquial": "./src/tashkent-colloquial.js",
     "./tashkent-residential-complexes": "./src/tashkent-residential-complexes.js",
+    "./tashkent-pois": "./src/tashkent-pois.js",
     "./housing": "./src/housing.js",
     "./hiring": "./src/hiring.js"
   },
