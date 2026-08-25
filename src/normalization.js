@@ -1,3 +1,5 @@
+import { LEXICON_LANGUAGES } from './lexicon-core.js';
+
 const APOSTROPHES_RE = /[’‘ʻʼ`´]/g;
 const DASHES_RE = /[‐‑‒–—―]/g;
 
@@ -9,10 +11,7 @@ export function normalizeUnicode(value) {
     .replace(DASHES_RE, '-');
 }
 
-/**
- * Stable comparison form for parser dictionaries.
- * Keeps all Unicode letters/numbers, removes punctuation differences and folds ё.
- */
+/** Stable comparison form for parser dictionaries. */
 export function normalizeForMatch(value) {
   return normalizeUnicode(value)
     .toLocaleLowerCase()
@@ -83,13 +82,38 @@ export function aliasesOf(entry) {
   return Object.values(aliases).flatMap((values) => Array.isArray(values) ? values : []);
 }
 
+function valuesOf(entry) {
+  return [entry?.canonical, entry?.name, ...aliasesOf(entry)].filter(Boolean);
+}
+
 function createAliasIndex(entries, { transliteration = true } = {}) {
   const index = new Map();
   for (const entry of entries || []) {
-    const values = [entry.canonical, entry.name, ...aliasesOf(entry)].filter(Boolean);
-    for (const value of values) {
+    for (const value of valuesOf(entry)) {
       for (const key of normalizedAliasKeys(value, { transliteration })) {
         if (!index.has(key)) index.set(key, entry);
+      }
+    }
+  }
+  return index;
+}
+
+function createAliasOwnersIndex(entries, { transliteration = true } = {}) {
+  const index = new Map();
+  for (const entry of entries || []) {
+    for (const sourceAlias of valuesOf(entry)) {
+      const searchForms = transliteration
+        ? [sourceAlias, foldCyrillicForSearch(sourceAlias), foldKazakhForSearch(sourceAlias)]
+        : [sourceAlias];
+      for (const searchAlias of searchForms) {
+        for (const key of normalizedAliasKeys(searchAlias, { transliteration: false })) {
+          if (!key) continue;
+          const owners = index.get(key) || [];
+          if (!owners.some((owner) => owner.entry === entry && owner.sourceAlias === sourceAlias)) {
+            owners.push(Object.freeze({ entry, sourceAlias, searchAlias }));
+          }
+          index.set(key, owners);
+        }
       }
     }
   }
@@ -103,6 +127,10 @@ export function buildAliasIndex(entries, options = {}) {
 
 const DEFAULT_ALIAS_INDEX_CACHE = new WeakMap();
 const DIRECT_ALIAS_INDEX_CACHE = new WeakMap();
+const DEFAULT_OWNERS_INDEX_CACHE = new WeakMap();
+const DIRECT_OWNERS_INDEX_CACHE = new WeakMap();
+const DEFAULT_MATCHER_CACHE = new WeakMap();
+const DIRECT_MATCHER_CACHE = new WeakMap();
 
 /** Cached alias index for stable/frozen lexicon arrays. */
 export function getAliasIndex(entries, { transliteration = true } = {}) {
@@ -113,6 +141,19 @@ export function getAliasIndex(entries, { transliteration = true } = {}) {
   let index = cache.get(entries);
   if (!index) {
     index = createAliasIndex(entries, { transliteration });
+    cache.set(entries, index);
+  }
+  return index;
+}
+
+export function getAliasOwnersIndex(entries, { transliteration = true } = {}) {
+  if (!entries || (typeof entries !== 'object' && typeof entries !== 'function')) {
+    return createAliasOwnersIndex(entries, { transliteration });
+  }
+  const cache = transliteration ? DEFAULT_OWNERS_INDEX_CACHE : DIRECT_OWNERS_INDEX_CACHE;
+  let index = cache.get(entries);
+  if (!index) {
+    index = createAliasOwnersIndex(entries, { transliteration });
     cache.set(entries, index);
   }
   return index;
@@ -140,19 +181,86 @@ export function findCanonical(value, entries, { partial = false, transliteration
   return best;
 }
 
+export function escapeRegex(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function aliasPattern(value) {
+  return escapeRegex(normalizeUnicode(value).trim())
+    .replace(/[\s\-–—'’‘`ʻʼ]+/g, "[\\s\\-–—'’‘`ʻʼ]*");
+}
+
+function matcherFor(entries, { transliteration = true } = {}) {
+  const cache = transliteration ? DEFAULT_MATCHER_CACHE : DIRECT_MATCHER_CACHE;
+  if (entries && typeof entries === 'object' && cache.has(entries)) return cache.get(entries);
+
+  const owners = createAliasOwnersIndex(entries, { transliteration });
+  const searchAliases = [...new Set(
+    [...owners.values()].flatMap((values) => values.map((owner) => owner.searchAlias)),
+  )]
+    .filter(Boolean)
+    .sort((a, b) => b.length - a.length);
+
+  const result = searchAliases.length
+    ? Object.freeze({
+        owners,
+        re: new RegExp(`(?<![\\p{L}\\p{N}_])(?:${searchAliases.map(aliasPattern).join('|')})(?![\\p{L}\\p{N}_])`, 'giu'),
+      })
+    : Object.freeze({ owners, re: null });
+
+  if (entries && typeof entries === 'object') cache.set(entries, result);
+  return result;
+}
+
 /**
- * Collect aliases mapping to more than one canonical entity.
- * Direct normalized aliases are checked by default; search-fold collisions can
- * be enabled explicitly because transliteration intentionally creates overlaps.
+ * Return every canonical match with original-text offsets. Colliding aliases are
+ * deliberately returned as multiple matches instead of silently choosing one.
  */
+export function findAllCanonical(value, entries, { transliteration = true } = {}) {
+  const text = normalizeUnicode(value ?? '');
+  if (!text || !entries?.length) return [];
+  const { owners, re } = matcherFor(entries, { transliteration });
+  if (!re) return [];
+
+  re.lastIndex = 0;
+  const matches = [];
+  const seen = new Set();
+  for (const match of text.matchAll(re)) {
+    const alias = match[0];
+    const start = match.index ?? 0;
+    const end = start + alias.length;
+    const keys = normalizedAliasKeys(alias, { transliteration });
+    const candidates = [];
+    for (const key of keys) {
+      for (const owner of owners.get(key) || []) candidates.push(owner);
+    }
+    for (const owner of candidates) {
+      const canonical = owner.entry?.canonical || owner.entry?.name || null;
+      const id = `${start}:${end}:${canonical}:${owner.sourceAlias}`;
+      if (seen.has(id)) continue;
+      seen.add(id);
+      matches.push(Object.freeze({
+        entry: owner.entry,
+        canonical,
+        alias,
+        sourceAlias: owner.sourceAlias,
+        normalizedAlias: normalizeForMatch(alias),
+        start,
+        end,
+      }));
+    }
+  }
+  return matches.sort((a, b) => a.start - b.start || (b.end - b.start) - (a.end - a.start));
+}
+
+/** Collect aliases mapping to more than one canonical entity. */
 export function collectAliasCollisions(entries, { includeSearchFolds = false, allowed = [] } = {}) {
   const allowedSet = new Set(allowed.map(normalizeForMatch));
   const owners = new Map();
   for (const entry of entries || []) {
     const canonical = entry?.canonical || entry?.name;
     if (!canonical) continue;
-    const values = [canonical, ...aliasesOf(entry)].filter(Boolean);
-    for (const value of values) {
+    for (const value of [canonical, ...aliasesOf(entry)].filter(Boolean)) {
       const keys = normalizedAliasKeys(value, { transliteration: includeSearchFolds });
       for (const key of keys) {
         if (!key || allowedSet.has(key)) continue;
@@ -176,15 +284,90 @@ export function validateAliasCollisions(entries, options = {}) {
   return true;
 }
 
-export function escapeRegex(value) {
-  return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+/**
+ * Validate structural lexicon invariants without changing source data.
+ * Intentional cross-entity collisions can be allow-listed by normalized alias.
+ */
+export function validateLexicon(entries, {
+  allowedCollisions = [],
+  allowedLanguageKeys = LEXICON_LANGUAGES,
+  allowDuplicateCanonicals = false,
+} = {}) {
+  const errors = [];
+  const canonicalOwners = new Map();
+  const aliasOwners = new Map();
+  const allowedCollisionSet = new Set(allowedCollisions.map(normalizeForMatch));
+  const languageSet = new Set(allowedLanguageKeys);
+
+  for (const [entryIndex, entry] of (entries || []).entries()) {
+    const canonical = entry?.canonical || entry?.name;
+    if (!canonical || !String(canonical).trim()) {
+      errors.push(Object.freeze({ kind: 'missingCanonical', entryIndex }));
+      continue;
+    }
+
+    const canonicalKey = normalizeForMatch(canonical);
+    if (!allowDuplicateCanonicals && canonicalOwners.has(canonicalKey)) {
+      errors.push(Object.freeze({ kind: 'duplicateCanonical', canonical, firstIndex: canonicalOwners.get(canonicalKey), entryIndex }));
+    } else if (!canonicalOwners.has(canonicalKey)) {
+      canonicalOwners.set(canonicalKey, entryIndex);
+    }
+
+    const aliasMap = entry?.aliases;
+    if (aliasMap && !Array.isArray(aliasMap) && typeof aliasMap === 'object') {
+      for (const key of Object.keys(aliasMap)) {
+        if (!languageSet.has(key)) errors.push(Object.freeze({ kind: 'unknownLanguageKey', canonical, key, entryIndex }));
+      }
+    }
+
+    const aliases = aliasesOf(entry);
+    const localNormalized = new Map();
+    for (const [aliasIndex, alias] of aliases.entries()) {
+      if (typeof alias !== 'string' || !alias.trim()) {
+        errors.push(Object.freeze({ kind: 'emptyAlias', canonical, aliasIndex, entryIndex }));
+        continue;
+      }
+      const normalized = normalizeForMatch(alias);
+      if (!normalized) {
+        errors.push(Object.freeze({ kind: 'emptyNormalizedAlias', canonical, alias, aliasIndex, entryIndex }));
+        continue;
+      }
+      if (localNormalized.has(normalized)) {
+        errors.push(Object.freeze({ kind: 'duplicateAlias', canonical, alias, normalizedAlias: normalized, firstAliasIndex: localNormalized.get(normalized), aliasIndex, entryIndex }));
+      } else {
+        localNormalized.set(normalized, aliasIndex);
+      }
+
+      const owners = aliasOwners.get(normalized) || new Set();
+      owners.add(canonical);
+      aliasOwners.set(normalized, owners);
+    }
+  }
+
+  for (const [alias, canonicals] of aliasOwners) {
+    if (canonicals.size > 1 && !allowedCollisionSet.has(alias)) {
+      errors.push(Object.freeze({ kind: 'crossCanonicalCollision', alias, canonicals: Object.freeze([...canonicals]) }));
+    }
+  }
+
+  return Object.freeze({ ok: errors.length === 0, errors: Object.freeze(errors) });
+}
+
+export function assertValidLexicon(entries, options = {}) {
+  const report = validateLexicon(entries, options);
+  if (!report.ok) {
+    const preview = report.errors.slice(0, 10).map((item) => JSON.stringify(item)).join('; ');
+    throw new Error(`Lexicon invariant validation failed (${report.errors.length}): ${preview}`);
+  }
+  return true;
 }
 
 export function aliasesToRegex(values, flags = 'iu') {
   const alternatives = [...new Set(values || [])]
-    .filter(Boolean)
+    .filter((value) => typeof value === 'string' && value.trim())
     .map((value) => normalizeUnicode(value).trim())
     .sort((a, b) => b.length - a.length)
-    .map((value) => escapeRegex(value).replace(/[\s\-–—'’‘`ʻʼ]+/g, "[\\s\\-–—'’‘`ʻʼ]*"));
+    .map(aliasPattern);
+  if (!alternatives.length) throw new TypeError('aliasesToRegex() requires at least one non-empty alias');
   return new RegExp(`(?:^|[^\\p{L}\\p{N}_])(?:${alternatives.join('|')})(?:$|[^\\p{L}\\p{N}_])`, flags);
 }
