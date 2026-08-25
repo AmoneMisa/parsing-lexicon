@@ -14,6 +14,14 @@ export type MetroStation = Readonly<{
   re: RegExp;
 }>;
 export type LocationEntry = Readonly<{ name: string; aliases: readonly string[]; re: RegExp }>;
+export type ResidentialComplexEntry = Readonly<{
+  canonical: string;
+  name: string;
+  aliases: readonly string[];
+  ambiguous: boolean;
+  re: RegExp;
+}>;
+export type AreaEntry = Readonly<{ name: string; aliases: readonly string[] }>;
 export type LocationCityDictionary = Readonly<{
   districts?: readonly LocationEntry[];
   microdistricts?: readonly LocationEntry[];
@@ -54,7 +62,12 @@ export const TASHKENT_METRO: readonly MetroStation[];
 export const TASHKENT_METRO_BY_NAME: Map<string, MetroStation>;
 export function canonicalTashkentMetro(value: unknown): string | null;
 export function tashkentMetroLabels(): Record<string, { ru: string; en: string; line: string }>;
-export const TASHKENT_AREAS: Readonly<Record<string, readonly Readonly<{ name: string; aliases: readonly string[] }>[]>>;
+export const TASHKENT_AREAS: Readonly<Record<string, readonly AreaEntry[]>>;
+export const TASHKENT_AREA_ADDITIONS: Readonly<Record<string, readonly AreaEntry[]>>;
+export const FULL_TASHKENT_AREAS: Readonly<Record<string, readonly AreaEntry[]>>;
+export const TASHKENT_RESIDENTIAL_COMPLEXES: readonly ResidentialComplexEntry[];
+export function matchTashkentResidentialComplex(value: unknown): ResidentialComplexEntry | null;
+export function canonicalTashkentResidentialComplex(value: unknown): string | null;
 
 export const UZ_REGIONS: readonly LexiconEntity[];
 export const KZ_REGIONS: readonly LexiconEntity[];
@@ -72,6 +85,8 @@ export function matchUkraineSecondaryCity(text: unknown): ({ city: string; alias
 export function dictionaryFor(countryCode: string, city: string): LocationCityDictionary | null;
 export function locationCities(countryCode: string): Readonly<Record<string, LocationCityDictionary>>;
 export function matchDictionaryLocation(text: unknown, countryCode: string, city?: string | null): { city: string; type: string; name: string; aliases: readonly string[] } | null;
+
+export const GENERIC_LANDMARK_TERMS: readonly LexiconEntity[];
 
 export const ADDRESS_TERMS: Readonly<Record<string, LexiconEntity>>;
 export const DEAL_TYPES: readonly LexiconEntity[];
