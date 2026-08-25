@@ -326,7 +326,7 @@ export function validateLexicon(entries, {
     const aliasMapEntries = aliasMap && !Array.isArray(aliasMap) && typeof aliasMap === 'object'
       ? Object.entries(aliasMap).flatMap(([language, values]) => (Array.isArray(values) ? values : []).map((alias, aliasIndex) => ({ alias, aliasIndex, language })))
       : (Array.isArray(aliasMap) ? aliasMap : []).map((alias, aliasIndex) => ({ alias, aliasIndex, language: null }));
-    const localNormalized = new Map();
+    const localExactAliases = new Map();
     for (const { alias, aliasIndex, language } of aliasMapEntries) {
       if (typeof alias !== 'string' || !alias.trim()) {
         errors.push(Object.freeze({ kind: 'emptyAlias', canonical, aliasIndex, entryIndex, language }));
@@ -337,11 +337,16 @@ export function validateLexicon(entries, {
         errors.push(Object.freeze({ kind: 'emptyNormalizedAlias', canonical, alias, aliasIndex, entryIndex, language }));
         continue;
       }
-      const duplicateKey = `${language || '*'}:${normalized}`;
-      if (localNormalized.has(duplicateKey)) {
-        errors.push(Object.freeze({ kind: 'duplicateAlias', canonical, alias, normalizedAlias: normalized, firstAliasIndex: localNormalized.get(duplicateKey), aliasIndex, entryIndex, language }));
+      // Search normalization intentionally collapses spelling variants such as
+      // ё/е, apostrophe glyphs and hyphen/space forms. Those are useful aliases,
+      // not structural duplicates. A duplicate is the same source spelling
+      // modulo Unicode normalization, case and whitespace only.
+      const rawIdentity = String(alias).normalize('NFKC').toLocaleLowerCase().replace(/\s+/g, ' ').trim();
+      const duplicateKey = `${language || '*'}:${rawIdentity}`;
+      if (localExactAliases.has(duplicateKey)) {
+        errors.push(Object.freeze({ kind: 'duplicateAlias', canonical, alias, normalizedAlias: normalized, firstAliasIndex: localExactAliases.get(duplicateKey), aliasIndex, entryIndex, language }));
       } else {
-        localNormalized.set(duplicateKey, aliasIndex);
+        localExactAliases.set(duplicateKey, aliasIndex);
       }
 
       const owners = aliasOwners.get(normalized) || new Set();
