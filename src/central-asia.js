@@ -88,7 +88,7 @@ export const KZ_CITY_ADDITIONS = Object.freeze([
   city('Saran', { kk: ['Саран'], ru: ['Сарань'], en: ['Saran'] }, { country: 'KZ', priority: 'P4' }),
   city('Shakhtinsk', { kk: ['Шахтинск'], ru: ['Шахтинск'], en: ['Shakhtinsk'] }, { country: 'KZ', priority: 'P4' }),
   city('Abai', { kk: ['Абай'], ru: ['Абай'], en: ['Abai'] }, { country: 'KZ', priority: 'P4' }),
-  city('Priozersk', { kk: ['Приозерск'], ru: ['Приозёрск', 'Приозерск'], en: ['Priozersk'] }, { country: 'KZ', priority: 'P4' }),
+  city('Priozersk', { kk: ['Приозерск'], ru: ['Приозёрск'], en: ['Priozersk'] }, { country: 'KZ', priority: 'P4' }),
   city('Karkaralinsk', { kk: ['Қарқаралы'], ru: ['Каркаралинск'], en: ['Karkaralinsk', 'Karkaraly'] }, { country: 'KZ', priority: 'P4' }),
   city('Aksu', { kk: ['Ақсу'], ru: ['Аксу'], en: ['Aksu', 'Aqsu'] }, { country: 'KZ', priority: 'P4' }),
   city('Ridder', { kk: ['Риддер'], ru: ['Риддер'], en: ['Ridder'] }, { country: 'KZ', priority: 'P4' }),
