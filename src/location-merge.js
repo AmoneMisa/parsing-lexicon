@@ -9,6 +9,15 @@ const LOCATION_LIST_KEYS = Object.freeze([
   'landmarks',
 ]);
 
+export function locationEntry(name, ...aliases) {
+  const all = [...new Set([name, ...aliases].flat().filter(Boolean))];
+  return Object.freeze({ name, aliases: Object.freeze(all), re: aliasesToRegex(all) });
+}
+
+export function locationEntries(rows = []) {
+  return Object.freeze(rows.map(([name, ...aliases]) => locationEntry(name, ...aliases)));
+}
+
 function mergeEntry(existing, incoming) {
   const aliases = [...new Set([
     ...(existing?.aliases || []),
