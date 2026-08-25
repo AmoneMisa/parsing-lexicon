@@ -27,5 +27,7 @@ export * from './hiring.js';
 export * from './hiring-languages.js';
 export * from './hiring-context.js';
 export * from './money.js';
+export * from './contact.js';
+export * from './price.js';
 export * from './hiring-professions.js';
 export * from './hiring-advanced.js';
