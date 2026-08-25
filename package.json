@@ -39,6 +39,10 @@
       "types": "./src/housing-context.d.ts",
       "import": "./src/housing-context.js"
     },
+    "./housing-structured": {
+      "types": "./src/housing-structured.d.ts",
+      "import": "./src/housing-structured.js"
+    },
     "./hiring": "./src/hiring.js",
     "./hiring-languages": "./src/hiring-languages.js",
     "./hiring-context": {
