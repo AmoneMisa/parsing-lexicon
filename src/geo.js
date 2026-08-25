@@ -59,7 +59,7 @@ export const TASHKENT_DISTRICTS = Object.freeze([
   entity('Almazar', { uzLatn: ['Olmazor', 'Olmazor tumani'], uzCyrl: ['Олмазор', 'Олмазор тумани'], ru: ['Алмазар', 'Алмазарский район'], en: ['Almazar', 'Olmazor district'] }),
   entity('Bektemir', { uzLatn: ['Bektemir', 'Bektemir tumani'], uzCyrl: ['Бектемир', 'Бектемир тумани'], ru: ['Бектемир', 'Бектемирский район'], en: ['Bektemir'] }),
   entity('Mirobod', { uzLatn: ['Mirobod', 'Mirobod tumani'], uzCyrl: ['Миробод', 'Миробод тумани'], ru: ['Мирабад', 'Мирабадский район'], en: ['Mirobod', 'Mirabad'] }),
-  entity('Mirzo Ulugbek', { uzLatn: ["Mirzo Ulug'bek", 'Mirzo Ulug‘bek', 'Mirzo Ulugbek', "Mirzo Ulug'bek tumani"], uzCyrl: ['Мирзо Улуғбек', 'Мирзо Улуғбек тумани'], ru: ['Мирзо-Улугбекский район', 'Мирзо Улугбек'], en: ['Mirzo Ulugbek', 'Mirzo Ulughbek'] }),
+  entity('Mirzo Ulugbek', { uzLatn: ["Mirzo Ulug'bek", 'Mirzo Ulugbek', "Mirzo Ulug'bek tumani"], uzCyrl: ['Мирзо Улуғбек', 'Мирзо Улуғбек тумани'], ru: ['Мирзо-Улугбекский район', 'Мирзо Улугбек'], en: ['Mirzo Ulugbek', 'Mirzo Ulughbek'] }),
   entity('Sergeli', { uzLatn: ['Sergeli', 'Sergeli tumani'], uzCyrl: ['Сергели', 'Сергели тумани'], ru: ['Сергелийский район', 'Сергели'], en: ['Sergeli'] }),
   entity('Uchtepa', { uzLatn: ['Uchtepa', 'Uchtepa tumani'], uzCyrl: ['Учтепа', 'Учтепа тумани'], ru: ['Учтепинский район', 'Учтепа'], en: ['Uchtepa'] }),
   entity('Chilanzar', { uzLatn: ['Chilonzor', 'Chilonzor tumani', 'Chilanzar'], uzCyrl: ['Чилонзор', 'Чилонзор тумани'], ru: ['Чиланзар', 'Чиланзарский район'], en: ['Chilanzar', 'Chilonzor'] }),
