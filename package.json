@@ -43,8 +43,16 @@
       "types": "./src/housing-structured.d.ts",
       "import": "./src/housing-structured.js"
     },
+    "./housing-source-aliases": {
+      "types": "./src/housing-source-aliases.d.ts",
+      "import": "./src/housing-source-aliases.js"
+    },
     "./hiring": "./src/hiring.js",
     "./hiring-languages": "./src/hiring-languages.js",
+    "./hiring-language-extensions": {
+      "types": "./src/hiring-language-extensions.d.ts",
+      "import": "./src/hiring-language-extensions.js"
+    },
     "./hiring-context": {
       "types": "./src/hiring-context.d.ts",
       "import": "./src/hiring-context.js"
