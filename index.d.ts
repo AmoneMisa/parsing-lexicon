@@ -5,6 +5,12 @@ export type LexiconEntity = Readonly<{
   country?: string;
   code?: string;
   currency?: string;
+  region?: string;
+  type?: string;
+  status?: string;
+  priority?: string;
+  localCanonical?: string;
+  contextRequired?: boolean;
 }>;
 export type MetroStation = Readonly<{
   name: string;
@@ -13,7 +19,18 @@ export type MetroStation = Readonly<{
   aliases: readonly string[];
   re: RegExp;
 }>;
-export type LocationEntry = Readonly<{ name: string; aliases: readonly string[]; re: RegExp }>;
+export type LocationEntry = Readonly<{
+  name: string;
+  aliases: readonly string[];
+  re: RegExp;
+  entityType?: string;
+  country?: string;
+  city?: string;
+  district?: string;
+  parent?: string;
+  confidence?: string;
+  language?: string;
+}>;
 export type ResidentialComplexEntry = Readonly<{
   canonical: string;
   name: string;
@@ -42,20 +59,46 @@ export type MetropolitanEntity = Readonly<{
   contextRe: RegExp | null;
 }>;
 export type SearchCluster = Readonly<{
-  canonical: string;
+  canonical?: string;
   name: string;
   type: 'search_cluster';
   administrative: false;
+  country?: string;
+  city?: string;
   members: readonly string[];
 }>;
 export type AreaEntry = Readonly<{ name: string; aliases: readonly string[] }>;
 export type LocationCityDictionary = Readonly<{
   districts?: readonly LocationEntry[];
   microdistricts?: readonly LocationEntry[];
+  mahallas?: readonly LocationEntry[];
+  localAreas?: readonly LocationEntry[];
+  suburbs?: readonly LocationEntry[];
+  settlements?: readonly LocationEntry[];
   metro?: readonly LocationEntry[] | readonly MetroStation[];
   residentialComplexes?: readonly LocationEntry[];
   streets?: readonly LocationEntry[];
   landmarks?: readonly LocationEntry[];
+  pois?: readonly LocationEntry[];
+  searchClusters?: readonly LocationEntry[];
+}>;
+export type CentralAsiaLocationMatch = Readonly<{
+  country: string | null;
+  city: string;
+  type: string;
+  key: string;
+  name: string;
+  aliases: readonly string[];
+  district: string | null;
+  parent: string | null;
+  confidence: string | null;
+  language: string | null;
+}>;
+export type CentralAsiaLocationResult = Readonly<{
+  city: string | null;
+  matches: readonly CentralAsiaLocationMatch[];
+  searchClusters: readonly SearchCluster[];
+  candidates: readonly Readonly<{ city: string; matches: readonly CentralAsiaLocationMatch[] }>[];
 }>;
 
 export function normalizeUnicode(value: unknown): string;
@@ -87,6 +130,19 @@ export const UA_CITY_CATALOG: readonly LexiconEntity[];
 export const UA_CITY_HISTORICAL_ALIASES: Readonly<Record<string, readonly string[]>>;
 export function canonicalUkraineCity(value: unknown): string | null;
 export const UA_LOCATION_TERMS: Readonly<Record<string, readonly string[]>>;
+
+export const KZ_CITY_ADDITIONS: readonly LexiconEntity[];
+export const KZ_CITY_CATALOG: readonly LexiconEntity[];
+export const KZ_SEARCH_TARGETS: readonly LexiconEntity[];
+export const UZ_CITY_ADDITIONS: readonly LexiconEntity[];
+export const UZ_CITY_CATALOG: readonly LexiconEntity[];
+export const UZ_SEARCH_TARGETS: readonly LexiconEntity[];
+export const KZ_LOCATION_TERMS: Readonly<Record<string, readonly string[]>>;
+export const UZ_LOCATION_TERMS: Readonly<Record<string, readonly string[]>>;
+export function canonicalKazakhstanCity(value: unknown): string | null;
+export function canonicalUzbekistanCity(value: unknown): string | null;
+export function canonicalCentralAsiaCity(value: unknown, country?: 'KZ' | 'UZ' | null): string | null;
+export function centralAsiaCityAliases(canonical: string, country?: 'KZ' | 'UZ' | null): readonly string[];
 
 export const TASHKENT_DISTRICTS: readonly LexiconEntity[];
 export function canonicalTashkentDistrict(value: unknown): string | null;
@@ -132,6 +188,13 @@ export const RO_REGIONS: readonly LexiconEntity[];
 export const REGIONS: readonly LexiconEntity[];
 export function canonicalRegion(value: unknown, country?: string | null): string | null;
 
+export const LOCATION_LIST_KEYS: readonly string[];
+export function locationEntry(name: string, ...aliases: string[]): LocationEntry;
+export function locationEntries(rows?: readonly (readonly string[])[]): readonly LocationEntry[];
+export function mergeLocationEntries(...lists: readonly LocationEntry[][]): readonly LocationEntry[];
+export function mergeLocationCityDictionaries(...dictionaries: readonly LocationCityDictionary[]): LocationCityDictionary;
+export function mergeLocationCountries(...countries: readonly Readonly<Record<string, LocationCityDictionary>>[]): Readonly<Record<string, LocationCityDictionary>>;
+
 export const LOCATION_DICTIONARIES: Readonly<Record<string, Readonly<Record<string, LocationCityDictionary>>>>;
 export const UA_EXTRA_LOCATION_DICTIONARIES: Readonly<Record<string, LocationCityDictionary>>;
 export const UA_REGION_ENTRIES: readonly LocationEntry[];
@@ -141,6 +204,20 @@ export function matchUkraineSecondaryCity(text: unknown): ({ city: string; alias
 export function dictionaryFor(countryCode: string, city: string): LocationCityDictionary | null;
 export function locationCities(countryCode: string): Readonly<Record<string, LocationCityDictionary>>;
 export function matchDictionaryLocation(text: unknown, countryCode: string, city?: string | null): { city: string; type: string; name: string; aliases: readonly string[] } | null;
+
+export const KZ_LOCATION_EXTENSIONS: Readonly<Record<string, LocationCityDictionary>>;
+export const KZ_SEARCH_CLUSTERS: readonly SearchCluster[];
+export const KZ_AMBIGUOUS_LOCAL_NAMES: readonly string[];
+export const UZ_LOCATION_EXTENSIONS: Readonly<Record<string, LocationCityDictionary>>;
+export const UZ_AMBIGUOUS_LOCAL_NAMES: readonly string[];
+export const UZ_KARAKALPAK_LANGUAGE_TAGS: readonly string[];
+export const KZ_EXPANDED_LOCATION_DICTIONARIES: Readonly<Record<string, LocationCityDictionary>>;
+export const UZ_EXPANDED_LOCATION_DICTIONARIES: Readonly<Record<string, LocationCityDictionary>>;
+export const CENTRAL_ASIA_LOCATION_DICTIONARIES: Readonly<Record<'KZ' | 'UZ', Readonly<Record<string, LocationCityDictionary>>>>;
+export function centralAsiaLocationCities(countryCode: 'KZ' | 'UZ'): Readonly<Record<string, LocationCityDictionary>>;
+export function centralAsiaLocationCity(countryCode: 'KZ' | 'UZ', city: string): LocationCityDictionary | null;
+export function matchCentralAsiaLocationEntities(text: unknown, countryCode: 'KZ' | 'UZ', preferredCity?: string | null): CentralAsiaLocationResult;
+export function matchCentralAsiaLocationEntity(text: unknown, countryCode: 'KZ' | 'UZ', preferredCity?: string | null, type?: string | null): CentralAsiaLocationMatch | null;
 
 export const GENERIC_LANDMARK_TERMS: readonly LexiconEntity[];
 
@@ -165,7 +242,7 @@ export const CANDIDATE_FIELD_TERMS: Readonly<Record<string, LexiconEntity>>;
 export const JOB_FIELD_TERMS: Readonly<Record<string, LexiconEntity>>;
 export const EMPLOYMENT_TYPES: readonly LexiconEntity[];
 export const WORK_MODES: readonly LexiconEntity[];
-export const SCHEDULE_TERMS: readonly LexiconEntity[];
+export const SCHEDULE_TERMS: Readonly<Record<string, LexiconEntity>>;
 export const PROBATION_TERMS: Readonly<Record<string, LexiconEntity>>;
 export const EXPERIENCE_REQUIREMENTS: Readonly<Record<string, LexiconEntity>>;
 export const SKILL_FIELD_TERMS: Readonly<Record<string, LexiconEntity>>;
