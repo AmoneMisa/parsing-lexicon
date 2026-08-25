@@ -3,6 +3,7 @@ export * from './normalization.js';
 export * from './countries.js';
 export * from './geo.js';
 export * from './geography.js';
+export * from './geography-display.js';
 export * from './central-asia.js';
 export * from './ukraine.js';
 export * from './location-merge.js';
