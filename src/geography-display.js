@@ -1,8 +1,9 @@
 // Centralized presentation names for canonical geography values.
-// Consumers must not maintain their own city/district/metro display dictionaries.
+// Consumers must not maintain their own country/city/district/metro display dictionaries.
 
 export const GEOGRAPHY_DISPLAY_NAMES = Object.freeze({
   ru: Object.freeze({
+    country: Object.freeze({ UZ: 'Узбекистан', KZ: 'Казахстан', UA: 'Украина', RO: 'Румыния', KG: 'Кыргызстан' }),
     city: Object.freeze({
       Tashkent: 'Ташкент', Samarkand: 'Самарканд', Bukhara: 'Бухара', Namangan: 'Наманган',
       Andijan: 'Андижан', Fergana: 'Фергана', Nukus: 'Нукус', Navoi: 'Навои', Navoiy: 'Навои', Jizzakh: 'Джизак',
@@ -73,10 +74,11 @@ export function geographyDisplayName(value, locale = 'en', kind = 'any') {
   if (!text) return '';
   const tables = GEOGRAPHY_DISPLAY_NAMES[languageKey(locale)];
   if (!tables) return text;
+  if (kind === 'country') return tables.country[text.toUpperCase()] || text;
   if (kind === 'city') return tables.city[text] || text;
   if (kind === 'district') return tables.district[text] || text;
   if (kind === 'metro') return tables.metro[text] || text;
-  return tables.city[text] || tables.district[text] || tables.metro[text] || text;
+  return tables.country[text.toUpperCase()] || tables.city[text] || tables.district[text] || tables.metro[text] || text;
 }
 
 export function geographyMetroLabelWithAlias(value, locale = 'en') {
