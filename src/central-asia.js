@@ -6,9 +6,9 @@ const freezeAliases = (aliases = {}) => Object.freeze(Object.fromEntries(
 ));
 
 const city = (canonical, aliases, extra = {}) => Object.freeze({
+  ...extra,
   canonical,
   aliases: freezeAliases(aliases),
-  ...extra,
 });
 
 function mergeCatalog(base, additions) {
@@ -27,7 +27,9 @@ function mergeCatalog(base, additions) {
       lang,
       [...new Set([...(previous.aliases?.[lang] || []), ...(item.aliases?.[lang] || [])])],
     ]));
-    byCanonical.set(item.canonical, city(item.canonical, aliases, { ...previous, ...item, canonical: item.canonical }));
+    const { aliases: _previousAliases, ...previousMeta } = previous;
+    const { aliases: _itemAliases, ...itemMeta } = item;
+    byCanonical.set(item.canonical, city(item.canonical, aliases, { ...previousMeta, ...itemMeta }));
   }
   return Object.freeze(order.map((name) => byCanonical.get(name)));
 }
