@@ -8,6 +8,7 @@ import {
   extractCandidateGender,
   extractCandidateName,
 } from '../src/hiring-candidate-fields.js';
+import { detectHiringLocationName } from '../src/hiring-location-fields.js';
 import {
   extractHiringDeadline,
   parseHiringActivityDate,
@@ -34,6 +35,14 @@ test('candidate experience and contacts reject common false positives', () => {
     extractCandidateContacts('2007 - 2009\n+998 90 123 45 67\nmail@example.com\n@candidate_user'),
     { phone: '+998 90 123 45 67', email: 'mail@example.com', telegram: '@candidate_user' },
   );
+});
+
+test('candidate board locations reuse global cities and preserve Uzbek region names', () => {
+  assert.equal(detectHiringLocationName('живу в Ташкенте', 'UZ'), 'Tashkent');
+  assert.equal(detectHiringLocationName('Сурхандарья', 'UZ'), 'Surkhandarya');
+  assert.equal(detectHiringLocationName('Кашкадарья', 'UZ'), 'Kashkadarya');
+  assert.equal(detectHiringLocationName('Toshkent viloyati', 'UZ'), 'Tashkent Region');
+  assert.equal(detectHiringLocationName('ошибка в резюме', 'KG'), null);
 });
 
 test('temporal parsing handles absolute, relative and day-month hiring dates', () => {
