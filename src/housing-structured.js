@@ -7,10 +7,10 @@ import { LOCATION_RELATIONS, parseHousingContext } from './housing-context.js';
 import { resolveHousingIntent } from './housing-intent.js';
 
 const NUMBER_WORDS = Object.freeze([
-  [/\b(?:однушк\p{L}*|однокомнатн\p{L}*|1\s*[- ]?к(?:омн\p{L}*)?|1\s*xona(?:li)?|1\s*бөлмелі|one[- ]bedroom|one[- ]room)\b/iu, 1],
-  [/\b(?:двушк\p{L}*|двухкомнатн\p{L}*|2\s*[- ]?к(?:омн\p{L}*)?|2\s*xona(?:li)?|2\s*бөлмелі|two[- ]bedroom|two[- ]room)\b/iu, 2],
-  [/\b(?:тр[её]шк\p{L}*|трехкомнатн\p{L}*|трёхкомнатн\p{L}*|3\s*[- ]?к(?:омн\p{L}*)?|3\s*xona(?:li)?|3\s*бөлмелі|three[- ]bedroom|three[- ]room)\b/iu, 3],
-  [/\b(?:четыр[её]хкомнатн\p{L}*|четыр[её]шк\p{L}*|4\s*[- ]?к(?:омн\p{L}*)?|4\s*xona(?:li)?|4\s*бөлмелі|four[- ]bedroom|four[- ]room)\b/iu, 4],
+  [/(?<![\p{L}\p{N}_])(?:однушк\p{L}*|однокомнатн\p{L}*|1\s*[- ]?к(?:омн\p{L}*)?|1\s*xona(?:li)?|1\s*бөлмелі|one[- ]bedroom|one[- ]room)(?![\p{L}\p{N}_])/iu, 1],
+  [/(?<![\p{L}\p{N}_])(?:двушк\p{L}*|двухкомнатн\p{L}*|2\s*[- ]?к(?:омн\p{L}*)?|2\s*xona(?:li)?|2\s*бөлмелі|two[- ]bedroom|two[- ]room)(?![\p{L}\p{N}_])/iu, 2],
+  [/(?<![\p{L}\p{N}_])(?:тр[её]шк\p{L}*|трехкомнатн\p{L}*|трёхкомнатн\p{L}*|3\s*[- ]?к(?:омн\p{L}*)?|3\s*xona(?:li)?|3\s*бөлмелі|three[- ]bedroom|three[- ]room)(?![\p{L}\p{N}_])/iu, 3],
+  [/(?<![\p{L}\p{N}_])(?:четыр[её]хкомнатн\p{L}*|четыр[её]шк\p{L}*|4\s*[- ]?к(?:омн\p{L}*)?|4\s*xona(?:li)?|4\s*бөлмелі|four[- ]bedroom|four[- ]room)(?![\p{L}\p{N}_])/iu, 4],
 ]);
 
 function toNumber(value) {
@@ -157,18 +157,27 @@ export function parseHousingSeller(value) {
   return deepFreeze({ type: null, confidence: 0 });
 }
 
-function distanceFromWindow(window) {
-  const minutes = window.match(/(\d{1,3})\s*(?:мин(?:ут[аы]?)?|minutes?|min\.?|daqiqa|минут|мин|минөт)/iu);
-  if (minutes) {
-    const mode = /(?:пешком|walk(?:ing)?|on\s+foot|piyoda|жаяу)/iu.test(window)
+function distanceFromWindow(window, entityOffset = 0) {
+  const candidates = [];
+  const minuteRe = /(\d{1,3})\s*(?:мин(?:ут[аы]?)?|minutes?|min\.?|daqiqa|минут|мин|минөт)/giu;
+  for (const match of window.matchAll(minuteRe)) {
+    const index = match.index ?? 0;
+    const local = window.slice(Math.max(0, index - 18), Math.min(window.length, index + match[0].length + 28));
+    const mode = /(?:пешком|walk(?:ing)?|on\s+foot|piyoda|жаяу)/iu.test(local)
       ? 'walk'
-      : /(?:на\s+машине|by\s+car|drive|mashinada|көлікпен)/iu.test(window) ? 'drive' : null;
-    return { value: Number(minutes[1]), unit: 'minute', mode };
+      : /(?:на\s+машине|by\s+car|drive|mashinada|көлікпен)/iu.test(local) ? 'drive' : null;
+    candidates.push({ distance: Math.abs(index - entityOffset), value: Number(match[1]), unit: 'minute', mode });
   }
-  const metric = window.match(/(\d{1,4}(?:[.,]\d+)?)\s*(км|km|километр\p{L}*|м|meter(?:s)?|метр\p{L}*)/iu);
-  if (!metric) return null;
-  const rawUnit = metric[2].toLocaleLowerCase();
-  return { value: toNumber(metric[1]), unit: /км|km|километр/u.test(rawUnit) ? 'kilometer' : 'meter', mode: null };
+  const metricRe = /(\d{1,4}(?:[.,]\d+)?)\s*(км|km|километр\p{L}*|м|meter(?:s)?|метр\p{L}*)/giu;
+  for (const match of window.matchAll(metricRe)) {
+    const index = match.index ?? 0;
+    const rawUnit = match[2].toLocaleLowerCase();
+    candidates.push({ distance: Math.abs(index - entityOffset), value: toNumber(match[1]), unit: /км|km|километр/u.test(rawUnit) ? 'kilometer' : 'meter', mode: null });
+  }
+  candidates.sort((a, b) => a.distance - b.distance);
+  if (!candidates.length) return null;
+  const { value, unit, mode } = candidates[0];
+  return { value, unit, mode };
 }
 
 export function parseHousingInfrastructure(value) {
@@ -187,7 +196,7 @@ export function parseHousingInfrastructure(value) {
     out.push(deepFreeze({
       poi: match.canonical,
       relation: findCanonical(window, LOCATION_RELATIONS, { partial: true })?.canonical || null,
-      distance: distanceFromWindow(window),
+      distance: distanceFromWindow(window, match.start - left),
       start: match.start,
       end: match.end,
     }));

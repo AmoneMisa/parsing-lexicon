@@ -141,6 +141,7 @@ const statusPriority = Object.freeze(['sold', 'rented', 'reserved', 'closed', 'o
 function resolveFloorConstraints(text) {
   const values = all(text, FLOOR_CONSTRAINT_TERMS);
   const out = new Set(values);
+  if (/(?:не\s+(?:первый|1)|not\s+first|не\s+перший|nu\s+primul|birinchi\s+qavat\s+emas|бірінші\s+қабат\s+емес)[^.!?\n]{0,32}(?:этаж|floor|поверх|etaj|qavat|қабат)/iu.test(text)) out.add('notFirst');
   if (out.has('notFirst')) out.delete('first');
   if (out.has('notLast')) out.delete('last');
   return [...out];

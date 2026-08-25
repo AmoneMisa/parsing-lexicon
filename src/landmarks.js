@@ -3,6 +3,7 @@ const group = (canonical, aliases) => lexiconEntity(canonical, aliases);
 
 export const GENERIC_LANDMARK_TERMS = Object.freeze([
   group('Park', { ru: ['парк'], en: ['park'], uk: ['парк'], ro: ['parc'], uzLatn: ["bog'", 'bog‘', 'bogʻ', 'park'], uzCyrl: ['боғ', 'парк'], kk: ['саябақ', 'парк'] }),
+  group('Metro', { ru: ['метро', 'станция метро'], en: ['metro', 'subway station'], uk: ['метро', 'станція метро'], ro: ['metrou', 'stație de metrou'], uzLatn: ['metro', 'metro bekati'], uzCyrl: ['метро', 'метро бекати'], kk: ['метро', 'метро станциясы'] }),
   group('Bus stop', { ru: ['автобусная остановка', 'остановка автобуса', 'конечная автобуса'], en: ['bus stop', 'bus station'], uk: ['автобусна зупинка', 'зупинка автобуса'], ro: ['stație de autobuz', 'statie de autobuz'], uzLatn: ['avtobus bekati', 'avtobus kanichka', 'avtobus konichka'], uzCyrl: ['автобус бекати'], kk: ['автобус аялдамасы'] }),
   group('Clinic', { ru: ['поликлиника', 'клиника'], en: ['clinic', 'polyclinic'], uk: ['поліклініка', 'клініка'], ro: ['clinică', 'clinica', 'policlinică', 'policlinica'], uzLatn: ['poliklinika', 'klinika'], uzCyrl: ['поликлиника', 'клиника'], kk: ['емхана', 'клиника'] }),
   group('Hospital', { ru: ['больница', 'госпиталь'], en: ['hospital'], uk: ['лікарня', 'госпіталь'], ro: ['spital'], uzLatn: ['shifoxona', 'kasalxona'], uzCyrl: ['шифохона', 'касалхона'], kk: ['аурухана'] }),

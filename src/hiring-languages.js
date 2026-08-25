@@ -62,7 +62,7 @@ export const LANGUAGE_CONTEXT_TERMS = Object.freeze({
     uzCyrl: ['тил шарт эмас', 'тил билиш талаб қилинмайди'],
     kk: ['тіл міндетті емес', 'тіл білу талап етілмейді'],
   }),
-  candidateKnows: group('candidateKnows', {
+  candidateHas: group('candidateHas', {
     ru: ['владею языками', 'знаю английский', 'владею английским', 'свободно говорю', 'разговорный английский', 'английский на уровне'],
     en: ['i speak', 'i know', 'fluent in', 'proficient in', 'native speaker', 'working proficiency'],
     uk: ['володію мовами', 'знаю англійську', 'вільно говорю'],

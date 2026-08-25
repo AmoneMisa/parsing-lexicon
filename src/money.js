@@ -45,10 +45,10 @@ export const NUMBER_MULTIPLIERS = Object.freeze([
   group('billion', { ru: ['млрд', 'миллиард', 'миллиардов'], en: ['bn', 'billion'], uk: ['млрд', 'мільярд'], ro: ['mld', 'miliard'], uzLatn: ['mlrd', 'billion'], uzCyrl: ['млрд', 'миллиард'], kk: ['млрд', 'миллиард'] }, { multiplier: 1_000_000_000 }),
 ]);
 
-const NUMBER = '(\\d{1,3}(?:[ \\u00a0.,]\\d{3})+|\\d+(?:[.,]\\d+)?)';
-const SCALE = '(k|к|тыс\\.?|тысяч(?:а|и)?|тис\\.?|thousand|ming|мың|m|м|млн\\.?|mln|million|миллион(?:ов)?|мільйон(?:ів)?|bn|млрд|mlrd|billion)';
-const RANGE_RE = new RegExp(`${NUMBER}\\s*(${SCALE})?\\s*(?:-|–|—|до|to|bis|dan\\s+gacha)\\s*${NUMBER}\\s*(${SCALE})?`, 'iu');
-const SINGLE_RE = new RegExp(`${NUMBER}\\s*(${SCALE})?`, 'giu');
+const NUMBER = '\\d{1,3}(?:[ \\u00a0.,]\\d{3})+|\\d+(?:[.,]\\d+)?';
+const SCALE = 'k|к|тыс\\.?|тысяч(?:а|и)?|тис\\.?|thousand|ming|мың|m|м|млн\\.?|mln|million|миллион(?:ов)?|мільйон(?:ів)?|bn|млрд|mlrd|billion';
+const RANGE_RE = new RegExp(`(${NUMBER})\\s*(${SCALE})?\\s*(?:-|–|—|до|to|bis|dan\\s+gacha)\\s*(${NUMBER})\\s*(${SCALE})?`, 'iu');
+const SINGLE_RE = new RegExp(`(${NUMBER})\\s*(${SCALE})?`, 'giu');
 
 function parseNumeric(raw) {
   let value = String(raw || '').replace(/\u00a0/g, ' ').trim();
@@ -105,10 +105,10 @@ export function parseSalary(value) {
   let approximate = hasModifier(text, 'approx');
 
   if (range) {
-    const firstScale = range[2] || range[5] || null;
-    const secondScale = range[5] || range[2] || null;
+    const firstScale = range[2] || range[4] || null;
+    const secondScale = range[4] || range[2] || null;
     min = amount(range[1], firstScale);
-    max = amount(range[4], secondScale);
+    max = amount(range[3], secondScale);
     if (min != null && max != null && min > max) [min, max] = [max, min];
   } else {
     SINGLE_RE.lastIndex = 0;

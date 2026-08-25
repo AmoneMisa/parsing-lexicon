@@ -323,22 +323,25 @@ export function validateLexicon(entries, {
       }
     }
 
-    const aliases = aliasesOf(entry);
+    const aliasMapEntries = aliasMap && !Array.isArray(aliasMap) && typeof aliasMap === 'object'
+      ? Object.entries(aliasMap).flatMap(([language, values]) => (Array.isArray(values) ? values : []).map((alias, aliasIndex) => ({ alias, aliasIndex, language })))
+      : (Array.isArray(aliasMap) ? aliasMap : []).map((alias, aliasIndex) => ({ alias, aliasIndex, language: null }));
     const localNormalized = new Map();
-    for (const [aliasIndex, alias] of aliases.entries()) {
+    for (const { alias, aliasIndex, language } of aliasMapEntries) {
       if (typeof alias !== 'string' || !alias.trim()) {
-        errors.push(Object.freeze({ kind: 'emptyAlias', canonical, aliasIndex, entryIndex }));
+        errors.push(Object.freeze({ kind: 'emptyAlias', canonical, aliasIndex, entryIndex, language }));
         continue;
       }
       const normalized = normalizeForMatch(alias);
       if (!normalized) {
-        errors.push(Object.freeze({ kind: 'emptyNormalizedAlias', canonical, alias, aliasIndex, entryIndex }));
+        errors.push(Object.freeze({ kind: 'emptyNormalizedAlias', canonical, alias, aliasIndex, entryIndex, language }));
         continue;
       }
-      if (localNormalized.has(normalized)) {
-        errors.push(Object.freeze({ kind: 'duplicateAlias', canonical, alias, normalizedAlias: normalized, firstAliasIndex: localNormalized.get(normalized), aliasIndex, entryIndex }));
+      const duplicateKey = `${language || '*'}:${normalized}`;
+      if (localNormalized.has(duplicateKey)) {
+        errors.push(Object.freeze({ kind: 'duplicateAlias', canonical, alias, normalizedAlias: normalized, firstAliasIndex: localNormalized.get(duplicateKey), aliasIndex, entryIndex, language }));
       } else {
-        localNormalized.set(normalized, aliasIndex);
+        localNormalized.set(duplicateKey, aliasIndex);
       }
 
       const owners = aliasOwners.get(normalized) || new Set();

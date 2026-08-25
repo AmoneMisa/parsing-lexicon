@@ -81,7 +81,7 @@ export const HOUSING_DEAL_TYPES = Object.freeze([
     ro: ['închiriere', 'inchiriere', 'chirie', 'pe termen lung', 'lunar'],
     uzLatn: ['ijara', 'uzoq muddatga', 'oylik ijara'],
     uzCyrl: ['ижара', 'узоқ муддатга', 'ойлик ижара'],
-    kk: ['жалдау', 'ұзақ мерзімге', 'айлық жалдау'],
+    kk: ['жалдау', 'жалға', 'ұзақ мерзімге', 'айлық жалдау'],
   }),
   group('shortRent', {
     ru: ['посуточно', 'посуточная аренда', 'на сутки', 'на час', 'почасово', 'краткосрочно'],

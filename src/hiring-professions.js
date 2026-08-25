@@ -154,10 +154,10 @@ const rows = [
   ['marketing_analyst','marketing',['marketing analyst','маркетинговый аналитик','аналитик маркетинга']],
 
   // Finance
-  ['accountant','finance',['accountant','бухгалтер','бухгалтер','buxgalter','есепші']],
+  ['accountant','finance',['accountant','бухгалтер','бухгалтером','buxgalter','есепші']],
   ['chief_accountant','finance',['chief accountant','head accountant','главный бухгалтер','головний бухгалтер','bosh buxgalter']],
   ['payroll_accountant','finance',['payroll accountant','бухгалтер по заработной плате','бухгалтер по зарплате']],
-  ['financial_analyst','finance',['financial analyst','финансовый аналитик','фінансовий аналітик']],
+  ['financial_analyst','finance',['financial analyst','финансовый аналитик','финансовым аналитиком','фінансовий аналітик']],
   ['financial_controller','finance',['financial controller','финансовый контролер','финансовый контроллер']],
   ['finance_manager','finance',['finance manager','financial manager','финансовый менеджер']],
   ['treasurer','finance',['treasurer','казначей','скарбник']],
@@ -330,7 +330,8 @@ function profession(canonical, group, strongAliases, weakAliases = []) {
   const strong = [...new Set(strongAliases.filter(Boolean))];
   const weak = [...new Set(weakAliases.filter(Boolean))];
   return Object.freeze({
-    id: `profession.${group}.${canonical}`,
+    id: canonical,
+    taxonomyId: `profession.${group}.${canonical}`,
     canonical,
     group,
     family: meta.family,
@@ -359,7 +360,7 @@ export const SENIORITY_LEVELS = Object.freeze([
   { canonical: 'senior', aliases: ['senior','sr','сеньор','синьор','старший специалист','ведущий специалист','провідний спеціаліст'], score: 1 },
   { canonical: 'staff', aliases: ['staff engineer','staff developer','staff-level','стафф инженер'], score: 1 },
   { canonical: 'principal', aliases: ['principal engineer','principal developer','principal architect','principal-level','принципал инженер'], score: 1 },
-  { canonical: 'lead', aliases: ['team lead','teamlead','tech lead','lead developer','lead engineer','тимлид','техлид','лид разработчик','ведущий разработчик'], score: 1 },
+  { canonical: 'lead', aliases: ['lead','team lead','teamlead','tech lead','lead developer','lead engineer','тимлид','техлид','лид разработчик','ведущий разработчик'], score: 1 },
   { canonical: 'head', aliases: ['head of','department head','руководитель отдела','начальник отдела','керівник відділу'], score: 0.95 },
   { canonical: 'director', aliases: ['director','директор','директор департамента','директор напряму'], score: 0.9 },
   { canonical: 'vp', aliases: ['vice president','vp of','вице-президент','віце-президент'], score: 1 },

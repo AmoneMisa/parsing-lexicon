@@ -1,10 +1,11 @@
 import { locationEntries } from './location-merge.js';
 
-function city({ districts = [], microdistricts = [], residentialComplexes = [], landmarks = [] }) {
+function city({ districts = [], microdistricts = [], residentialComplexes = [], streets = [], landmarks = [] }) {
   return Object.freeze({
     ...(districts.length ? { districts: locationEntries(districts) } : {}),
     ...(microdistricts.length ? { microdistricts: locationEntries(microdistricts) } : {}),
     ...(residentialComplexes.length ? { residentialComplexes: locationEntries(residentialComplexes) } : {}),
+    ...(streets.length ? { streets: locationEntries(streets) } : {}),
     ...(landmarks.length ? { landmarks: locationEntries(landmarks) } : {}),
   });
 }
@@ -26,6 +27,9 @@ export const UA_MAJOR_LOCATION_EXTENSIONS = Object.freeze({
   }),
 
   Kharkiv: city({
+    streets: [
+      ['Sumska Street','вул. Сумська','вулиця Сумська','Сумська','ул. Сумская','улица Сумская','Сумская','Sumska Street','Sumska'],
+    ],
     districts: [
       ['Shevchenkivskyi','Шевченківський','Шевченковский','Дзержинский'],['Kyivskyi','Київський','Киевский'],['Saltivskyi','Салтівський','Салтовский','Московский'],['Nemyshlianskyi','Немишлянський','Немышлянский','Фрунзенский'],['Industrialnyi','Індустріальний','Индустриальный','Орджоникидзевский'],['Slobidskyi','Слобідський','Слободской','Коминтерновский'],['Osnovianskyi',"Основ'янський",'Основянский','Червонозаводский'],['Novobavarskyi','Новобаварський','Новобаварский','Октябрьский'],['Kholodnohirskyi','Холодногірський','Холодногорский','Ленинский'],
     ],
