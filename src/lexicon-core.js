@@ -1,4 +1,5 @@
 export const LEXICON_LANGUAGES = Object.freeze([
+  'all',
   'ru',
   'en',
   'uk',
