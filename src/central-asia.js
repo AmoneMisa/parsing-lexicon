@@ -2,7 +2,16 @@ import { KZ_CITIES, UZ_CITIES } from './geo.js';
 import { aliasesOf, findCanonical, normalizeForMatch } from './normalization.js';
 
 const freezeAliases = (aliases = {}) => Object.freeze(Object.fromEntries(
-  Object.entries(aliases).map(([lang, values]) => [lang, Object.freeze([...new Set(values || [])])]),
+  Object.entries(aliases).map(([lang, values]) => {
+    const seen = new Set();
+    const deduped = (values || []).filter((alias) => {
+      const key = normalizeForMatch(alias);
+      if (!key || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+    return [lang, Object.freeze(deduped)];
+  }),
 ));
 
 const city = (canonical, aliases, extra = {}) => Object.freeze({
