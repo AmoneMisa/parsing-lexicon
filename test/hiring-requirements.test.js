@@ -33,6 +33,11 @@ test('normalizes US work authorization and sponsorship evidence', () => {
   assert.equal(isNoSponsorshipRequirement('We may not be able to provide future visa sponsorship for this role.'), true);
 });
 
+test('handles dotted abbreviations inside long sponsorship clauses', () => {
+  const text = 'For US based roles only, the Company may not be able to employ candidates for this role who have United States work authorization related to certain U.S. visa categories, or support future H-1B sponsorship at this time.';
+  assert.equal(isNoSponsorshipRequirement(text), true);
+});
+
 test('buckets vacancy requirements without treating benefits and legal text as requirements', () => {
   const result = bucketVacancyText('Requirements: Vue and TypeScript. 5 years experience. Nice to have: GraphQL. Benefits: health insurance. Equal opportunity employer.');
   assert.match(result.required, /Vue and TypeScript/i);
