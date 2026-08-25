@@ -85,6 +85,10 @@
       "types": "./src/hiring-vacancy-fields.d.ts",
       "import": "./src/hiring-vacancy-fields.js"
     },
+    "./hiring-location-fields": {
+      "types": "./src/hiring-location-fields.d.ts",
+      "import": "./src/hiring-location-fields.js"
+    },
     "./money": "./src/money.js",
     "./hiring-professions": "./src/hiring-professions.js",
     "./hiring-skills": {
