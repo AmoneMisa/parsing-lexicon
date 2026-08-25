@@ -259,6 +259,13 @@ export function buildSkillRegex(alias) {
   return new RegExp(`(?:^|[^\\p{L}\\p{N}_])${pattern}(?=$|[^\\p{L}\\p{N}_])`, 'iu')
 }
 
+const CONTEXTUAL_SKILL_PATTERNS = Object.freeze([
+  ['Corporate Governance', /\b(?:group|company|corporate) governance\b/i],
+  ['Data Analysis', /\banalys(?:e|is|ing)\b[^.;\n]{0,60}\b(?:data|metrics?|funnels?)\b|\b(?:data|metrics?|funnels?)\b[^.;\n]{0,60}\banalys(?:e|is|ing)\b/i],
+  ['Conversion Funnel', /\b(?:conversion|onboarding|registration)[- ](?:to[- ]\w+\s+)?funnel\b|\bonboarding funnel\b/i],
+  ['Cross-functional Collaboration', /\bcross[- ]function(?:al|ally)\b/i],
+])
+
 const COMPILED_SKILLS = SKILL_CATALOG.map((definition) => ({
   definition,
   patterns: [...new Set(definition.aliases.map(normalizeSkillText))].map(buildSkillRegex),
@@ -278,6 +285,7 @@ export function canonicalSkillName(value) {
 export function extractSkillDetails(text) {
   const normalized = normalizeSkillText(text)
   const found = []
+  const names = new Set()
   for (const { definition, patterns } of COMPILED_SKILLS) {
     if (!patterns.some((pattern) => pattern.test(normalized))) continue
     found.push({
@@ -285,6 +293,14 @@ export function extractSkillDetails(text) {
       category: definition.category,
       subcategory: definition.subcategory,
     })
+    names.add(definition.name)
+  }
+  for (const [name, pattern] of CONTEXTUAL_SKILL_PATTERNS) {
+    if (names.has(name) || !pattern.test(normalized)) continue
+    const meta = SKILL_META[name]
+    if (!meta) continue
+    found.push({ name, ...meta })
+    names.add(name)
   }
   return found
 }

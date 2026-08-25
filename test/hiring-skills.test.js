@@ -24,3 +24,10 @@ test('shared skill details keep categories for ATS and enrichment consumers', ()
   const detail = extractSkillDetails('Kubernetes').find(({ name }) => name === 'Kubernetes');
   assert.deepEqual(detail, { name: 'Kubernetes', category: 'IT', subcategory: 'DevOps & Cloud' });
 });
+
+test('shared skill matcher handles contextual non-adjacent phrases', () => {
+  const names = extractSkillNames('Analyse onboarding funnel data and work cross functionally on company governance.');
+  for (const name of ['Data Analysis', 'Conversion Funnel', 'Cross-functional Collaboration', 'Corporate Governance']) {
+    assert.ok(names.includes(name), `${name} should be detected`);
+  }
+});
