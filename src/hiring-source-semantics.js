@@ -209,3 +209,86 @@ export function extractNiceToHaveContext(value, maxLength = 500) {
   if (!match?.index && match?.index !== 0) return '';
   return text.slice(match.index + match[0].length, match.index + match[0].length + Math.max(40, Math.min(1500, Number(maxLength) || 500))).trim();
 }
+
+const CANDIDATE_FORM_RE = /(?:^|\n)\s*[^\p{L}\p{N}\n]{0,8}(?:ism(?:i|im)?(?:\s*[-–—]\s*(?:familya|familiya))?|familya|familiya|f\.?i\.?o\.?|фио|имя|yoshi|yoshim|tug(?:['’‘])ilgan\s+yili|возраст|qidirayotgan\s+kasb|so(?:['’‘])ralgan\s+ish\s+(?:joyi|turi)|yashash\s+manzili|ma(?:['’‘])lumoti|ожидаемая\s+работа|желаемая\s+(?:должность|работа)|tajribasi?|опыт\s+работы)\s*[:—-]/imu;
+const CV_MARKER_RE = /(?:резюме|resume|\bcv\b|curriculum vitae|анкета|профиль кандидата|профіль кандидата|кандидат(?:ка)?|candidate profile|mening\s+(?:cv|rezume)|my\s+cv)/iu;
+const FIRST_PERSON_CANDIDATE_RE = /(?:^|\n)\s*[^\p{L}\p{N}\n]{0,6}(?:я[\s—,-]|я\s+(?:ищу|шукаю)(?![\p{L}\p{N}_])|(?:ищу|шукаю)(?![\p{L}\p{N}_])|men[\s,]|mening[\s,]|my name is|i am a|i'm a|ismim\b)/iu;
+const PERSONAL_PROFILE_RE = /(?:^|[^\p{L}\p{N}_])(?:(?:1[6-9]|[2-6]\d)\s*(?:лет|года?|рок(?:и|ів)?|years?\s+old)|(?:студент(?:ка|ом|кой)?|student))(?![\p{L}\p{N}_])/iu;
+const CANDIDATE_CONTACT_RE = /(?:\+?\d[\d\s()\-]{7,}|@[a-z0-9_]{4,}|(?:telegram|телефон|phone|tel|aloqa|murojaat|bog(?:'|’)lanish)\s*[:—-])/iu;
+const CANDIDATE_SECTION_PATTERNS = Object.freeze([
+  /(?:опыт|досвід|experience|staj|tajriba|ish\s+tajribasi)/iu,
+  /(?:skills|навыки|навички|умею|стек|stack|technologies|texnologiyalar|ko(?:'|’)nikmalar)/iu,
+  /(?:education|образован|освіт|o(?:'|’)qish|ta(?:'|’)lim|университет|університет|university|college|institut)/iu,
+  /(?:languages|языки|мови|til(?:lar)?|language skills)/iu,
+  /(?:contact|контакт|telegram|телефон|phone|tel|bog(?:'|’)lanish|aloqa)/iu,
+]);
+
+export function detectCandidatePostSignals(value) {
+  const text = String(value || '').split('\n').map((line) => line.replace(/\s+/g, ' ').trim()).filter(Boolean).join('\n').trim();
+  return Object.freeze({
+    candidateForm: CANDIDATE_FORM_RE.test(text),
+    cvMarker: CV_MARKER_RE.test(text),
+    firstPerson: FIRST_PERSON_CANDIDATE_RE.test(text),
+    personalProfile: PERSONAL_PROFILE_RE.test(text),
+    contact: CANDIDATE_CONTACT_RE.test(text),
+    sectionCount: CANDIDATE_SECTION_PATTERNS.filter((pattern) => pattern.test(text)).length,
+  });
+}
+
+function candidateBlockLabels(key) {
+  return entryAliases(CANDIDATE_FIELD_TERMS[key], FIELD_EXTRA_ALIASES.candidate[key] || [])
+    .sort((a, b) => b.length - a.length)
+    .map(fieldAliasPattern);
+}
+
+export function extractCandidateStructuredBlock(value, key, maxLength = 800) {
+  const text = String(value || '');
+  const labels = candidateBlockLabels(key);
+  if (!text || !labels.length) return null;
+  const label = labels.join('|');
+  const allLabels = Object.keys(CANDIDATE_FIELD_TERMS)
+    .flatMap((candidateKey) => candidateBlockLabels(candidateKey))
+    .filter(Boolean)
+    .join('|');
+  const match = text.match(new RegExp(`(?:^|\\n)[^\\p{L}\\p{N}\\n]{0,10}(?:${label})\\s*[:：—-]?\\s*\\n([\\s\\S]{1,${maxLength}}?)(?=\\n[^\\p{L}\\p{N}\\n]{0,10}(?:${allLabels})\\s*[:：—-]|$)`, 'iu'));
+  return match?.[1]?.replace(/\s+/g, ' ').trim() || null;
+}
+
+const DEFAULT_HIRING_CURRENCY = Object.freeze({
+  UZ: 'UZS', UA: 'UAH', KZ: 'KZT', KG: 'KGS', RO: 'RON', US: 'USD', GB: 'GBP', EU: 'EUR',
+});
+
+export function defaultHiringCurrency(country) {
+  return DEFAULT_HIRING_CURRENCY[String(country || '').trim().toUpperCase()] || null;
+}
+
+const HIRING_CHARITY_APPEAL_RE = /(?:шелтер|притулок|прихисток|благодійн\p{L}*|благотворительн\p{L}*|донат\p{L}*|пожертв\p{L}*|збір\s+(?:кошт|грош)\p{L}*|сбор\s+средств|допоможіть|допомогти\s+(?:родин|дідус|бабус)\p{L}*|потребує\s+допомоги|нуждается\s+в\s+помощи|опікунств\p{L}*|інвалідніст\p{L}*|карта\s+для\s+допомоги|реквізити\s+для|monobank|банка\s+збор)/iu;
+
+export function isHiringCharityAppeal(value) {
+  const text = String(value || '');
+  if (!text) return false;
+  const matches = text.match(new RegExp(HIRING_CHARITY_APPEAL_RE.source, 'giu')) || [];
+  return matches.length >= 2;
+}
+
+const RECRUITING_OPPORTUNITY_SIGNALS = Object.freeze([
+  /(?:\blaboratory\b|\bacademy\b|\bbootcamp\b|\btraining\s+program\b|\binternship\s+program\b|лабораторія|лаборатория|академія|академия|буткемп)/iu,
+  /(?:запрошує|приглашает|приглашаем|набір|набор)[^.]{0,100}(?:кандидат|учасник|участник)/iu,
+  /(?:(?:реєстрац|регистрац)\p{L}*\s+до|\bregistration\b\s+(?:until|by))/iu,
+  /(?:(?:старт|початок)\s*[—:,-]?\s*\d{1,2}\s+\p{L}+|\bstart\b\s*[—:,-]?\s*\d{1,2})/iu,
+  /(?:кількість\s+місць|количество\s+мест|\blimited\s+spots\b|менторськ|менторск|\bmentorship\b)/iu,
+]);
+
+export function isHiringRecruitingOpportunity(value) {
+  const text = String(value || '').replace(/\s+/g, ' ').trim();
+  if (!text) return false;
+  return RECRUITING_OPPORTUNITY_SIGNALS.filter((pattern) => pattern.test(text)).length >= 2;
+}
+
+export function sameHiringProfessionFamily(a, b) {
+  const left = String(a || '').trim().toLowerCase().replace(/[_-]+/g, ' ');
+  const right = String(b || '').trim().toLowerCase().replace(/[_-]+/g, ' ');
+  if (!left || !right) return false;
+  if (left === right) return true;
+  return /(?:^|\s)developer$/u.test(left) && /(?:^|\s)developer$/u.test(right);
+}
