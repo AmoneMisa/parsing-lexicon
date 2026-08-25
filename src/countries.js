@@ -118,6 +118,12 @@ export const COUNTRIES = Object.freeze([
     uk: ['США', 'Сполучені Штати'],
     ro: ['Statele Unite', 'SUA'],
   }),
+  country('CA', 'Canada', 'CAD', {
+    en: ['Canada'],
+    ru: ['Канада'],
+    uk: ['Канада'],
+    ro: ['Canada'],
+  }),
   country('CN', 'China', 'CNY', {
     en: ['China', "People's Republic of China", 'PRC'],
     ru: ['Китай'],
