@@ -1,0 +1,48 @@
+name: Fix principal seniority wording
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-principal-seniority.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Add bare principal seniority alias
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('src/hiring-professions.js')
+          text = path.read_text()
+          old = "{ canonical: 'principal', aliases: ['principal engineer','principal developer','principal architect','principal-level','принципал инженер'], score: 1 }"
+          new = "{ canonical: 'principal', aliases: ['principal','principal engineer','principal developer','principal architect','principal-level','принципал инженер'], score: 1 }"
+          if text.count(old) != 1:
+              raise SystemExit(f'principal row count: {text.count(old)}')
+          path.write_text(text.replace(old, new, 1))
+          PY
+          cat >> test/hiring-advanced.test.js <<'EOF'
+
+          test('principal seniority survives intervening role qualifiers', () => {
+            assert.equal(matchSeniority('Principal Software Engineer')?.canonical, 'principal');
+            assert.equal(matchSeniority('As a Principal Software Engineer, own architecture')?.canonical, 'principal');
+          });
+          EOF
+      - run: npm test
+      - name: Commit validated fix and remove temporary workflow
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/fix-principal-seniority.yml
+          git add src/hiring-professions.js test/hiring-advanced.test.js
+          git commit -m "fix: cover principal seniority qualifiers"
+          git push
