@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import {
   matchExtendedProfessions,
   matchesSourceCandidateIntent,
+  normalizeSourceRole,
   professionDisplayLabel,
 } from '../src/hiring-source-aliases.js';
 
@@ -34,6 +35,15 @@ test('source profession aliases keep migrated consumer spellings in the shared p
     const labels = matchExtendedProfessions(text, { limit: 8 }).map((match) => match.label);
     for (const label of expected) assert.ok(labels.includes(label), `${text} -> ${labels.join(', ')}`);
   }
+});
+
+test('raw role normalization is shared without polluting free-text profession matching', () => {
+  assert.deepEqual(normalizeSourceRole('iqtisodchi'), { canonical: 'economist', label: 'Economist' });
+  assert.deepEqual(normalizeSourceRole('onlayn'), { canonical: 'any_role', label: 'Any Role' });
+  assert.deepEqual(normalizeSourceRole('suv ta’minoti'), { canonical: 'water_supply_specialist', label: 'Water Supply Specialist' });
+  assert.deepEqual(normalizeSourceRole('kutubxonachi'), { canonical: 'librarian', label: 'Librarian' });
+  assert.equal(normalizeSourceRole('business model optimization'), null);
+  assert.equal(matchExtendedProfessions('We improve the business model').some((match) => match.label === 'Model'), false);
 });
 
 test('contained generic profession does not duplicate a more specific profession', () => {
