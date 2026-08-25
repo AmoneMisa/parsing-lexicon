@@ -1,3 +1,4 @@
+export * from './lexicon-core.js';
 export * from './normalization.js';
 export * from './countries.js';
 export * from './geo.js';
@@ -18,7 +19,9 @@ export * from './tashkent-residential-complexes.js';
 export * from './tashkent-pois.js';
 export * from './odesa-metropolitan.js';
 export * from './housing.js';
+export * from './housing-intent.js';
 export * from './hiring.js';
+export * from './hiring-languages.js';
 export * from './money.js';
 export * from './hiring-professions.js';
 export * from './hiring-advanced.js';
