@@ -2,9 +2,12 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   bucketVacancyText,
+  classifyCvSectionHeading,
   detectDegreeFields,
   detectDegreeLevel,
   detectHiringSeniority,
+  extractCvExperienceYears,
+  extractCvSection,
   extractRequiredExperienceYears,
   hasUsWorkAuthorization,
   isNoSponsorshipRequirement,
@@ -36,4 +39,16 @@ test('buckets vacancy requirements without treating benefits and legal text as r
   assert.match(result.optional, /GraphQL/i);
   assert.doesNotMatch(result.required, /health insurance/i);
   assert.match(result.noise, /Equal opportunity/i);
+});
+
+test('classifies CV sections and extracts employment evidence centrally', () => {
+  const cv = 'Profile\nFrontend developer\nWork Experience\n2020-01 - 2022-12 Company A\n2023-01 - present Company B\nSkills\nVue, TypeScript';
+  assert.equal(classifyCvSectionHeading('Work Experience'), 'experience');
+  assert.match(extractCvSection(cv, 'experience'), /Company A/);
+  assert.doesNotMatch(extractCvSection(cv, 'experience'), /Vue/);
+  assert.equal(extractCvExperienceYears(cv, new Date('2026-08-25T00:00:00Z')), 6.7);
+});
+
+test('explicit experience can supply CV experience without dated employment rows', () => {
+  assert.equal(extractCvExperienceYears('Professional summary: over 5 years of commercial experience.'), 5);
 });
