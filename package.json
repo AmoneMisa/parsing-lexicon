@@ -65,6 +65,10 @@
       "types": "./src/hiring-source-aliases.d.ts",
       "import": "./src/hiring-source-aliases.js"
     },
+    "./hiring-source-semantics": {
+      "types": "./src/hiring-source-semantics.d.ts",
+      "import": "./src/hiring-source-semantics.js"
+    },
     "./hiring-requirements": {
       "types": "./src/hiring-requirements.d.ts",
       "import": "./src/hiring-requirements.js"
