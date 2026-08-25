@@ -11,6 +11,7 @@ export type LexiconEntity = Readonly<{
   priority?: string;
   localCanonical?: string;
   contextRequired?: boolean;
+  multiplier?: number;
 }>;
 export type MetroStation = Readonly<{
   name: string;
@@ -101,13 +102,51 @@ export type CentralAsiaLocationResult = Readonly<{
   candidates: readonly Readonly<{ city: string; matches: readonly CentralAsiaLocationMatch[] }>[];
 }>;
 
+export type ProfessionEntry = Readonly<{
+  id: string;
+  canonical: string;
+  group: string;
+  family: string;
+  aliases: readonly string[];
+  strongAliases: readonly string[];
+  weakAliases: readonly string[];
+  strongRe: RegExp;
+  weakRe: RegExp | null;
+}>;
+export type ProfessionMatch = Readonly<{
+  id: string;
+  canonical: string;
+  group: string;
+  family: string;
+  score: number;
+  strength: 'strong' | 'weak';
+  matched: string;
+}>;
+export type SalaryParseResult = Readonly<{
+  min: number | null;
+  max: number | null;
+  currency: string | null;
+  period: 'hour' | 'day' | 'shift' | 'week' | 'month' | 'year' | 'project' | 'piece' | null;
+  gross: boolean | null;
+  negotiable: boolean;
+  approximate: boolean;
+}>;
+export type ExperienceParseResult = Readonly<{
+  requirement: 'none' | 'preferred' | 'required';
+  minYears: number | null;
+  maxYears: number | null;
+}>;
+
 export function normalizeUnicode(value: unknown): string;
 export function normalizeForMatch(value: unknown): string;
 export function foldCyrillicForSearch(value: unknown): string;
-export function normalizedAliasKeys(value: unknown): string[];
+export function normalizedAliasKeys(value: unknown, options?: { transliteration?: boolean }): string[];
 export function aliasesOf(entry: { aliases?: AliasMap | readonly string[] }): string[];
-export function buildAliasIndex<T>(entries: readonly T[]): Map<string, T>;
-export function findCanonical<T extends { canonical?: string; name?: string; aliases?: AliasMap | readonly string[] }>(value: unknown, entries: readonly T[], options?: { partial?: boolean }): T | null;
+export function buildAliasIndex<T>(entries: readonly T[], options?: { transliteration?: boolean }): Map<string, T>;
+export function getAliasIndex<T>(entries: readonly T[], options?: { transliteration?: boolean }): Map<string, T>;
+export function findCanonical<T extends { canonical?: string; name?: string; aliases?: AliasMap | readonly string[] }>(value: unknown, entries: readonly T[], options?: { partial?: boolean; transliteration?: boolean }): T | null;
+export function collectAliasCollisions(entries: readonly unknown[], options?: { includeSearchFolds?: boolean; allowed?: readonly string[] }): ReadonlyArray<Readonly<{ alias: string; canonicals: readonly string[] }>>;
+export function validateAliasCollisions(entries: readonly unknown[], options?: { includeSearchFolds?: boolean; allowed?: readonly string[] }): true;
 export function escapeRegex(value: unknown): string;
 export function aliasesToRegex(values: readonly string[], flags?: string): RegExp;
 
@@ -250,3 +289,30 @@ export const BENEFIT_TERMS: Readonly<Record<string, LexiconEntity>>;
 export const SENIORITY_TERMS: readonly LexiconEntity[];
 export const PROFESSION_TERMS: readonly LexiconEntity[];
 export const PERSON_LINEAGE_TERMS: Readonly<{ female: readonly string[]; male: readonly string[] }>;
+
+export const CURRENCY_TERMS: readonly LexiconEntity[];
+export const SALARY_PERIODS: readonly LexiconEntity[];
+export const SALARY_MODIFIERS: Readonly<Record<string, LexiconEntity>>;
+export const NUMBER_MULTIPLIERS: readonly LexiconEntity[];
+export function parseSalary(value: unknown): SalaryParseResult | null;
+export function salaryCurrency(value: unknown): string | null;
+export function salaryPeriod(value: unknown): SalaryParseResult['period'];
+export function currencyAliases(code: string): readonly string[];
+
+export const PROFESSION_CATALOG: readonly ProfessionEntry[];
+export const PROFESSION_GROUPS: ReadonlyArray<Readonly<{ id: string; canonical: string; family: string; aliases: readonly string[]; professions: readonly string[] }>>;
+export const SENIORITY_LEVELS: ReadonlyArray<Readonly<{ canonical: string; aliases: readonly string[]; score: number; re: RegExp }>>;
+export function matchProfessions(value: unknown, options?: { limit?: number; allowWeak?: boolean }): ProfessionMatch[];
+export function matchProfession(value: unknown, options?: { allowWeak?: boolean }): ProfessionMatch | null;
+export function matchProfessionGroup(value: unknown): Readonly<{ id: string; canonical: string; family: string; aliases: readonly string[]; professions: readonly string[]; score: number; matched: string }> | null;
+export function matchSeniority(value: unknown): Readonly<{ canonical: string; score: number; matched: string; index: number }> | null;
+export function professionByCanonical(canonical: string): ProfessionEntry | null;
+
+export const HIRING_INTENT_EXTENSIONS: Readonly<Record<'candidate' | 'employer', LexiconEntity>>;
+export const HIRING_NEGATIVE_INTENT: readonly LexiconEntity[];
+export const VACANCY_FIELD_TERMS: Readonly<Record<string, LexiconEntity>>;
+export const WORK_SCHEDULE_EXTENSIONS: readonly LexiconEntity[];
+export const EXPERIENCE_MODIFIERS: readonly LexiconEntity[];
+export function detectHiringNegativeIntent(value: unknown): Readonly<{ canonical: string; matched: string }> | null;
+export function classifyHiringIntent(value: unknown): Readonly<{ intent: 'candidate' | 'employer' | 'negative' | null; reason: string | null; matched: string | null; confidence: number }>;
+export function parseExperience(value: unknown): ExperienceParseResult | null;
