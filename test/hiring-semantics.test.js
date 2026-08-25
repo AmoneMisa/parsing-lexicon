@@ -1,0 +1,74 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { detectCityFromText, detectCountryCodeFromText } from '../src/geography-detection.js';
+import {
+  detectCandidateFeatureCodes,
+  detectCandidateRelocationPreference,
+  detectDegreeRequirement,
+  detectHiringScopeSignals,
+  detectManagementRole,
+  extractCandidateContactHours,
+  extractCandidateGoalRole,
+  extractCandidateSalaryField,
+  extractCandidateSkillField,
+  extractCandidateTargetContext,
+  extractCandidateWorkHistory,
+  isCandidateNonTargetContext,
+} from '../src/hiring-semantics.js';
+
+test('shared geography detection resolves country and city aliases without matching English us', () => {
+  assert.equal(detectCountryCodeFromText('Tashkent, Uzbekistan'), 'UZ');
+  assert.equal(detectCountryCodeFromText('Berlin'), 'DE');
+  assert.equal(detectCountryCodeFromText('San Mateo, CA'), 'US');
+  assert.equal(detectCountryCodeFromText('Remote US'), 'US');
+  assert.equal(detectCountryCodeFromText('Contact us for details'), null);
+  assert.deepEqual(detectCityFromText('Работа в Ташкенте', 'UZ'), { canonical: 'Tashkent', country: 'UZ' });
+});
+
+test('candidate field semantics preserve structured multilingual CV extraction', () => {
+  const text = [
+    'Ищу работу: Frontend Developer',
+    'Опыт работы: 3 года как QA',
+    'Skills: Vue, TypeScript, Nuxt',
+    'Murojaat qilish vaqti: 8:00 - 22:00',
+    'Salary: 1500 USD',
+  ].join('\n');
+
+  assert.equal(isCandidateNonTargetContext('Опыт работы: QA'), true);
+  assert.match(extractCandidateTargetContext(text), /Frontend Developer/);
+  assert.doesNotMatch(extractCandidateTargetContext(text), /QA/);
+  assert.equal(extractCandidateSkillField(text), 'Vue, TypeScript, Nuxt');
+  assert.match(extractCandidateWorkHistory(text), /3 года как QA/);
+  assert.equal(extractCandidateContactHours(text), '8:00 - 22:00');
+  assert.equal(extractCandidateSalaryField(text), '1500 USD');
+});
+
+test('candidate goal, features and relocation semantics are reusable', () => {
+  assert.equal(
+    extractCandidateGoalRole('Maqsad: frontend dasturchi sifatida ish topish'),
+    'frontend dasturchi',
+  );
+  assert.deepEqual(
+    detectCandidateFeatureCodes('Студент, ищу подработку, готов к переезду'),
+    ['student', 'partTime', 'openToRelocation'],
+  );
+  assert.equal(detectCandidateRelocationPreference('Не готов к переезду'), false);
+  assert.equal(detectCandidateRelocationPreference('Готов к переезду'), true);
+});
+
+test('management, scope and degree semantics are extracted without scoring policy', () => {
+  assert.equal(detectManagementRole('Engineering Manager', ''), true);
+  assert.equal(detectManagementRole('Frontend Developer', 'Individual contributor role'), null);
+  assert.deepEqual(
+    detectHiringScopeSignals('Own critical systems, mentor engineers and work on system design', { mode: 'vacancy' }),
+    ['architecture', 'mentoring', 'ownership'],
+  );
+  assert.deepEqual(
+    detectHiringScopeSignals('Architected systems and mentored developers at scale', { mode: 'candidate' }),
+    ['architecture', 'mentoring', 'scale'],
+  );
+  assert.deepEqual(
+    detectDegreeRequirement("Bachelor's degree in Computer Science or equivalent work experience"),
+    { level: 'bachelor', field: 'computer_science', equivalentExperience: true },
+  );
+});
