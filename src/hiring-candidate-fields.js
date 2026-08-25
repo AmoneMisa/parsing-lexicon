@@ -61,7 +61,7 @@ export function extractCandidateAge(value, now = new Date()) {
 
 export function extractCandidateExperienceYears(value) {
   const text = String(value || '');
-  if (/без опыта|без досвіду|no experience|fără experiență|tajribasiz|ish tajribasi talab qilinmaydi/iu.test(text)) return 0;
+  if (/без опыта|нет опыта|без досвіду|немає досвіду|no experience|fără experiență|tajribasiz|tajriba(?:m)?\s+yo(?:'|’)q|ish tajribasi talab qilinmaydi/iu.test(text)) return 0;
   const match = text.match(/(?:опыт(?: работы)?|стаж|досвід(?: роботи)?|experience|experiență|tajriba\p{L}*|ish tajribasi)[^\d]{0,30}(\d+(?:[.,]\d+)?)\s*(?:лет|год(?:а)?|рок(?:и|ів)?|years?|ani|an|yil)/iu)
     || text.match(/(?<![\d])(\d+(?:[.,]\d+)?)\s*(?:лет|год(?:а)?|рок(?:и|ів)?|years?|ani|an|yil)(?![\p{L}\p{N}])[^\n]{0,30}(?:опыт|стаж|досвід|experience|experiență|tajriba)/iu);
   return match ? Number(match[1].replace(',', '.')) : null;
