@@ -26,9 +26,11 @@ import {
   canonicalTashkentDistrict,
   canonicalTashkentMetro,
   canonicalTashkentResidentialComplex,
+  canonicalUkraineCity,
   findCanonical,
   foldCyrillicForSearch,
   matchDictionaryLocation,
+  matchOdesaMetropolitanEntities,
   matchTashkentPoi,
   matchTashkentResidentialComplex,
   normalizeForMatch,
@@ -79,6 +81,33 @@ test('canonicalizes Ukrainian and Romanian cities and regions', () => {
   assert.equal(canonicalRegion('județul Brașov', 'RO'), 'Brasov County');
   assert.equal(canonicalRegion('Қарағанды облысы', 'KZ'), 'Karaganda Region');
   assert.equal(canonicalRegion('Тошкент вилояти', 'UZ'), 'Tashkent Region');
+});
+
+test('Ukraine canonical city layer keeps historical and second-priority aliases', () => {
+  assert.equal(canonicalUkraineCity('Днепропетровск'), 'Dnipro');
+  assert.equal(canonicalUkraineCity('Kirovograd'), 'Kropyvnytskyi');
+  assert.equal(canonicalUkraineCity('Ровно'), 'Rivne');
+  assert.equal(canonicalUkraineCity('Станислав'), 'Ivano-Frankivsk');
+  assert.equal(canonicalUkraineCity('Проскуров'), 'Khmelnytskyi');
+  assert.equal(canonicalUkraineCity('Каменское'), 'Kamianske');
+  assert.equal(canonicalUkraineCity('Каменец-Подольский'), 'Kamianets-Podilskyi');
+});
+
+test('Odesa metropolitan resolver returns multiple entity types without turning suburbs into districts', () => {
+  const result = matchOdesaMetropolitanEntities('Продам квартиру на Котовского возле Ривьеры, Крыжановка');
+  const byType = new Map(result.matches.map((item) => [item.type, item.name]));
+  assert.equal(byType.get('local_area'), 'Житловий масив Котовського');
+  assert.equal(byType.get('poi.shopping_mall'), 'ТРЦ Рів’єра');
+  assert.equal(byType.get('suburb'), 'Крижанівка');
+  assert.ok(result.searchClusters.some((cluster) => cluster.name === 'Одеса — північно-східна агломерація'));
+});
+
+test('Odesa Riviera entities stay disambiguated by context', () => {
+  assert.equal(matchOdesaMetropolitanEntities('ЖК Сады Ривьеры, Фонтанка').matches.find((x) => x.type === 'residential_complex')?.name, 'Сади Рів’єри');
+  assert.equal(matchOdesaMetropolitanEntities('ТРЦ Ривьера').matches.find((x) => x.type === 'poi.shopping_mall')?.name, 'ТРЦ Рів’єра');
+  assert.equal(matchOdesaMetropolitanEntities('район Черноморской Ривьеры').matches.find((x) => x.type === 'development_area')?.name, 'Чорноморська Рів’єра');
+  assert.equal(matchOdesaMetropolitanEntities('Таирова, квартира').matches.find((x) => x.type === 'microdistrict')?.name, 'Таїрова');
+  assert.equal(matchOdesaMetropolitanEntities('с. Таирово, дом').matches.find((x) => x.type === 'suburb')?.name, 'Таїрове');
 });
 
 test('canonicalizes all 12 current Tashkent districts across Uzbek and Russian forms', () => {
