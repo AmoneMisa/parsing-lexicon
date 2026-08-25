@@ -2,7 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import { findPhoneLikeSpans, maskPhoneLikeSpans } from '../src/contact.js';
-import { parsePriceFromText } from '../src/price.js';
+import { parseHousingPrice } from '../src/housing-money.js';
+import { parseSalary } from '../src/money.js';
 
 const wantedChernivtsi = `Добрий день! Шукаю 1-к. кв. або підселення в непрохідну окрему кімнату.
 Бюджет:
@@ -18,23 +19,35 @@ test('phone-like spans are detected without crossing line boundaries', () => {
   assert.doesNotMatch(maskPhoneLikeSpans(wantedChernivtsi), /095\s+082\s+01\s+03/);
 });
 
-test('phone numbers cannot become price candidates in any extraction branch', () => {
-  assert.deepEqual(parsePriceFromText(wantedChernivtsi, 'UAH'), {
+test('phone numbers cannot become housing price candidates', () => {
+  assert.deepEqual(parseHousingPrice(wantedChernivtsi, 'UAH'), {
     price: 10000,
     currency: 'UAH',
   });
 });
 
 test('explicit small hard-currency rent remains parseable', () => {
-  assert.deepEqual(parsePriceFromText('Аренда: 450$ в месяц', 'UZS'), {
+  assert.deepEqual(parseHousingPrice('Аренда: 450$ в месяц', 'UZS'), {
     price: 450,
     currency: 'USD',
   });
 });
 
 test('bare Uzbek small rent keeps established USD convention', () => {
-  assert.deepEqual(parsePriceFromText('Narx: 450', 'UZS'), {
+  assert.deepEqual(parseHousingPrice('Narx: 450', 'UZS'), {
     price: 450,
     currency: 'USD',
+  });
+});
+
+test('salary parser preserves shared money behavior after core extraction', () => {
+  assert.deepEqual(parseSalary('Salary: 2 500 USD per month'), {
+    min: 2500,
+    max: 2500,
+    currency: 'USD',
+    period: 'month',
+    gross: null,
+    negotiable: false,
+    approximate: false,
   });
 });
