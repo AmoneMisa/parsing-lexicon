@@ -6,7 +6,6 @@ const AMBIGUOUS_TASHKENT_COMPLEXES = new Set([
   'City Mall',
   'Darhan',
   'Pushkin',
-  'Tashkent City',
 ]);
 
 function complex(name, aliases = []) {
@@ -205,7 +204,6 @@ export const TASHKENT_RESIDENTIAL_COMPLEXES = Object.freeze([
   complex('Tower Up'),
   complex('Trinity'),
   complex('Uchtepa Avenue'),
-  complex('U-Tower'),
   complex('VEGAS TOWER', ['Вегас Товер', 'Vegas']),
   complex('Venetsiya', ['Венеция']),
   complex('Viaport'),
@@ -232,7 +230,6 @@ export const TASHKENT_RESIDENTIAL_COMPLEXES = Object.freeze([
   complex('Maftun Makon', ['Мафтун Макон']),
   complex('Urikzor Residence', ['Урикзор Резиденс']),
   complex('Nest One', ['Нест Ван']),
-  complex('Tashkent City', ['Ташкент Сити', 'Toshkent City']),
   complex('Assalom Jomiy', ['Ассалом Жомий']),
   complex('Infinity', ['Инфинити', 'Инфинити ЖК']),
 ]);
