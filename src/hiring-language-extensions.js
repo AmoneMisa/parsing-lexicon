@@ -11,9 +11,13 @@ const group = (canonical, aliases, extra = {}) => lexiconEntity(canonical, alias
  */
 export const LANGUAGE_LEVEL_EXTENSIONS = Object.freeze([
   group('professional', {
-    ru: ['профессиональный', 'профессиональное владение', 'профессиональный уровень'],
+    ru: [
+      'профессиональный', 'профессиональная', 'профессиональное', 'профессиональные',
+      'профессионального', 'профессиональной', 'профессиональном', 'профессиональным',
+      'профессиональное владение', 'профессиональный уровень',
+    ],
     en: ['professional', 'professional proficiency', 'professional working proficiency'],
-    uk: ['професійний', 'професійне володіння'],
+    uk: ['професійний', 'професійна', 'професійне', 'професійного', 'професійне володіння'],
     ro: ['profesional', 'nivel profesional'],
     uzLatn: ['professional', 'kasbiy daraja'],
     uzCyrl: ['профессионал', 'касбий даража'],
