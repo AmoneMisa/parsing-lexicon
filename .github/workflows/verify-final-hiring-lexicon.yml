@@ -1,0 +1,36 @@
+name: Verify final hiring lexicon matrix
+
+on:
+  push:
+    paths:
+      - '.github/workflows/verify-final-hiring-lexicon.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        node-version: [20, 22, 24]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm test
+
+  finalize:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Remove temporary validation workflow
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/verify-final-hiring-lexicon.yml
+          git commit -m "chore: finalize hiring lexicon validation"
+          git push
