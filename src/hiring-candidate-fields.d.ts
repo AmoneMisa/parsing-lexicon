@@ -4,5 +4,6 @@ export type CandidateContacts = Readonly<{ phone?: string; email?: string; teleg
 export function extractCandidateGender(value: unknown): CandidateGender | undefined;
 export function extractCandidateName(value: unknown): string;
 export function extractCandidateAge(value: unknown, now?: Date): number | null;
+export function parseCandidateExperienceValue(value: unknown): number | null;
 export function extractCandidateExperienceYears(value: unknown): number | null;
 export function extractCandidateContacts(value: unknown): CandidateContacts;
