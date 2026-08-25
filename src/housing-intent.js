@@ -2,6 +2,7 @@ import { findCanonical } from './normalization.js';
 import { lexiconEntity } from './lexicon-core.js';
 
 const group = (canonical, aliases, extra = {}) => lexiconEntity(canonical, aliases, extra);
+const KK_RENT_OUT_ALIASES = Object.freeze(['жалға беремін', 'жалға беріледі']);
 
 export const HOUSING_ACTIONS = Object.freeze([
   group('sell', {
@@ -29,7 +30,7 @@ export const HOUSING_ACTIONS = Object.freeze([
     ro: ['închiriez', 'inchiriez', 'de închiriat', 'de inchiriat', 'se închiriază', 'se inchiriaza'],
     uzLatn: ['ijaraga beraman', 'ijaraga beriladi', 'ijaraga topshiraman'],
     uzCyrl: ['ижарага бераман', 'ижарага берилади', 'ижарага топшираман'],
-    kk: ['жалға беремін', 'жалға беріледі'],
+    kk: KK_RENT_OUT_ALIASES,
   }),
   group('rentIn', {
     ru: ['сниму', 'хочу снять', 'ищу снять', 'ищу квартиру', 'ищу жильё', 'ищу жилье', 'нужна квартира', 'нужно жильё', 'нужно жилье'],
@@ -81,7 +82,7 @@ export const HOUSING_DEAL_TYPES = Object.freeze([
     ro: ['închiriere', 'inchiriere', 'chirie', 'pe termen lung', 'lunar'],
     uzLatn: ['ijara', 'uzoq muddatga', 'oylik ijara'],
     uzCyrl: ['ижара', 'узоқ муддатга', 'ойлик ижара'],
-    kk: ['жалдау', 'жалға', 'ұзақ мерзімге', 'айлық жалдау'],
+    kk: ['жалдау', 'жалға', ...KK_RENT_OUT_ALIASES, 'ұзақ мерзімге', 'айлық жалдау'],
   }),
   group('shortRent', {
     ru: ['посуточно', 'посуточная аренда', 'на сутки', 'на час', 'почасово', 'краткосрочно'],

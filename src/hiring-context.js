@@ -314,7 +314,7 @@ export function resolveProfessionContext(value, { mode = null, title = '' } = {}
   if (resolvedMode === 'candidate') {
     const desiredText = [sections.expectations, ...contextSentences(text, /ищу|шукаю|looking for|seeking|desired|желаем|цікавить|qidir|іздей/iu)].filter(Boolean).join('\n');
     const currentText = contextSentences(text, /сейчас\s+работ|работаю\s+в|currently\s+(?:work|employed)|current\s+(?:role|company)|hozir\s+ish|қазір\s+жұмыс/iu).join('\n');
-    const previousText = [sections.history, ...contextSentences(text, /работал[аи]?\s+(?:в|как)|працюва|worked\s+(?:at|as)|previous\s+(?:role|company)|ilgari\s+ish|бұрын\s+жұмыс/iu)].filter(Boolean).join('\n');
+    const previousText = [sections.history, ...contextSentences(text, /работал[аи]?(?:\s+(?:в|как))?|працюва|worked\s+(?:at|as)|previous\s+(?:role|company)|ilgari\s+ish|бұрын\s+жұмыс/iu)].filter(Boolean).join('\n');
     const desired = firstProfession(desiredText);
     const current = firstProfession(currentText);
     const previous = matchProfessions(previousText, { limit: 10, allowWeak: true });

@@ -34,7 +34,7 @@ const GROUP_META = new Map(GROUP_DEFINITIONS.map(([canonical, family, aliases]) 
 
 const rows = [
   // Software development
-  ['software_developer','software_development',['software developer','software engineer','programmer','программист','разработчик ПО','розробник ПЗ','dasturchi','бағдарламашы'],['developer','разработчик']],
+  ['software_developer','software_development',['software developer','software developers','software engineer','software engineers','programmer','programmers','программист','программисты','разработчик ПО','разработчики ПО','розробник ПЗ','розробники ПЗ','dasturchi','бағдарламашы'],['developer','developers','разработчик','разработчики','разработчиками']],
   ['frontend_developer','software_development',['frontend developer','front-end developer','frontend engineer','фронтенд разработчик','фронтендер','фронтенд розробник','frontend dasturchi','frontend әзірлеуші']],
   ['backend_developer','software_development',['backend developer','back-end developer','backend engineer','бэкенд разработчик','бекенд розробник','backend dasturchi','backend әзірлеуші']],
   ['fullstack_developer','software_development',['fullstack developer','full-stack developer','full stack developer','фулстек разработчик','фулстек розробник','fullstack dasturchi']],
@@ -358,7 +358,7 @@ export const SENIORITY_LEVELS = Object.freeze([
   { canonical: 'junior', aliases: ['junior','jr','джуниор','джун','младший','молодший','junior level'], score: 1 },
   { canonical: 'middle', aliases: ['middle','mid-level','mid level','мидл','миддл','средний уровень','середній рівень'], score: 1 },
   { canonical: 'senior', aliases: ['senior','sr','сеньор','синьор','старший специалист','ведущий специалист','провідний спеціаліст'], score: 1 },
-  { canonical: 'staff', aliases: ['staff engineer','staff developer','staff-level','стафф инженер'], score: 1 },
+  { canonical: 'staff', aliases: ['staff','staff engineer','staff developer','staff-level','стафф','стафф инженер'], score: 1 },
   { canonical: 'principal', aliases: ['principal engineer','principal developer','principal architect','principal-level','принципал инженер'], score: 1 },
   { canonical: 'lead', aliases: ['lead','team lead','teamlead','tech lead','lead developer','lead engineer','тимлид','техлид','лид разработчик','ведущий разработчик'], score: 1 },
   { canonical: 'head', aliases: ['head of','department head','руководитель отдела','начальник отдела','керівник відділу'], score: 0.95 },

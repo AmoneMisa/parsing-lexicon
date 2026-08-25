@@ -1,6 +1,10 @@
 import { aliasesToRegex, aliasesOf } from './normalization.js';
 import { TASHKENT_DISTRICTS, TASHKENT_METRO } from './geo.js';
 import { UA_REGIONS as UA_REGION_LEXICON } from './geography.js';
+import { mergeLocationCityDictionaries } from './location-merge.js';
+import { UA_MAJOR_LOCATION_EXTENSIONS } from './ua-location-extensions-major.js';
+import { UA_REGIONAL_LOCATION_EXTENSIONS } from './ua-location-extensions-regional.js';
+import { UA_METRO_LOCATION_EXTENSIONS } from './ua-location-extensions-metro.js';
 
 function entries(rows) {
   return Object.freeze(rows.map(([name, ...aliases]) => {
@@ -418,7 +422,22 @@ export function dictionaryFor(countryCode, city) {
 
 export function locationCities(countryCode) {
   if (countryCode !== 'UA') return LOCATION_DICTIONARIES[countryCode] || {};
-  return Object.freeze({ ...UA_EXTRA_LOCATION_DICTIONARIES, ...(LOCATION_DICTIONARIES.UA || {}) });
+  const legacy = { ...UA_EXTRA_LOCATION_DICTIONARIES, ...(LOCATION_DICTIONARIES.UA || {}) };
+  const names = [...new Set([
+    ...Object.keys(legacy),
+    ...Object.keys(UA_MAJOR_LOCATION_EXTENSIONS),
+    ...Object.keys(UA_REGIONAL_LOCATION_EXTENSIONS),
+    ...Object.keys(UA_METRO_LOCATION_EXTENSIONS),
+  ])];
+  return Object.freeze(Object.fromEntries(names.map((city) => [
+    city,
+    mergeLocationCityDictionaries(
+      legacy[city],
+      UA_MAJOR_LOCATION_EXTENSIONS[city],
+      UA_REGIONAL_LOCATION_EXTENSIONS[city],
+      UA_METRO_LOCATION_EXTENSIONS[city],
+    ),
+  ])));
 }
 
 export function matchDictionaryLocation(text, countryCode, city = null) {

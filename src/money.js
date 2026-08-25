@@ -76,6 +76,13 @@ function hasSalaryContext(text) {
 }
 
 function currencyFromText(text) {
+  if (text.includes('$')) return 'USD';
+  if (text.includes('€')) return 'EUR';
+  if (text.includes('₴')) return 'UAH';
+  if (text.includes('₽')) return 'RUB';
+  if (text.includes('£')) return 'GBP';
+  if (text.includes('₺')) return 'TRY';
+  if (text.includes('₾')) return 'GEL';
   return findCanonical(text, CURRENCY_TERMS, { partial: true })?.canonical || null;
 }
 
