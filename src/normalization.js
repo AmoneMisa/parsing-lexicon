@@ -23,11 +23,7 @@ export function normalizeForMatch(value) {
     .trim();
 }
 
-/**
- * Search-only companion form that treats an omitted apostrophe as equivalent
- * to Uzbek/Karakalpak apostrophe spellings (Qo'qon/Qoqon, G'azalkent/Gazalkent).
- * Canonical spelling is never changed by this helper.
- */
+/** Search-only apostrophe compaction for Uzbek/Karakalpak variants. */
 function normalizeCompactApostropheForMatch(value) {
   return normalizeUnicode(value)
     .toLocaleLowerCase()
@@ -40,16 +36,12 @@ function normalizeCompactApostropheForMatch(value) {
 }
 
 const CYRILLIC_SEARCH_MAP = Object.freeze({
-  // Russian/common Cyrillic
   а: 'a', б: 'b', в: 'v', г: 'g', д: 'd', е: 'e', ё: 'e', ж: 'zh', з: 'z',
   и: 'i', й: 'y', к: 'k', л: 'l', м: 'm', н: 'n', о: 'o', п: 'p', р: 'r',
   с: 's', т: 't', у: 'u', ф: 'f', х: 'h', ц: 'ts', ч: 'ch', ш: 'sh', щ: 'shch',
   ъ: '', ы: 'y', ь: '', э: 'e', ю: 'yu', я: 'ya',
-  // Uzbek Cyrillic
   ў: 'o', қ: 'q', ғ: 'g', ҳ: 'h',
-  // Kazakh Cyrillic
   ә: 'a', і: 'i', ң: 'ng', ө: 'o', ұ: 'u', ү: 'u', һ: 'h',
-  // Ukrainian characters may occur in mixed datasets
   є: 'ye', ї: 'yi', ґ: 'g',
 });
 
@@ -57,10 +49,7 @@ const KAZAKH_SEARCH_EQUIVALENCE = Object.freeze({
   ә: 'а', ғ: 'г', қ: 'к', ң: 'н', ө: 'о', ұ: 'у', ү: 'у', і: 'и', һ: 'х',
 });
 
-/**
- * Search-oriented Cyrillic folding. This is intentionally not a linguistic
- * transliterator; canonical identity must still come from explicit aliases.
- */
+/** Search-oriented Cyrillic folding; canonical identity still comes from explicit aliases. */
 export function foldCyrillicForSearch(value) {
   return normalizeUnicode(value)
     .toLocaleLowerCase()
@@ -77,8 +66,10 @@ function foldKazakhForSearch(value) {
     .join('');
 }
 
-export function normalizedAliasKeys(value) {
-  const forms = [value, foldCyrillicForSearch(value), foldKazakhForSearch(value)];
+export function normalizedAliasKeys(value, { transliteration = true } = {}) {
+  const forms = transliteration
+    ? [value, foldCyrillicForSearch(value), foldKazakhForSearch(value)]
+    : [value];
   return [...new Set(forms.flatMap((form) => [
     normalizeForMatch(form),
     normalizeCompactApostropheForMatch(form),
@@ -92,12 +83,12 @@ export function aliasesOf(entry) {
   return Object.values(aliases).flatMap((values) => Array.isArray(values) ? values : []);
 }
 
-export function buildAliasIndex(entries) {
+function createAliasIndex(entries, { transliteration = true } = {}) {
   const index = new Map();
   for (const entry of entries || []) {
     const values = [entry.canonical, entry.name, ...aliasesOf(entry)].filter(Boolean);
     for (const value of values) {
-      for (const key of normalizedAliasKeys(value)) {
+      for (const key of normalizedAliasKeys(value, { transliteration })) {
         if (!index.has(key)) index.set(key, entry);
       }
     }
@@ -105,16 +96,38 @@ export function buildAliasIndex(entries) {
   return index;
 }
 
-export function findCanonical(value, entries, { partial = false } = {}) {
+/** Build a fresh alias index. Prefer getAliasIndex() for repeated parser calls. */
+export function buildAliasIndex(entries, options = {}) {
+  return createAliasIndex(entries, options);
+}
+
+const DEFAULT_ALIAS_INDEX_CACHE = new WeakMap();
+const DIRECT_ALIAS_INDEX_CACHE = new WeakMap();
+
+/** Cached alias index for stable/frozen lexicon arrays. */
+export function getAliasIndex(entries, { transliteration = true } = {}) {
+  if (!entries || (typeof entries !== 'object' && typeof entries !== 'function')) {
+    return createAliasIndex(entries, { transliteration });
+  }
+  const cache = transliteration ? DEFAULT_ALIAS_INDEX_CACHE : DIRECT_ALIAS_INDEX_CACHE;
+  let index = cache.get(entries);
+  if (!index) {
+    index = createAliasIndex(entries, { transliteration });
+    cache.set(entries, index);
+  }
+  return index;
+}
+
+export function findCanonical(value, entries, { partial = false, transliteration = true } = {}) {
   if (!value) return null;
-  const index = buildAliasIndex(entries);
-  for (const key of normalizedAliasKeys(value)) {
+  const index = getAliasIndex(entries, { transliteration });
+  for (const key of normalizedAliasKeys(value, { transliteration })) {
     const exact = index.get(key);
     if (exact) return exact;
   }
   if (!partial) return null;
 
-  const textKeys = normalizedAliasKeys(value);
+  const textKeys = normalizedAliasKeys(value, { transliteration });
   let best = null;
   let bestLength = 0;
   for (const [alias, entry] of index) {
@@ -125,6 +138,42 @@ export function findCanonical(value, entries, { partial = false } = {}) {
     }
   }
   return best;
+}
+
+/**
+ * Collect aliases mapping to more than one canonical entity.
+ * Direct normalized aliases are checked by default; search-fold collisions can
+ * be enabled explicitly because transliteration intentionally creates overlaps.
+ */
+export function collectAliasCollisions(entries, { includeSearchFolds = false, allowed = [] } = {}) {
+  const allowedSet = new Set(allowed.map(normalizeForMatch));
+  const owners = new Map();
+  for (const entry of entries || []) {
+    const canonical = entry?.canonical || entry?.name;
+    if (!canonical) continue;
+    const values = [canonical, ...aliasesOf(entry)].filter(Boolean);
+    for (const value of values) {
+      const keys = normalizedAliasKeys(value, { transliteration: includeSearchFolds });
+      for (const key of keys) {
+        if (!key || allowedSet.has(key)) continue;
+        const set = owners.get(key) || new Set();
+        set.add(canonical);
+        owners.set(key, set);
+      }
+    }
+  }
+  return [...owners.entries()]
+    .filter(([, canonicals]) => canonicals.size > 1)
+    .map(([alias, canonicals]) => Object.freeze({ alias, canonicals: Object.freeze([...canonicals]) }));
+}
+
+export function validateAliasCollisions(entries, options = {}) {
+  const collisions = collectAliasCollisions(entries, options);
+  if (collisions.length) {
+    const preview = collisions.slice(0, 8).map((item) => `${item.alias} -> ${item.canonicals.join(', ')}`).join('; ');
+    throw new Error(`Lexicon alias collisions detected (${collisions.length}): ${preview}`);
+  }
+  return true;
 }
 
 export function escapeRegex(value) {
