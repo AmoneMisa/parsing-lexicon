@@ -93,6 +93,10 @@
       "types": "./src/hiring-location-fields.d.ts",
       "import": "./src/hiring-location-fields.js"
     },
+    "./hiring-salary-context": {
+      "types": "./src/hiring-salary-context.d.ts",
+      "import": "./src/hiring-salary-context.js"
+    },
     "./money": "./src/money.js",
     "./hiring-professions": "./src/hiring-professions.js",
     "./hiring-skills": {
