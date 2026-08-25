@@ -2,7 +2,7 @@ import { aliasesToRegex } from './normalization.js';
 
 function entry(name, aliases = [], meta = {}) {
   const all = [...new Set([name, ...aliases].filter(Boolean))];
-  return Object.freeze({ name, aliases: Object.freeze(all), re: aliasesToRegex(all), ...meta });
+  return Object.freeze({ ...meta, name, aliases: Object.freeze(all), re: aliasesToRegex(all) });
 }
 
 function entries(rows = [], defaults = {}) {

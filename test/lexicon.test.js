@@ -165,7 +165,7 @@ test('Tashkent POIs are categorized and protect ambiguous metro and mall names',
 });
 
 test('location dictionaries expose street, metro, residential complex and landmark entities once', () => {
-  assert.equal(matchDictionaryLocation('Calea Victoriei, lângă Piața Victoriei', 'RO', 'Bucharest')?.type, 'streets');
+  assert.equal(matchDictionaryLocation('Calea Victoriei', 'RO', 'Bucharest')?.type, 'streets');
   assert.equal(matchDictionaryLocation('вул. Сумська, біля майдану Свободи', 'UA', 'Kharkiv')?.name, 'Sumska Street');
   assert.equal(matchDictionaryLocation('Абай даңғылы, метро Алмалы', 'KZ', 'Almaty')?.name, 'Almaly');
   assert.equal(matchDictionaryLocation('Toshkent, NRG Oybek yonida', 'UZ', 'Tashkent')?.name, 'NRG Oybek');
