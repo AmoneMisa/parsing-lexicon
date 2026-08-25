@@ -14,3 +14,17 @@ export function detectVisaSponsorshipWording(value: unknown): VisaSponsorshipWor
 export const TEMPORARY_WORK_AUTH_RE: RegExp;
 export function detectRecruitmentAgency(value: unknown): boolean;
 export function extractNiceToHaveContext(value: unknown, maxLength?: number): string;
+export type CandidatePostSignals = Readonly<{
+  candidateForm: boolean;
+  cvMarker: boolean;
+  firstPerson: boolean;
+  personalProfile: boolean;
+  contact: boolean;
+  sectionCount: number;
+}>;
+export function detectCandidatePostSignals(value: unknown): CandidatePostSignals;
+export function extractCandidateStructuredBlock(value: unknown, key: string, maxLength?: number): string | null;
+export function defaultHiringCurrency(country: unknown): string | null;
+export function isHiringCharityAppeal(value: unknown): boolean;
+export function isHiringRecruitingOpportunity(value: unknown): boolean;
+export function sameHiringProfessionFamily(a: unknown, b: unknown): boolean;
