@@ -2,7 +2,8 @@ name: Refactor lexicon invariants
 
 on:
   push:
-    branches: [feat/full-multilingual-domain-lexicon]
+    branches:
+      - feat/full-multilingual-domain-lexicon
     paths:
       - .github/workflows/refactor-lexicon-invariants.yml
 
@@ -11,201 +12,26 @@ permissions:
 
 jobs:
   refactor:
-    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           ref: feat/full-multilingual-domain-lexicon
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Apply invariant refactor
-        shell: bash
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          import re
-
-          def read(path):
-              return Path(path).read_text()
-
-          def write(path, text):
-              Path(path).write_text(text)
-
-          def ensure_import(text, line):
-              if line in text:
-                  return text
-              matches = list(re.finditer(r'^import .*?;\n', text, re.M))
-              if matches:
-                  pos = matches[-1].end()
-                  return text[:pos] + line + '\n' + text[pos:]
-              return line + '\n' + text
-
-          # All alias-map group factories now deep-freeze nested alias arrays via lexiconEntity().
-          files_with_group = [
-              'src/housing.js',
-              'src/hiring.js',
-              'src/money.js',
-              'src/hiring-advanced.js',
-              'src/hiring-languages.js',
-              'src/housing-intent.js',
-          ]
-          for path in files_with_group:
-              text = read(path)
-              text = ensure_import(text, "import { lexiconEntity } from './lexicon-core.js';")
-              text = text.replace(
-                  "const group = (canonical, aliases, extra = {}) => Object.freeze({ canonical, aliases: Object.freeze(aliases), ...extra });",
-                  "const group = (canonical, aliases, extra = {}) => lexiconEntity(canonical, aliases, extra);",
-              )
-              write(path, text)
-
-          path = 'src/landmarks.js'
-          text = read(path)
-          text = ensure_import(text, "import { lexiconEntity } from './lexicon-core.js';")
-          text = text.replace(
-              "const group = (canonical, aliases) => Object.freeze({ canonical, aliases: Object.freeze(aliases) });",
-              "const group = (canonical, aliases) => lexiconEntity(canonical, aliases);",
-          )
-          write(path, text)
-
-          # Countries: alias arrays are immutable at runtime too.
-          path = 'src/countries.js'
-          text = read(path)
-          text = ensure_import(text, "import { deepFreeze, freezeAliases } from './lexicon-core.js';")
-          text = text.replace(
-              "const country = (code, canonical, currency, aliases) => Object.freeze({\n  code,\n  canonical,\n  currency,\n  aliases: Object.freeze(aliases),\n});",
-              "const country = (code, canonical, currency, aliases) => deepFreeze({\n  code,\n  canonical,\n  type: 'country',\n  currency,\n  aliases: freezeAliases(aliases),\n});",
-          )
-          write(path, text)
-
-          # Core Central Asia geo entities are self-contained and metro index is private.
-          path = 'src/geo.js'
-          text = read(path)
-          text = ensure_import(text, "import { deepFreeze, lexiconEntity } from './lexicon-core.js';")
-          text = text.replace(
-              "const entity = (canonical, aliases, extra = {}) => Object.freeze({ canonical, aliases: Object.freeze(aliases), ...extra });",
-              "const entity = (canonical, aliases, extra = {}) => lexiconEntity(canonical, aliases, {\n  type: extra.type || (extra.country ? 'city' : 'district'),\n  ...(!extra.country ? { country: 'UZ', city: 'Tashkent' } : {}),\n  ...extra,\n});",
-          )
-          text = text.replace("en: ['Oral', 'Uralsk', 'Uralsk']", "en: ['Oral', 'Uralsk']")
-          text = text.replace("en: ['Kokshetau', 'Kokshetau']", "en: ['Kokshetau']")
-          text = text.replace(
-              "export const CITIES = Object.freeze([...UZ_CITIES, ...KZ_CITIES]);\n\nexport function canonicalCity(value, country = null) {\n  const catalog = country ? CITIES.filter((item) => item.country === country) : CITIES;\n  return findCanonical(value, catalog)?.canonical || null;\n}",
-              "export const CITIES = Object.freeze([...UZ_CITIES, ...KZ_CITIES]);\nconst CITIES_BY_COUNTRY = Object.freeze(Object.fromEntries(\n  [...new Set(CITIES.map((item) => item.country).filter(Boolean))].map((code) => [\n    code,\n    Object.freeze(CITIES.filter((item) => item.country === code)),\n  ]),\n));\n\nexport function canonicalCity(value, country = null) {\n  const catalog = country ? (CITIES_BY_COUNTRY[country] || []) : CITIES;\n  return findCanonical(value, catalog)?.canonical || null;\n}",
-          )
-          old_station = """function station(name, ru, en, line, aliases = []) {
-  const allAliases = [...new Set([name, ru, en, ...aliases])];
-  return Object.freeze({ name, line, labels: Object.freeze({ ru, en }), aliases: Object.freeze(allAliases), re: aliasesToRegex(allAliases) });
-}"""
-          new_station = """function station(name, ru, en, line, aliases = []) {
-  const allAliases = [...new Set([name, ru, en, ...aliases])];
-  return deepFreeze({
-    canonical: name,
-    name,
-    type: 'metro',
-    country: 'UZ',
-    city: 'Tashkent',
-    line,
-    labels: { ru, en },
-    aliases: allAliases,
-    re: aliasesToRegex(allAliases),
-  });
-}"""
-          text = text.replace(old_station, new_station)
-          text = text.replace(
-              "export const TASHKENT_METRO_BY_NAME = new Map(TASHKENT_METRO.map((item) => [item.name, item]));",
-              "const TASHKENT_METRO_BY_NAME = new Map(TASHKENT_METRO.map((item) => [item.name, item]));",
-          )
-          text = text.replace(
-              "export function canonicalTashkentMetro(value) {\n  if (!value) return null;\n  const direct = TASHKENT_METRO_BY_NAME.get(String(value));\n  if (direct) return direct.name;\n  return TASHKENT_METRO.find((item) => item.re.test(String(value)))?.name || null;\n}",
-              "export function tashkentMetroStation(value) {\n  if (!value) return null;\n  const direct = TASHKENT_METRO_BY_NAME.get(String(value));\n  if (direct) return direct;\n  return TASHKENT_METRO.find((item) => item.re.test(String(value))) || null;\n}\n\nexport function canonicalTashkentMetro(value) {\n  return tashkentMetroStation(value)?.canonical || null;\n}",
-          )
-          text = text.replace(
-              "const area = (name, aliases) => Object.freeze({ name, aliases: Object.freeze(aliases) });",
-              "const area = (name, aliases) => deepFreeze({ canonical: name, name, type: 'local_area', country: 'UZ', city: 'Tashkent', aliases });",
-          )
-          write(path, text)
-
-          # Geography: typed city/region entities and cached country partitions.
-          path = 'src/geography.js'
-          text = read(path)
-          text = ensure_import(text, "import { lexiconEntity } from './lexicon-core.js';")
-          text = text.replace(
-              "const entity = (canonical, aliases, extra = {}) => Object.freeze({ canonical, aliases: Object.freeze(aliases), ...extra });",
-              "const cityEntity = (canonical, aliases, extra = {}) => lexiconEntity(canonical, aliases, { type: 'city', ...extra });\nconst regionEntity = (canonical, aliases, extra = {}) => lexiconEntity(canonical, aliases, { type: 'region', ...extra });",
-          )
-          marker = 'export const UA_REGIONS = Object.freeze(['
-          before, after = text.split(marker, 1)
-          before = before.replace('entity(', 'cityEntity(')
-          after = after.replace('entity(', 'regionEntity(')
-          text = before + marker + after
-          text = text.replace(
-              "export const GEOGRAPHY_CITIES = Object.freeze([...CENTRAL_ASIA_CITIES, ...UA_CITIES, ...RO_CITIES, ...KG_CITIES]);\n\nexport function canonicalAnyCity(value, country = null) {\n  const catalog = country ? GEOGRAPHY_CITIES.filter((item) => item.country === country) : GEOGRAPHY_CITIES;\n  return findCanonical(value, catalog)?.canonical || null;\n}",
-              "export const GEOGRAPHY_CITIES = Object.freeze([...CENTRAL_ASIA_CITIES, ...UA_CITIES, ...RO_CITIES, ...KG_CITIES]);\nconst GEOGRAPHY_CITIES_BY_COUNTRY = Object.freeze(Object.fromEntries(\n  [...new Set(GEOGRAPHY_CITIES.map((item) => item.country).filter(Boolean))].map((code) => [\n    code,\n    Object.freeze(GEOGRAPHY_CITIES.filter((item) => item.country === code)),\n  ]),\n));\n\nexport function canonicalAnyCity(value, country = null) {\n  const catalog = country ? (GEOGRAPHY_CITIES_BY_COUNTRY[country] || []) : GEOGRAPHY_CITIES;\n  return findCanonical(value, catalog)?.canonical || null;\n}",
-          )
-          text = text.replace(
-              "export const REGIONS = Object.freeze([...UZ_REGIONS, ...KZ_REGIONS, ...UA_REGIONS, ...RO_REGIONS]);\n\nexport function canonicalRegion(value, country = null) {\n  const catalog = country ? REGIONS.filter((item) => item.country === country) : REGIONS;\n  return findCanonical(value, catalog, { partial: true })?.canonical || null;\n}",
-              "export const REGIONS = Object.freeze([...UZ_REGIONS, ...KZ_REGIONS, ...UA_REGIONS, ...RO_REGIONS]);\nconst REGIONS_BY_COUNTRY = Object.freeze(Object.fromEntries(\n  [...new Set(REGIONS.map((item) => item.country).filter(Boolean))].map((code) => [\n    code,\n    Object.freeze(REGIONS.filter((item) => item.country === code)),\n  ]),\n));\n\nexport function canonicalRegion(value, country = null) {\n  const catalog = country ? (REGIONS_BY_COUNTRY[country] || []) : REGIONS;\n  return findCanonical(value, catalog, { partial: true })?.canonical || null;\n}",
-          )
-          write(path, text)
-
-          # Remove the non-language `historical` alias bucket and keep aliases language-scoped.
-          path = 'src/central-asia.js'
-          text = read(path)
-          text = text.replace(
-              "city('Almaty', { kk: ['Алматы'], ru: ['Алма-Ата', 'Алма Ата'], en: ['Alma-Ata', 'Alma Ata'], historical: ['Верный', 'Verny'] }, { country: 'KZ', priority: 'P0' })",
-              "city('Almaty', { kk: ['Алматы'], ru: ['Алма-Ата', 'Алма Ата', 'Верный'], en: ['Alma-Ata', 'Alma Ata', 'Verny'] }, { country: 'KZ', priority: 'P0' })",
-          )
-          write(path, text)
-
-          # Generic location entries have a canonical identity even while keeping name for compatibility.
-          path = 'src/location-merge.js'
-          text = read(path)
-          text = text.replace(
-              "return Object.freeze({ name, aliases: Object.freeze(all), re: aliasesToRegex(all) });",
-              "return Object.freeze({ canonical: name, name, aliases: Object.freeze(all), re: aliasesToRegex(all) });",
-          )
-          text = text.replace(
-              "return Object.freeze({ ...base, aliases: Object.freeze(aliases), re: aliasesToRegex(aliases) });",
-              "return Object.freeze({ ...base, canonical: base.canonical || base.name, type: base.type || base.entityType, aliases: Object.freeze(aliases), re: aliasesToRegex(aliases) });",
-          )
-          write(path, text)
-
-          path = 'src/locations.js'
-          text = read(path)
-          text = text.replace(
-              "return Object.freeze({ name, aliases: Object.freeze(all), re: aliasesToRegex(all) });",
-              "return Object.freeze({ canonical: name, name, aliases: Object.freeze(all), re: aliasesToRegex(all) });",
-          )
-          text = text.replace(
-              "return Object.freeze({ name: item.canonical, aliases: Object.freeze(all), re: aliasesToRegex(all) });",
-              "return Object.freeze({ canonical: item.canonical, name: item.canonical, type: item.type, country: item.country, city: item.city, aliases: Object.freeze(all), re: aliasesToRegex(all) });",
-          )
-          write(path, text)
-
-          # Extension entry factories get canonical/type identity as well.
-          for path in [
-              'src/kz-location-extensions.js',
-              'src/uz-location-extensions.js',
-              'src/ua-location-extensions-major.js',
-              'src/ua-location-extensions-regional.js',
-          ]:
-              text = read(path)
-              text = text.replace(
-                  "return Object.freeze({ ...meta, name, aliases: Object.freeze(all), re: aliasesToRegex(all) });",
-                  "return Object.freeze({ ...meta, canonical: name, name, type: meta.type || meta.entityType, aliases: Object.freeze(all), re: aliasesToRegex(all) });",
-              )
-              write(path, text)
-          PY
-      - name: Commit refactor
+      - name: Apply runtime and geo invariant refactor
+        run: python .github/scripts/refactor_lexicon_invariants.py
+      - name: Commit phase
         shell: bash
         run: |
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add src
+          git add src index.d.ts test/runtime-invariants.test.js
           if git diff --cached --quiet; then
-            echo 'No changes'
+            echo 'No invariant changes to commit'
             exit 0
           fi
-          git commit -m 'refactor: enforce immutable typed lexicon entities'
+          git commit -m 'refactor(lexicon): enforce runtime and geo invariants'
           git push origin HEAD:feat/full-multilingual-domain-lexicon
