@@ -25,7 +25,7 @@ export const SOURCE_PROFESSION_ALIASES = Object.freeze([
   sourceRole('metrology_specialist', 'Metrology Specialist', ['metrologiya', 'metrology specialist', 'метролог', 'standartlashtirish'], 'manufacturing'),
   sourceRole('security_guard', 'Security Guard', ['xavfsizlik', 'qoriqlash', 'qo‘riqlash', "qo'riqlash", 'охорона'], 'security'),
   sourceRole('finance_banking_specialist', 'Finance / Banking Specialist', ['finance specialist', 'banking specialist', 'moliya', 'soliq', 'bank'], 'finance'),
-  sourceRole('teacher', 'Teacher', ['tyutorlik', 'тьютор', 'titur', 'titur', "o'qituvchilik", 'o‘qituvchilik', 'oʻqituvchilik', 'ustoz'], 'education'),
+  sourceRole('teacher', 'Teacher', ['tyutorlik', 'тьютор', 'titur', "o'qituvchilik", 'o‘qituvchilik', 'oʻqituvchilik', 'ustoz'], 'education'),
   sourceRole('english_teacher', 'English Teacher', ['ingliz tili ustoziman', 'ingliz tili ustoz', 'ingliz tili oqituvchi', "ingliz tili o'qituvchi"], 'education'),
   sourceRole('it_specialist', 'IT Specialist', ['it specialist', 'itishnik', 'it ishnik', 'kompyuter boyicha ish', "kompyuter bo'yicha ish", 'kompyuter bo‘yicha ish'], 'infrastructure'),
   sourceRole('biotechnologist', 'Biotechnologist', ['biotechnologist', 'биотехнолог', 'biotexnolog'], 'medicine'),
@@ -45,6 +45,7 @@ export const SOURCE_PROFESSION_ALIASES = Object.freeze([
   sourceRole('frontend_developer', 'Frontend Developer', ['frontet', 'frontet developer', 'frontet dasturchi'], 'software_development'),
   sourceRole('nanny', 'Nanny', ['bolalarga qarash', 'bolaga qarash'], 'education'),
   sourceRole('loader', 'Loader', ['грузчиком', 'грузчика', 'грузчик'], 'logistics'),
+  sourceRole('welder', 'Welder', ['сварщиком', 'сварщица', 'зварювальником'], 'construction'),
 ]);
 
 export const SOURCE_CANDIDATE_INTENT_ALIASES = Object.freeze([
@@ -52,6 +53,8 @@ export const SOURCE_CANDIDATE_INTENT_ALIASES = Object.freeze([
   'роботу шукаю',
   'срочно работу ищу',
   'терміново роботу шукаю',
+  'могу работать',
+  'можу працювати',
 ]);
 
 const SOURCE_CANDIDATE_INTENT_RE = aliasesToRegex(SOURCE_CANDIDATE_INTENT_ALIASES);
@@ -120,8 +123,15 @@ export function matchExtendedProfessions(value, { limit = 5, allowWeak = true } 
     });
     if (contained) continue;
     canonicals.add(match.canonical);
-    selected.push(Object.freeze({ ...match }));
-    if (selected.length >= limit) break;
+    selected.push({ ...match });
   }
-  return Object.freeze(selected);
+
+  // A concrete software role outranks a generic "IT specialist" mention in
+  // the same role/title text, even when the two aliases occupy separate spans.
+  const hasSoftwareRole = selected.some((match) => match.group === 'software_development');
+  const filtered = hasSoftwareRole
+    ? selected.filter((match) => match.canonical !== 'it_specialist')
+    : selected;
+
+  return Object.freeze(filtered.slice(0, limit).map((match) => Object.freeze(match)));
 }

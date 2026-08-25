@@ -25,8 +25,9 @@ test('source profession aliases keep migrated consumer spellings in the shared p
     ['Arxitektor loyihachi', ['Architect']],
     ['iqtsodchi', ['Economist']],
     ['Ingliz tili ustoziman', ['English Teacher']],
-    ['Mobilagraf ITishnik pdf faylla frontet', ['Frontend Developer', 'IT Specialist']],
+    ['Mobilagraf ITishnik pdf faylla frontet', ['Frontend Developer']],
     ['Farqi yo qande ish bulsa hm, bolalarga qarash menga yoqadi', ['Nanny']],
+    ['Могу работать сварщиком, есть свой инструмент.', ['Welder']],
   ];
 
   for (const [text, expected] of cases) {
@@ -42,9 +43,17 @@ test('contained generic profession does not duplicate a more specific profession
   );
 });
 
-test('source candidate intent covers reversed Slavic word order', () => {
+test('specific software role suppresses generic IT specialist in the same title', () => {
+  assert.deepEqual(
+    matchExtendedProfessions('Mobilagraf ITishnik pdf faylla frontet').map((match) => match.label),
+    ['Frontend Developer'],
+  );
+});
+
+test('source candidate intent covers reversed and first-person phrasing', () => {
   assert.equal(matchesSourceCandidateIntent('Работу ищу срочно, любую, в Алматы.'), true);
   assert.equal(matchesSourceCandidateIntent('Роботу шукаю терміново'), true);
+  assert.equal(matchesSourceCandidateIntent('Могу работать сварщиком, есть свой инструмент.'), true);
   assert.equal(matchesSourceCandidateIntent('Вакансия закрыта'), false);
 });
 
