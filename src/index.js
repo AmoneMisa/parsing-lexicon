@@ -4,5 +4,6 @@ export * from './geo.js';
 export * from './geography.js';
 export * from './locations.js';
 export * from './landmarks.js';
+export * from './tashkent-colloquial.js';
 export * from './housing.js';
 export * from './hiring.js';
