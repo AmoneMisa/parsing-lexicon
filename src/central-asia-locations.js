@@ -91,12 +91,30 @@ function explicitCityFromText(text, countryCode) {
   return matches[0]?.item?.canonical || null;
 }
 
+function isExplicitMetroContext(value, match) {
+  const start = match.index ?? 0;
+  const end = start + match[0].length;
+  const before = value.slice(Math.max(0, start - 36), start);
+  const after = value.slice(end, end + 36);
+  return /(?:метро|metro|станц(?:ия|ии)?|station|ст\.?\s*м\.?|м\.)\s*[:\-–—]?\s*$/iu.test(before)
+    || /^\s*(?:метро|metro|station|станц(?:ия|ии)?)(?=$|[^\p{L}\p{N}_])/iu.test(after);
+}
+
+function metroOverlapsArea(item, data) {
+  const itemKeys = new Set([item.name, ...(item.aliases || [])].map(normalizeForMatch).filter(Boolean));
+  return ['microdistricts', 'localAreas'].some((key) => (data?.[key] || []).some((area) =>
+    [area.name, ...(area.aliases || [])].map(normalizeForMatch).some((value) => itemKeys.has(value)),
+  ));
+}
+
 function findEntryMatches(text, cityName, data) {
   const value = String(text || '');
   const matches = [];
   for (const key of LOCATION_LIST_KEYS) {
     for (const item of data?.[key] || []) {
-      if (!item?.re?.test(value)) continue;
+      const match = value.match(item?.re);
+      if (!match) continue;
+      if (key === 'metro' && metroOverlapsArea(item, data) && !isExplicitMetroContext(value, match)) continue;
       matches.push(Object.freeze({
         country: item.country || null,
         city: cityName,
@@ -115,10 +133,10 @@ function findEntryMatches(text, cityName, data) {
 }
 
 function isAmbiguousMatch(match, countryCode) {
-  const key = normalizeForMatch(match.name);
-  if (GENERIC_AMBIGUOUS.has(key)) return true;
-  if (countryCode === 'KZ' && KZ_AMBIGUOUS.has(key)) return true;
-  if (countryCode === 'UZ' && UZ_AMBIGUOUS.has(key)) return true;
+  const keys = [match.name, ...(match.aliases || [])].map(normalizeForMatch).filter(Boolean);
+  if (keys.some((key) => GENERIC_AMBIGUOUS.has(key))) return true;
+  if (countryCode === 'KZ' && keys.some((key) => KZ_AMBIGUOUS.has(key))) return true;
+  if (countryCode === 'UZ' && keys.some((key) => UZ_AMBIGUOUS.has(key))) return true;
   return false;
 }
 
@@ -168,7 +186,11 @@ export function matchCentralAsiaLocationEntities(text, countryCode, preferredCit
   // parent. Prefer a city only when it owns at least one non-ambiguous match
   // that no other city matched.
   const strong = byCity.filter((candidate) => candidate.matches.some((match) => !isAmbiguousMatch(match, countryCode)));
-  const selected = strong.length === 1 ? strong[0] : byCity.length === 1 && byCity[0].matches.some((m) => !isAmbiguousMatch(m, countryCode)) ? byCity[0] : null;
+  const selected = strong.length === 1
+    ? strong[0]
+    : byCity.length === 1 && byCity[0].matches.some((match) => !isAmbiguousMatch(match, countryCode))
+      ? byCity[0]
+      : null;
 
   if (!selected) {
     return Object.freeze({
