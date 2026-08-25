@@ -1,8 +1,10 @@
 name: Fix validator duplicate boundary
 on:
   push:
-    branches: [feat/full-multilingual-domain-lexicon]
-    paths: [.github/workflows/fix-validator-boundary.yml]
+    branches:
+      - feat/full-multilingual-domain-lexicon
+    paths:
+      - .github/workflows/fix-validator-boundary.yml
 permissions:
   contents: write
 jobs:
@@ -16,32 +18,34 @@ jobs:
         shell: python
         run: |
           from pathlib import Path
-          p = Path('src/normalization.js')
+          p = Path("src/normalization.js")
           s = p.read_text()
-          s = s.replace('    const localNormalized = new Map();\n', '    const localExactAliases = new Map();\n')
-          old = '''      const duplicateKey = `${language || '*'}:${normalized}`;
-      if (localNormalized.has(duplicateKey)) {
-        errors.push(Object.freeze({ kind: 'duplicateAlias', canonical, alias, normalizedAlias: normalized, firstAliasIndex: localNormalized.get(duplicateKey), aliasIndex, entryIndex, language }));
-      } else {
-        localNormalized.set(duplicateKey, aliasIndex);
-      }
-'''
-          new = '''      // Search normalization intentionally collapses spelling variants such as
-      // ё/е, apostrophe glyphs and hyphen/space forms. Those are useful aliases,
-      // not structural duplicates. A duplicate is the same source spelling
-      // modulo Unicode normalization, case and whitespace only.
-      const rawIdentity = String(alias).normalize('NFKC').toLocaleLowerCase().replace(/\\s+/g, ' ').trim();
-      const duplicateKey = `${language || '*'}:${rawIdentity}`;
-      if (localExactAliases.has(duplicateKey)) {
-        errors.push(Object.freeze({ kind: 'duplicateAlias', canonical, alias, normalizedAlias: normalized, firstAliasIndex: localExactAliases.get(duplicateKey), aliasIndex, entryIndex, language }));
-      } else {
-        localExactAliases.set(duplicateKey, aliasIndex);
-      }
-'''
+          s = s.replace("    const localNormalized = new Map();\n", "    const localExactAliases = new Map();\n")
+          old = (
+              "      const duplicateKey = `${language || '*'}:${normalized}`;\n"
+              "      if (localNormalized.has(duplicateKey)) {\n"
+              "        errors.push(Object.freeze({ kind: 'duplicateAlias', canonical, alias, normalizedAlias: normalized, firstAliasIndex: localNormalized.get(duplicateKey), aliasIndex, entryIndex, language }));\n"
+              "      } else {\n"
+              "        localNormalized.set(duplicateKey, aliasIndex);\n"
+              "      }\n"
+          )
+          new = (
+              "      // Search normalization intentionally collapses spelling variants such as\n"
+              "      // ё/е, apostrophe glyphs and hyphen/space forms. Those are useful aliases,\n"
+              "      // not structural duplicates. A duplicate is the same source spelling\n"
+              "      // modulo Unicode normalization, case and whitespace only.\n"
+              "      const rawIdentity = String(alias).normalize('NFKC').toLocaleLowerCase().replace(/\\s+/g, ' ').trim();\n"
+              "      const duplicateKey = `${language || '*'}:${rawIdentity}`;\n"
+              "      if (localExactAliases.has(duplicateKey)) {\n"
+              "        errors.push(Object.freeze({ kind: 'duplicateAlias', canonical, alias, normalizedAlias: normalized, firstAliasIndex: localExactAliases.get(duplicateKey), aliasIndex, entryIndex, language }));\n"
+              "      } else {\n"
+              "        localExactAliases.set(duplicateKey, aliasIndex);\n"
+              "      }\n"
+          )
           if old not in s:
-              raise SystemExit('validator duplicate block not found')
+              raise SystemExit("validator duplicate block not found")
           p.write_text(s.replace(old, new))
-          Path('.github/workflows/fix-validator-boundary.yml').unlink()
+          Path(".github/workflows/fix-validator-boundary.yml").unlink()
       - name: Commit fix
         run: |
           git config user.name 'github-actions[bot]'
