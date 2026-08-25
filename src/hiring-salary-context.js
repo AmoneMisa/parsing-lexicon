@@ -29,13 +29,24 @@ function contextCountry(options) {
     || null;
 }
 
+function languageDefaultCountry(value) {
+  const text = String(value || '');
+  // Use only language signals that are specific enough to avoid turning generic
+  // Russian/English salary text into a local currency guess. Uzbek and Kazakh
+  // salary/period vocabulary is deterministic enough for this fallback.
+  if (/(?:\boylik\b|\boyiga\b|\bmaosh\b|\bish\s+haqi\b|\бойлик\b|\бойига\b|\бмаош\b|\биш\s+ҳақи\b)/iu.test(text)) return 'UZ';
+  if (/(?:\bжалақы\b|\bеңбекақы\b|\bайлық\b|\bайына\b)/iu.test(text)) return 'KZ';
+  return null;
+}
+
 /**
- * Parse salary text and optionally infer a missing currency from geography.
+ * Parse salary text and optionally infer a missing currency from geography or
+ * unambiguous local salary-language markers.
  *
  * The fallback is deliberately opt-in. A bare number must never silently become
  * USD merely because a consumer happens to normalize all salaries to USD later.
- * Consumers that know a feed uses local currency can request `currencyFallback:
- * 'country'` and keep the provenance in `currencySource`.
+ * Provenance is returned in `currencySource` so consumers can distinguish an
+ * explicit currency from a contextual fallback.
  */
 export function parseHiringSalaryWithContext(value, options = {}) {
   const parsed = parseSalary(value);
@@ -49,21 +60,17 @@ export function parseHiringSalaryWithContext(value, options = {}) {
     });
   }
 
-  if (options.currencyFallback !== 'country') {
-    return Object.freeze({
-      ...parsed,
-      currency: null,
-      currencySource: 'unknown',
-      currencyCountry: null,
-    });
-  }
+  let country = null;
+  if (options.currencyFallback === 'country') country = contextCountry(options);
+  else if (options.currencyFallback === 'language') country = languageDefaultCountry(value);
 
-  const country = contextCountry(options);
   const currency = country ? COUNTRY_DEFAULT_CURRENCIES[country] || null : null;
   return Object.freeze({
     ...parsed,
     currency,
-    currencySource: currency ? 'country-default' : 'unknown',
+    currencySource: currency
+      ? options.currencyFallback === 'language' ? 'language-default' : 'country-default'
+      : 'unknown',
     currencyCountry: currency ? country : null,
   });
 }
