@@ -6,19 +6,14 @@
   "main": "./src/index.js",
   "types": "./index.d.ts",
   "exports": {
-    ".": {
-      "types": "./index.d.ts",
-      "import": "./src/index.js"
-    },
+    ".": { "types": "./index.d.ts", "import": "./src/index.js" },
     "./lexicon-core": "./src/lexicon-core.js",
     "./normalization": "./src/normalization.js",
     "./countries": "./src/countries.js",
     "./geo": "./src/geo.js",
     "./geography": "./src/geography.js",
-    "./geography-detection": {
-      "types": "./src/geography-detection.d.ts",
-      "import": "./src/geography-detection.js"
-    },
+    "./geography-display": { "types": "./src/geography-display.d.ts", "import": "./src/geography-display.js" },
+    "./geography-detection": { "types": "./src/geography-detection.d.ts", "import": "./src/geography-detection.js" },
     "./central-asia": "./src/central-asia.js",
     "./ukraine": "./src/ukraine.js",
     "./location-merge": "./src/location-merge.js",
@@ -33,107 +28,35 @@
     "./tashkent-colloquial": "./src/tashkent-colloquial.js",
     "./tashkent-residential-complexes": "./src/tashkent-residential-complexes.js",
     "./tashkent-pois": "./src/tashkent-pois.js",
-    "./tashkent-housing-geography": {
-      "types": "./src/tashkent-housing-geography.d.ts",
-      "import": "./src/tashkent-housing-geography.js"
-    },
+    "./tashkent-housing-geography": { "types": "./src/tashkent-housing-geography.d.ts", "import": "./src/tashkent-housing-geography.js" },
     "./odesa-metropolitan": "./src/odesa-metropolitan.js",
     "./housing": "./src/housing.js",
-    "./housing-intent": {
-      "types": "./src/housing-intent.d.ts",
-      "import": "./src/housing-intent.js"
-    },
-    "./housing-context": {
-      "types": "./src/housing-context.d.ts",
-      "import": "./src/housing-context.js"
-    },
-    "./housing-structured": {
-      "types": "./src/housing-structured.d.ts",
-      "import": "./src/housing-structured.js"
-    },
-    "./housing-source-aliases": {
-      "types": "./src/housing-source-aliases.d.ts",
-      "import": "./src/housing-source-aliases.js"
-    },
+    "./housing-intent": { "types": "./src/housing-intent.d.ts", "import": "./src/housing-intent.js" },
+    "./housing-context": { "types": "./src/housing-context.d.ts", "import": "./src/housing-context.js" },
+    "./housing-structured": { "types": "./src/housing-structured.d.ts", "import": "./src/housing-structured.js" },
+    "./housing-source-aliases": { "types": "./src/housing-source-aliases.d.ts", "import": "./src/housing-source-aliases.js" },
     "./hiring": "./src/hiring.js",
     "./hiring-languages": "./src/hiring-languages.js",
-    "./hiring-language-extensions": {
-      "types": "./src/hiring-language-extensions.d.ts",
-      "import": "./src/hiring-language-extensions.js"
-    },
-    "./hiring-context": {
-      "types": "./src/hiring-context.d.ts",
-      "import": "./src/hiring-context.js"
-    },
-    "./hiring-source-aliases": {
-      "types": "./src/hiring-source-aliases.d.ts",
-      "import": "./src/hiring-source-aliases.js"
-    },
-    "./hiring-source-semantics": {
-      "types": "./src/hiring-source-semantics.d.ts",
-      "import": "./src/hiring-source-semantics.js"
-    },
-    "./hiring-requirements": {
-      "types": "./src/hiring-requirements.d.ts",
-      "import": "./src/hiring-requirements.js"
-    },
-    "./hiring-semantics": {
-      "types": "./src/hiring-semantics.d.ts",
-      "import": "./src/hiring-semantics.js"
-    },
-    "./hiring-candidate-fields": {
-      "types": "./src/hiring-candidate-fields.d.ts",
-      "import": "./src/hiring-candidate-fields.js"
-    },
-    "./hiring-temporal": {
-      "types": "./src/hiring-temporal.d.ts",
-      "import": "./src/hiring-temporal.js"
-    },
-    "./hiring-vacancy-fields": {
-      "types": "./src/hiring-vacancy-fields.d.ts",
-      "import": "./src/hiring-vacancy-fields.js"
-    },
-    "./hiring-location-fields": {
-      "types": "./src/hiring-location-fields.d.ts",
-      "import": "./src/hiring-location-fields.js"
-    },
-    "./hiring-salary-context": {
-      "types": "./src/hiring-salary-context.d.ts",
-      "import": "./src/hiring-salary-context.js"
-    },
+    "./hiring-language-extensions": { "types": "./src/hiring-language-extensions.d.ts", "import": "./src/hiring-language-extensions.js" },
+    "./hiring-context": { "types": "./src/hiring-context.d.ts", "import": "./src/hiring-context.js" },
+    "./hiring-source-aliases": { "types": "./src/hiring-source-aliases.d.ts", "import": "./src/hiring-source-aliases.js" },
+    "./hiring-source-semantics": { "types": "./src/hiring-source-semantics.d.ts", "import": "./src/hiring-source-semantics.js" },
+    "./hiring-requirements": { "types": "./src/hiring-requirements.d.ts", "import": "./src/hiring-requirements.js" },
+    "./hiring-semantics": { "types": "./src/hiring-semantics.d.ts", "import": "./src/hiring-semantics.js" },
+    "./hiring-candidate-fields": { "types": "./src/hiring-candidate-fields.d.ts", "import": "./src/hiring-candidate-fields.js" },
+    "./hiring-temporal": { "types": "./src/hiring-temporal.d.ts", "import": "./src/hiring-temporal.js" },
+    "./hiring-vacancy-fields": { "types": "./src/hiring-vacancy-fields.d.ts", "import": "./src/hiring-vacancy-fields.js" },
+    "./hiring-location-fields": { "types": "./src/hiring-location-fields.d.ts", "import": "./src/hiring-location-fields.js" },
+    "./hiring-salary-context": { "types": "./src/hiring-salary-context.d.ts", "import": "./src/hiring-salary-context.js" },
     "./money": "./src/money.js",
     "./hiring-professions": "./src/hiring-professions.js",
-    "./hiring-skills": {
-      "types": "./src/hiring-skills.d.ts",
-      "import": "./src/hiring-skills.js"
-    },
+    "./hiring-skills": { "types": "./src/hiring-skills.d.ts", "import": "./src/hiring-skills.js" },
     "./hiring-advanced": "./src/hiring-advanced.js"
   },
-  "files": [
-    "src",
-    "index.d.ts",
-    "README.md"
-  ],
+  "files": ["src", "index.d.ts", "README.md"],
   "sideEffects": false,
-  "engines": {
-    "node": ">=20"
-  },
-  "scripts": {
-    "test": "node --test"
-  },
-  "keywords": [
-    "parsing",
-    "lexicon",
-    "uzbek",
-    "kazakh",
-    "ukrainian",
-    "romanian",
-    "russian",
-    "housing",
-    "hiring",
-    "salary",
-    "professions",
-    "geography"
-  ],
+  "engines": { "node": ">=20" },
+  "scripts": { "test": "node --test" },
+  "keywords": ["parsing", "lexicon", "uzbek", "kazakh", "ukrainian", "romanian", "russian", "housing", "hiring", "salary", "professions", "geography"],
   "license": "MIT"
 }
