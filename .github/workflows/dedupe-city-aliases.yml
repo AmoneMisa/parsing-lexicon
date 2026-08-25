@@ -1,0 +1,33 @@
+name: Dedupe city aliases
+on:
+  push:
+    branches: [feat/full-multilingual-domain-lexicon]
+    paths: [.github/workflows/dedupe-city-aliases.yml]
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/full-multilingual-domain-lexicon
+      - name: Normalize city alias dedupe
+        shell: python
+        run: |
+          from pathlib import Path
+          p = Path('src/central-asia.js')
+          s = p.read_text()
+          old = "const freezeAliases = (aliases = {}) => Object.freeze(Object.fromEntries(\n  Object.entries(aliases).map(([lang, values]) => [lang, Object.freeze([...new Set(values || [])])]),\n));"
+          new = "const freezeAliases = (aliases = {}) => Object.freeze(Object.fromEntries(\n  Object.entries(aliases).map(([lang, values]) => {\n    const seen = new Set();\n    const deduped = (values || []).filter((alias) => {\n      const key = normalizeForMatch(alias);\n      if (!key || seen.has(key)) return false;\n      seen.add(key);\n      return true;\n    });\n    return [lang, Object.freeze(deduped)];\n  }),\n));"
+          if old not in s:
+              raise SystemExit('freezeAliases block not found')
+          p.write_text(s.replace(old, new))
+          Path('.github/workflows/dedupe-city-aliases.yml').unlink()
+      - name: Commit fix
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/central-asia.js .github/workflows/dedupe-city-aliases.yml
+          git commit -m 'fix: dedupe normalized city aliases'
+          git push
