@@ -1,4 +1,4 @@
-export type LexiconLanguage = 'ru' | 'en' | 'uk' | 'ro' | 'uzLatn' | 'uzCyrl' | 'kk';
+export type LexiconLanguage = 'all' | 'ru' | 'en' | 'uk' | 'ro' | 'uzLatn' | 'uzCyrl' | 'kaaLat' | 'kaaCyrl' | 'kk';
 export type CountryCode = 'UZ' | 'KZ' | 'UA' | 'RO' | 'KG';
 export type AliasMap = Readonly<Partial<Record<LexiconLanguage, readonly string[]>>>;
 export type LexiconEntity = Readonly<{
