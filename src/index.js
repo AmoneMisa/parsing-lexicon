@@ -21,6 +21,7 @@ export * from './odesa-metropolitan.js';
 export * from './housing.js';
 export * from './housing-intent.js';
 export * from './housing-context.js';
+export * from './housing-structured.js';
 export * from './hiring.js';
 export * from './hiring-languages.js';
 export * from './hiring-context.js';
