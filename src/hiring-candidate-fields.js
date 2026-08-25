@@ -10,6 +10,9 @@ const FEMALE_PATRONYMIC_RE = /(?:^|[^\p{L}])\p{L}[\p{L}ёЁ-]{2,}(?:овна|е�
 const MALE_PATRONYMIC_RE = /(?:^|[^\p{L}])\p{L}[\p{L}ёЁ-]{2,}(?:ович|евич|ич)(?=$|[^\p{L}])/iu;
 const NAME_LINE_RE = /^[\p{L}'’ʻʼ‘`-]+(?:\s+[\p{L}'’ʻʼ‘`-]+){1,5}$/u;
 const NON_NAME_LINE_RE = /(?:^|\s)(?:работ\p{L}*|робот\p{L}*|онлайн|удал[её]н\p{L}*|remote|job|role|ish|любая|любую|подработ\p{L}*)(?=$|\s)/iu;
+const NO_EXPERIENCE_RE = /без опыта|нет опыта|без досвіду|немає досвіду|no experience|fără experiență|tajribasiz|tajriba(?:m)?\s+yo(?:'|’)q|ish tajribasi talab qilinmaydi/iu;
+const EXPERIENCE_VALUE_RE = /(?<![\d])(\d+(?:[.,]\d+)?)\s*(?:лет|год(?:а|ов)?|рок(?:и|ів)?|years?|ani|an|yil)(?![\p{L}\p{N}])/iu;
+const AGE_VALUE_RE = /(?<![\d])(\d{2})\s*(?:лет|год(?:а)?|рок(?:и|ів)?|years?|ani|an|yil)(?![\p{L}\p{N}])/iu;
 
 export function extractCandidateGender(value) {
   const text = String(value || '');
@@ -40,7 +43,7 @@ export function extractCandidateAge(value, now = new Date()) {
     /(?:возраст|вік|age|yosh|yoshi|vârsta)\s*[:—-]?\s*(\d{1,2})/iu,
     /(?:yoshim|yoshm)\s*(\d{1,2})\s*da\b/iu,
     /(?:мне|мені)\s+(\d{1,2})\s*(?:лет|рок(?:и|ів)?)/iu,
-    /(?:^|\n)\s*(\d{1,2})\s*(?:лет|рок(?:и|ів)?|yosh|years?|ani|an|yil)\b/iu,
+    AGE_VALUE_RE,
   ];
   for (const pattern of patterns) {
     const match = text.match(pattern);
@@ -59,11 +62,18 @@ export function extractCandidateAge(value, now = new Date()) {
   return age >= 14 && age <= 90 ? age : null;
 }
 
+export function parseCandidateExperienceValue(value) {
+  const text = String(value || '');
+  if (NO_EXPERIENCE_RE.test(text)) return 0;
+  const match = text.match(EXPERIENCE_VALUE_RE);
+  return match ? Number(match[1].replace(',', '.')) : null;
+}
+
 export function extractCandidateExperienceYears(value) {
   const text = String(value || '');
-  if (/без опыта|нет опыта|без досвіду|немає досвіду|no experience|fără experiență|tajribasiz|tajriba(?:m)?\s+yo(?:'|’)q|ish tajribasi talab qilinmaydi/iu.test(text)) return 0;
-  const match = text.match(/(?:опыт(?: работы)?|стаж|досвід(?: роботи)?|experience|experiență|tajriba\p{L}*|ish tajribasi)[^\d]{0,30}(\d+(?:[.,]\d+)?)\s*(?:лет|год(?:а)?|рок(?:и|ів)?|years?|ani|an|yil)/iu)
-    || text.match(/(?<![\d])(\d+(?:[.,]\d+)?)\s*(?:лет|год(?:а)?|рок(?:и|ів)?|years?|ani|an|yil)(?![\p{L}\p{N}])[^\n]{0,30}(?:опыт|стаж|досвід|experience|experiență|tajriba)/iu);
+  if (NO_EXPERIENCE_RE.test(text)) return 0;
+  const match = text.match(/(?:опыт(?: работы)?|стаж|досвід(?: роботи)?|experience|experiență|tajriba\p{L}*|ish tajribasi)[^\d]{0,30}(\d+(?:[.,]\d+)?)\s*(?:лет|год(?:а|ов)?|рок(?:и|ів)?|years?|ani|an|yil)/iu)
+    || text.match(/(?<![\d])(\d+(?:[.,]\d+)?)\s*(?:лет|год(?:а|ов)?|рок(?:и|ів)?|years?|ani|an|yil)(?![\p{L}\p{N}])[^\n]{0,30}(?:опыт|стаж|досвід|experience|experiență|tajriba)/iu);
   return match ? Number(match[1].replace(',', '.')) : null;
 }
 
