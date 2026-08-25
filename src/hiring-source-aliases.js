@@ -48,6 +48,55 @@ export const SOURCE_PROFESSION_ALIASES = Object.freeze([
   sourceRole('welder', 'Welder', ['сварщиком', 'сварщица', 'зварювальником'], 'construction'),
 ]);
 
+const sourceRoleNormalization = (canonical, label, re) => Object.freeze({ canonical, label, re });
+
+/**
+ * Anchored or strongly contextualized raw-role repairs. These rules are kept
+ * separate from SOURCE_PROFESSION_ALIASES so generic values such as `model`,
+ * `online`, or `bank` never become profession matches in arbitrary CV prose.
+ */
+export const SOURCE_ROLE_NORMALIZATION_RULES = Object.freeze([
+  sourceRoleNormalization('economist', 'Economist', /^iqt(?:i)?sodchi$/iu),
+  sourceRoleNormalization('economist', 'Economist', /^iqtisodiy$/iu),
+  sourceRoleNormalization('logistics_manager', 'Logistics Specialist', /^logist(?:ika)?(?:\s+updater)?$/iu),
+  sourceRoleNormalization('english_teacher', 'English Teacher', /^ingliz\s+tili\s+ustoz(?:iman)?$/iu),
+  sourceRoleNormalization('frontend_developer', 'Frontend Developer', /mobilagraf[\s\S]*itishnik[\s\S]*front(?:et|ent|end)/iu),
+  sourceRoleNormalization('nanny', 'Nanny', /farqi\s+yo[\s\S]*bolalarga\s+qarash/iu),
+  sourceRoleNormalization('sales_manager', 'Sales Manager', /^(?:sales\s+executive(?:\s+ind)?|роп(?:,?\s*sales\s+executive)?)$/iu),
+  sourceRoleNormalization('operative_officer', 'Operative Officer', /^(?:оперативник|оперуполномоченн\p{L}*|оперативный\s+уполномоченн\p{L}*)$/iu),
+  sourceRoleNormalization('water_supply_specialist', 'Water Supply Specialist', /^(?:suv\s+ta['’ʻʼ‘`]?minoti|водоснабжение)$/iu),
+  sourceRoleNormalization('any_role', 'Any Role', /^(?:onlayn(?:\s+ish(?:chi)?)?|online(?:\s+ish(?:chi)?)?|онлайн|удал[её]нно|remote(?:\s+work)?|boshqa\s+ishlar?|farqi\s+(?:yo['’ʻʼ‘`]?q|yuq)|tungi|bilmaym\p{L}*)$/iu),
+  sourceRoleNormalization('restaurant_cafe_worker', 'Restaurant / Cafe Worker', /^ищу\s+работу\s+(?:в\s+)?(?:кафе|ресторанах?|кафе\s+или\s+ресторанах)$/iu),
+  sourceRoleNormalization('driver', 'Driver', /^(?:xaydovchilik|haydovchilik|shafyorlik|shofyorlik)/iu),
+  sourceRoleNormalization('retail_worker', 'Retail Worker', /^do['’ʻʼ‘`]?kon$/iu),
+  sourceRoleNormalization('salesperson', 'Salesperson', /^(?:savdo|sotuvchi)$/iu),
+  sourceRoleNormalization('pharmacist', 'Pharmacist', /^(?:dorishunos|farmatsevt)$/iu),
+  sourceRoleNormalization('notary_assistant', 'Notary Assistant', /^(?:natarus|notarius)\s+yordamchisi/iu),
+  sourceRoleNormalization('librarian', 'Librarian', /^kutubxonachi$/iu),
+  sourceRoleNormalization('singer_vocalist', 'Singer / Vocalist', /^(?:vokal\s*:\s*)?xonanda$/iu),
+  sourceRoleNormalization('model', 'Model', /^model$/iu),
+  sourceRoleNormalization('flight_attendant', 'Flight Attendant', /^bortprovodnik$|^бортпроводник$/iu),
+  sourceRoleNormalization('hvac_technician', 'HVAC Technician', /^(?:konditsaner|kanditsaner|konditsioner)/iu),
+  sourceRoleNormalization('mobile_content_creator', 'Mobile Content Creator', /^mobilografiya(?:\s+bo['’ʻʼ‘`]?yicha)?$/iu),
+  sourceRoleNormalization('cctv_intercom_technician', 'CCTV / Intercom Technician', /kamera\s+(?:dama?fon|domofon)|domofon\s+xizmat/iu),
+  sourceRoleNormalization('internal_control_specialist', 'Internal Control Specialist', /^ichki\s+nazoratchi$/iu),
+  sourceRoleNormalization('brand_ambassador', 'Brand Ambassador', /^(?:бренд\s+фейс|brand\s+face)$/iu),
+  sourceRoleNormalization('insurance_specialist', 'Insurance Specialist', /^sug['’ʻʼ‘`]?urta$/iu),
+  sourceRoleNormalization('bank_operations_specialist', 'Bank Operations Specialist', /^стаж[её]р\s+операционист|^операционист$/iu),
+  sourceRoleNormalization('commercial_director', 'Commercial Director', /^коммерческ\p{L}*\s+директор|\bchief\s+commercial\s+officer\b|\bCCO\b/iu),
+  sourceRoleNormalization('security_specialist', 'Security Specialist', /^по\s+безопасност\p{L}*\s+объекта$/iu),
+  sourceRoleNormalization('healthcare_specialist', 'Healthcare Specialist', /^mededsina$|^meditsina$|^медицина$/iu),
+  sourceRoleNormalization('tourism_hospitality_specialist', 'Tourism / Hospitality Specialist', /^mehmonxona[^\n]*turfirma|^turfirma[^\n]*mehmonxona/iu),
+  sourceRoleNormalization('confectioner', 'Confectioner', /qandolat|qandolatchi/iu),
+]);
+
+export function normalizeSourceRole(value) {
+  const text = String(value || '').trim();
+  if (!text) return null;
+  const match = SOURCE_ROLE_NORMALIZATION_RULES.find((entry) => entry.re.test(text));
+  return match ? Object.freeze({ canonical: match.canonical, label: match.label }) : null;
+}
+
 export const SOURCE_CANDIDATE_INTENT_ALIASES = Object.freeze([
   'работу ищу',
   'роботу шукаю',
