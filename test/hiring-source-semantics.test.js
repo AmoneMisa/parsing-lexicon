@@ -33,7 +33,7 @@ test('candidate fallback identity and experience cover legacy CV formats', () =>
   );
   assert.deepEqual(
     extractCandidateExperienceMentions('3 yilga yaqin tajriba frontend dasturchi sifatida'),
-    [{ years: 3, context: '3 yilga yaqin tajriba' }],
+    [{ years: 3, context: '3 yilga yaqin tajriba', approximate: true }],
   );
 });
 
@@ -60,4 +60,13 @@ test('vacancy source semantics centralize US, sponsorship, agency and nice-to-ha
   assert.equal(detectVisaSponsorshipWording('Must be authorized to work without future sponsorship.'), 'notOffered');
   assert.equal(detectRecruitmentAgency('International staffing agency'), true);
   assert.match(extractNiceToHaveContext('Requirements. Nice to have: Vue, GraphQL. Benefits.'), /Vue, GraphQL/);
+});
+
+
+test('marks approximate experience wording', () => {
+  const [mention] = extractCandidateExperienceMentions('Tajriba: 3 yil atrofida');
+  assert.equal(mention?.years, 3);
+  assert.equal(mention?.approximate, true);
+  const [exact] = extractCandidateExperienceMentions('Experience: 4 years');
+  assert.equal(exact?.approximate, undefined);
 });

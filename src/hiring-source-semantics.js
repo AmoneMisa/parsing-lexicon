@@ -60,6 +60,12 @@ export function extractCandidateDisplayName(value) {
   return text.match(/(?:^|\n)(\p{Lu}\p{Ll}+)\s+\d+\+?\s+(?:рок\p{L}*|лет|years?)\s+(?:у|в|in)\s+(?:HR|IT)\b/iu)?.[1]?.trim().slice(0, 100) || '';
 }
 
+const APPROXIMATE_EXPERIENCE_RE = /(?:\b(?:about|around|approximately|approx\.?|circa)\b|(?:примерно|около|приблизно|близько|yaqin|atrofida|qariyb))/iu;
+
+function approximateExperienceSignal(context) {
+  return APPROXIMATE_EXPERIENCE_RE.test(context) ? { approximate: true } : {};
+}
+
 function validYears(raw) {
   const years = Number(String(raw || '').replace(',', '.'));
   return Number.isFinite(years) && years >= 0 && years <= 60 ? years : null;
@@ -76,14 +82,17 @@ export function extractCandidateExperienceMentions(value) {
       if (Number.isFinite(count) && count > 0 && count < 24) {
         const from = (months.index || 0) + months[0].length;
         const context = `${months[0]} ${segment.slice(from, from + 100)}`.replace(/\s+/g, ' ').trim();
-        mentions.push(Object.freeze({ years: Math.round((count / 12) * 10) / 10, context }));
+        mentions.push(Object.freeze({ years: Math.round((count / 12) * 10) / 10, context, ...approximateExperienceSignal(context) }));
       }
       continue;
     }
     const reverse = segment.match(/(\d+(?:[.,]\d+)?)\+?\s*(?:лет|год(?:а|ов)?|рок(?:и|ів)?|years?|ani|an|yil(?:ga|lik)?|йил(?:га|лик)?)[^\n.!?]{0,140}?(?:опыт|досвід|experience|experiență|staj|tajriba(?:m)?)/iu);
     if (reverse?.[1]) {
       const years = validYears(reverse[1]);
-      if (years != null) mentions.push(Object.freeze({ years, context: reverse[0].replace(/\s+/g, ' ').trim() }));
+      if (years != null) {
+        const context = reverse[0].replace(/\s+/g, ' ').trim();
+        mentions.push(Object.freeze({ years, context, ...approximateExperienceSignal(context) }));
+      }
       continue;
     }
     const direct = segment.match(/(?:опыт(?:\s+работы)?|досвід(?:\s+роботи)?|experience|experiență|staj|tajriba(?:m)?|ish\s+tajribasi)[^\n.!?]{0,100}?(\d+(?:[.,]\d+)?)\+?\s*(?:лет|год(?:а|ов)?|рок(?:и|ів)?|years?|ani|an|yil|йил)?/iu);
@@ -92,7 +101,7 @@ export function extractCandidateExperienceMentions(value) {
     if (years == null) continue;
     const tailStart = (direct.index || 0) + direct[0].length;
     const context = `${direct[0]} ${segment.slice(tailStart, tailStart + 100)}`.replace(/\s+/g, ' ').trim();
-    mentions.push(Object.freeze({ years, context }));
+    mentions.push(Object.freeze({ years, context, ...approximateExperienceSignal(context) }));
   }
   return Object.freeze(mentions);
 }
