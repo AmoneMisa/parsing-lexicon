@@ -33,6 +33,10 @@
     "./tashkent-colloquial": "./src/tashkent-colloquial.js",
     "./tashkent-residential-complexes": "./src/tashkent-residential-complexes.js",
     "./tashkent-pois": "./src/tashkent-pois.js",
+    "./tashkent-housing-geography": {
+      "types": "./src/tashkent-housing-geography.d.ts",
+      "import": "./src/tashkent-housing-geography.js"
+    },
     "./odesa-metropolitan": "./src/odesa-metropolitan.js",
     "./housing": "./src/housing.js",
     "./housing-intent": {
