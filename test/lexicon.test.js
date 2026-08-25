@@ -12,7 +12,10 @@ import {
   HOUSING_OCCUPANCY_TYPES,
   PROBATION_TERMS,
   SCHEDULE_TERMS,
+  TASHKENT_DISTRICTS,
+  TASHKENT_LANDMARKS,
   TASHKENT_METRO,
+  TASHKENT_POI_GROUPS,
   TASHKENT_RESIDENTIAL_COMPLEXES,
   WORK_MODES,
   canonicalAnyCity,
@@ -26,6 +29,7 @@ import {
   findCanonical,
   foldCyrillicForSearch,
   matchDictionaryLocation,
+  matchTashkentPoi,
   matchTashkentResidentialComplex,
   normalizeForMatch,
 } from '../src/index.js';
@@ -77,10 +81,12 @@ test('canonicalizes Ukrainian and Romanian cities and regions', () => {
   assert.equal(canonicalRegion('Тошкент вилояти', 'UZ'), 'Tashkent Region');
 });
 
-test('canonicalizes Tashkent districts across Uzbek and Russian forms', () => {
+test('canonicalizes all 12 current Tashkent districts across Uzbek and Russian forms', () => {
+  assert.equal(TASHKENT_DISTRICTS.length, 12);
   assert.equal(canonicalTashkentDistrict('Шайхонтоҳур тумани'), 'Shaykhantahur');
   assert.equal(canonicalTashkentDistrict('Чиланзарский район'), 'Chilanzar');
   assert.equal(canonicalTashkentDistrict('Yakkasaroy tumani'), 'Yakkasaray');
+  assert.equal(canonicalTashkentDistrict('Янгихаётский район'), 'Yangihayot');
 });
 
 test('Tashkent metro keeps all 50 canonical stations and legacy aliases', () => {
@@ -92,7 +98,7 @@ test('Tashkent metro keeps all 50 canonical stations and legacy aliases', () => 
 });
 
 test('Tashkent residential complexes are canonical, deduplicated and alias-aware', () => {
-  assert.ok(TASHKENT_RESIDENTIAL_COMPLEXES.length >= 212);
+  assert.ok(TASHKENT_RESIDENTIAL_COMPLEXES.length >= 217);
   assert.equal(
     new Set(TASHKENT_RESIDENTIAL_COMPLEXES.map((entry) => normalizeForMatch(entry.name))).size,
     TASHKENT_RESIDENTIAL_COMPLEXES.length,
@@ -102,6 +108,10 @@ test('Tashkent residential complexes are canonical, deduplicated and alias-aware
   assert.equal(canonicalTashkentResidentialComplex('Саларис'), 'Solaris');
   assert.equal(canonicalTashkentResidentialComplex('Урикзор Резиденс'), 'Urikzor Residence');
   assert.equal(canonicalTashkentResidentialComplex('U-Tower'), 'NRG U-Tower');
+  assert.equal(canonicalTashkentResidentialComplex('Xon Saroy Ocean'), 'Ocean Xon Saroy');
+  assert.equal(canonicalTashkentResidentialComplex('Eco Residence'), 'Eco Residence');
+  assert.equal(canonicalTashkentResidentialComplex('Mavrid mavzesi'), 'Mavrid mavzesi');
+  assert.equal(canonicalTashkentResidentialComplex('Yashil Makon'), 'Yashil Makon');
   assert.equal(matchTashkentResidentialComplex('ЖК BASHKENT Mening orzuyim')?.name, 'BASHKENT Mening orzuyim');
 });
 
@@ -110,6 +120,19 @@ test('ambiguous Tashkent complex names require local residential context', () =>
   assert.equal(matchTashkentResidentialComplex('ЖК Pushkin, 2-комнатная квартира')?.name, 'Pushkin');
   assert.equal(matchTashkentResidentialComplex('метро Bodomzor рядом'), null);
   assert.equal(matchTashkentResidentialComplex('жилой комплекс Bodomzor')?.name, 'Bodomzor');
+});
+
+test('Tashkent POIs are categorized and protect ambiguous metro and mall names', () => {
+  assert.ok(TASHKENT_LANDMARKS.length > 70);
+  assert.ok(TASHKENT_POI_GROUPS.parks.some((entry) => entry.name === 'Dream Park'));
+  assert.equal(matchTashkentPoi('рядом Hazrati Imam')?.name, 'Hazrati Imam');
+  assert.equal(matchTashkentPoi('Tashkent TV Tower')?.name, 'Tashkent TV Tower');
+  assert.equal(matchTashkentPoi('WIUT')?.name, 'Westminster International University in Tashkent');
+  assert.equal(matchTashkentPoi('Северный вокзал')?.name, 'Tashkent Central Railway Station');
+  assert.equal(matchTashkentPoi('метро Минор'), null);
+  assert.equal(matchTashkentPoi('Мечеть Минор')?.name, 'Minor Mosque');
+  assert.equal(matchTashkentPoi('ЖК Riviera'), null);
+  assert.equal(matchTashkentPoi('Riviera Mall')?.name, 'Riviera Mall');
 });
 
 test('location dictionaries expose street, metro, residential complex and landmark entities once', () => {
