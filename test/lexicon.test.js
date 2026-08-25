@@ -13,6 +13,7 @@ import {
   PROBATION_TERMS,
   SCHEDULE_TERMS,
   TASHKENT_METRO,
+  TASHKENT_RESIDENTIAL_COMPLEXES,
   WORK_MODES,
   canonicalAnyCity,
   canonicalCity,
@@ -21,9 +22,11 @@ import {
   canonicalRegion,
   canonicalTashkentDistrict,
   canonicalTashkentMetro,
+  canonicalTashkentResidentialComplex,
   findCanonical,
   foldCyrillicForSearch,
   matchDictionaryLocation,
+  matchTashkentResidentialComplex,
   normalizeForMatch,
 } from '../src/index.js';
 
@@ -86,6 +89,27 @@ test('Tashkent metro keeps all 50 canonical stations and legacy aliases', () => 
   assert.equal(canonicalTashkentMetro('Бунёдкор'), 'Xalqlar Dostligi');
   assert.equal(canonicalTashkentMetro('Қўйлиқ'), 'Qoyliq');
   assert.equal(canonicalTashkentMetro('Gʻafur Gʻulom'), 'Gafur Gulom');
+});
+
+test('Tashkent residential complexes are canonical, deduplicated and alias-aware', () => {
+  assert.ok(TASHKENT_RESIDENTIAL_COMPLEXES.length >= 212);
+  assert.equal(
+    new Set(TASHKENT_RESIDENTIAL_COMPLEXES.map((entry) => normalizeForMatch(entry.name))).size,
+    TASHKENT_RESIDENTIAL_COMPLEXES.length,
+  );
+  assert.equal(canonicalTashkentResidentialComplex('Boulvard'), 'Boulevard');
+  assert.equal(canonicalTashkentResidentialComplex('Озмахал'), "O'z Mahal");
+  assert.equal(canonicalTashkentResidentialComplex('Саларис'), 'Solaris');
+  assert.equal(canonicalTashkentResidentialComplex('Урикзор Резиденс'), 'Urikzor Residence');
+  assert.equal(canonicalTashkentResidentialComplex('U-Tower'), 'NRG U-Tower');
+  assert.equal(matchTashkentResidentialComplex('ЖК BASHKENT Mening orzuyim')?.name, 'BASHKENT Mening orzuyim');
+});
+
+test('ambiguous Tashkent complex names require local residential context', () => {
+  assert.equal(matchTashkentResidentialComplex('м. Pushkin, 5 минут пешком'), null);
+  assert.equal(matchTashkentResidentialComplex('ЖК Pushkin, 2-комнатная квартира')?.name, 'Pushkin');
+  assert.equal(matchTashkentResidentialComplex('метро Bodomzor рядом'), null);
+  assert.equal(matchTashkentResidentialComplex('жилой комплекс Bodomzor')?.name, 'Bodomzor');
 });
 
 test('location dictionaries expose street, metro, residential complex and landmark entities once', () => {
