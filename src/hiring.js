@@ -1,4 +1,5 @@
-const group = (canonical, aliases, extra = {}) => Object.freeze({ canonical, aliases: Object.freeze(aliases), ...extra });
+import { lexiconEntity } from './lexicon-core.js';
+const group = (canonical, aliases, extra = {}) => lexiconEntity(canonical, aliases, extra);
 
 export const HIRING_INTENT = Object.freeze({
   candidate: group('candidate', {

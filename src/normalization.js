@@ -307,6 +307,9 @@ export function validateLexicon(entries, {
     }
 
     const canonicalKey = normalizeForMatch(canonical);
+    const canonicalAliasOwners = aliasOwners.get(canonicalKey) || new Set();
+    canonicalAliasOwners.add(canonical);
+    aliasOwners.set(canonicalKey, canonicalAliasOwners);
     if (!allowDuplicateCanonicals && canonicalOwners.has(canonicalKey)) {
       errors.push(Object.freeze({ kind: 'duplicateCanonical', canonical, firstIndex: canonicalOwners.get(canonicalKey), entryIndex }));
     } else if (!canonicalOwners.has(canonicalKey)) {

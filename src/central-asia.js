@@ -35,7 +35,7 @@ function mergeCatalog(base, additions) {
 }
 
 export const KZ_CITY_ADDITIONS = Object.freeze([
-  city('Almaty', { kk: ['Алматы'], ru: ['Алма-Ата', 'Алма Ата'], en: ['Alma-Ata', 'Alma Ata'], historical: ['Верный', 'Verny'] }, { country: 'KZ', priority: 'P0' }),
+  city('Almaty', { kk: ['Алматы'], ru: ['Алма-Ата', 'Алма Ата', 'Верный'], en: ['Alma-Ata', 'Alma Ata', 'Verny'] }, { country: 'KZ', priority: 'P0' }),
   city('Astana', { kk: ['Астана', 'Нұр-Сұлтан', 'Нұр Сұлтан', 'Ақмола'], ru: ['Астана', 'Нур-Султан', 'Нур Султан', 'Акмолинск', 'Акмола', 'Целиноград'], en: ['Astana', 'Nur-Sultan', 'Nur Sultan', 'Akmolinsk', 'Aqmola', 'Tselinograd'] }, { country: 'KZ', priority: 'P0' }),
   city('Shymkent', { kk: ['Шымкент'], ru: ['Шымкент', 'Чимкент', 'Чымкент'], en: ['Shymkent', 'Chimkent'] }, { country: 'KZ', priority: 'P0' }),
   city('Karaganda', { kk: ['Қарағанды'], ru: ['Караганда', 'Караганды'], en: ['Karaganda', 'Qaragandy', 'Karagandy'] }, { country: 'KZ', priority: 'P1' }),

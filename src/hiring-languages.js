@@ -1,6 +1,7 @@
 import { aliasesOf, aliasesToRegex, findCanonical, normalizeUnicode } from './normalization.js';
+import { lexiconEntity } from './lexicon-core.js';
 
-const group = (canonical, aliases, extra = {}) => Object.freeze({ canonical, aliases: Object.freeze(aliases), ...extra });
+const group = (canonical, aliases, extra = {}) => lexiconEntity(canonical, aliases, extra);
 
 export const LANGUAGES = Object.freeze([
   group('en', { ru: ['английский', 'английского', 'английским', 'англ', 'англ.'], en: ['english'], uk: ['англійська', 'англійський', 'англійської'], ro: ['engleză', 'engleza', 'limba engleză'], uzLatn: ['ingliz tili', 'inglizcha'], uzCyrl: ['инглиз тили', 'инглизча'], kk: ['ағылшын тілі', 'ағылшынша'] }, { name: 'English' }),

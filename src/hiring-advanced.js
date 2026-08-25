@@ -1,7 +1,8 @@
 import { aliasesToRegex, findCanonical, normalizeUnicode } from './normalization.js';
 import { HIRING_INTENT, JOB_FIELD_TERMS } from './hiring.js';
+import { lexiconEntity } from './lexicon-core.js';
 
-const group = (canonical, aliases, extra = {}) => Object.freeze({ canonical, aliases: Object.freeze(aliases), ...extra });
+const group = (canonical, aliases, extra = {}) => lexiconEntity(canonical, aliases, extra);
 
 export const HIRING_INTENT_EXTENSIONS = Object.freeze({
   candidate: group('candidate', {

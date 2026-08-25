@@ -17,7 +17,7 @@ export const LOCATION_LIST_KEYS = Object.freeze([
 
 export function locationEntry(name, ...aliases) {
   const all = [...new Set([name, ...aliases].flat().filter(Boolean))];
-  return Object.freeze({ name, aliases: Object.freeze(all), re: aliasesToRegex(all) });
+  return Object.freeze({ canonical: name, name, aliases: Object.freeze(all), re: aliasesToRegex(all) });
 }
 
 export function locationEntries(rows = []) {
@@ -32,7 +32,7 @@ function mergeEntry(existing, incoming) {
     incoming?.name,
   ].filter(Boolean))];
   const base = { ...(existing || {}), ...(incoming || {}) };
-  return Object.freeze({ ...base, aliases: Object.freeze(aliases), re: aliasesToRegex(aliases) });
+  return Object.freeze({ ...base, canonical: base.canonical || base.name, type: base.type || base.entityType, aliases: Object.freeze(aliases), re: aliasesToRegex(aliases) });
 }
 
 function parentKey(entry) {

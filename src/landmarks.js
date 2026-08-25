@@ -1,4 +1,5 @@
-const group = (canonical, aliases) => Object.freeze({ canonical, aliases: Object.freeze(aliases) });
+import { lexiconEntity } from './lexicon-core.js';
+const group = (canonical, aliases) => lexiconEntity(canonical, aliases);
 
 export const GENERIC_LANDMARK_TERMS = Object.freeze([
   group('Park', { ru: ['парк'], en: ['park'], uk: ['парк'], ro: ['parc'], uzLatn: ["bog'", 'bog‘', 'bogʻ', 'park'], uzCyrl: ['боғ', 'парк'], kk: ['саябақ', 'парк'] }),

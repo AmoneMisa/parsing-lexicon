@@ -1,10 +1,12 @@
 import { findCanonical } from './normalization.js';
+import { deepFreeze, freezeAliases } from './lexicon-core.js';
 
-const country = (code, canonical, currency, aliases) => Object.freeze({
+const country = (code, canonical, currency, aliases) => deepFreeze({
   code,
   canonical,
+  type: 'country',
   currency,
-  aliases: Object.freeze(aliases),
+  aliases: freezeAliases(aliases),
 });
 
 /** Canonical countries used by housing/hiring ingestion. */

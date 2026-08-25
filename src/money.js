@@ -1,6 +1,7 @@
 import { aliasesOf, findCanonical, normalizeUnicode } from './normalization.js';
+import { lexiconEntity } from './lexicon-core.js';
 
-const group = (canonical, aliases, extra = {}) => Object.freeze({ canonical, aliases: Object.freeze(aliases), ...extra });
+const group = (canonical, aliases, extra = {}) => lexiconEntity(canonical, aliases, extra);
 
 export const CURRENCY_TERMS = Object.freeze([
   group('USD', { ru: ['$', 'usd', 'доллар', 'доллара', 'долларов', 'бакс', 'у.е.', 'у е'], en: ['$', 'usd', 'dollar', 'dollars', 'us dollar'], uk: ['$', 'usd', 'долар', 'долари', 'доларів'], ro: ['$', 'usd', 'dolar', 'dolari'], uzLatn: ['$', 'usd', 'dollar'], uzCyrl: ['$', 'доллар'], kk: ['$', 'usd', 'доллар'] }),

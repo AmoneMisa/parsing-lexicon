@@ -5,14 +5,14 @@ import { UA_REGIONS as UA_REGION_LEXICON } from './geography.js';
 function entries(rows) {
   return Object.freeze(rows.map(([name, ...aliases]) => {
     const all = [...new Set([name, ...aliases].filter(Boolean))];
-    return Object.freeze({ name, aliases: Object.freeze(all), re: aliasesToRegex(all) });
+    return Object.freeze({ canonical: name, name, aliases: Object.freeze(all), re: aliasesToRegex(all) });
   }));
 }
 
 function lexiconEntries(items) {
   return Object.freeze((items || []).map((item) => {
     const all = [...new Set([item.canonical, ...aliasesOf(item)].filter(Boolean))];
-    return Object.freeze({ name: item.canonical, aliases: Object.freeze(all), re: aliasesToRegex(all) });
+    return Object.freeze({ canonical: item.canonical, name: item.canonical, type: item.type, country: item.country, city: item.city, aliases: Object.freeze(all), re: aliasesToRegex(all) });
   }));
 }
 

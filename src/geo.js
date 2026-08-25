@@ -1,6 +1,7 @@
 import { aliasesToRegex, findCanonical } from './normalization.js';
+import { deepFreeze, lexiconEntity } from './lexicon-core.js';
 
-const entity = (canonical, aliases, extra = {}) => Object.freeze({ canonical, aliases: Object.freeze(aliases), ...extra });
+const entity = (canonical, aliases, extra = {}) => lexiconEntity(canonical, aliases, { type: extra.type || (extra.country ? 'city' : 'district'), ...(!extra.country ? { country: 'UZ', city: 'Tashkent' } : {}), ...extra });
 
 export const UZ_CITIES = Object.freeze([
   entity('Tashkent', { uzLatn: ['Toshkent'], uzCyrl: ['Тошкент'], ru: ['Ташкент'], en: ['Tashkent'] }, { country: 'UZ' }),
@@ -27,7 +28,7 @@ export const KZ_CITIES = Object.freeze([
   entity('Karaganda', { kk: ['Қарағанды'], ru: ['Караганда'], en: ['Karaganda', 'Qaragandy'] }, { country: 'KZ' }),
   entity('Aktobe', { kk: ['Ақтөбе'], ru: ['Актобе'], en: ['Aktobe', 'Aqtobe'] }, { country: 'KZ' }),
   entity('Atyrau', { kk: ['Атырау'], ru: ['Атырау'], en: ['Atyrau'] }, { country: 'KZ' }),
-  entity('Oral', { kk: ['Орал'], ru: ['Уральск', 'Орал'], en: ['Oral', 'Uralsk', 'Uralsk'] }, { country: 'KZ' }),
+  entity('Oral', { kk: ['Орал'], ru: ['Уральск', 'Орал'], en: ['Oral', 'Uralsk'] }, { country: 'KZ' }),
   entity('Taraz', { kk: ['Тараз'], ru: ['Тараз', 'Джамбул'], en: ['Taraz'] }, { country: 'KZ' }),
   entity('Pavlodar', { kk: ['Павлодар'], ru: ['Павлодар'], en: ['Pavlodar'] }, { country: 'KZ' }),
   entity('Semey', { kk: ['Семей'], ru: ['Семей', 'Семипалатинск'], en: ['Semey', 'Semipalatinsk'] }, { country: 'KZ' }),
@@ -38,13 +39,19 @@ export const KZ_CITIES = Object.freeze([
   entity('Petropavl', { kk: ['Петропавл'], ru: ['Петропавловск'], en: ['Petropavl', 'Petropavlovsk'] }, { country: 'KZ' }),
   entity('Turkistan', { kk: ['Түркістан'], ru: ['Туркестан'], en: ['Turkistan', 'Turkestan'] }, { country: 'KZ' }),
   entity('Taldykorgan', { kk: ['Талдықорған'], ru: ['Талдыкорган'], en: ['Taldykorgan', 'Taldyqorgan'] }, { country: 'KZ' }),
-  entity('Kokshetau', { kk: ['Көкшетау'], ru: ['Кокшетау'], en: ['Kokshetau', 'Kokshetau'] }, { country: 'KZ' }),
+  entity('Kokshetau', { kk: ['Көкшетау'], ru: ['Кокшетау'], en: ['Kokshetau'] }, { country: 'KZ' }),
 ]);
 
 export const CITIES = Object.freeze([...UZ_CITIES, ...KZ_CITIES]);
+export const CITIES_BY_COUNTRY = Object.freeze(Object.fromEntries(
+  [...new Set(CITIES.map((item) => item.country).filter(Boolean))].map((code) => [
+    code,
+    Object.freeze(CITIES.filter((item) => item.country === code)),
+  ]),
+));
 
 export function canonicalCity(value, country = null) {
-  const catalog = country ? CITIES.filter((item) => item.country === country) : CITIES;
+  const catalog = country ? (CITIES_BY_COUNTRY[country] || []) : CITIES;
   return findCanonical(value, catalog)?.canonical || null;
 }
 
@@ -69,7 +76,17 @@ export function canonicalTashkentDistrict(value) {
 
 function station(name, ru, en, line, aliases = []) {
   const allAliases = [...new Set([name, ru, en, ...aliases])];
-  return Object.freeze({ name, line, labels: Object.freeze({ ru, en }), aliases: Object.freeze(allAliases), re: aliasesToRegex(allAliases) });
+  return deepFreeze({
+    canonical: name,
+    name,
+    type: 'metro',
+    country: 'UZ',
+    city: 'Tashkent',
+    line,
+    labels: { ru, en },
+    aliases: allAliases,
+    re: aliasesToRegex(allAliases),
+  });
 }
 
 export const TASHKENT_METRO = Object.freeze([
@@ -125,20 +142,24 @@ export const TASHKENT_METRO = Object.freeze([
   station('Qipchoq', 'Кипчак', 'Qipchoq', 'circle', ['Қипчоқ']),
 ]);
 
-export const TASHKENT_METRO_BY_NAME = new Map(TASHKENT_METRO.map((item) => [item.name, item]));
+const TASHKENT_METRO_BY_NAME = new Map(TASHKENT_METRO.map((item) => [item.name, item]));
 
-export function canonicalTashkentMetro(value) {
+export function tashkentMetroStation(value) {
   if (!value) return null;
   const direct = TASHKENT_METRO_BY_NAME.get(String(value));
-  if (direct) return direct.name;
-  return TASHKENT_METRO.find((item) => item.re.test(String(value)))?.name || null;
+  if (direct) return direct;
+  return TASHKENT_METRO.find((item) => item.re.test(String(value))) || null;
+}
+
+export function canonicalTashkentMetro(value) {
+  return tashkentMetroStation(value)?.canonical || null;
 }
 
 export function tashkentMetroLabels() {
   return Object.fromEntries(TASHKENT_METRO.map((item) => [item.name, { ru: item.labels.ru, en: item.labels.en, line: item.line }]));
 }
 
-const area = (name, aliases) => Object.freeze({ name, aliases: Object.freeze(aliases) });
+const area = (name, aliases) => deepFreeze({ canonical: name, name, type: 'local_area', country: 'UZ', city: 'Tashkent', aliases });
 
 export const TASHKENT_AREAS = Object.freeze({
   Almazar: Object.freeze([
