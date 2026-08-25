@@ -1,0 +1,12 @@
+export type HiringSeniority = 'intern' | 'junior' | 'middle' | 'senior' | 'staff' | 'lead' | 'principal' | 'manager' | 'director';
+export type DegreeLevel = 'secondary' | 'bachelor' | 'master' | 'doctorate';
+export type DegreeField = 'computer_science' | 'engineering' | 'law' | 'forensics' | 'business';
+export const SENIORITY_RANK: Readonly<Record<HiringSeniority, number>>;
+export function detectHiringSeniority(value: unknown): HiringSeniority | null;
+export function detectDegreeLevel(value: unknown): DegreeLevel | null;
+export function detectDegreeFields(value: unknown): readonly DegreeField[];
+export function extractRequiredExperienceYears(value: unknown): number | null;
+export function hasUsWorkAuthorization(value: unknown): boolean;
+export function requiresUsSponsorship(value: unknown): boolean | null;
+export function isNoSponsorshipRequirement(value: unknown): boolean;
+export function bucketVacancyText(value: unknown): Readonly<{ required: string; optional: string; context: string; noise: string }>;
