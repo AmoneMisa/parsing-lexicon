@@ -61,6 +61,10 @@
       "types": "./src/hiring-source-aliases.d.ts",
       "import": "./src/hiring-source-aliases.js"
     },
+    "./hiring-requirements": {
+      "types": "./src/hiring-requirements.d.ts",
+      "import": "./src/hiring-requirements.js"
+    },
     "./money": "./src/money.js",
     "./hiring-professions": "./src/hiring-professions.js",
     "./hiring-advanced": "./src/hiring-advanced.js"
