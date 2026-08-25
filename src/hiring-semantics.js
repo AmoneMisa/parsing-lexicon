@@ -17,7 +17,7 @@ const LOCATION_COMPACT_RE = /(?:^|\n)[^\p{L}\p{N}\n]{0,8}(?:location|локац�
 
 const STATUS_ONLY_RE = /^(?:talaba|student|студент(?:ка)?|студент(?:ка)?ка|o(?:'|’)quvchi|учащ(?:ийся|аяся))$/iu;
 const FLEXIBLE_ROLE_RE = /^(?:нет|без)\s+разницы(?:\s+.*)?$|^не\s*важно(?:\s+.*)?$|^farqi\s+yo['’ʻʼ‘`]?q$|^любая\s+(?:работа|занятость)(?:\s+.*)?$/iu;
-const NON_ROLE_RE = /^(?:удал[её]нно|работа\s+на\s+удал[её]н\p{L}*\s+основе|remote|onlayn|online|farqi\s+yo['’ʻʼ‘`]?q|bilmaym\p{L}*|ish\s+ker(?:e|a)\s+onlayn|любая\s+(?:работа|занятость)|немає|нет|не\s+указано|not\s+specified)$/iu;
+const NON_ROLE_RE = /^(?:удал[её]нно|работа\s+на\s+удал[её]н\p{L}*\s+основе|remote|onlayn|online|онлайн|farqi\s+yo['’ʻʼ‘`]?q|bilmaym\p{L}*|ish\s+ker(?:e|a)\s+onlayn|любая\s+(?:работа|занятость)|немає|нет|не\s+указано|not\s+specified)$/iu;
 const REMOTE_NEGATIVE_RE = /(?:onsite|on-site|office\s+only|тільки\s+офіс|только\s+офис|офисн(?:ый|ая)\s+формат|офлайн|без\s+удал[её]нк|удал[её]нк\p{L}*\s+не\s+рассматрива|не\s+рассматрива\p{L}*\s+удал[её]н|remote\s+(?:not|no)|faqat\s+ofis|ofisda\s+ish(?:lash)?)/iu;
 const REMOTE_POSITIVE_RE = /(?:\bremote\b|\bremotely\b|удал[её]н(?:но|ка|ный|ная|н\p{L}*)?|віддален(?:о|а|ий)?|дистанц(?:ионно|ійно)|masofaviy|(?<!\p{L})onlayn(?!\p{L})|online\s+(?:work|job)|онлайн\s+работ)/iu;
 
