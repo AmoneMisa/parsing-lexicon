@@ -242,7 +242,7 @@ export const CANDIDATE_FIELD_TERMS: Readonly<Record<string, LexiconEntity>>;
 export const JOB_FIELD_TERMS: Readonly<Record<string, LexiconEntity>>;
 export const EMPLOYMENT_TYPES: readonly LexiconEntity[];
 export const WORK_MODES: readonly LexiconEntity[];
-export const SCHEDULE_TERMS: Readonly<Record<string, LexiconEntity>>;
+export const SCHEDULE_TERMS: readonly LexiconEntity[];
 export const PROBATION_TERMS: Readonly<Record<string, LexiconEntity>>;
 export const EXPERIENCE_REQUIREMENTS: Readonly<Record<string, LexiconEntity>>;
 export const SKILL_FIELD_TERMS: Readonly<Record<string, LexiconEntity>>;
