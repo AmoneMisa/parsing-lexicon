@@ -17,6 +17,17 @@ const UZ_HIRING_REGIONS = Object.freeze([
   ['Khorezm', re('хорезм\\p{L}*|xorazm|khorezm')],
 ]);
 
+// Keep legacy consumer canonicals and inflected aliases where the broader
+// geography catalog intentionally uses a different modern spelling.
+const HIRING_CITY_OVERRIDES = Object.freeze({
+  UZ: Object.freeze([
+    ['Navoi', re('навои|navoi')],
+  ]),
+  UA: Object.freeze([
+    ['Odesa', re('одесс|одес|odesa|odessa')],
+  ]),
+});
+
 export function detectHiringLocationName(value, country) {
   const text = String(value || '');
   const code = String(country || '').toUpperCase();
@@ -25,5 +36,7 @@ export function detectHiringLocationName(value, country) {
     const region = UZ_HIRING_REGIONS.find(([, matcher]) => matcher.test(text));
     if (region) return region[0];
   }
+  const override = HIRING_CITY_OVERRIDES[code]?.find(([, matcher]) => matcher.test(text));
+  if (override) return override[0];
   return detectCityFromText(text, code)?.canonical || null;
 }
