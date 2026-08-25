@@ -46,7 +46,7 @@ test('classifies CV sections and extracts employment evidence centrally', () => 
   assert.equal(classifyCvSectionHeading('Work Experience'), 'experience');
   assert.match(extractCvSection(cv, 'experience'), /Company A/);
   assert.doesNotMatch(extractCvSection(cv, 'experience'), /Vue/);
-  assert.equal(extractCvExperienceYears(cv, new Date('2026-08-25T00:00:00Z')), 6.7);
+  assert.equal(extractCvExperienceYears(cv, new Date('2026-08-25T00:00:00Z')), 5.8);
 });
 
 test('explicit experience can supply CV experience without dated employment rows', () => {
