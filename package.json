@@ -1,7 +1,7 @@
 {
   "name": "@whiteslove/parsing-lexicon",
-  "version": "0.1.0",
-  "description": "Shared deterministic parsing lexicon for Whiteslove housing and hiring services",
+  "version": "0.2.0",
+  "description": "Shared deterministic multilingual parsing lexicon for Whiteslove housing and hiring services",
   "type": "module",
   "main": "./src/index.js",
   "types": "./index.d.ts",
@@ -11,7 +11,10 @@
       "import": "./src/index.js"
     },
     "./normalization": "./src/normalization.js",
+    "./countries": "./src/countries.js",
     "./geo": "./src/geo.js",
+    "./geography": "./src/geography.js",
+    "./locations": "./src/locations.js",
     "./housing": "./src/housing.js",
     "./hiring": "./src/hiring.js"
   },
@@ -32,9 +35,12 @@
     "lexicon",
     "uzbek",
     "kazakh",
+    "ukrainian",
+    "romanian",
     "russian",
     "housing",
-    "hiring"
+    "hiring",
+    "geography"
   ],
   "license": "MIT"
 }
