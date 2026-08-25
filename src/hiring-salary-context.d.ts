@@ -1,9 +1,9 @@
-export type SalaryCurrencySource = 'explicit' | 'country-default' | 'unknown';
+export type SalaryCurrencySource = 'explicit' | 'country-default' | 'language-default' | 'unknown';
 
 export interface HiringSalaryContextOptions {
   country?: string | null;
   location?: string | null;
-  currencyFallback?: 'country';
+  currencyFallback?: 'country' | 'language';
 }
 
 export interface ParsedHiringSalaryWithContext {
