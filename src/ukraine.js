@@ -40,6 +40,7 @@ export const UA_ADDITIONAL_CITIES = Object.freeze([
   cityEntry('Oleksandriia', ['Олександрія', 'Александрия', 'Oleksandriia', 'Alexandria Ukraine']),
   cityEntry('Pavlohrad', ['Павлоград', 'Pavlohrad', 'Pavlograd']),
   cityEntry('Nikopol', ['Нікополь', 'Никополь', 'Nikopol']),
+  cityEntry('Drohobych', ['Дрогобич', 'Дрогобыч', 'Drohobych']),
   cityEntry('Stryi', ['Стрий', 'Stryi', 'Stryj']),
   cityEntry('Kolomyia', ['Коломия', 'Коломыя', 'Kolomyia', 'Kolomea']),
   cityEntry('Kalush', ['Калуш', 'Kalush']),
