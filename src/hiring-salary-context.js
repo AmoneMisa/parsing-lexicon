@@ -34,8 +34,8 @@ function languageDefaultCountry(value) {
   // Use only language signals that are specific enough to avoid turning generic
   // Russian/English salary text into a local currency guess. Uzbek and Kazakh
   // salary/period vocabulary is deterministic enough for this fallback.
-  if (/(?:\boylik\b|\boyiga\b|\bmaosh\b|\bish\s+haqi\b|\бойлик\b|\бойига\b|\бмаош\b|\биш\s+ҳақи\b)/iu.test(text)) return 'UZ';
-  if (/(?:\bжалақы\b|\bеңбекақы\b|\bайлық\b|\bайына\b)/iu.test(text)) return 'KZ';
+  if (/(?:^|[^\p{L}\p{N}])(?:oylik|oyiga|maosh|ish\s+haqi|ойлик|ойига|маош|иш\s+ҳақи)(?=$|[^\p{L}\p{N}])/iu.test(text)) return 'UZ';
+  if (/(?:^|[^\p{L}\p{N}])(?:жалақы|еңбекақы|айлық|айына)(?=$|[^\p{L}\p{N}])/iu.test(text)) return 'KZ';
   return null;
 }
 
