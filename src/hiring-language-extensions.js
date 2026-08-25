@@ -1,5 +1,5 @@
 import { parseLanguageContext } from './hiring-context.js';
-import { findCanonical } from './normalization.js';
+import { findAllCanonical } from './normalization.js';
 import { lexiconEntity } from './lexicon-core.js';
 
 const group = (canonical, aliases, extra = {}) => lexiconEntity(canonical, aliases, extra);
@@ -57,17 +57,27 @@ export const LANGUAGE_LEVEL_EXTENSIONS = Object.freeze([
   }),
 ]);
 
-function extendedLevelNear(text, item) {
-  const start = Math.max(0, Number(item?.start || 0) - 45);
-  const end = Math.min(text.length, Number(item?.end || 0) + 70);
-  return findCanonical(text.slice(start, end), LANGUAGE_LEVEL_EXTENSIONS, { partial: true })?.canonical || null;
+function distanceToItem(match, item) {
+  const itemStart = Number(item?.start || 0);
+  const itemEnd = Number(item?.end || itemStart);
+  if (match.end <= itemStart) return itemStart - match.end;
+  if (match.start >= itemEnd) return match.start - itemEnd;
+  return 0;
+}
+
+function extendedLevelNear(matches, item) {
+  return matches
+    .map((match) => ({ match, distance: distanceToItem(match, item) }))
+    .filter(({ distance }) => distance <= 45)
+    .sort((a, b) => a.distance - b.distance || a.match.start - b.match.start)[0]?.match.canonical || null;
 }
 
 export function parseExtendedLanguageContext(value, options = {}) {
   const text = String(value || '');
   const parsed = parseLanguageContext(text, options);
+  const extendedLevels = findAllCanonical(text, LANGUAGE_LEVEL_EXTENSIONS);
   return Object.freeze(parsed.map((item) => Object.freeze({
     ...item,
-    level: item.level || item.cefr ? item.level : extendedLevelNear(text, item),
+    level: item.level || item.cefr ? item.level : extendedLevelNear(extendedLevels, item),
   })));
 }
