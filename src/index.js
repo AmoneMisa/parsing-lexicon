@@ -20,6 +20,7 @@ export * from './tashkent-pois.js';
 export * from './odesa-metropolitan.js';
 export * from './housing.js';
 export * from './housing-intent.js';
+export * from './housing-context.js';
 export * from './hiring.js';
 export * from './hiring-languages.js';
 export * from './money.js';
