@@ -30,7 +30,10 @@
     "./tashkent-pois": "./src/tashkent-pois.js",
     "./odesa-metropolitan": "./src/odesa-metropolitan.js",
     "./housing": "./src/housing.js",
-    "./hiring": "./src/hiring.js"
+    "./hiring": "./src/hiring.js",
+    "./money": "./src/money.js",
+    "./hiring-professions": "./src/hiring-professions.js",
+    "./hiring-advanced": "./src/hiring-advanced.js"
   },
   "files": [
     "src",
@@ -54,6 +57,8 @@
     "russian",
     "housing",
     "hiring",
+    "salary",
+    "professions",
     "geography"
   ],
   "license": "MIT"
