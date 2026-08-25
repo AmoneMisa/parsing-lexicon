@@ -30,6 +30,24 @@ export type PoiEntry = Readonly<{
   contextRequired: boolean;
   contextRe: RegExp | null;
 }>;
+export type MetropolitanEntity = Readonly<{
+  canonical: string;
+  name: string;
+  type: string;
+  aliases: readonly string[];
+  re: RegExp;
+  parent: string | null;
+  cluster: string | null;
+  contextRequired: boolean;
+  contextRe: RegExp | null;
+}>;
+export type SearchCluster = Readonly<{
+  canonical: string;
+  name: string;
+  type: 'search_cluster';
+  administrative: false;
+  members: readonly string[];
+}>;
 export type AreaEntry = Readonly<{ name: string; aliases: readonly string[] }>;
 export type LocationCityDictionary = Readonly<{
   districts?: readonly LocationEntry[];
@@ -64,6 +82,11 @@ export const RO_CITIES: readonly LexiconEntity[];
 export const KG_CITIES: readonly LexiconEntity[];
 export const GEOGRAPHY_CITIES: readonly LexiconEntity[];
 export function canonicalAnyCity(value: unknown, country?: string | null): string | null;
+export const UA_ADDITIONAL_CITIES: readonly LexiconEntity[];
+export const UA_CITY_CATALOG: readonly LexiconEntity[];
+export const UA_CITY_HISTORICAL_ALIASES: Readonly<Record<string, readonly string[]>>;
+export function canonicalUkraineCity(value: unknown): string | null;
+export const UA_LOCATION_TERMS: Readonly<Record<string, readonly string[]>>;
 
 export const TASHKENT_DISTRICTS: readonly LexiconEntity[];
 export function canonicalTashkentDistrict(value: unknown): string | null;
@@ -90,6 +113,17 @@ export const TASHKENT_LEGACY_LANDMARKS: readonly PoiEntry[];
 export const TASHKENT_POI_GROUPS: Readonly<Record<string, readonly PoiEntry[]>>;
 export const TASHKENT_LANDMARKS: readonly PoiEntry[];
 export function matchTashkentPoi(value: unknown, category?: string | null): PoiEntry | null;
+
+export const ODESA_LOCAL_AREAS: readonly MetropolitanEntity[];
+export const ODESA_MICRODISTRICT_EXTENSIONS: readonly MetropolitanEntity[];
+export const ODESA_SUBURBS: readonly MetropolitanEntity[];
+export const ODESA_DEVELOPMENT_AREAS: readonly MetropolitanEntity[];
+export const ODESA_RIVIERA_ENTITIES: readonly MetropolitanEntity[];
+export const ODESA_CONTEXT_POIS: readonly MetropolitanEntity[];
+export const ODESA_METROPOLITAN_ENTITIES: readonly MetropolitanEntity[];
+export const ODESA_SEARCH_CLUSTERS: readonly SearchCluster[];
+export function matchOdesaMetropolitanEntities(value: unknown): Readonly<{ matches: readonly MetropolitanEntity[]; searchClusters: readonly SearchCluster[] }>;
+export function matchOdesaMetropolitanEntity(value: unknown, type?: string | null): MetropolitanEntity | null;
 
 export const UZ_REGIONS: readonly LexiconEntity[];
 export const KZ_REGIONS: readonly LexiconEntity[];
