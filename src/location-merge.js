@@ -35,20 +35,48 @@ function mergeEntry(existing, incoming) {
   return Object.freeze({ ...base, aliases: Object.freeze(aliases), re: aliasesToRegex(aliases) });
 }
 
+function parentKey(entry) {
+  return normalizeForMatch(entry?.parent || entry?.district || '');
+}
+
 export function mergeLocationEntries(...lists) {
-  const byCanonical = new Map();
+  const groups = new Map();
   const order = [];
 
   for (const list of lists) {
     for (const entry of list || []) {
       if (!entry?.name) continue;
-      const key = normalizeForMatch(entry.name);
-      if (!byCanonical.has(key)) order.push(key);
-      byCanonical.set(key, mergeEntry(byCanonical.get(key), entry));
+      const canonical = normalizeForMatch(entry.name);
+      if (!groups.has(canonical)) {
+        groups.set(canonical, []);
+        order.push(canonical);
+      }
+      groups.get(canonical).push(entry);
     }
   }
 
-  return Object.freeze(order.map((key) => byCanonical.get(key)));
+  const result = [];
+  for (const canonical of order) {
+    const group = groups.get(canonical) || [];
+    const scopedParents = [...new Set(group.map(parentKey).filter(Boolean))];
+
+    if (scopedParents.length <= 1) {
+      result.push(group.reduce((merged, entry) => mergeEntry(merged, entry), null));
+      continue;
+    }
+
+    // A market name can legitimately exist under multiple parents inside one
+    // city (for example Sairan in adjacent Almaty districts). Keep each scoped
+    // entity. Unscoped/base aliases are merged into every scoped variant so
+    // older dictionaries enrich rather than erase parent information.
+    const unscoped = group.filter((entry) => !parentKey(entry));
+    for (const parent of scopedParents) {
+      const scoped = group.filter((entry) => parentKey(entry) === parent);
+      result.push([...unscoped, ...scoped].reduce((merged, entry) => mergeEntry(merged, entry), null));
+    }
+  }
+
+  return Object.freeze(result);
 }
 
 export function mergeLocationCityDictionaries(...dictionaries) {
