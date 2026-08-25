@@ -84,3 +84,8 @@ test('collision collector exposes strong profession alias collisions instead of 
   assert.ok(Array.isArray(collisions));
   assert.ok(collisions.every((item) => item.alias && item.canonicals.length > 1));
 });
+
+test('principal seniority survives intervening role qualifiers', () => {
+  assert.equal(matchSeniority('Principal Software Engineer')?.canonical, 'principal');
+  assert.equal(matchSeniority('As a Principal Software Engineer, own architecture')?.canonical, 'principal');
+});

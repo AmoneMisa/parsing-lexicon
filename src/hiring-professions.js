@@ -359,7 +359,7 @@ export const SENIORITY_LEVELS = Object.freeze([
   { canonical: 'middle', aliases: ['middle','mid-level','mid level','мидл','миддл','средний уровень','середній рівень'], score: 1 },
   { canonical: 'senior', aliases: ['senior','sr','сеньор','синьор','старший специалист','ведущий специалист','провідний спеціаліст'], score: 1 },
   { canonical: 'staff', aliases: ['staff','staff engineer','staff developer','staff-level','стафф','стафф инженер'], score: 1 },
-  { canonical: 'principal', aliases: ['principal engineer','principal developer','principal architect','principal-level','принципал инженер'], score: 1 },
+  { canonical: 'principal', aliases: ['principal','principal engineer','principal developer','principal architect','principal-level','принципал инженер'], score: 1 },
   { canonical: 'lead', aliases: ['lead','team lead','teamlead','tech lead','lead developer','lead engineer','тимлид','техлид','лид разработчик','ведущий разработчик'], score: 1 },
   { canonical: 'head', aliases: ['head of','department head','руководитель отдела','начальник отдела','керівник відділу'], score: 0.95 },
   { canonical: 'director', aliases: ['director','директор','директор департамента','директор напряму'], score: 0.9 },
