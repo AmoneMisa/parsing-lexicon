@@ -30,12 +30,35 @@ export function deepFreeze(value, seen = new WeakSet()) {
   return Object.freeze(value);
 }
 
+function aliasIdentity(value) {
+  return String(value ?? '')
+    .normalize('NFKC')
+    .toLocaleLowerCase()
+    .replace(/[’‘ʻʼ`´]/g, "'")
+    .replace(/[‐‑‒–—―]/g, '-')
+    .replace(/ё/g, 'е')
+    .replace(/['-]+/g, ' ')
+    .replace(/[^\p{L}\p{N}]+/gu, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function dedupeAliases(values = []) {
+  const seen = new Set();
+  return values.filter((value) => {
+    const key = aliasIdentity(value);
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
 export function freezeAliases(aliases = {}) {
-  if (Array.isArray(aliases)) return Object.freeze([...aliases]);
+  if (Array.isArray(aliases)) return Object.freeze(dedupeAliases(aliases));
   return Object.freeze(Object.fromEntries(
     Object.entries(aliases).map(([language, values]) => [
       language,
-      Object.freeze(Array.isArray(values) ? [...values] : []),
+      Object.freeze(Array.isArray(values) ? dedupeAliases(values) : []),
     ]),
   ));
 }
@@ -53,6 +76,6 @@ export function locationEntity(canonical, aliases = [], extra = {}) {
     ...extra,
     canonical,
     name: canonical,
-    aliases: Object.freeze([...aliases]),
+    aliases: Object.freeze(dedupeAliases(aliases)),
   });
 }
