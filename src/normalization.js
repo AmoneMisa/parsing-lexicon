@@ -53,6 +53,10 @@ const CYRILLIC_SEARCH_MAP = Object.freeze({
   є: 'ye', ї: 'yi', ґ: 'g',
 });
 
+const KAZAKH_SEARCH_EQUIVALENCE = Object.freeze({
+  ә: 'а', ғ: 'г', қ: 'к', ң: 'н', ө: 'о', ұ: 'у', ү: 'у', і: 'и', һ: 'х',
+});
+
 /**
  * Search-oriented Cyrillic folding. This is intentionally not a linguistic
  * transliterator; canonical identity must still come from explicit aliases.
@@ -65,8 +69,16 @@ export function foldCyrillicForSearch(value) {
     .join('');
 }
 
+function foldKazakhForSearch(value) {
+  return normalizeUnicode(value)
+    .toLocaleLowerCase()
+    .split('')
+    .map((char) => KAZAKH_SEARCH_EQUIVALENCE[char] ?? char)
+    .join('');
+}
+
 export function normalizedAliasKeys(value) {
-  const forms = [value, foldCyrillicForSearch(value)];
+  const forms = [value, foldCyrillicForSearch(value), foldKazakhForSearch(value)];
   return [...new Set(forms.flatMap((form) => [
     normalizeForMatch(form),
     normalizeCompactApostropheForMatch(form),
