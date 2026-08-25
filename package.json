@@ -14,11 +14,13 @@
     "./countries": "./src/countries.js",
     "./geo": "./src/geo.js",
     "./geography": "./src/geography.js",
+    "./ukraine": "./src/ukraine.js",
     "./locations": "./src/locations.js",
     "./landmarks": "./src/landmarks.js",
     "./tashkent-colloquial": "./src/tashkent-colloquial.js",
     "./tashkent-residential-complexes": "./src/tashkent-residential-complexes.js",
     "./tashkent-pois": "./src/tashkent-pois.js",
+    "./odesa-metropolitan": "./src/odesa-metropolitan.js",
     "./housing": "./src/housing.js",
     "./hiring": "./src/hiring.js"
   },
