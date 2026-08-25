@@ -1,4 +1,7 @@
 export * from './normalization.js';
+export * from './countries.js';
 export * from './geo.js';
+export * from './geography.js';
+export * from './locations.js';
 export * from './housing.js';
 export * from './hiring.js';
