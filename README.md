@@ -95,6 +95,35 @@ Subpath exports are available for consumers that need narrower modules, includin
 - Canonical dictionaries are immutable at runtime.
 - Duplicate canonical/alias entries and unsupported language-key drift are covered by invariants.
 
+## Lexicon statistics
+
+Snapshot for `c509d92` (2026-08-25). The audit traverses exported lexicon data from `src/`, excludes functions, regular expressions and obvious service/path strings, then normalizes strings with Unicode NFKC, trim, whitespace collapse and lowercase.
+
+| Metric | Count |
+| --- | ---: |
+| Alias/translation-like string occurrences across exports | 153,617 |
+| Unique alias/translation strings, exact | 17,681 |
+| **Unique alias/translation strings, normalized** | **17,397** |
+| All exported lexicon strings, normalized | 17,406 |
+| Normalization merge groups | 282 |
+
+The occurrence count is intentionally much larger than the unique count because aggregate modules re-export the same canonical datasets. For package size and vocabulary breadth, the normalized unique count is the useful number.
+
+### Vocabulary by domain
+
+| Domain | Occurrences across exports | Unique exact | Unique normalized |
+| --- | ---: | ---: | ---: |
+| Geography / locations | 64,898 | 10,149 | **9,967** |
+| Hiring — professions & skills | 6,738 | 2,350 | **2,324** |
+| Hiring — other semantics | 3,592 | 2,589 | **2,558** |
+| Housing | 2,554 | 1,975 | **1,971** |
+| Hiring — languages | 552 | 495 | **478** |
+| Country / source aliases | 170 | 126 | **126** |
+
+Domain rows are not additive: the same canonical string can be reachable through multiple exported structures and categories.
+
+Language totals are not inferred from script alone because many valid aliases are intentionally shared or untagged (for example names that are identical in RU/UK or EN/UZ Latin). A language-by-language table should therefore be generated only from explicitly language-tagged data rather than guessed from Unicode characters.
+
 ## Development
 
 Requires Node.js 20+.
