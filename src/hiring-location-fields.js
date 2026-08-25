@@ -5,9 +5,14 @@ const E = '(?![\\p{L}\\p{N}])';
 const re = (pattern) => new RegExp(`${B}(?:${pattern})(?:\\p{Script=Cyrillic}{1,3})?${E}`, 'iu');
 
 const NON_CITY_LOCATION_RE = /^(?:europe|europa|європа|европа|штати|states|worldwide|global|anywhere|emea|apac)$/iu;
+const REMOTE_LOCATION_SCOPE_RE = /^(?:worldwide|global|work\s+from\s+anywhere|anywhere(?:\s+in\b.*)?)$/iu;
 
 export function isHiringNonCityLocation(value) {
   return NON_CITY_LOCATION_RE.test(String(value || '').trim());
+}
+
+export function isHiringRemoteLocationScope(value) {
+  return REMOTE_LOCATION_SCOPE_RE.test(String(value || '').trim());
 }
 
 // Public Uzbek CV boards sometimes expose only a region. Keep the historic
