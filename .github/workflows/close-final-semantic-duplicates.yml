@@ -1,0 +1,67 @@
+name: Close final hiring semantic duplicates
+
+on:
+  push:
+    branches:
+      - refactor/close-final-semantic-duplicates
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: refactor/close-final-semantic-duplicates
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Apply cleanup
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('src/hiring-source-semantics.js')
+          s=p.read_text()
+          old="  const defaultCurrency = { UZ: 'UZS', UA: 'UAH', KZ: 'KZT', KG: 'KGS', RO: 'RON' }[String(country || '').toUpperCase()] || null;"
+          new="  const defaultCurrency = defaultHiringCurrency(country);"
+          assert old in s
+          s=s.replace(old,new,1)
+          marker="const CANDIDATE_CONTACT_RE = /(?:\\+?\\d[\\d\\s()\\-]{7,}|@[a-z0-9_]{4,}|(?:telegram|телефон|phone|tel|aloqa|murojaat|bog(?:'|’)lanish)\\s*[:—-])/iu;"
+          insert=marker+"\nconst EMPTY_CANDIDATE_RECOMMENDATION_RE = /^(?:колеги[,!\\s]*)?(?:вітаю[,!\\s]*)?рекомендую\\s+(?:класного\\s+)?кандидат\\p{L}*[.!\\s]+(?:контакт\\p{L}*\\s+та\\s+)?резюме\\s+додаю\\.?$/iu;"
+          assert marker in s
+          s=s.replace(marker,insert,1)
+          old="""              contact: CANDIDATE_CONTACT_RE.test(text),
+              sectionCount: CANDIDATE_SECTION_PATTERNS.filter((pattern) => pattern.test(text)).length,"""
+          new="""              contact: CANDIDATE_CONTACT_RE.test(text),
+              emptyRecommendation: EMPTY_CANDIDATE_RECOMMENDATION_RE.test(text.replace(/\\s+/g, ' ')),
+              sectionCount: CANDIDATE_SECTION_PATTERNS.filter((pattern) => pattern.test(text)).length,"""
+          assert old in s
+          s=s.replace(old,new,1)
+          p.write_text(s)
+
+          p=Path('src/hiring-source-semantics.d.ts'); s=p.read_text()
+          old='  contact: boolean;\n  sectionCount: number;'
+          new='  contact: boolean;\n  emptyRecommendation: boolean;\n  sectionCount: number;'
+          assert old in s; p.write_text(s.replace(old,new,1))
+
+          p=Path('test/hiring-post-semantics.test.js'); s=p.read_text()
+          needle="""            assert.equal(free.personalProfile, true);
+          });"""
+          replacement="""            assert.equal(free.personalProfile, true);
+            const emptyRecommendation = detectCandidatePostSignals('Колеги, вітаю! Рекомендую класного кандидата. Резюме додаю.');
+            assert.equal(emptyRecommendation.emptyRecommendation, true);
+          });"""
+          assert needle in s; p.write_text(s.replace(needle,replacement,1))
+          PY
+      - name: Test
+        run: npm test
+      - name: Commit result
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git rm .github/workflows/close-final-semantic-duplicates.yml
+          git add src/hiring-source-semantics.js src/hiring-source-semantics.d.ts test/hiring-post-semantics.test.js
+          git commit -m "refactor: close final hiring semantic duplicates"
+          git push
