@@ -23,6 +23,22 @@ export function normalizeForMatch(value) {
     .trim();
 }
 
+/**
+ * Search-only companion form that treats an omitted apostrophe as equivalent
+ * to Uzbek/Karakalpak apostrophe spellings (Qo'qon/Qoqon, G'azalkent/Gazalkent).
+ * Canonical spelling is never changed by this helper.
+ */
+function normalizeCompactApostropheForMatch(value) {
+  return normalizeUnicode(value)
+    .toLocaleLowerCase()
+    .replace(/ё/g, 'е')
+    .replace(/'+/g, '')
+    .replace(/-+/g, ' ')
+    .replace(/[^\p{L}\p{N}]+/gu, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 const CYRILLIC_SEARCH_MAP = Object.freeze({
   // Russian/common Cyrillic
   а: 'a', б: 'b', в: 'v', г: 'g', д: 'd', е: 'e', ё: 'e', ж: 'zh', з: 'z',
@@ -50,9 +66,11 @@ export function foldCyrillicForSearch(value) {
 }
 
 export function normalizedAliasKeys(value) {
-  const direct = normalizeForMatch(value);
-  const folded = normalizeForMatch(foldCyrillicForSearch(value));
-  return [...new Set([direct, folded].filter(Boolean))];
+  const forms = [value, foldCyrillicForSearch(value)];
+  return [...new Set(forms.flatMap((form) => [
+    normalizeForMatch(form),
+    normalizeCompactApostropheForMatch(form),
+  ]).filter(Boolean))];
 }
 
 export function aliasesOf(entry) {
