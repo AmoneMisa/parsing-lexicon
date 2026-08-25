@@ -75,6 +75,10 @@
     },
     "./money": "./src/money.js",
     "./hiring-professions": "./src/hiring-professions.js",
+    "./hiring-skills": {
+      "types": "./src/hiring-skills.d.ts",
+      "import": "./src/hiring-skills.js"
+    },
     "./hiring-advanced": "./src/hiring-advanced.js"
   },
   "files": [
