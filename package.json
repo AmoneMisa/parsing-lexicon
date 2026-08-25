@@ -15,6 +15,7 @@
     "./geo": "./src/geo.js",
     "./geography": "./src/geography.js",
     "./locations": "./src/locations.js",
+    "./landmarks": "./src/landmarks.js",
     "./housing": "./src/housing.js",
     "./hiring": "./src/hiring.js"
   },
