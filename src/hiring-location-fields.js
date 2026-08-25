@@ -4,6 +4,12 @@ const B = '(?<![\\p{L}\\p{N}])';
 const E = '(?![\\p{L}\\p{N}])';
 const re = (pattern) => new RegExp(`${B}(?:${pattern})(?:\\p{Script=Cyrillic}{1,3})?${E}`, 'iu');
 
+const NON_CITY_LOCATION_RE = /^(?:europe|europa|європа|европа|штати|states|worldwide|global|anywhere|emea|apac)$/iu;
+
+export function isHiringNonCityLocation(value) {
+  return NON_CITY_LOCATION_RE.test(String(value || '').trim());
+}
+
 // Public Uzbek CV boards sometimes expose only a region. Keep the historic
 // Personal-Site canonical names as a stable consumer contract while matching
 // multilingual source spellings centrally.
