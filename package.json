@@ -10,6 +10,7 @@
       "types": "./index.d.ts",
       "import": "./src/index.js"
     },
+    "./lexicon-core": "./src/lexicon-core.js",
     "./normalization": "./src/normalization.js",
     "./countries": "./src/countries.js",
     "./geo": "./src/geo.js",
@@ -30,7 +31,9 @@
     "./tashkent-pois": "./src/tashkent-pois.js",
     "./odesa-metropolitan": "./src/odesa-metropolitan.js",
     "./housing": "./src/housing.js",
+    "./housing-intent": "./src/housing-intent.js",
     "./hiring": "./src/hiring.js",
+    "./hiring-languages": "./src/hiring-languages.js",
     "./money": "./src/money.js",
     "./hiring-professions": "./src/hiring-professions.js",
     "./hiring-advanced": "./src/hiring-advanced.js"
