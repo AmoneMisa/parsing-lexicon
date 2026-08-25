@@ -1,0 +1,49 @@
+name: Fix incomplete employment wording
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-part-time-alias.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Add incomplete-employment aliases
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('src/hiring.js')
+          text = path.read_text()
+          old = "ru: ['частичная занятость', 'неполный день', 'неполный рабочий день', 'подработка']"
+          new = "ru: ['частичная занятость', 'неполная занятость', 'неполный день', 'неполный рабочий день', 'подработка']"
+          if text.count(old) != 1:
+              raise SystemExit(f'part-time RU alias row count: {text.count(old)}')
+          path.write_text(text.replace(old, new, 1))
+          PY
+          cat >> test/hiring-semantics.test.js <<'EOF'
+
+          test('shared employment lexicon recognizes legacy incomplete-employment wording', async () => {
+            const { EMPLOYMENT_TYPES, findCanonical } = await import('../src/index.js');
+            const partTime = EMPLOYMENT_TYPES.find(({ canonical }) => canonical === 'partTime');
+            assert.equal(findCanonical('неполная занятость, удаленно', [partTime], { partial: true })?.canonical, 'partTime');
+          });
+          EOF
+      - run: npm test
+      - name: Commit validated alias and remove temporary workflow
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/fix-part-time-alias.yml
+          git add src/hiring.js test/hiring-semantics.test.js
+          git commit -m "fix: recognize incomplete employment wording"
+          git push
