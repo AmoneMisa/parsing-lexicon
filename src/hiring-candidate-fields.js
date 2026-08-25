@@ -81,6 +81,6 @@ export function extractCandidateContacts(value) {
   const text = String(value || '');
   const phone = phoneNumber(text) || undefined;
   const email = text.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/iu)?.[0];
-  const telegram = text.match(/@[A-Za-z0-9_]{4,32}/)?.[0];
+  const telegram = text.match(/(?<![A-Za-z0-9._%+-])@[A-Za-z0-9_]{4,32}/)?.[0];
   return Object.freeze({ ...(phone ? { phone } : {}), ...(email ? { email } : {}), ...(telegram ? { telegram } : {}) });
 }
