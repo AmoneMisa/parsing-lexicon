@@ -30,4 +30,5 @@ test('shared skill matcher handles contextual non-adjacent phrases', () => {
   for (const name of ['Data Analysis', 'Conversion Funnel', 'Cross-functional Collaboration', 'Corporate Governance']) {
     assert.ok(names.includes(name), `${name} should be detected`);
   }
+  assert.equal(extractSkillNames('functional programming and governance policy').includes('Cross-functional Collaboration'), false);
 });
