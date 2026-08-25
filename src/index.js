@@ -23,6 +23,7 @@ export * from './housing-intent.js';
 export * from './housing-context.js';
 export * from './hiring.js';
 export * from './hiring-languages.js';
+export * from './hiring-context.js';
 export * from './money.js';
 export * from './hiring-professions.js';
 export * from './hiring-advanced.js';

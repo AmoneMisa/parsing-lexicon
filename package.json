@@ -38,6 +38,10 @@
     },
     "./hiring": "./src/hiring.js",
     "./hiring-languages": "./src/hiring-languages.js",
+    "./hiring-context": {
+      "types": "./src/hiring-context.d.ts",
+      "import": "./src/hiring-context.js"
+    },
     "./money": "./src/money.js",
     "./hiring-professions": "./src/hiring-professions.js",
     "./hiring-advanced": "./src/hiring-advanced.js"
