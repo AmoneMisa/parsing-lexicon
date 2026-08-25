@@ -5,6 +5,7 @@ export type LexiconEntity = Readonly<{
   canonical: string;
   aliases: AliasMap;
   country?: CountryCode;
+  city?: string;
   code?: string;
   currency?: string;
   region?: string;
@@ -51,7 +52,6 @@ export type PoiEntry = Readonly<{
   canonical: string;
   name: string;
   category: string;
-  categories?: readonly string[];
   aliases: readonly string[];
   re: RegExp;
   contextRequired: boolean;
@@ -77,7 +77,14 @@ export type SearchCluster = Readonly<{
   city?: string;
   members: readonly string[];
 }>;
-export type AreaEntry = Readonly<{ canonical: string; name: string; type: 'local_area'; country: 'UZ'; city: 'Tashkent'; aliases: readonly string[] }>;
+export type AreaEntry = Readonly<{
+  canonical: string;
+  name: string;
+  type: 'local_area';
+  country: 'UZ';
+  city: 'Tashkent';
+  aliases: readonly string[];
+}>;
 export type LocationCityDictionary = Readonly<{
   districts?: readonly LocationEntry[];
   microdistricts?: readonly LocationEntry[];
@@ -93,7 +100,7 @@ export type LocationCityDictionary = Readonly<{
   searchClusters?: readonly LocationEntry[];
 }>;
 export type CentralAsiaLocationMatch = Readonly<{
-  country: string | null;
+  country: 'KZ' | 'UZ' | null;
   city: string;
   type: string;
   key: string;
@@ -110,18 +117,6 @@ export type CentralAsiaLocationResult = Readonly<{
   searchClusters: readonly SearchCluster[];
   candidates: readonly Readonly<{ city: string; matches: readonly CentralAsiaLocationMatch[] }>[];
 }>;
-
-export type CanonicalMatch<T> = Readonly<{
-  entry: T;
-  canonical: string | null;
-  alias: string;
-  sourceAlias: string;
-  normalizedAlias: string;
-  start: number;
-  end: number;
-}>;
-export type LexiconValidationIssue = Readonly<{ kind: string; [key: string]: unknown }>;
-export type LexiconValidationReport = Readonly<{ ok: boolean; errors: readonly LexiconValidationIssue[] }>;
 
 export type ProfessionEntry = Readonly<{
   id: string;
@@ -157,12 +152,30 @@ export type ExperienceParseResult = Readonly<{
   minYears: number | null;
   maxYears: number | null;
 }>;
+export type CanonicalMatch<T> = Readonly<{
+  entry: T;
+  canonical: string | null;
+  alias: string;
+  sourceAlias: string;
+  normalizedAlias: string;
+  start: number;
+  end: number;
+}>;
+export type LexiconValidationError = Readonly<{
+  kind: string;
+  [key: string]: unknown;
+}>;
+export type LexiconValidationReport = Readonly<{
+  ok: boolean;
+  errors: readonly LexiconValidationError[];
+}>;
 
 export const LEXICON_LANGUAGES: readonly LexiconLanguage[];
 export const COUNTRY_CODES: readonly CountryCode[];
-export function deepFreeze<T>(value: T): T;
+export function deepFreeze<T>(value: T): Readonly<T>;
 export function freezeAliases(aliases?: AliasMap | readonly string[]): AliasMap | readonly string[];
 export function lexiconEntity(canonical: string, aliases?: AliasMap, extra?: Record<string, unknown>): LexiconEntity;
+export function locationEntity(canonical: string, aliases?: readonly string[], extra?: Record<string, unknown>): LocationEntry;
 
 export function normalizeUnicode(value: unknown): string;
 export function normalizeForMatch(value: unknown): string;
@@ -171,31 +184,29 @@ export function normalizedAliasKeys(value: unknown, options?: { transliteration?
 export function aliasesOf(entry: { aliases?: AliasMap | readonly string[] }): string[];
 export function buildAliasIndex<T>(entries: readonly T[], options?: { transliteration?: boolean }): Map<string, T>;
 export function getAliasIndex<T>(entries: readonly T[], options?: { transliteration?: boolean }): Map<string, T>;
+export function getAliasOwnersIndex<T>(entries: readonly T[], options?: { transliteration?: boolean }): Map<string, ReadonlyArray<Readonly<{ entry: T; sourceAlias: string; searchAlias: string }>>>;
 export function findCanonical<T extends { canonical?: string; name?: string; aliases?: AliasMap | readonly string[] }>(value: unknown, entries: readonly T[], options?: { partial?: boolean; transliteration?: boolean }): T | null;
-export function getAliasOwnersIndex<T>(entries: readonly T[], options?: { transliteration?: boolean }): Map<string, readonly unknown[]>;
-export function findAllCanonical<T extends { canonical?: string; name?: string; aliases?: AliasMap | readonly string[] }>(value: unknown, entries: readonly T[], options?: { transliteration?: boolean }): readonly CanonicalMatch<T>[];
-export function validateLexicon(entries: readonly unknown[], options?: { allowedCollisions?: readonly string[]; allowedLanguageKeys?: readonly LexiconLanguage[]; allowDuplicateCanonicals?: boolean }): LexiconValidationReport;
-export function assertValidLexicon(entries: readonly unknown[], options?: { allowedCollisions?: readonly string[]; allowedLanguageKeys?: readonly LexiconLanguage[]; allowDuplicateCanonicals?: boolean }): true;
+export function findAllCanonical<T extends { canonical?: string; name?: string; aliases?: AliasMap | readonly string[] }>(value: unknown, entries: readonly T[], options?: { transliteration?: boolean }): CanonicalMatch<T>[];
 export function collectAliasCollisions(entries: readonly unknown[], options?: { includeSearchFolds?: boolean; allowed?: readonly string[] }): ReadonlyArray<Readonly<{ alias: string; canonicals: readonly string[] }>>;
 export function validateAliasCollisions(entries: readonly unknown[], options?: { includeSearchFolds?: boolean; allowed?: readonly string[] }): true;
+export function validateLexicon(entries: readonly unknown[], options?: { allowedCollisions?: readonly string[]; allowedLanguageKeys?: readonly LexiconLanguage[]; allowDuplicateCanonicals?: boolean }): LexiconValidationReport;
+export function assertValidLexicon(entries: readonly unknown[], options?: { allowedCollisions?: readonly string[]; allowedLanguageKeys?: readonly LexiconLanguage[]; allowDuplicateCanonicals?: boolean }): true;
 export function escapeRegex(value: unknown): string;
 export function aliasesToRegex(values: readonly string[], flags?: string): RegExp;
 
 export const COUNTRIES: readonly LexiconEntity[];
 export function canonicalCountry(value: unknown): string | null;
-export function canonicalCountryCode(value: unknown): string | null;
+export function canonicalCountryCode(value: unknown): CountryCode | null;
 export function countryByCode(value: unknown): LexiconEntity | null;
 
 export const UZ_CITIES: readonly LexiconEntity[];
 export const KZ_CITIES: readonly LexiconEntity[];
 export const CITIES: readonly LexiconEntity[];
-export const CITIES_BY_COUNTRY: Readonly<Record<string, readonly LexiconEntity[]>>;
 export function canonicalCity(value: unknown, country?: CountryCode | null): string | null;
 export const UA_CITIES: readonly LexiconEntity[];
 export const RO_CITIES: readonly LexiconEntity[];
 export const KG_CITIES: readonly LexiconEntity[];
 export const GEOGRAPHY_CITIES: readonly LexiconEntity[];
-export const GEOGRAPHY_CITIES_BY_COUNTRY: Readonly<Record<string, readonly LexiconEntity[]>>;
 export function canonicalAnyCity(value: unknown, country?: CountryCode | null): string | null;
 export const UA_ADDITIONAL_CITIES: readonly LexiconEntity[];
 export const UA_CITY_CATALOG: readonly LexiconEntity[];
@@ -258,7 +269,6 @@ export const KZ_REGIONS: readonly LexiconEntity[];
 export const UA_REGIONS: readonly LexiconEntity[];
 export const RO_REGIONS: readonly LexiconEntity[];
 export const REGIONS: readonly LexiconEntity[];
-export const REGIONS_BY_COUNTRY: Readonly<Record<string, readonly LexiconEntity[]>>;
 export function canonicalRegion(value: unknown, country?: CountryCode | null): string | null;
 
 export const LOCATION_LIST_KEYS: readonly string[];
@@ -274,9 +284,9 @@ export const UA_REGION_ENTRIES: readonly LocationEntry[];
 export const UA_SECONDARY_CITIES: Readonly<Record<string, { aliases: readonly string[]; re: RegExp; microdistricts?: readonly LocationEntry[] }>>;
 export function matchUkraineRegion(text: unknown): LocationEntry | null;
 export function matchUkraineSecondaryCity(text: unknown): ({ city: string; aliases: readonly string[]; re: RegExp; microdistricts?: readonly LocationEntry[] }) | null;
-export function dictionaryFor(countryCode: string, city: string): LocationCityDictionary | null;
-export function locationCities(countryCode: string): Readonly<Record<string, LocationCityDictionary>>;
-export function matchDictionaryLocation(text: unknown, countryCode: string, city?: string | null): { city: string; type: string; name: string; aliases: readonly string[] } | null;
+export function dictionaryFor(countryCode: CountryCode, city: string): LocationCityDictionary | null;
+export function locationCities(countryCode: CountryCode): Readonly<Record<string, LocationCityDictionary>>;
+export function matchDictionaryLocation(text: unknown, countryCode: CountryCode, city?: string | null): { city: string; type: string; name: string; aliases: readonly string[] } | null;
 
 export const KZ_LOCATION_EXTENSIONS: Readonly<Record<string, LocationCityDictionary>>;
 export const KZ_SEARCH_CLUSTERS: readonly SearchCluster[];
@@ -354,3 +364,4 @@ export function parseExperience(value: unknown): ExperienceParseResult | null;
 export * from './src/housing-context.js';
 export * from './src/hiring-context.js';
 export * from './src/housing-intent.js';
+export * from './src/housing-structured.js';
