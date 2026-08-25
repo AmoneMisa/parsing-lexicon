@@ -332,7 +332,7 @@ export function validateLexicon(entries, {
         errors.push(Object.freeze({ kind: 'emptyAlias', canonical, aliasIndex, entryIndex, language }));
         continue;
       }
-      const normalized = normalizeForMatch(alias);
+      const normalized = normalizeForMatch(alias) || normalizeUnicode(alias).toLocaleLowerCase().trim();
       if (!normalized) {
         errors.push(Object.freeze({ kind: 'emptyNormalizedAlias', canonical, alias, aliasIndex, entryIndex, language }));
         continue;
