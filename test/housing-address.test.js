@@ -12,6 +12,19 @@ test('parses explicit Ukrainian street, house and building', () => {
   });
 });
 
+test('parses Ukrainian postfix street type and ignores preceding listing prose', () => {
+  const parsed = parseHousingAddress('продаж квартири жк Alter ego 63m2 2к Лабораторний провулок 7');
+  assert.equal(parsed.street, 'Лабораторний провулок');
+  assert.equal(parsed.houseNumber, '7');
+  assert.equal(parsed.address, 'Лабораторний провулок 7');
+  assert.equal(parsed.confidence, 1);
+
+  const fromDescription = parseHousingAddress('Продаж видової квартири в ЖК Alter Ego | Лабораторний провулок, 7\nУ продажу стильна квартира');
+  assert.equal(fromDescription.street, 'Лабораторний провулок');
+  assert.equal(fromDescription.houseNumber, '7');
+  assert.equal(fromDescription.address, 'Лабораторний провулок 7');
+});
+
 test('parses labelled bare address without treating arbitrary prose as address', () => {
   const parsed = parseHousingAddress('Адрес: Воробкевича 12-А');
   assert.equal(parsed.street, 'Воробкевича');
