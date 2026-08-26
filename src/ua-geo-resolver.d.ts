@@ -17,6 +17,8 @@ export type UkraineResolvedLocationCoordinate = Readonly<Omit<UkraineLocationCoo
 export type UkraineAdministrativeCoordinateDescriptor = Readonly<{
   code: string;
   name: string;
+  canonical: string;
+  aliases: readonly string[];
   type: string;
   parentCode: string | null;
   coordinates: UkraineGeoPoint | null;
