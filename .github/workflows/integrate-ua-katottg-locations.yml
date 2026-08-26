@@ -1,0 +1,69 @@
+name: Integrate UA KATOTTG into location model
+
+on:
+  push:
+    branches:
+      - feat/ua-geo-dependencies
+    paths:
+      - .github/workflows/integrate-ua-katottg-locations.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  integrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/ua-geo-dependencies
+          fetch-depth: 0
+      - name: Patch canonical location pipeline
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          p = Path('src/locations.js')
+          s = p.read_text(encoding='utf-8')
+          anchor = "import { UA_METRO_LOCATION_EXTENSIONS } from './ua-location-extensions-metro.js';\n"
+          addition = "import { UA_KATOTTG_LOCATION_EXTENSIONS } from './ua-katottg-location-extensions.js';\n"
+          if addition not in s:
+              s = s.replace(anchor, anchor + addition)
+
+          old = """export function dictionaryFor(countryCode, city) {\n  if (countryCode === 'UA' && UA_EXTRA_LOCATION_DICTIONARIES[city]) {\n    return { ...UA_EXTRA_LOCATION_DICTIONARIES[city], ...(LOCATION_DICTIONARIES.UA?.[city] || {}) };\n  }\n  return LOCATION_DICTIONARIES[countryCode]?.[city] || null;\n}\n"""
+          new = """export function dictionaryFor(countryCode, city) {\n  if (countryCode === 'UA') return locationCities('UA')[city] || null;\n  return LOCATION_DICTIONARIES[countryCode]?.[city] || null;\n}\n"""
+          if old in s:
+              s = s.replace(old, new)
+
+          needle = "    ...Object.keys(UA_METRO_LOCATION_EXTENSIONS),\n"
+          repl = needle + "    ...Object.keys(UA_KATOTTG_LOCATION_EXTENSIONS),\n"
+          if "...Object.keys(UA_KATOTTG_LOCATION_EXTENSIONS)" not in s:
+              s = s.replace(needle, repl)
+
+          needle = "      UA_METRO_LOCATION_EXTENSIONS[city],\n"
+          repl = "      UA_KATOTTG_LOCATION_EXTENSIONS[city],\n" + needle
+          if "UA_KATOTTG_LOCATION_EXTENSIONS[city]" not in s:
+              s = s.replace(needle, repl)
+
+          old_types = "['districts', 'microdistricts', 'residentialComplexes', 'metro', 'streets', 'landmarks']"
+          new_types = "['regions', 'administrativeDistricts', 'communities', 'districts', 'microdistricts', 'residentialComplexes', 'metro', 'streets', 'landmarks', 'pois']"
+          s = s.replace(old_types, new_types)
+          p.write_text(s, encoding='utf-8')
+
+          p = Path('package.json')
+          s = p.read_text(encoding='utf-8')
+          s = s.replace('    "./ua-geo-set": { "types": "./src/ua-geo-set.d.ts", "import": "./src/ua-geo-set.js" },\n', '')
+          p.write_text(s, encoding='utf-8')
+          PY
+      - name: Commit integration
+        run: |
+          git add src/locations.js package.json
+          if git diff --cached --quiet; then
+            echo 'Already integrated'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'refactor(ua): fold KATOTTG into canonical location dictionaries'
+          git push origin HEAD:feat/ua-geo-dependencies
