@@ -16,6 +16,10 @@ function clean(value) {
     .trim();
 }
 
+function escapeRegExp(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 function compactStreet(value) {
   return clean(value)
     .replace(new RegExp(`^${PREFIX_STREET_MARKER}\\s*`, 'iu'), '')
@@ -82,6 +86,25 @@ function explicitStreetAddress(text) {
   return null;
 }
 
+function knownStreetAddress(text, knownStreet) {
+  const street = compactStreet(knownStreet);
+  if (!street) return null;
+  const streetPattern = street.split(/\s+/u).map(escapeRegExp).join('\\s+');
+  const re = new RegExp(
+    `(?:^|[^\\p{L}\\p{N}])(?:${PREFIX_STREET_MARKER}\\s+)?(${streetPattern})(?:\\s+${POSTFIX_STREET_MARKER})?` +
+      `(?:\\s*[,;]?\\s*(?:${HOUSE_MARKER})?\\s*(${NUMBER_TOKEN}))?` +
+      `(?:\\s*[,;]?\\s*${BUILDING_MARKER}\\s*(${NUMBER_TOKEN}))?` +
+      `(?=$|[^\\p{L}\\p{N}])`,
+    'iu',
+  );
+  const match = text.match(re);
+  if (!match) return null;
+  const houseNumber = match[2] || null;
+  const building = match[3] || null;
+  const address = composeHousingAddress({ street, houseNumber, building });
+  return result(address, street, houseNumber, building, houseNumber ? 0.98 : 0.9);
+}
+
 function labelledAddress(text) {
   const label = text.match(ADDRESS_LABEL_RE);
   if (!label) return null;
@@ -102,7 +125,11 @@ function bareAddress(text) {
  * Parse only textual address structure. This module intentionally contains no
  * coordinates and performs no geocoding.
  *
- * allowBare should be used only when the input is already known to be an
+ * `knownStreet` may be supplied when a location dictionary has already
+ * canonicalized the street. In that mode the parser only accepts a house/building
+ * number immediately adjacent to that exact street mention.
+ *
+ * `allowBare` should be used only when the input is already known to be an
  * address field (for example a source-provided address), not on arbitrary post
  * prose where prices and phone numbers may look like house numbers.
  */
@@ -112,6 +139,11 @@ export function parseHousingAddress(value, options = {}) {
 
   const labelled = labelledAddress(text);
   if (labelled) return labelled;
+
+  if (options.knownStreet) {
+    const known = knownStreetAddress(text, options.knownStreet);
+    if (known) return known;
+  }
 
   const explicit = explicitStreetAddress(text);
   if (explicit) return explicit;
