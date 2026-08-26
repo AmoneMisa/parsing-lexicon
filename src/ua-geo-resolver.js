@@ -6,9 +6,9 @@ import {
   ukraineLocationGeocodeCandidates,
 } from './ua-geo-coordinates.js';
 import {
-  ukraineAdministrativeGeoSet,
-  ukraineAdministrativeGeocodeCandidates,
-} from './ua-geo-set.js';
+  UA_KATOTTG_LOCATION_ENTRIES,
+  ukraineKatottgGeocodeCandidates,
+} from './ua-katottg-location-extensions.js';
 
 const LOCATION_KEYS = Object.freeze([
   'districts',
@@ -61,11 +61,7 @@ function descriptor(city, type, entry) {
   });
 }
 
-/**
- * Enumerates every Ukrainian internal location entity known by the package.
- * Static verified anchors are attached immediately; every other entity gets a
- * deterministic city-scoped geocoding candidate instead of a fabricated point.
- */
+/** Every Ukrainian housing/search dependency in the canonical location model. */
 export function ukraineLocationCoordinateDescriptors() {
   const rows = [];
   const seen = new Set();
@@ -98,7 +94,6 @@ export function ukraineLocationCoordinateDescriptors() {
   return freeze(rows);
 }
 
-/** Summary useful for CI/audits and consumers deciding whether to prewarm geo. */
 export function ukraineLocationCoordinateCoverage() {
   const rows = ukraineLocationCoordinateDescriptors();
   const byType = {};
@@ -121,10 +116,6 @@ export function ukraineLocationCoordinateCoverage() {
   });
 }
 
-/**
- * Resolves coordinates for every requested Ukrainian dependency using an injected
- * lookup(query) function. No network dependency is embedded in the lexicon.
- */
 export async function resolveUkraineLocationCoordinates(lookup, options = {}) {
   const rows = ukraineLocationCoordinateDescriptors();
   const cities = options.cities ? new Set(options.cities) : null;
@@ -162,28 +153,26 @@ export async function resolveUkraineLocationCoordinates(lookup, options = {}) {
   return freeze(results);
 }
 
-/**
- * KATOTTG-wide coordinate descriptors. Official objects do not contain point
- * geometry, so they are never assigned fake city-centre coordinates; instead
- * the source hierarchy is converted to deterministic geocoding candidates.
- */
+/** KATOTTG coordinate descriptors over the same canonical location-entry objects. */
 export function ukraineAdministrativeCoordinateDescriptors(options = {}) {
   const types = options.types ? new Set(options.types) : null;
   const parentCode = options.parentCode ? String(options.parentCode) : null;
   const limit = Number.isFinite(options.limit) ? Math.max(0, options.limit) : Number.POSITIVE_INFINITY;
   const rows = [];
 
-  for (const entity of ukraineAdministrativeGeoSet()) {
+  for (const entity of UA_KATOTTG_LOCATION_ENTRIES) {
     if (types && !types.has(entity.type)) continue;
     if (parentCode && entity.parentCode !== parentCode) continue;
     rows.push(freeze({
-      code: entity.code,
-      name: entity.name,
+      code: entity.katottgCode,
+      name: entity.canonical,
+      canonical: entity.canonical,
+      aliases: entity.aliases,
       type: entity.type,
       parentCode: entity.parentCode,
       coordinates: null,
       source: 'geocode',
-      candidates: ukraineAdministrativeGeocodeCandidates(entity),
+      candidates: ukraineKatottgGeocodeCandidates(entity),
     }));
     if (rows.length >= limit) break;
   }
