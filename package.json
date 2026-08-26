@@ -17,7 +17,6 @@
     "./geography-detection": { "types": "./src/geography-detection.d.ts", "import": "./src/geography-detection.js" },
     "./central-asia": "./src/central-asia.js",
     "./ukraine": "./src/ukraine.js",
-    "./ua-national-admin": { "types": "./src/ua-national-admin.d.ts", "import": "./src/ua-national-admin.js" },
     "./ua-geo-coordinates": { "types": "./src/ua-geo-coordinates.d.ts", "import": "./src/ua-geo-coordinates.js" },
     "./ua-geo-resolver": { "types": "./src/ua-geo-resolver.d.ts", "import": "./src/ua-geo-resolver.js" },
     "./location-merge": "./src/location-merge.js",
@@ -66,8 +65,7 @@
   "engines": { "node": ">=20" },
   "scripts": { "test": "node --test" },
   "dependencies": {
-    "libphonenumber-js": "^1.11.20",
-    "ua-geo-set": "1.0.4"
+    "libphonenumber-js": "^1.11.20"
   },
   "keywords": ["parsing", "lexicon", "uzbek", "kazakh", "ukrainian", "romanian", "russian", "housing", "hiring", "salary", "professions", "geography"],
   "license": "MIT"
