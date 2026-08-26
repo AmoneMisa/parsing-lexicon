@@ -3,10 +3,15 @@ import assert from 'node:assert/strict';
 
 import {
   findPhoneLikeSpans,
+  findTelegramContacts,
   normalizePhone,
+  normalizeTelegramContact,
   parsePhoneNumbers,
 } from '../src/contact.js';
 import {
+  currencyDisplay,
+  currencyName,
+  currencySymbol,
   moneyCurrencyCandidatesFromText,
   moneyCurrencyFromText,
 } from '../src/currency.js';
@@ -29,8 +34,26 @@ test('phone parser accepts international format without a country hint', () => {
   assert.deepEqual(phones.map((phone) => phone.country), ['UZ', 'RO']);
 });
 
+test('phone parser keeps extension and explicit validity metadata', () => {
+  const phone = normalizePhone('Office +1 202 555 0123 ext. 45');
+  assert.equal(phone?.number, '+12025550123');
+  assert.equal(phone?.extension, '45');
+  assert.equal(phone?.valid, true);
+  assert.equal(phone?.possible, true);
+  assert.match(phone?.national || '', /202/);
+  assert.match(phone?.international || '', /\+1/);
+});
+
 test('invalid numeric sequences are not promoted to normalized phones', () => {
   assert.deepEqual(parsePhoneNumbers('ID 123456789012345 and price 10000000'), []);
+});
+
+test('telegram contacts normalize mentions and public links without transport logic', () => {
+  const contacts = findTelegramContacts('Контакт @Maria_dev, дубль https://t.me/Maria_dev и tg://resolve?domain=Other_User');
+  assert.deepEqual(contacts.map((contact) => contact.username), ['Maria_dev', 'Other_User']);
+  assert.equal(contacts[0]?.url, 'https://t.me/Maria_dev');
+  assert.equal(normalizeTelegramContact('telegram.me/admin_support')?.handle, '@admin_support');
+  assert.deepEqual(findTelegramContacts('mail user@example.com'), []);
 });
 
 test('currency aliases cover additional regional and international currencies', () => {
@@ -50,6 +73,13 @@ test('ambiguous symbols use explicit code or fallback currency as context', () =
   assert.deepEqual(moneyCurrencyCandidatesFromText('¥ 900'), ['JPY', 'CNY']);
   assert.equal(moneyCurrencyFromText('¥ 900', 'CNY'), 'CNY');
   assert.equal(moneyCurrencyFromText('¥ 900', 'JPY'), 'JPY');
+});
+
+test('currency display metadata is localized without duplicating the currency catalog', () => {
+  assert.equal(currencySymbol('USD', 'ru'), '$');
+  assert.equal(currencySymbol('UAH', 'uk'), '₴');
+  assert.match(currencyName('EUR', 'ru') || '', /евро/i);
+  assert.equal(currencyDisplay('NOPE', 'en'), null);
 });
 
 test('housing price parser consumes expanded currency names without a second parser', () => {
