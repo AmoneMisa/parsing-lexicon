@@ -20,6 +20,13 @@ const EMPLOYMENT_OUTPUT = Object.freeze({
   seasonal: 'seasonal',
 });
 
+const PROBATION_MATCH_ORDER = Object.freeze([
+  PROBATION_TERMS.paid,
+  PROBATION_TERMS.unpaid,
+  PROBATION_TERMS.noProbation,
+  PROBATION_TERMS.probation,
+]);
+
 function collectCanonical(text, entries) {
   const values = [];
   for (const entry of entries) {
@@ -47,7 +54,7 @@ export function detectWorkSchedules(value) {
 
 export function detectProbation(value) {
   const text = String(value || '');
-  for (const entry of Object.values(PROBATION_TERMS)) {
+  for (const entry of PROBATION_MATCH_ORDER) {
     if (findCanonical(text, [entry], { partial: true })) return entry.canonical;
   }
   return null;
