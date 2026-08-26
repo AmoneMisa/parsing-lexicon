@@ -1,0 +1,38 @@
+name: Generate UA KATOTTG snapshot
+
+on:
+  push:
+    branches:
+      - feat/ua-geo-dependencies
+    paths:
+      - scripts/generate-ua-katottg.py
+      - .github/workflows/generate-ua-katottg.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/ua-geo-dependencies
+          fetch-depth: 0
+      - name: Generate official KATOTTG snapshot
+        run: |
+          python scripts/generate-ua-katottg.py \
+            --url 'https://mindev.gov.ua/storage/app/sites/1/uploaded-files/kodifikator-07-07.xlsx' \
+            --snapshot '2026-07-07'
+      - name: Commit generated data
+        run: |
+          git add src/generated/ua-katottg.json
+          if git diff --cached --quiet; then
+            echo 'Generated snapshot is unchanged'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'data(ua): vendor KATOTTG 2026-07-07 snapshot'
+          git push origin HEAD:feat/ua-geo-dependencies
