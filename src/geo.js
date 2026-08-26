@@ -90,7 +90,7 @@ export const TASHKENT_METRO = Object.freeze([
   station('Qiyot', 'Кият', 'Qiyot', 'circle', ['Киёт', 'Қиёт']),
   station('Tolariq', 'Толарык', 'Tolariq', 'circle', ['Толарик', 'Толариқ']),
   station('Xonobod', 'Хонабад', 'Xonobod', 'circle', ['Ханабад']),
-  station('Quruvchilar', 'Курувчилар', 'circle', ['Қурувчилар']),
+  station('Quruvchilar', 'Курувчилар', 'Quruvchilar', 'circle', ['Қурувчилар']),
   station('Turon', 'Туран', 'Turon', 'circle', ['Турон']),
   station('Qipchoq', 'Кипчак', 'Qipchoq', 'circle', ['Қипчоқ']),
 ]);
