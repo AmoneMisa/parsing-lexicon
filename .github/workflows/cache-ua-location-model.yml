@@ -1,0 +1,104 @@
+name: Cache UA location model
+
+on:
+  push:
+    branches:
+      - feat/ua-geo-dependencies
+    paths:
+      - .github/workflows/cache-ua-location-model.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/ua-geo-dependencies
+          fetch-depth: 0
+      - name: Cache unified UA location dictionaries
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('src/locations.js')
+          s = p.read_text(encoding='utf-8')
+          old = '''export function locationCities(countryCode) {
+  if (countryCode !== 'UA') return LOCATION_DICTIONARIES[countryCode] || {};
+  const legacy = { ...UA_EXTRA_LOCATION_DICTIONARIES, ...(LOCATION_DICTIONARIES.UA || {}) };
+  const names = [...new Set([
+    ...Object.keys(legacy),
+    ...Object.keys(UA_MAJOR_LOCATION_EXTENSIONS),
+    ...Object.keys(UA_REGIONAL_LOCATION_EXTENSIONS),
+    ...Object.keys(UA_SECONDARY_LOCATION_EXTENSIONS),
+    ...Object.keys(UA_METRO_LOCATION_EXTENSIONS),
+    ...Object.keys(UA_KATOTTG_LOCATION_EXTENSIONS),
+  ])];
+  return Object.freeze(Object.fromEntries(names.map((city) => [
+    city,
+    mergeLocationCityDictionaries(
+      legacy[city],
+      UA_MAJOR_LOCATION_EXTENSIONS[city],
+      UA_REGIONAL_LOCATION_EXTENSIONS[city],
+      UA_SECONDARY_LOCATION_EXTENSIONS[city],
+      UA_KATOTTG_LOCATION_EXTENSIONS[city],
+      UA_METRO_LOCATION_EXTENSIONS[city],
+    ),
+  ])));
+}
+'''
+          new = '''let uaLocationCitiesCache = null;
+
+export function locationCities(countryCode) {
+  if (countryCode !== 'UA') return LOCATION_DICTIONARIES[countryCode] || {};
+  if (uaLocationCitiesCache) return uaLocationCitiesCache;
+
+  const legacy = { ...UA_EXTRA_LOCATION_DICTIONARIES, ...(LOCATION_DICTIONARIES.UA || {}) };
+  const names = [...new Set([
+    ...Object.keys(legacy),
+    ...Object.keys(UA_MAJOR_LOCATION_EXTENSIONS),
+    ...Object.keys(UA_REGIONAL_LOCATION_EXTENSIONS),
+    ...Object.keys(UA_SECONDARY_LOCATION_EXTENSIONS),
+    ...Object.keys(UA_METRO_LOCATION_EXTENSIONS),
+    ...Object.keys(UA_KATOTTG_LOCATION_EXTENSIONS),
+  ])];
+
+  uaLocationCitiesCache = Object.freeze(Object.fromEntries(names.map((city) => {
+    const katottg = UA_KATOTTG_LOCATION_EXTENSIONS[city];
+    const curated = [
+      legacy[city],
+      UA_MAJOR_LOCATION_EXTENSIONS[city],
+      UA_REGIONAL_LOCATION_EXTENSIONS[city],
+      UA_SECONDARY_LOCATION_EXTENSIONS[city],
+      UA_METRO_LOCATION_EXTENSIONS[city],
+    ].filter(Boolean);
+
+    // Most nationwide settlements exist only in the official layer. Reuse that
+    // already-normalized dictionary directly instead of rebuilding thousands of
+    // tiny merge results and regexes. Curated cities still go through the normal
+    // merge/dedupe pipeline so aliases and KATOTTG metadata become one identity.
+    if (katottg && curated.length === 0) return [city, katottg];
+
+    return [city, mergeLocationCityDictionaries(
+      ...curated.slice(0, 4),
+      katottg,
+      curated[4],
+    )];
+  })));
+  return uaLocationCitiesCache;
+}
+'''
+          if old not in s:
+              raise SystemExit('locationCities block not found')
+          p.write_text(s.replace(old, new), encoding='utf-8')
+          PY
+      - name: Commit optimization
+        run: |
+          git add src/locations.js
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'perf(ua): cache nationwide location dictionaries'
+          git push origin HEAD:feat/ua-geo-dependencies
