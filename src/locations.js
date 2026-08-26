@@ -4,6 +4,7 @@ import { UA_REGIONS as UA_REGION_LEXICON } from './geography.js';
 import { mergeLocationCityDictionaries } from './location-merge.js';
 import { UA_MAJOR_LOCATION_EXTENSIONS } from './ua-location-extensions-major.js';
 import { UA_REGIONAL_LOCATION_EXTENSIONS } from './ua-location-extensions-regional.js';
+import { UA_SECONDARY_LOCATION_EXTENSIONS } from './ua-secondary-cities.js';
 import { UA_METRO_LOCATION_EXTENSIONS } from './ua-location-extensions-metro.js';
 
 function entries(rows) {
@@ -427,6 +428,7 @@ export function locationCities(countryCode) {
     ...Object.keys(legacy),
     ...Object.keys(UA_MAJOR_LOCATION_EXTENSIONS),
     ...Object.keys(UA_REGIONAL_LOCATION_EXTENSIONS),
+    ...Object.keys(UA_SECONDARY_LOCATION_EXTENSIONS),
     ...Object.keys(UA_METRO_LOCATION_EXTENSIONS),
   ])];
   return Object.freeze(Object.fromEntries(names.map((city) => [
@@ -435,6 +437,7 @@ export function locationCities(countryCode) {
       legacy[city],
       UA_MAJOR_LOCATION_EXTENSIONS[city],
       UA_REGIONAL_LOCATION_EXTENSIONS[city],
+      UA_SECONDARY_LOCATION_EXTENSIONS[city],
       UA_METRO_LOCATION_EXTENSIONS[city],
     ),
   ])));
