@@ -62,24 +62,37 @@ function nearestAncestor(row, type) {
   return null;
 }
 
-function scopedSettlementKey(row) {
-  const community = nearestAncestor(row, 'community');
-  if (community?.[1]) return `${row[1]} (${community[1]})`;
-  const district = nearestAncestor(row, 'district');
-  if (district?.[1]) return `${row[1]} (${district[1]})`;
-  return `${row[1]} [${row[0]}]`;
-}
-
-function cityKey(row) {
+function preferredSettlementKey(row) {
   const normalized = normalizeForMatch(row[1]);
   const sameNameCount = settlementNameCounts.get(normalized) || 0;
   const canonical = canonicalUkraineCity(row[1]);
 
-  // Curated city canonicals describe cities, not every village/settlement that
-  // happens to share the same official name (e.g. multiple Вишневе entries).
+  // Curated city canonicals describe actual cities, not every village or
+  // settlement that happens to share the same official name.
   if (canonical && (sameNameCount <= 1 || CANONICAL_CITY_TYPES.has(row[3]))) return canonical;
   if (sameNameCount <= 1) return row[1];
-  return scopedSettlementKey(row);
+
+  const community = nearestAncestor(row, 'community');
+  const district = nearestAncestor(row, 'district');
+  const region = nearestAncestor(row, 'region');
+  const scope = [...new Set([community?.[1], district?.[1], region?.[1]].filter(Boolean))].join(' / ');
+  return scope ? `${row[1]} (${scope})` : row[1];
+}
+
+// Human-readable hierarchy usually disambiguates same-name settlements. For the
+// rare case where KATOTTG itself contains two same-name objects under the same
+// hierarchy, append the stable official code rather than dropping either record.
+const preferredKeyCounts = new Map();
+for (const row of settlementRows) {
+  const key = preferredSettlementKey(row);
+  preferredKeyCounts.set(key, (preferredKeyCounts.get(key) || 0) + 1);
+}
+
+function cityKey(row) {
+  const preferred = preferredSettlementKey(row);
+  return (preferredKeyCounts.get(preferred) || 0) > 1
+    ? `${preferred} [${row[0]}]`
+    : preferred;
 }
 
 function pushUnique(target, key, value) {
