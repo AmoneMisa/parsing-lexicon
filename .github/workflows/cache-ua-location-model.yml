@@ -1,3 +1,4 @@
+# one-off migration helper; deleted after patch commit
 name: Cache UA location model
 
 on:
@@ -75,10 +76,6 @@ export function locationCities(countryCode) {
       UA_METRO_LOCATION_EXTENSIONS[city],
     ].filter(Boolean);
 
-    // Most nationwide settlements exist only in the official layer. Reuse that
-    // already-normalized dictionary directly instead of rebuilding thousands of
-    // tiny merge results and regexes. Curated cities still go through the normal
-    // merge/dedupe pipeline so aliases and KATOTTG metadata become one identity.
     if (katottg && curated.length === 0) return [city, katottg];
 
     return [city, mergeLocationCityDictionaries(
@@ -91,6 +88,9 @@ export function locationCities(countryCode) {
 }
 '''
           if old not in s:
+              if 'let uaLocationCitiesCache = null;' in s:
+                  print('Already patched')
+                  raise SystemExit(0)
               raise SystemExit('locationCities block not found')
           p.write_text(s.replace(old, new), encoding='utf-8')
           PY
