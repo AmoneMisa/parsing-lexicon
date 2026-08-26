@@ -34,6 +34,7 @@ export * from './housing-intent.js';
 export * from './housing-context.js';
 export * from './housing-address.js';
 export * from './housing-features.js';
+export * from './housing-listing-fields.js';
 export * from './housing-structured.js';
 export * from './hiring.js';
 export * from './hiring-languages.js';
