@@ -46,11 +46,12 @@ function mergeEntry(existing, incoming) {
   const name = existingIsCurated && incomingIsKatottg
     ? (existing.name || canonical)
     : (base.name || canonical);
+  const existingSource = existingIsCurated ? (existing.source || 'curated') : existing?.source;
   const sources = [...new Set([
-    ...(existing?.sources || []), existing?.source,
+    ...(existing?.sources || []), existingSource,
     ...(incoming?.sources || []), incoming?.source,
   ].filter(Boolean))];
-  const source = existingIsCurated && incomingIsKatottg ? existing.source : base.source;
+  const source = existingIsCurated && incomingIsKatottg ? existingSource : base.source;
 
   return Object.freeze({
     ...base,
