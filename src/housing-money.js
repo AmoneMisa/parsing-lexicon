@@ -52,7 +52,10 @@ export function parseHousingPrice(value, fallbackCurrency = '') {
       .sort((a, b) => String(b).length - String(a).length)
       .map(escapeRegex)
       .join('|');
-    const match = text.match(new RegExp(`(\\d+(?:[.,]\\d+)?)\\s*(${scalePattern})`, 'i'));
+    // Multiplier aliases include useful one-letter forms such as `m` and `k`.
+    // Require the alias to end at a token boundary so measurements/words like
+    // `500 m2` and `5 minut` cannot be promoted to 500 million / 5 million.
+    const match = text.match(new RegExp(`(\\d+(?:[.,]\\d+)?)\\s*(${scalePattern})(?=$|[^\\p{L}\\p{N}_])`, 'iu'));
     if (match) {
       const amount = parseScaledAmount(match[1], match[2]);
       if (amount != null && amount >= 1000 && amount <= 5_000_000_000) price = Math.round(amount);
