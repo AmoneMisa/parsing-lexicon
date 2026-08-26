@@ -86,6 +86,24 @@ function postfixTypedStreetAddress(line) {
   return result(address, street, houseNumber, building, 1);
 }
 
+function prefixTypedStreetAddress(line) {
+  const prefix = line.match(new RegExp(
+    `(?:^|[\\s,;])${PREFIX_STREET_MARKER}\\s+` +
+      `((?:${STREET_WORD}\\s+){0,4}${STREET_WORD})` +
+      `\\s*[,;]?\\s*(?:${HOUSE_MARKER}\\s*)?(${NUMBER_TOKEN})` +
+      `(?:\\s*[,;]?\\s*${BUILDING_MARKER}\\s*(${NUMBER_TOKEN}))?` +
+      `(?=$|[^\\p{L}\\p{N}])`,
+    'iu',
+  ));
+  if (!prefix) return null;
+
+  const street = prefix[1];
+  const houseNumber = prefix[2];
+  const building = prefix[3] || null;
+  const address = composeHousingAddress({ street, houseNumber, building });
+  return result(address, street, houseNumber, building, 1);
+}
+
 function explicitStreetAddress(text) {
   const lines = text
     .split(/[\r\n|]/u)
@@ -96,6 +114,9 @@ function explicitStreetAddress(text) {
   for (const line of lines) {
     const postfixTyped = postfixTypedStreetAddress(line);
     if (postfixTyped) return postfixTyped;
+
+    const prefixTyped = prefixTypedStreetAddress(line);
+    if (prefixTyped) return prefixTyped;
 
     const prefix = line.match(new RegExp(`(?:^|[\\s,;])(${PREFIX_STREET_MARKER})\\s+(.+)$`, 'iu'));
     if (prefix) {
