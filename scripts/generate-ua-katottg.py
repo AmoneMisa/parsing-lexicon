@@ -17,7 +17,6 @@ from xml.etree import ElementTree as ET
 
 NS = {"m": "http://schemas.openxmlformats.org/spreadsheetml/2006/main",
       "r": "http://schemas.openxmlformats.org/officeDocument/2006/relationships"}
-PKG_NS = {"r": "http://schemas.openxmlformats.org/package/2006/relationships"}
 UA_CODE_RE = re.compile(r"^UA[0-9A-Z]{17}$")
 CATEGORY_CODES = {"O", "K", "P", "H", "M", "T", "C", "X", "B"}
 TYPE_BY_CATEGORY = {
@@ -52,18 +51,21 @@ def shared_strings(zf: zipfile.ZipFile) -> list[str]:
     return values
 
 
-def first_sheet_path(zf: zipfile.ZipFile) -> str:
+def worksheet_paths(zf: zipfile.ZipFile) -> list[tuple[str, str]]:
     wb = ET.fromstring(zf.read("xl/workbook.xml"))
-    sheet = wb.find("m:sheets/m:sheet", NS)
-    if sheet is None:
-        raise RuntimeError("XLSX contains no worksheets")
-    rel_id = sheet.attrib[f"{{{NS['r']}}}id"]
     rels = ET.fromstring(zf.read("xl/_rels/workbook.xml.rels"))
-    for rel in rels:
-        if rel.attrib.get("Id") == rel_id:
-            target = rel.attrib["Target"].lstrip("/")
-            return target if target.startswith("xl/") else f"xl/{target}"
-    raise RuntimeError("Unable to resolve first worksheet")
+    by_id = {rel.attrib.get("Id"): rel.attrib.get("Target", "") for rel in rels}
+    result = []
+    for sheet in wb.findall("m:sheets/m:sheet", NS):
+        rel_id = sheet.attrib.get(f"{{{NS['r']}}}id")
+        target = by_id.get(rel_id, "").lstrip("/")
+        if not target:
+            continue
+        path = target if target.startswith("xl/") else f"xl/{target}"
+        result.append((sheet.attrib.get("name", path), path))
+    if not result:
+        raise RuntimeError("XLSX contains no worksheets")
+    return result
 
 
 def cell_value(cell: ET.Element, strings: list[str]) -> str:
@@ -82,20 +84,34 @@ def cell_value(cell: ET.Element, strings: list[str]) -> str:
     return raw
 
 
+def sheet_rows(zf: zipfile.ZipFile, path: str, strings: list[str]) -> list[list[str]]:
+    root = ET.fromstring(zf.read(path))
+    rows: list[list[str]] = []
+    for row in root.findall(".//m:sheetData/m:row", NS):
+        cells: dict[int, str] = {}
+        for cell in row.findall("m:c", NS):
+            cells[col_index(cell.attrib.get("r", "A1"))] = cell_value(cell, strings)
+        if not cells:
+            continue
+        width = max(cells) + 1
+        rows.append([cells.get(i, "").strip() for i in range(width)])
+    return rows
+
+
 def read_rows(payload: bytes) -> list[list[str]]:
     with zipfile.ZipFile(io.BytesIO(payload)) as zf:
         strings = shared_strings(zf)
-        sheet_path = first_sheet_path(zf)
-        root = ET.fromstring(zf.read(sheet_path))
-        rows: list[list[str]] = []
-        for row in root.findall(".//m:sheetData/m:row", NS):
-            cells: dict[int, str] = {}
-            for cell in row.findall("m:c", NS):
-                cells[col_index(cell.attrib.get("r", "A1"))] = cell_value(cell, strings)
-            if not cells:
-                continue
-            width = max(cells) + 1
-            rows.append([cells.get(i, "").strip() for i in range(width)])
+        candidates = []
+        for name, path in worksheet_paths(zf):
+            rows = sheet_rows(zf, path, strings)
+            code_count = sum(
+                1 for row in rows for value in row
+                if UA_CODE_RE.match(value.strip())
+            )
+            candidates.append((code_count, name, rows))
+            print(f"worksheet {name!r}: {len(rows)} rows, {code_count} KATOTTG codes")
+        code_count, name, rows = max(candidates, key=lambda item: item[0])
+        print(f"selected worksheet {name!r} with {code_count} KATOTTG codes")
         return rows
 
 
@@ -104,41 +120,43 @@ def normalized(text: str) -> str:
 
 
 def detect_header(rows: list[list[str]]) -> int:
-    for i, row in enumerate(rows[:30]):
+    for i, row in enumerate(rows[:50]):
         joined = " | ".join(normalized(x).lower() for x in row)
         if "категор" in joined and ("назва" in joined or "наймен" in joined):
             return i
-    # Official KATOTTG files sometimes have a title block and no conventional
-    # header wording; data rows are still self-describing via UA code + category.
     return -1
 
 
 def parse_records(rows: list[list[str]]) -> list[list[str | None]]:
     header_idx = detect_header(rows)
+    normalized_rows = [[normalized(x) for x in row] for row in rows[header_idx + 1:]]
+
+    # Official KATOTTG uses one code column per hierarchy level. Determine those
+    # columns from the data itself instead of depending on localized headings.
+    code_columns = sorted({
+        idx
+        for row in normalized_rows
+        for idx, value in enumerate(row)
+        if UA_CODE_RE.match(value)
+    })
+    if not code_columns:
+        return []
+    depth_by_column = {column: depth for depth, column in enumerate(code_columns)}
+
     records: list[list[str | None]] = []
     parent_by_depth: dict[int, str] = {}
-
-    for raw_row in rows[header_idx + 1:]:
-        row = [normalized(x) for x in raw_row]
+    for row in normalized_rows:
         if not any(row):
             continue
         code_cells = [(idx, value) for idx, value in enumerate(row) if UA_CODE_RE.match(value)]
         if not code_cells:
             continue
-
-        code_idx, code = code_cells[0]
+        code_idx, code = code_cells[-1]
         category = next((value for value in row if value in CATEGORY_CODES), None)
         if category is None:
             continue
+        depth = depth_by_column[code_idx]
 
-        # The official sheet stores hierarchy codes across level columns. The
-        # populated UA-code column therefore gives depth without relying on
-        # localized header labels.
-        earlier_codes = [idx for idx, value in code_cells if idx <= code_idx]
-        depth = max(0, len(earlier_codes) - 1)
-
-        # Prefer the text immediately after category; otherwise use the last
-        # meaningful non-code, non-category value on the row.
         cat_idx = row.index(category)
         trailing = [v for v in row[cat_idx + 1:] if v and not UA_CODE_RE.match(v) and v not in CATEGORY_CODES]
         candidates = trailing or [v for v in row if v and not UA_CODE_RE.match(v) and v not in CATEGORY_CODES]
@@ -154,7 +172,6 @@ def parse_records(rows: list[list[str]]) -> list[list[str | None]]:
 
         records.append([code, name, category, TYPE_BY_CATEGORY[category], parent])
 
-    # De-duplicate exact codes defensively while preserving source order.
     out: list[list[str | None]] = []
     seen: set[str] = set()
     for row in records:
