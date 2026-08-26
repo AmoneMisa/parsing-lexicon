@@ -131,8 +131,6 @@ def parse_records(rows: list[list[str]]) -> list[list[str | None]]:
     header_idx = detect_header(rows)
     normalized_rows = [[normalized(x) for x in row] for row in rows[header_idx + 1:]]
 
-    # Official KATOTTG uses one code column per hierarchy level. Determine those
-    # columns from the data itself instead of depending on localized headings.
     code_columns = sorted({
         idx
         for row in normalized_rows
@@ -141,21 +139,18 @@ def parse_records(rows: list[list[str]]) -> list[list[str | None]]:
     })
     if not code_columns:
         return []
-    depth_by_column = {column: depth for depth, column in enumerate(code_columns)}
 
     records: list[list[str | None]] = []
-    parent_by_depth: dict[int, str] = {}
     for row in normalized_rows:
         if not any(row):
             continue
         code_cells = [(idx, value) for idx, value in enumerate(row) if UA_CODE_RE.match(value)]
         if not code_cells:
             continue
-        code_idx, code = code_cells[-1]
+        _, code = code_cells[-1]
         category = next((value for value in row if value in CATEGORY_CODES), None)
         if category is None:
             continue
-        depth = depth_by_column[code_idx]
 
         cat_idx = row.index(category)
         trailing = [v for v in row[cat_idx + 1:] if v and not UA_CODE_RE.match(v) and v not in CATEGORY_CODES]
@@ -164,12 +159,10 @@ def parse_records(rows: list[list[str]]) -> list[list[str | None]]:
             continue
         name = candidates[-1]
 
-        parent = parent_by_depth.get(depth - 1) if depth > 0 else None
-        parent_by_depth[depth] = code
-        for key in list(parent_by_depth):
-            if key > depth:
-                del parent_by_depth[key]
-
+        # Each official row repeats its hierarchy from level 1 through the
+        # current object. Therefore the previous UA code on this exact row is
+        # the authoritative parent; no dependence on row ordering is needed.
+        parent = code_cells[-2][1] if len(code_cells) > 1 else None
         records.append([code, name, category, TYPE_BY_CATEGORY[category], parent])
 
     out: list[list[str | None]] = []
