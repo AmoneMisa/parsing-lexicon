@@ -1,10 +1,10 @@
 const PHONE_RUN_RE = /\+?\d[\d\s().-]{7,}\d/gu;
 const ADDRESS_LABEL_RE = /(?:адрес|адреса|адресація|адресация|manzil|address|adresă|adresa)\s*[:=\-–—]\s*/iu;
-const STREET_MARKER = String.raw`(?:ул(?:ица)?|вул(?:иця)?|просп(?:ект)?|пр-т|переул(?:ок)?|пров(?:улок)?|проезд|наб(?:ережная)?|шоссе|str(?:ada)?\.?|street|st\.?|avenue|ave\.?|road|rd\.?|ko['’ʼ\u02bc]?cha(?:si)?|кўча(?:си)?|көше)`;
+const PREFIX_STREET_MARKER = String.raw`(?:ул(?:ица)?|вул(?:иця)?|просп(?:ект)?|пр-т|переул(?:ок)?|пров(?:улок)?|проезд|наб(?:ережная)?|шоссе|str(?:ada)?\.?|street|st\.?|avenue|ave\.?|road|rd\.?|көше)`;
+const POSTFIX_STREET_MARKER = String.raw`(?:ko['’ʼ\u02bc]?cha(?:si)?|кўча(?:си)?|коча(?:си)?|kocha(?:si)?)`;
 const HOUSE_MARKER = String.raw`(?:дом|д\.|будинок|буд\.|house|h\.|uy|уй|nr\.?|no\.?|№)`;
 const BUILDING_MARKER = String.raw`(?:корп(?:ус)?\.?|к\.|строен(?:ие)?|стр\.|будова|секц(?:ия|ія)?|bloc|corp|building|bldg\.?|korpus)`;
 const NUMBER_TOKEN = String.raw`\d{1,5}[\p{L}]?(?:[\/-]\d{1,4}[\p{L}]?)?`;
-const STREET_NAME = String.raw`[\p{L}\p{M}][\p{L}\p{M}\d'’ʼ.\- ]{1,78}?`;
 
 function clean(value) {
   return String(value ?? '')
@@ -18,7 +18,8 @@ function clean(value) {
 
 function compactStreet(value) {
   return clean(value)
-    .replace(new RegExp(`^${STREET_MARKER}\\s*`, 'iu'), '')
+    .replace(new RegExp(`^${PREFIX_STREET_MARKER}\\s*`, 'iu'), '')
+    .replace(new RegExp(`\\s+${POSTFIX_STREET_MARKER}$`, 'iu'), '')
     .replace(/[\s,;:.\-–—]+$/gu, '')
     .trim() || null;
 }
@@ -38,15 +39,47 @@ function result(address, street = null, houseNumber = null, building = null, con
   });
 }
 
+function splitAddressTail(raw) {
+  const text = clean(raw);
+  if (!text) return null;
+
+  const buildingRe = new RegExp(`(?:\\s*[,;]?\\s*${BUILDING_MARKER}\\s*(${NUMBER_TOKEN}))\\s*$`, 'iu');
+  const buildingMatch = text.match(buildingRe);
+  const building = buildingMatch?.[1] || null;
+  const withoutBuilding = buildingMatch ? clean(text.slice(0, buildingMatch.index)) : text;
+
+  const markedHouse = withoutBuilding.match(new RegExp(`^(.*?)\\s*[,;]?\\s*${HOUSE_MARKER}\\s*(${NUMBER_TOKEN})\\s*$`, 'iu'));
+  if (markedHouse && /\p{L}{2,}/u.test(markedHouse[1])) {
+    return { street: markedHouse[1], houseNumber: markedHouse[2], building };
+  }
+
+  const trailingHouse = withoutBuilding.match(new RegExp(`^(.*?\\p{L}.*?)\\s+(${NUMBER_TOKEN})\\s*$`, 'iu'));
+  if (trailingHouse && /\p{L}{2,}/u.test(trailingHouse[1])) {
+    return { street: trailingHouse[1], houseNumber: trailingHouse[2], building };
+  }
+
+  return /\p{L}{2,}/u.test(withoutBuilding)
+    ? { street: withoutBuilding, houseNumber: null, building }
+    : null;
+}
+
 function explicitStreetAddress(text) {
-  const re = new RegExp(
-    `(${STREET_MARKER})\\s+(${STREET_NAME})(?:\\s*[,;]?\\s*(?:${HOUSE_MARKER})?\\s*(${NUMBER_TOKEN}))?(?:\\s*[,;]?\\s*${BUILDING_MARKER}\\s*(${NUMBER_TOKEN}))?`,
-    'iu',
-  );
-  const match = text.match(re);
-  if (!match) return null;
-  const address = [match[1], match[2], match[3], match[4] ? `корп. ${match[4]}` : null].filter(Boolean).join(' ');
-  return result(address, match[2], match[3], match[4], match[3] ? 1 : 0.9);
+  const line = clean(text.split(/[\r\n|]/u, 1)[0]).slice(0, 160);
+
+  const prefix = line.match(new RegExp(`(?:^|[\\s,;])(${PREFIX_STREET_MARKER})\\s+(.+)$`, 'iu'));
+  if (prefix) {
+    const tail = splitAddressTail(prefix[2]);
+    if (tail) return result(line, tail.street, tail.houseNumber, tail.building, tail.houseNumber ? 1 : 0.9);
+  }
+
+  const postfix = line.match(new RegExp(`^(.+?)\\s+(${POSTFIX_STREET_MARKER})(.*)$`, 'iu'));
+  if (postfix) {
+    const tailText = clean(`${postfix[1]} ${postfix[3]}`);
+    const tail = splitAddressTail(tailText);
+    if (tail) return result(line, tail.street, tail.houseNumber, tail.building, tail.houseNumber ? 1 : 0.9);
+  }
+
+  return null;
 }
 
 function labelledAddress(text) {
@@ -59,21 +92,10 @@ function labelledAddress(text) {
 }
 
 function bareAddress(text) {
-  const buildingTail = new RegExp(`(?:\\s*[,;]?\\s*${BUILDING_MARKER}\\s*(${NUMBER_TOKEN}))\\s*$`, 'iu');
-  const buildingMatch = text.match(buildingTail);
-  const withoutBuilding = buildingMatch ? clean(text.slice(0, buildingMatch.index)) : text;
-
-  const markedHouse = withoutBuilding.match(new RegExp(`^(.*?)\\s*[,;]?\\s*${HOUSE_MARKER}\\s*(${NUMBER_TOKEN})\\s*$`, 'iu'));
-  if (markedHouse && /\p{L}{2,}/u.test(markedHouse[1])) {
-    return result(text, markedHouse[1], markedHouse[2], buildingMatch?.[1], 0.95);
-  }
-
-  const trailingNumber = withoutBuilding.match(new RegExp(`^(${STREET_NAME})\\s+(${NUMBER_TOKEN})\\s*$`, 'iu'));
-  if (trailingNumber && /\p{L}{2,}/u.test(trailingNumber[1])) {
-    return result(text, trailingNumber[1], trailingNumber[2], buildingMatch?.[1], 0.85);
-  }
-
-  return /\p{L}{2,}/u.test(text) ? result(text, text, null, buildingMatch?.[1], 0.55) : null;
+  const tail = splitAddressTail(text);
+  if (!tail) return null;
+  const confidence = tail.houseNumber ? 0.85 : 0.55;
+  return result(text, tail.street, tail.houseNumber, tail.building, confidence);
 }
 
 /**
