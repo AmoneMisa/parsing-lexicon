@@ -44,6 +44,7 @@
     "./hiring-source-semantics": { "types": "./src/hiring-source-semantics.d.ts", "import": "./src/hiring-source-semantics.js" },
     "./hiring-requirements": { "types": "./src/hiring-requirements.d.ts", "import": "./src/hiring-requirements.js" },
     "./hiring-semantics": { "types": "./src/hiring-semantics.d.ts", "import": "./src/hiring-semantics.js" },
+    "./hiring-work-semantics": { "types": "./src/hiring-work-semantics.d.ts", "import": "./src/hiring-work-semantics.js" },
     "./hiring-candidate-fields": { "types": "./src/hiring-candidate-fields.d.ts", "import": "./src/hiring-candidate-fields.js" },
     "./hiring-temporal": { "types": "./src/hiring-temporal.d.ts", "import": "./src/hiring-temporal.js" },
     "./hiring-vacancy-fields": { "types": "./src/hiring-vacancy-fields.d.ts", "import": "./src/hiring-vacancy-fields.js" },
