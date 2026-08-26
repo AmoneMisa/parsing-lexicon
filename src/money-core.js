@@ -1,5 +1,9 @@
 import { aliasesOf, findCanonical } from './normalization.js';
-import { CURRENCY_TERMS, NUMBER_MULTIPLIERS } from './money-lexicon.js';
+import {
+  CURRENCY_SYMBOL_CANDIDATES,
+  CURRENCY_TERMS,
+  NUMBER_MULTIPLIERS,
+} from './money-lexicon.js';
 
 export const MONEY_NUMBER_PATTERN = '\\d{1,3}(?:[ \\u00a0.,]\\d{3})+|\\d+(?:[.,]\\d+)?';
 export const MONEY_SCALE_PATTERN = 'k|к|тыс\\.?|тысяч(?:а|и)?|тис\\.?|thousand|ming|мың|m|м|млн\\.?|mln|million|миллион(?:ов)?|мільйон(?:ів)?|bn|млрд|mlrd|billion';
@@ -26,16 +30,43 @@ export function parseScaledAmount(raw, scale) {
   return value == null ? null : value * moneyScaleMultiplier(scale);
 }
 
-export function moneyCurrencyFromText(value, fallbackCurrency = null) {
+function explicitCurrencyFromText(value) {
   const text = String(value || '');
-  if (text.includes('$')) return 'USD';
-  if (text.includes('€')) return 'EUR';
-  if (text.includes('₴')) return 'UAH';
-  if (text.includes('₽')) return 'RUB';
-  if (text.includes('£')) return 'GBP';
-  if (text.includes('₺')) return 'TRY';
-  if (text.includes('₾')) return 'GEL';
-  return findCanonical(text, CURRENCY_TERMS, { partial: true })?.canonical || fallbackCurrency;
+  // Ambiguous glyphs are removed so they cannot hide an explicit ISO/name token.
+  const lexicalText = text.replace(/[$¥￥]/g, ' ');
+  return findCanonical(lexicalText, CURRENCY_TERMS, { partial: true })?.canonical || null;
+}
+
+export function moneyCurrencyCandidatesFromText(value) {
+  const text = String(value || '');
+  const candidates = [];
+  const add = (currency) => {
+    if (currency && !candidates.includes(currency)) candidates.push(currency);
+  };
+
+  add(explicitCurrencyFromText(text));
+
+  for (const [symbol, currencies] of Object.entries(CURRENCY_SYMBOL_CANDIDATES)) {
+    if (!text.includes(symbol)) continue;
+    for (const currency of currencies) add(currency);
+  }
+
+  if (!candidates.length) {
+    add(findCanonical(text, CURRENCY_TERMS, { partial: true })?.canonical);
+  }
+
+  return Object.freeze(candidates);
+}
+
+export function moneyCurrencyFromText(value, fallbackCurrency = null) {
+  const explicit = explicitCurrencyFromText(value);
+  if (explicit) return explicit;
+
+  const candidates = moneyCurrencyCandidatesFromText(value);
+  if (!candidates.length) return fallbackCurrency;
+  const fallback = String(fallbackCurrency || '').trim().toUpperCase();
+  if (fallback && candidates.includes(fallback)) return fallback;
+  return candidates[0];
 }
 
 function escapeRegex(value) {

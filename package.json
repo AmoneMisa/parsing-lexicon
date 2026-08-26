@@ -49,6 +49,7 @@
     "./hiring-location-fields": { "types": "./src/hiring-location-fields.d.ts", "import": "./src/hiring-location-fields.js" },
     "./hiring-salary-context": { "types": "./src/hiring-salary-context.d.ts", "import": "./src/hiring-salary-context.js" },
     "./money": "./src/money.js",
+    "./currency": { "types": "./src/currency.d.ts", "import": "./src/currency.js" },
     "./contact": { "types": "./src/contact.d.ts", "import": "./src/contact.js" },
     "./housing-money": { "types": "./src/housing-money.d.ts", "import": "./src/housing-money.js" },
     "./hiring-professions": "./src/hiring-professions.js",
@@ -59,6 +60,9 @@
   "sideEffects": false,
   "engines": { "node": ">=20" },
   "scripts": { "test": "node --test" },
+  "dependencies": {
+    "libphonenumber-js": "^1.11.20"
+  },
   "keywords": ["parsing", "lexicon", "uzbek", "kazakh", "ukrainian", "romanian", "russian", "housing", "hiring", "salary", "professions", "geography"],
   "license": "MIT"
 }
