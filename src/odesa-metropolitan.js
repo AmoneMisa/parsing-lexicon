@@ -67,7 +67,6 @@ export const ODESA_SUBURBS = Object.freeze([
 
 export const ODESA_DEVELOPMENT_AREAS = Object.freeze([
   entity('Совіньйон', 'development_area', ['Совиньон','Совіньйон','Sauvignon','Совиньон-1','Совиньон-2','Совиньон-3','Совиньон Марин Виллас']),
-  entity('Чорноморська Рів’єра', 'development_area', ['Черноморская Ривьера','Чорноморська Рів\'єра','Black Sea Riviera','район Черноморской Ривьеры']),
 ]);
 
 const MALL_CONTEXT = '(?:трц|тц|торгов(?:ый|ельний)|shopping|mall|возле|біля|рядом|напротив|навпроти|у\\s+ривьер|у\\s+рів.{0,2}єр)';
@@ -76,6 +75,7 @@ export const ODESA_RIVIERA_ENTITIES = Object.freeze([
   entity('ТРЦ Рів’єра', 'poi.shopping_mall', ['Ривьера','Ривьеры','Рів’єра','Рів’єри','Riviera','ТРЦ Ривьера','ТРЦ Рів’єра','Riviera Shopping City','Riviera Mall','ТЦ Ривьера','ТЦ Рів’єра'], { cluster: NORTH_EAST_CLUSTER, parent: 'Фонтанка', contextRequired: true, context: MALL_CONTEXT }),
   entity('Район ТРЦ Рів’єра', 'informal_area', ['район Ривьеры','район Рів’єри','у Ривьеры','возле Ривьеры','біля Рів’єри','рядом с Ривьерой','напротив Ривьеры','навпроти Рів’єри','Ривьера район','Riviera area'], { cluster: NORTH_EAST_CLUSTER, parent: 'Фонтанка' }),
   entity('Сади Рів’єри', 'residential_complex', ['Сады Ривьеры','Сади Рів’єри','Сады Ривьера','Сади Рів’єра','Riviera Gardens','Gardens of Riviera','Ривьера Сити','Рів’єра Сіті','Riviera City'], { parent: 'Фонтанка' }),
+  entity('Чорноморська Рів’єра', 'residential_complex', ['Черноморская Ривьера','Чорноморська Рів\'єра','Black Sea Riviera','район Черноморской Ривьеры'], { parent: 'Фонтанка' }),
 ]);
 
 export const ODESA_CONTEXT_POIS = Object.freeze([
