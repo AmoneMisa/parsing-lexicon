@@ -8,6 +8,7 @@ import { centralAsiaLocationCity } from './central-asia-locations.js';
 // City coordinates are keyed by the package canonical city names. Local,
 // Cyrillic and historical spellings resolve through canonicalUzbekistanCity().
 const point = (lat, lng) => Object.freeze({ lat, lng });
+const locationPoint = (lat, lng, accuracyM) => Object.freeze({ lat, lng, accuracyM });
 
 export const UZ_CITY_COORDINATES = Object.freeze({
   Tashkent: point(41.264646, 69.216270),
@@ -53,11 +54,63 @@ export const UZ_CITY_COORDINATES = Object.freeze({
   Muynak: point(43.778770, 59.030394),
 });
 
-// A district, mahalla, metro station or residential complex is not inherently
-// one point. Keep this map deliberately sparse: add only stable, independently
-// verified point anchors. Unanchored entities still produce precise geocoding
-// candidates and then fall back to the canonical city centre.
-export const UZ_LOCATION_COORDINATES = Object.freeze({});
+// Stable representative anchors for shared, canonical location entities.
+// Streets and house addresses intentionally stay out of this table: they are
+// resolved by the external geocoder. Broad areas use a realistic accuracyM so
+// consumers never mistake a district/microdistrict centroid for a house point.
+export const UZ_LOCATION_COORDINATES = Object.freeze({
+  Tashkent: Object.freeze({
+    districts: Object.freeze({
+      Almazar: locationPoint(41.359795, 69.225525, 2500),
+      Bektemir: locationPoint(41.232856, 69.339761, 2500),
+      Mirobod: locationPoint(41.275016, 69.300304, 2500),
+      'Mirzo Ulugbek': locationPoint(41.329444, 69.347500, 2500),
+      Sergeli: locationPoint(41.235070, 69.247361, 2500),
+      Uchtepa: locationPoint(41.296989, 69.175251, 2500),
+      Chilanzar: locationPoint(41.267768, 69.200804, 2500),
+      Shaykhantahur: locationPoint(41.322837, 69.210288, 2500),
+      Yunusabad: locationPoint(41.358589, 69.289030, 2500),
+      Yakkasaray: locationPoint(41.281417, 69.249262, 2500),
+      Yangihayot: locationPoint(41.190923, 69.230060, 2500),
+      Yashnobod: locationPoint(41.284182, 69.336381, 2500),
+    }),
+    metro: Object.freeze({
+      'Buyuk Ipak Yoli': locationPoint(41.326180, 69.328530, 100),
+      Pushkin: locationPoint(41.321950, 69.311100, 100),
+      'Hamid Olimjon': locationPoint(41.318160, 69.295740, 100),
+      'Amir Temur Xiyoboni': locationPoint(41.312670, 69.283270, 100),
+      'Mustaqillik Maydoni': locationPoint(41.314950, 69.271070, 100),
+      Paxtakor: locationPoint(41.317790, 69.255090, 100),
+      Mashinasozlar: locationPoint(41.298990, 69.305130, 100),
+    }),
+    microdistricts: Object.freeze({
+      Karakamysh: locationPoint(41.358248, 69.221984, 800),
+      Sebzar: locationPoint(41.334988, 69.250119, 700),
+      Tashselmash: locationPoint(41.308510, 69.307370, 800),
+      Kuylyuk: locationPoint(41.246271, 69.292960, 1000),
+    }),
+    residentialComplexes: Object.freeze({
+      'Nest One': locationPoint(41.312058, 69.251817, 200),
+      'Gardens Residence': locationPoint(41.319995, 69.246713, 250),
+      Boulevard: locationPoint(41.315819, 69.244014, 250),
+      'NRG Oybek': locationPoint(41.293010, 69.281884, 200),
+      'NRG U-Tower': locationPoint(41.311097, 69.239303, 200),
+      'Mirabad Avenue': locationPoint(41.291499, 69.271517, 250),
+      'Assalom Sohil': locationPoint(41.282995, 69.308420, 250),
+      'Olmazor City': locationPoint(41.349744, 69.246343, 300),
+    }),
+    landmarks: Object.freeze({
+      'Chorsu Bazaar': locationPoint(41.326170, 69.236530, 150),
+      'Independence Square': locationPoint(41.315390, 69.267440, 200),
+    }),
+  }),
+  Samarkand: Object.freeze({
+    landmarks: Object.freeze({
+      'Registan Square': locationPoint(39.654690, 66.975870, 180),
+      'Gur-e-Amir': locationPoint(39.648333, 66.968889, 120),
+    }),
+  }),
+});
 
 const TYPE_TO_LIST = Object.freeze({
   district: 'districts',
