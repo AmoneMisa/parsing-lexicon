@@ -8,7 +8,7 @@ export type HousingAddressParts = Readonly<{
 
 export function parseHousingAddress(
   value: unknown,
-  options?: Readonly<{ allowBare?: boolean }>,
+  options?: Readonly<{ allowBare?: boolean; knownStreet?: string | null }>,
 ): HousingAddressParts;
 
 export function composeHousingAddress(parts?: Readonly<{
