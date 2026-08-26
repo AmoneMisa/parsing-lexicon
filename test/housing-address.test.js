@@ -25,6 +25,14 @@ test('parses Ukrainian postfix street type and ignores preceding listing prose',
   assert.equal(fromDescription.address, 'Лабораторний провулок 7');
 });
 
+test('stops prefixed street address before following listing prose', () => {
+  const parsed = parseHousingAddress('Сдам 1 комнатную квартиру улица львовская 1 /2х этажного дома ( дом переделан под квартиры, двор общий для квартирантов )');
+  assert.equal(parsed.street, 'львовская');
+  assert.equal(parsed.houseNumber, '1');
+  assert.equal(parsed.address, 'львовская 1');
+  assert.equal(parsed.confidence, 1);
+});
+
 test('parses labelled bare address without treating arbitrary prose as address', () => {
   const parsed = parseHousingAddress('Адрес: Воробкевича 12-А');
   assert.equal(parsed.street, 'Воробкевича');
