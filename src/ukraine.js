@@ -1,5 +1,6 @@
 import { UA_CITIES } from './geography.js';
 import { findCanonical } from './normalization.js';
+import { UA_SECONDARY_CITY_NAMES } from './ua-secondary-cities.js';
 
 const HISTORICAL_CITY_ALIASES = Object.freeze({
   Dnipro: ['Днепропетровск', 'Дніпропетровськ', 'Dnipropetrovsk'],
@@ -45,6 +46,7 @@ export const UA_ADDITIONAL_CITIES = Object.freeze([
   cityEntry('Kolomyia', ['Коломия', 'Коломыя', 'Kolomyia', 'Kolomea']),
   cityEntry('Kalush', ['Калуш', 'Kalush']),
   cityEntry('Kamianets-Podilskyi', ["Кам'янець-Подільський", 'Каменец-Подольский', 'Kamianets-Podilskyi', 'Kamenets-Podolsky']),
+  ...UA_SECONDARY_CITY_NAMES.map(([canonical, ...aliases]) => cityEntry(canonical, aliases)),
 ]);
 
 export const UA_CITY_CATALOG = Object.freeze([
