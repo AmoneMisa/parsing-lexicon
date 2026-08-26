@@ -33,7 +33,7 @@ for (const row of settlementRows) {
   settlementNameCounts.set(key, (settlementNameCounts.get(key) || 0) + 1);
 }
 
-function ancestry(row) {
+function ancestryRows(row) {
   const chain = [];
   const seen = new Set();
   let current = row;
@@ -46,7 +46,7 @@ function ancestry(row) {
 }
 
 function nearestSettlement(row) {
-  const chain = ancestry(row);
+  const chain = ancestryRows(row);
   for (let i = chain.length - 1; i >= 0; i -= 1) {
     if (SETTLEMENT_TYPES.has(chain[i][3])) return chain[i];
   }
@@ -54,7 +54,7 @@ function nearestSettlement(row) {
 }
 
 function nearestAncestor(row, type) {
-  const chain = ancestry(row);
+  const chain = ancestryRows(row);
   for (let i = chain.length - 1; i >= 0; i -= 1) {
     if (chain[i][3] === type) return chain[i];
   }
@@ -96,7 +96,7 @@ function build() {
     }
     result[key].katottg = entriesByCode.get(row[0]);
 
-    for (const ancestor of ancestry(row)) {
+    for (const ancestor of ancestryRows(row)) {
       const value = entriesByCode.get(ancestor[0]);
       if (!value || ancestor[0] === row[0]) continue;
       if (ancestor[3] === 'region') pushUnique(result[key], 'regions', value);
@@ -123,5 +123,24 @@ function build() {
   ])));
 }
 
+/** Same canonical location-entry objects that feed locationCities('UA'). */
+export const UA_KATOTTG_LOCATION_ENTRIES = freeze([...entriesByCode.values()]);
 export const UA_KATOTTG_LOCATION_EXTENSIONS = build();
 export const UA_KATOTTG_LOCATION_META = UA_KATOTTG_META;
+
+export function ukraineKatottgEntryByCode(code) {
+  return entriesByCode.get(String(code || '').trim()) || null;
+}
+
+export function ukraineKatottgAncestry(value) {
+  const code = typeof value === 'string' ? value : value?.katottgCode || value?.code;
+  const row = rowsByCode.get(String(code || '').trim());
+  return row ? freeze(ancestryRows(row).map((item) => entriesByCode.get(item[0]))) : freeze([]);
+}
+
+export function ukraineKatottgGeocodeCandidates(value) {
+  const entity = typeof value === 'string' ? ukraineKatottgEntryByCode(value) : value;
+  if (!entity?.katottgCode) return freeze([]);
+  const names = ukraineKatottgAncestry(entity).map((item) => item.canonical).filter(Boolean);
+  return freeze([...new Set([[...names, 'Ukraine'].join(', '), `${entity.canonical}, Ukraine`])]);
+}
