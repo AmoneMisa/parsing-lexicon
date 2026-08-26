@@ -6,8 +6,7 @@ import {
   SCHEDULE_TERMS,
   WORK_MODES,
 } from './hiring.js';
-import { WORK_SCHEDULE_EXTENSIONS } from './hiring-advanced.js';
-import { parseExperience } from './hiring-context.js';
+import { parseExperience, WORK_SCHEDULE_EXTENSIONS } from './hiring-advanced.js';
 
 const EMPLOYMENT_OUTPUT = Object.freeze({
   fullTime: 'full_time',
@@ -55,11 +54,12 @@ export function detectProbation(value) {
 }
 
 export function detectExperienceRequirement(value) {
-  const parsed = parseExperience(String(value || ''));
+  const text = String(value || '');
+  const parsed = parseExperience(text);
   if (parsed?.requirement === 'none') return 'noExperience';
   if (parsed?.requirement === 'required') return 'experienceRequired';
   for (const entry of Object.values(EXPERIENCE_REQUIREMENTS)) {
-    if (findCanonical(value, [entry], { partial: true })) return entry.canonical;
+    if (findCanonical(text, [entry], { partial: true })) return entry.canonical;
   }
   return null;
 }
