@@ -2,9 +2,11 @@ const PHONE_RUN_RE = /\+?\d[\d\s().-]{7,}\d/gu;
 const ADDRESS_LABEL_RE = /(?:адрес|адреса|адресація|адресация|manzil|address|adresă|adresa)\s*[:=\-–—]\s*/iu;
 const PREFIX_STREET_MARKER = String.raw`(?:(?:ул(?:ица)?|вул(?:иця)?|просп(?:ект)?|пр-т|переул(?:ок)?|пров(?:улок)?|проезд|наб(?:ережная)?|шоссе|str(?:ada)?|street|st|avenue|ave|road|rd|көше)\.?)`;
 const POSTFIX_STREET_MARKER = String.raw`(?:ko['’ʼ\u02bc]?cha(?:si)?|кўча(?:си)?|коча(?:си)?|kocha(?:si)?)`;
+const POSTFIX_STREET_TYPE = String.raw`(?:вулиця|улица|провулок|переулок|проспект|бульвар|набережна|набережная|шосе|шоссе|площа|площадь|узвіз|спуск|алея|аллея|дорога|тупик)`;
 const HOUSE_MARKER = String.raw`(?:дом|д\.|будинок|буд\.|house|h\.|uy|уй|nr\.?|no\.?|№)`;
 const BUILDING_MARKER = String.raw`(?:корп(?:ус)?\.?|к\.|строен(?:ие)?|стр\.|будова|секц(?:ия|ія)?|bloc|corp|building|bldg\.?|korpus)`;
 const NUMBER_TOKEN = String.raw`\d{1,5}(?:[-\/]?[\p{L}])?(?:[\/-]\d{1,4}(?:[-\/]?[\p{L}])?)?`;
+const STREET_WORD = String.raw`[\p{L}'’.-]{2,48}`;
 
 function clean(value) {
   return String(value ?? '')
@@ -67,20 +69,46 @@ function splitAddressTail(raw) {
     : null;
 }
 
+function postfixTypedStreetAddress(line) {
+  const suffix = line.match(new RegExp(
+    `(?:^|[^\\p{L}\\p{N}])((?:${STREET_WORD}\\s+){0,4}${STREET_WORD}\\s+${POSTFIX_STREET_TYPE})` +
+      `\\s*[,;]?\\s*(${NUMBER_TOKEN})` +
+      `(?:\\s*[,;]?\\s*${BUILDING_MARKER}\\s*(${NUMBER_TOKEN}))?` +
+      `(?=$|[^\\p{L}\\p{N}])`,
+    'iu',
+  ));
+  if (!suffix) return null;
+
+  const street = suffix[1];
+  const houseNumber = suffix[2];
+  const building = suffix[3] || null;
+  const address = composeHousingAddress({ street, houseNumber, building });
+  return result(address, street, houseNumber, building, 1);
+}
+
 function explicitStreetAddress(text) {
-  const line = clean(text.split(/[\r\n|]/u, 1)[0]).slice(0, 160);
+  const lines = text
+    .split(/[\r\n|]/u)
+    .map((part) => clean(part).slice(0, 160))
+    .filter(Boolean)
+    .slice(0, 12);
 
-  const prefix = line.match(new RegExp(`(?:^|[\\s,;])(${PREFIX_STREET_MARKER})\\s+(.+)$`, 'iu'));
-  if (prefix) {
-    const tail = splitAddressTail(prefix[2]);
-    if (tail) return result(line, tail.street, tail.houseNumber, tail.building, tail.houseNumber ? 1 : 0.9);
-  }
+  for (const line of lines) {
+    const postfixTyped = postfixTypedStreetAddress(line);
+    if (postfixTyped) return postfixTyped;
 
-  const postfix = line.match(new RegExp(`^(.+?)\\s+(${POSTFIX_STREET_MARKER})(.*)$`, 'iu'));
-  if (postfix) {
-    const tailText = clean(`${postfix[1]} ${postfix[3]}`);
-    const tail = splitAddressTail(tailText);
-    if (tail) return result(line, tail.street, tail.houseNumber, tail.building, tail.houseNumber ? 1 : 0.9);
+    const prefix = line.match(new RegExp(`(?:^|[\\s,;])(${PREFIX_STREET_MARKER})\\s+(.+)$`, 'iu'));
+    if (prefix) {
+      const tail = splitAddressTail(prefix[2]);
+      if (tail) return result(line, tail.street, tail.houseNumber, tail.building, tail.houseNumber ? 1 : 0.9);
+    }
+
+    const postfix = line.match(new RegExp(`^(.+?)\\s+(${POSTFIX_STREET_MARKER})(.*)$`, 'iu'));
+    if (postfix) {
+      const tailText = clean(`${postfix[1]} ${postfix[3]}`);
+      const tail = splitAddressTail(tailText);
+      if (tail) return result(line, tail.street, tail.houseNumber, tail.building, tail.houseNumber ? 1 : 0.9);
+    }
   }
 
   return null;
