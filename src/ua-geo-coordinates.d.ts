@@ -8,6 +8,7 @@ export const UA_CITY_COORDINATES: Readonly<Record<string, UkraineGeoPoint>>;
 export const UA_LOCATION_COORDINATES: Readonly<Record<string, Readonly<Record<string, Readonly<Record<string, UkraineGeoPoint>>>>>>;
 
 export function ukraineCityCoordinates(value: unknown): UkraineGeoPoint | null;
+export function ukraineCityGeocodeCandidates(value: unknown): readonly string[];
 export function ukraineLocationCoordinates(cityValue: unknown, type: string, locationValue: unknown): UkraineGeoPoint | null;
 export function ukraineLocationGeocodeCandidates(cityValue: unknown, type: string, locationValue: unknown): readonly string[];
 export function ukraineCoordinateFallback(cityValue: unknown, type?: string | null, locationValue?: unknown): UkraineCoordinateFallback | null;
