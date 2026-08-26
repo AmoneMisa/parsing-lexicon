@@ -30,6 +30,13 @@ export function parseScaledAmount(raw, scale) {
   return value == null ? null : value * moneyScaleMultiplier(scale);
 }
 
+function explicitCurrencyFromText(value) {
+  const text = String(value || '');
+  // Ambiguous glyphs are removed so they cannot hide an explicit ISO/name token.
+  const lexicalText = text.replace(/[$¥￥]/g, ' ');
+  return findCanonical(lexicalText, CURRENCY_TERMS, { partial: true })?.canonical || null;
+}
+
 export function moneyCurrencyCandidatesFromText(value) {
   const text = String(value || '');
   const candidates = [];
@@ -37,10 +44,7 @@ export function moneyCurrencyCandidatesFromText(value) {
     if (currency && !candidates.includes(currency)) candidates.push(currency);
   };
 
-  // Ambiguous glyphs are removed before lexical matching so '$' cannot hide
-  // an explicit CAD/AUD/etc code and '¥' cannot force JPY over CNY.
-  const lexicalText = text.replace(/[$¥￥]/g, ' ');
-  add(findCanonical(lexicalText, CURRENCY_TERMS, { partial: true })?.canonical);
+  add(explicitCurrencyFromText(text));
 
   for (const [symbol, currencies] of Object.entries(CURRENCY_SYMBOL_CANDIDATES)) {
     if (!text.includes(symbol)) continue;
@@ -55,6 +59,9 @@ export function moneyCurrencyCandidatesFromText(value) {
 }
 
 export function moneyCurrencyFromText(value, fallbackCurrency = null) {
+  const explicit = explicitCurrencyFromText(value);
+  if (explicit) return explicit;
+
   const candidates = moneyCurrencyCandidatesFromText(value);
   if (!candidates.length) return fallbackCurrency;
   const fallback = String(fallbackCurrency || '').trim().toUpperCase();
