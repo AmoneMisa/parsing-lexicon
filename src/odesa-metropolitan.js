@@ -25,6 +25,11 @@ export const ODESA_LOCAL_AREAS = Object.freeze([
     'Kotovsky settlement', 'Старый Посёлок', 'Старий селище Котовського', 'Старый Котовского',
     'Новый Котовского', 'Новий Котовського', 'Поле Чудес', 'Поле чудес', 'Сахарный', 'Цукровий',
   ], { cluster: NORTH_EAST_CLUSTER }),
+  entity('Малий Фонтан', 'local_area', [
+    'Малый Фонтан', 'Малий Фонтан', 'Малого Фонтана', 'Малого Фонтану',
+    'на Малом Фонтане', 'на Малому Фонтані', 'район Малого Фонтана', 'район Малого Фонтану',
+    'Malyi Fontan', 'Maly Fontan',
+  ]),
 ]);
 
 export const ODESA_MICRODISTRICT_EXTENSIONS = Object.freeze([
