@@ -1,6 +1,7 @@
 import { normalizeForMatch } from './normalization.js';
 import { canonicalUkraineCity } from './ukraine.js';
 import { locationCities } from './locations.js';
+import { matchOdesaMetropolitanEntity } from './odesa-metropolitan.js';
 
 // Coordinate contract intentionally mirrors Flat Finder's existing Uzbekistan
 // geocoding pipeline: { lat, lng }, exact anchors first, city centre fallback.
@@ -151,15 +152,28 @@ function findLocationEntry(city, type, value) {
   const key = listKey(type);
   const data = locationCities('UA')[city];
   const normalized = normalizeForMatch(value);
-  if (!data || !key || !normalized) return null;
-  return (data[key] || []).find((entry) =>
-    [entry?.canonical, entry?.name, ...(entry?.aliases || [])]
-      .some((candidate) => normalizeForMatch(candidate) === normalized)) || null;
+  if (data && key && normalized) {
+    const found = (data[key] || []).find((entry) =>
+      [entry?.canonical, entry?.name, ...(entry?.aliases || [])]
+        .some((candidate) => normalizeForMatch(candidate) === normalized));
+    if (found) return found;
+  }
+
+  if (city === 'Odesa') {
+    const metropolitan = matchOdesaMetropolitanEntity(value);
+    if (metropolitan) return metropolitan;
+  }
+  return null;
 }
 
 export function ukraineCityCoordinates(value) {
   const city = canonicalCity(value);
   return city ? (UA_CITY_COORDINATES[city] || null) : null;
+}
+
+export function ukraineCityGeocodeCandidates(value) {
+  const city = canonicalCity(value);
+  return city ? Object.freeze([`${city}, Ukraine`]) : Object.freeze([]);
 }
 
 export function ukraineLocationCoordinates(cityValue, type, locationValue) {
