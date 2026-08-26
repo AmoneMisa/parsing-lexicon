@@ -64,6 +64,12 @@ function parseUtilitiesAmount(text) {
   return deepFreeze({ amount, currency, approximate: /около|примерно|~|≈/iu.test(match[0]) });
 }
 
+function parseCommunalSeparated(text) {
+  if (/(коммунал\p{L}*(?:\s+услуг\p{L}*)?\s*(?:отдельно|сверху|плюс|оплачива\p{L}*\s*отдельно)|свет\s*вода\s*газ\s*отдельно|kommunal\p{L}*\s*(?:alohida|ustiga)|utilities?\s*(?:separate|extra|not included))/iu.test(text)) return true;
+  if (/(коммунал\p{L}*(?:\s+услуг\p{L}*)?\s*(?:включ|входит|в\s*стоимост)|вс[её]\s*включ|all\s*inclusive|kommunal\p{L}*\s*(?:kiritilgan|ichida)|utilities?\s*included)/iu.test(text)) return false;
+  return null;
+}
+
 export function parseHousingListingFields(value) {
   const text = normalizeUnicode(value ?? '');
   const context = parseHousingContext(text);
@@ -98,8 +104,7 @@ export function parseHousingListingFields(value) {
     airConditioner: bool(text, /кондицион|сплит[- ]?систем|konditsioner|klimat|air\s*con|aer\s+condi[țt]ionat/iu),
     gas,
     newBuilding: bool(text, /новостро|новобуд|новый\s+дом|new\s*build|newly\s*built|yangi\s+(?:bino|qurilgan|uy)|bloc\s+nou/iu),
-    communalSeparated: context.payments?.utilities === 'utilitiesSeparate' ? true
-      : context.payments?.utilities === 'utilitiesIncluded' ? false : null,
+    communalSeparated: parseCommunalSeparated(text),
     parking: bool(text, /паркинг|парков|машино[- ]?мест|parking|avtoturargoh|mashina\s*joyi/iu),
     elevator,
     heating: bool(text, /отоплени|heating|otoplenie|isitish|markaziy\s*issiq/iu),
