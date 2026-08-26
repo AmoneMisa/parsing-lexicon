@@ -38,12 +38,13 @@ function mergeEntry(existing, incoming) {
   ].filter(Boolean))];
   const base = { ...(existing || {}), ...(incoming || {}) };
 
-  const existingIsCurated = existing && existing.source !== 'katottg';
-  const incomingIsKatottg = incoming?.source === 'katottg';
-  const canonical = existingIsCurated && incomingIsKatottg
+  const existingIsCurated = existing && existing.source !== 'official';
+  const incomingIsOfficial = incoming?.source === 'official';
+  const preserveCuratedIdentity = existingIsCurated && incomingIsOfficial;
+  const canonical = preserveCuratedIdentity
     ? (existing.canonical || existing.name)
     : (base.canonical || base.name);
-  const name = existingIsCurated && incomingIsKatottg
+  const name = preserveCuratedIdentity
     ? (existing.name || canonical)
     : (base.name || canonical);
   const existingSource = existingIsCurated ? (existing.source || 'curated') : existing?.source;
@@ -51,7 +52,7 @@ function mergeEntry(existing, incoming) {
     ...(existing?.sources || []), existingSource,
     ...(incoming?.sources || []), incoming?.source,
   ].filter(Boolean))];
-  const source = existingIsCurated && incomingIsKatottg ? existingSource : base.source;
+  const source = preserveCuratedIdentity ? existingSource : base.source;
 
   return Object.freeze({
     ...base,
@@ -66,7 +67,7 @@ function mergeEntry(existing, incoming) {
 }
 
 function parentKey(entry) {
-  return normalizeForMatch(entry?.parent || entry?.parentCode || entry?.district || '');
+  return normalizeForMatch(entry?.parent || entry?.officialParentCode || entry?.parentCode || entry?.district || '');
 }
 
 function identityKeys(entry) {
