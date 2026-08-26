@@ -42,14 +42,51 @@ test('city geocoding prefers local canonical spelling when the catalog has one',
   assert.deepEqual(uzbekistanCityGeocodeCandidates('Ташкент'), ['Tashkent, Uzbekistan']);
 });
 
+test('verified Tashkent anchors resolve aliases without an external geocoder', () => {
+  assert.deepEqual(uzbekistanLocationCoordinates('Ташкент', 'district', 'Чиланзарский район'), {
+    lat: 41.267768,
+    lng: 69.200804,
+    accuracyM: 2500,
+  });
+  assert.deepEqual(uzbekistanLocationCoordinates('Toshkent', 'metro', 'Максима Горького'), {
+    lat: 41.326180,
+    lng: 69.328530,
+    accuracyM: 100,
+  });
+  assert.deepEqual(uzbekistanLocationCoordinates('Тошкент', 'microdistrict', 'Каракамыш'), {
+    lat: 41.358248,
+    lng: 69.221984,
+    accuracyM: 800,
+  });
+  assert.deepEqual(uzbekistanLocationCoordinates('Ташкент', 'residentialComplex', 'Нест Ван'), {
+    lat: 41.312058,
+    lng: 69.251817,
+    accuracyM: 200,
+  });
+});
+
+test('verified Samarkand landmarks use stable shared anchors', () => {
+  assert.deepEqual(uzbekistanLocationCoordinates('Самарканд', 'landmark', 'площадь Регистан'), {
+    lat: 39.654690,
+    lng: 66.975870,
+    accuracyM: 180,
+  });
+});
+
 test('expanded Uzbekistan location dictionaries produce scoped geocoding candidates', () => {
   const candidates = uzbekistanLocationGeocodeCandidates('Самарканд', 'local_area', 'Регистан');
   assert.ok(candidates.includes('Registon, Samarqand, Uzbekistan'));
   assert.ok(candidates.includes('Registon, Samarkand, Uzbekistan'));
 });
 
+test('streets stay unanchored and continue through external geocoding candidates', () => {
+  assert.ok(Object.keys(UZ_LOCATION_COORDINATES.Tashkent.districts).length >= 12);
+  assert.equal(uzbekistanLocationCoordinates('Ташкент', 'street', 'улица Нукус'), null);
+  const candidates = uzbekistanLocationGeocodeCandidates('Ташкент', 'street', 'улица Нукус');
+  assert.ok(candidates.includes('Nukus Street, Tashkent, Uzbekistan'));
+});
+
 test('unanchored internal entities safely fall back to the canonical city centre', () => {
-  assert.deepEqual(UZ_LOCATION_COORDINATES, {});
   assert.equal(uzbekistanLocationCoordinates('Самарканд', 'local_area', 'Регистан'), null);
   assert.deepEqual(uzbekistanCoordinateFallback('Самарканд', 'local_area', 'Регистан'), {
     ...UZ_CITY_COORDINATES.Samarkand,
