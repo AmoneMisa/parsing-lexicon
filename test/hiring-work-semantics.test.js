@@ -16,7 +16,7 @@ test('shared work semantics normalize employment and workplace modes', () => {
 
 test('shared work semantics cover base and extended schedules', () => {
   assert.deepEqual(detectWorkSchedules('График 5/2 или 6/1'), ['fiveTwo', 'sixOne']);
-  assert.deepEqual(detectWorkSchedules('24/48 night shift'), ['twentyFourFortyEight', 'shift', 'night']);
+  assert.deepEqual(detectWorkSchedules('24/48 night shift'), ['shift', 'night', 'twentyFourFortyEight']);
 });
 
 test('shared work semantics resolve probation and experience requirements', () => {
