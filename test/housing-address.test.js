@@ -38,6 +38,21 @@ test('parses Uzbek and Romanian explicit address markers', () => {
   assert.equal(ro.building, '3');
 });
 
+test('known canonical street extracts only an adjacent house number from prose', () => {
+  const ua = parseHousingAddress('Світла квартира, Воробкевича 12, поруч парк', { knownStreet: 'Воробкевича' });
+  assert.equal(ua.street, 'Воробкевича');
+  assert.equal(ua.houseNumber, '12');
+  assert.equal(ua.address, 'Воробкевича 12');
+
+  const uz = parseHousingAddress("Toshkent, Shota Rustaveli ko'chasi 58, 3 xona", { knownStreet: 'Shota Rustaveli' });
+  assert.equal(uz.street, 'Shota Rustaveli');
+  assert.equal(uz.houseNumber, '58');
+
+  const noAdjacentNumber = parseHousingAddress('Воробкевича, площа 68 м2, ціна 95000', { knownStreet: 'Воробкевича' });
+  assert.equal(noAdjacentNumber.street, 'Воробкевича');
+  assert.equal(noAdjacentNumber.houseNumber, null);
+});
+
 test('allowBare is reserved for source-provided address fields', () => {
   const parsed = parseHousingAddress('Воробкевича 12', { allowBare: true });
   assert.equal(parsed.street, 'Воробкевича');
