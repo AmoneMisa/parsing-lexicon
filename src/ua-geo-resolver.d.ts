@@ -14,6 +14,20 @@ export type UkraineResolvedLocationCoordinate = Readonly<Omit<UkraineLocationCoo
   source: 'static' | 'geocode' | 'unresolved';
 }>;
 
+export type UkraineAdministrativeCoordinateDescriptor = Readonly<{
+  code: string;
+  name: string;
+  type: string;
+  parentCode: string | null;
+  coordinates: UkraineGeoPoint | null;
+  source: 'geocode';
+  candidates: readonly string[];
+}>;
+
+export type UkraineResolvedAdministrativeCoordinate = Readonly<Omit<UkraineAdministrativeCoordinateDescriptor, 'source'> & {
+  source: 'geocode' | 'unresolved';
+}>;
+
 export type UkraineCoordinateCoverage = Readonly<{
   total: number;
   static: number;
@@ -28,4 +42,11 @@ export function resolveUkraineLocationCoordinates(
   lookup: ((query: string, descriptor: UkraineLocationCoordinateDescriptor) => Promise<UkraineGeoPoint | null | undefined> | UkraineGeoPoint | null | undefined) | null | undefined,
   options?: Readonly<{ cities?: readonly string[]; types?: readonly string[]; maxLookups?: number }>,
 ): Promise<readonly UkraineResolvedLocationCoordinate[]>;
+export function ukraineAdministrativeCoordinateDescriptors(
+  options?: Readonly<{ types?: readonly string[]; parentCode?: string; limit?: number }>,
+): readonly UkraineAdministrativeCoordinateDescriptor[];
+export function resolveUkraineAdministrativeCoordinates(
+  lookup: ((query: string, descriptor: UkraineAdministrativeCoordinateDescriptor) => Promise<UkraineGeoPoint | null | undefined> | UkraineGeoPoint | null | undefined) | null | undefined,
+  options?: Readonly<{ types?: readonly string[]; parentCode?: string; limit?: number; maxLookups?: number }>,
+): Promise<readonly UkraineResolvedAdministrativeCoordinate[]>;
 export function staticUkraineLocationCoordinateCount(): number;
