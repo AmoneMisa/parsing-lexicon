@@ -37,7 +37,7 @@ test('candidate experience and contacts reject common false positives', () => {
   assert.equal(parseCandidateExperienceValue('У меня нет опыта работы'), 0);
   assert.deepEqual(
     extractCandidateContacts('2007 - 2009\n+998 90 123 45 67\nmail@example.com\n@candidate_user'),
-    { phone: '+998 90 123 45 67', email: 'mail@example.com', telegram: '@candidate_user' },
+    { phone: '+998901234567', email: 'mail@example.com', telegram: '@candidate_user' },
   );
 });
 
