@@ -1,3 +1,6 @@
+import { findPhoneLikeSpans, findTelegramContacts, parsePhoneNumbers } from './contact.js';
+import { countryPhoneHint } from './country-context.js';
+
 const EXPLICIT_FEMALE_RE = /(?:^|[^\p{L}])(?:женщина|женский|девушка|female|ayol)(?=$|[^\p{L}])/iu;
 const EXPLICIT_MALE_RE = /(?:^|[^\p{L}])(?:мужчина|мужской|парень|male|erkak)(?=$|[^\p{L}])/iu;
 const FEMALE_LINEAGE_RE = /(?:^|[^\p{L}])(?:qizi|қизи|кизи|қызы)(?=$|[^\p{L}])/iu;
@@ -77,20 +80,13 @@ export function extractCandidateExperienceYears(value) {
   return match ? Number(match[1].replace(',', '.')) : null;
 }
 
-function phoneNumber(text) {
-  for (const match of text.matchAll(/\+?\d[\d\s()\-]{7,}\d/g)) {
-    const raw = match[0];
-    if (/(?:19|20)\d{2}\s*[-–—]\s*(?:19|20)\d{2}/.test(raw)) continue;
-    const digits = raw.replace(/\D/g, '');
-    if (digits.length >= 9 && digits.length <= 15) return raw.replace(/\s+/g, ' ').trim();
-  }
-  return null;
-}
-
-export function extractCandidateContacts(value) {
+export function extractCandidateContacts(value, country = '') {
   const text = String(value || '');
-  const phone = phoneNumber(text) || undefined;
+  const countryHint = countryPhoneHint(country) || undefined;
+  const parsedPhone = parsePhoneNumbers(text, { countryHint, includePossible: true })[0];
+  const broadPhone = parsedPhone ? null : findPhoneLikeSpans(text)[0];
+  const phone = parsedPhone?.number || broadPhone?.raw || undefined;
   const email = text.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/iu)?.[0];
-  const telegram = text.match(/(?<![A-Za-z0-9._%+-])@[A-Za-z0-9_]{4,32}/)?.[0];
+  const telegram = findTelegramContacts(text)[0]?.handle;
   return Object.freeze({ ...(phone ? { phone } : {}), ...(email ? { email } : {}), ...(telegram ? { telegram } : {}) });
 }
