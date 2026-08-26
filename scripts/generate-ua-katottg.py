@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Generate a compact in-repo KATOTTG snapshot from the official XLSX.
+"""Generate compact in-repo KATOTTG snapshots from the official XLSX.
 
-Uses only Python's standard library. The generated file is runtime data owned by
-this package; no third-party geo package is required by consumers.
+Uses only Python's standard library. Generated JSON is useful for auditing and
+raw-data inspection; generated ESM is consumed at runtime without fs access,
+JSON import attributes, or third-party geo dependencies.
 """
 from __future__ import annotations
 
@@ -45,10 +46,8 @@ def shared_strings(zf: zipfile.ZipFile) -> list[str]:
         root = ET.fromstring(zf.read("xl/sharedStrings.xml"))
     except KeyError:
         return []
-    values = []
-    for si in root.findall("m:si", NS):
-        values.append("".join(t.text or "" for t in si.findall(".//m:t", NS)))
-    return values
+    return ["".join(t.text or "" for t in si.findall(".//m:t", NS))
+            for si in root.findall("m:si", NS)]
 
 
 def worksheet_paths(zf: zipfile.ZipFile) -> list[tuple[str, str]]:
@@ -104,10 +103,7 @@ def read_rows(payload: bytes) -> list[list[str]]:
         candidates = []
         for name, path in worksheet_paths(zf):
             rows = sheet_rows(zf, path, strings)
-            code_count = sum(
-                1 for row in rows for value in row
-                if UA_CODE_RE.match(value.strip())
-            )
+            code_count = sum(1 for row in rows for value in row if UA_CODE_RE.match(value.strip()))
             candidates.append((code_count, name, rows))
             print(f"worksheet {name!r}: {len(rows)} rows, {code_count} KATOTTG codes")
         code_count, name, rows = max(candidates, key=lambda item: item[0])
@@ -130,17 +126,8 @@ def detect_header(rows: list[list[str]]) -> int:
 def parse_records(rows: list[list[str]]) -> list[list[str | None]]:
     header_idx = detect_header(rows)
     normalized_rows = [[normalized(x) for x in row] for row in rows[header_idx + 1:]]
-
-    code_columns = sorted({
-        idx
-        for row in normalized_rows
-        for idx, value in enumerate(row)
-        if UA_CODE_RE.match(value)
-    })
-    if not code_columns:
-        return []
-
     records: list[list[str | None]] = []
+
     for row in normalized_rows:
         if not any(row):
             continue
@@ -153,15 +140,16 @@ def parse_records(rows: list[list[str]]) -> list[list[str | None]]:
             continue
 
         cat_idx = row.index(category)
-        trailing = [v for v in row[cat_idx + 1:] if v and not UA_CODE_RE.match(v) and v not in CATEGORY_CODES]
-        candidates = trailing or [v for v in row if v and not UA_CODE_RE.match(v) and v not in CATEGORY_CODES]
+        trailing = [v for v in row[cat_idx + 1:]
+                    if v and not UA_CODE_RE.match(v) and v not in CATEGORY_CODES]
+        candidates = trailing or [v for v in row
+                                  if v and not UA_CODE_RE.match(v) and v not in CATEGORY_CODES]
         if not candidates:
             continue
         name = candidates[-1]
 
-        # Each official row repeats its hierarchy from level 1 through the
-        # current object. Therefore the previous UA code on this exact row is
-        # the authoritative parent; no dependence on row ordering is needed.
+        # Every official row repeats its hierarchy through the current object;
+        # the previous UA code on this exact row is therefore its source parent.
         parent = code_cells[-2][1] if len(code_cells) > 1 else None
         records.append([code, name, category, TYPE_BY_CATEGORY[category], parent])
 
@@ -187,6 +175,7 @@ def main() -> None:
     parser.add_argument("--url", required=True)
     parser.add_argument("--snapshot", required=True)
     parser.add_argument("--output", default="src/generated/ua-katottg.json")
+    parser.add_argument("--module-output", default="src/generated/ua-katottg.js")
     args = parser.parse_args()
 
     payload = fetch(args.url)
@@ -199,23 +188,33 @@ def main() -> None:
     for _, _, category, *_ in records:
         counts[str(category)] = counts.get(str(category), 0) + 1
 
-    data = {
-        "meta": {
-            "authority": "КАТОТТГ / Міністерство розвитку громад та територій України",
-            "snapshot": args.snapshot,
-            "source": args.url,
-            "generated": True,
-            "runtimeDependency": False,
-            "recordCount": len(records),
-            "countsByCategory": counts,
-            "schema": ["code", "name", "category", "type", "parentCode"],
-        },
-        "rows": records,
+    meta = {
+        "authority": "КАТОТТГ / Міністерство розвитку громад та територій України",
+        "snapshot": args.snapshot,
+        "source": args.url,
+        "generated": True,
+        "runtimeDependency": False,
+        "recordCount": len(records),
+        "countsByCategory": counts,
+        "schema": ["code", "name", "category", "type", "parentCode"],
     }
+    data = {"meta": meta, "rows": records}
+
     output = Path(args.output)
     output.parent.mkdir(parents=True, exist_ok=True)
+    compact_meta = json.dumps(meta, ensure_ascii=False, separators=(",", ":"))
+    compact_rows = json.dumps(records, ensure_ascii=False, separators=(",", ":"))
     output.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
-    print(f"generated {len(records)} KATOTTG rows -> {output}")
+
+    module_output = Path(args.module_output)
+    module_output.parent.mkdir(parents=True, exist_ok=True)
+    module_output.write_text(
+        "// Generated by scripts/generate-ua-katottg.py. Do not edit manually.\n"
+        f"export const UA_KATOTTG_META = Object.freeze({compact_meta});\n"
+        f"export const UA_KATOTTG_ROWS = Object.freeze({compact_rows});\n",
+        encoding="utf-8",
+    )
+    print(f"generated {len(records)} KATOTTG rows -> {output}, {module_output}")
 
 
 if __name__ == "__main__":
