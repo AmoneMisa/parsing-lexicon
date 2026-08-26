@@ -3,6 +3,7 @@ import { canonicalUkraineCity } from './ukraine.js';
 import { UA_KATOTTG_META, UA_KATOTTG_ROWS } from './generated/ua-katottg.js';
 
 const SETTLEMENT_TYPES = new Set(['special_city', 'city', 'urban_settlement', 'village', 'settlement']);
+const CANONICAL_CITY_TYPES = new Set(['special_city', 'city']);
 const freeze = (value) => Object.freeze(value);
 
 function entry(row) {
@@ -61,18 +62,24 @@ function nearestAncestor(row, type) {
   return null;
 }
 
-function cityKey(row) {
-  const canonical = canonicalUkraineCity(row[1]);
-  if (canonical) return canonical;
-
-  const normalized = normalizeForMatch(row[1]);
-  if ((settlementNameCounts.get(normalized) || 0) <= 1) return row[1];
-
+function scopedSettlementKey(row) {
   const community = nearestAncestor(row, 'community');
   if (community?.[1]) return `${row[1]} (${community[1]})`;
   const district = nearestAncestor(row, 'district');
   if (district?.[1]) return `${row[1]} (${district[1]})`;
   return `${row[1]} [${row[0]}]`;
+}
+
+function cityKey(row) {
+  const normalized = normalizeForMatch(row[1]);
+  const sameNameCount = settlementNameCounts.get(normalized) || 0;
+  const canonical = canonicalUkraineCity(row[1]);
+
+  // Curated city canonicals describe cities, not every village/settlement that
+  // happens to share the same official name (e.g. multiple Вишневе entries).
+  if (canonical && (sameNameCount <= 1 || CANONICAL_CITY_TYPES.has(row[3]))) return canonical;
+  if (sameNameCount <= 1) return row[1];
+  return scopedSettlementKey(row);
 }
 
 function pushUnique(target, key, value) {
