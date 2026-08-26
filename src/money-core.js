@@ -13,8 +13,8 @@ export const MONEY_SINGLE_RE = new RegExp(`(${MONEY_NUMBER_PATTERN})\\s*(${MONEY
 export function parseNumericAmount(raw) {
   let value = String(raw || '').replace(/\u00a0/g, ' ').trim();
   if (!value) return null;
-  const grouped = /\d[ .]\d{3}(?:[ .]\d{3})*/.test(value);
-  if (grouped) value = value.replace(/[ .]/g, '');
+  const grouped = /\d[ ,. ]\d{3}(?:[ ,. ]\d{3})*/.test(value);
+  if (grouped) value = value.replace(/[ ,.]/g, '');
   else value = value.replace(/\s+/g, '').replace(',', '.');
   const parsed = Number(value);
   return Number.isFinite(parsed) ? parsed : null;
