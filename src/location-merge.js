@@ -31,36 +31,84 @@ function mergeEntry(existing, incoming) {
   const aliases = [...new Set([
     ...(existing?.aliases || []),
     ...(incoming?.aliases || []),
+    existing?.canonical,
+    incoming?.canonical,
     existing?.name,
     incoming?.name,
   ].filter(Boolean))];
   const base = { ...(existing || {}), ...(incoming || {}) };
-  return Object.freeze({ ...base, canonical: base.canonical || base.name, type: base.type || base.entityType, aliases: Object.freeze(aliases), re: aliasesToRegex(aliases) });
+
+  // KATOTTG enriches our curated parser identity; it must not replace an
+  // existing canonical Latin/parser-facing name when both describe one entity.
+  const existingIsCurated = existing && existing.source !== 'katottg';
+  const incomingIsKatottg = incoming?.source === 'katottg';
+  const canonical = existingIsCurated && incomingIsKatottg
+    ? (existing.canonical || existing.name)
+    : (base.canonical || base.name);
+  const name = existingIsCurated && incomingIsKatottg
+    ? (existing.name || canonical)
+    : (base.name || canonical);
+
+  return Object.freeze({
+    ...base,
+    canonical,
+    name,
+    type: base.type || base.entityType,
+    aliases: Object.freeze(aliases),
+    re: aliasesToRegex(aliases),
+  });
 }
 
 function parentKey(entry) {
   return normalizeForMatch(entry?.parent || entry?.parentCode || entry?.district || '');
 }
 
+function identityKeys(entry) {
+  return [...new Set([
+    entry?.canonical,
+    entry?.name,
+    ...(entry?.aliases || []),
+  ].map(normalizeForMatch).filter(Boolean))];
+}
+
 export function mergeLocationEntries(...lists) {
-  const groups = new Map();
-  const order = [];
+  // Build connected components by any canonical/name/alias overlap. This lets
+  // official Ukrainian KATOTTG names enrich an existing transliterated curated
+  // entity instead of creating a second semantic identity.
+  const groups = [];
+  const keyToGroup = new Map();
 
   for (const list of lists) {
     for (const entry of list || []) {
-      if (!entry?.name) continue;
-      const canonical = normalizeForMatch(entry.name);
-      if (!groups.has(canonical)) {
-        groups.set(canonical, []);
-        order.push(canonical);
+      if (!entry?.name && !entry?.canonical) continue;
+      const keys = identityKeys(entry);
+      if (!keys.length) continue;
+
+      const matched = [...new Set(keys.map((key) => keyToGroup.get(key)).filter((index) => index != null))];
+      let target;
+      if (!matched.length) {
+        target = groups.length;
+        groups.push([]);
+      } else {
+        target = Math.min(...matched);
+        for (const index of matched) {
+          if (index === target || !groups[index]?.length) continue;
+          groups[target].push(...groups[index]);
+          for (const groupedEntry of groups[index]) {
+            for (const key of identityKeys(groupedEntry)) keyToGroup.set(key, target);
+          }
+          groups[index] = [];
+        }
       }
-      groups.get(canonical).push(entry);
+
+      groups[target].push(entry);
+      for (const key of keys) keyToGroup.set(key, target);
     }
   }
 
   const result = [];
-  for (const canonical of order) {
-    const group = groups.get(canonical) || [];
+  for (const group of groups) {
+    if (!group?.length) continue;
     const scopedParents = [...new Set(group.map(parentKey).filter(Boolean))];
 
     if (scopedParents.length <= 1) {
@@ -68,6 +116,8 @@ export function mergeLocationEntries(...lists) {
       continue;
     }
 
+    // Same alias/name may legitimately exist under several parents. Keep one
+    // entity per parent while allowing an unscoped curated entry to enrich each.
     const unscoped = group.filter((entry) => !parentKey(entry));
     for (const parent of scopedParents) {
       const scoped = group.filter((entry) => parentKey(entry) === parent);
