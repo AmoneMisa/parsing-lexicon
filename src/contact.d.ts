@@ -12,6 +12,8 @@ export type ParsedPhoneNumber = Readonly<{
   digits: string;
   number: string;
   nationalNumber: string;
+  national: string;
+  international: string;
   country: string | null;
   countryCallingCode: string;
   extension: string | null;
@@ -24,7 +26,19 @@ export type ParsePhoneOptions = Readonly<{
   includePossible?: boolean;
 }>;
 
+export type TelegramContact = Readonly<{
+  start: number;
+  end: number;
+  raw: string;
+  username: string;
+  handle: string;
+  url: string;
+  source: 'mention' | 'url' | 'tg';
+}>;
+
 export function findPhoneLikeSpans(value: unknown): readonly PhoneLikeSpan[];
 export function maskPhoneLikeSpans(value: unknown, replacement?: string): string;
 export function parsePhoneNumbers(value: unknown, options?: ParsePhoneOptions): readonly ParsedPhoneNumber[];
 export function normalizePhone(value: unknown, options?: ParsePhoneOptions): ParsedPhoneNumber | null;
+export function findTelegramContacts(value: unknown): readonly TelegramContact[];
+export function normalizeTelegramContact(value: unknown): TelegramContact | null;
