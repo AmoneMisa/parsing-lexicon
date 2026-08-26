@@ -27,7 +27,7 @@ jobs:
             --snapshot '2026-07-07'
       - name: Commit generated data
         run: |
-          git add src/generated/ua-katottg.json
+          git add src/generated/ua-katottg.json src/generated/ua-katottg.js
           if git diff --cached --quiet; then
             echo 'Generated snapshot is unchanged'
             exit 0
