@@ -3,7 +3,6 @@ import { canonicalUkraineCity } from './ukraine.js';
 import { UA_KATOTTG_META, UA_KATOTTG_ROWS } from './generated/ua-katottg.js';
 
 const SETTLEMENT_TYPES = new Set(['special_city', 'city', 'urban_settlement', 'village', 'settlement']);
-
 const freeze = (value) => Object.freeze(value);
 
 function entry(row) {
@@ -27,6 +26,12 @@ function entry(row) {
 
 const rowsByCode = new Map(UA_KATOTTG_ROWS.map((row) => [row[0], row]));
 const entriesByCode = new Map(UA_KATOTTG_ROWS.map((row) => [row[0], entry(row)]));
+const settlementRows = UA_KATOTTG_ROWS.filter((row) => SETTLEMENT_TYPES.has(row[3]));
+const settlementNameCounts = new Map();
+for (const row of settlementRows) {
+  const key = normalizeForMatch(row[1]);
+  settlementNameCounts.set(key, (settlementNameCounts.get(key) || 0) + 1);
+}
 
 function ancestry(row) {
   const chain = [];
@@ -48,8 +53,26 @@ function nearestSettlement(row) {
   return null;
 }
 
+function nearestAncestor(row, type) {
+  const chain = ancestry(row);
+  for (let i = chain.length - 1; i >= 0; i -= 1) {
+    if (chain[i][3] === type) return chain[i];
+  }
+  return null;
+}
+
 function cityKey(row) {
-  return canonicalUkraineCity(row[1]) || row[1];
+  const canonical = canonicalUkraineCity(row[1]);
+  if (canonical) return canonical;
+
+  const normalized = normalizeForMatch(row[1]);
+  if ((settlementNameCounts.get(normalized) || 0) <= 1) return row[1];
+
+  const community = nearestAncestor(row, 'community');
+  if (community?.[1]) return `${row[1]} (${community[1]})`;
+  const district = nearestAncestor(row, 'district');
+  if (district?.[1]) return `${row[1]} (${district[1]})`;
+  return `${row[1]} [${row[0]}]`;
 }
 
 function pushUnique(target, key, value) {
@@ -62,13 +85,15 @@ function pushUnique(target, key, value) {
 
 function build() {
   const result = {};
+  const codeToKey = new Map();
 
-  // Every official settlement becomes addressable through the normal UA city
-  // dictionary map. Known package cities collapse to their existing canonical key.
-  for (const row of UA_KATOTTG_ROWS) {
-    if (!SETTLEMENT_TYPES.has(row[3])) continue;
+  for (const row of settlementRows) {
     const key = cityKey(row);
+    codeToKey.set(row[0], key);
     result[key] ||= {};
+    if (result[key].katottg && result[key].katottg.katottgCode !== row[0]) {
+      throw new Error(`KATOTTG settlement key collision: ${key}`);
+    }
     result[key].katottg = entriesByCode.get(row[0]);
 
     for (const ancestor of ancestry(row)) {
@@ -80,12 +105,11 @@ function build() {
     }
   }
 
-  // KATOTTG city districts are ordinary parser districts under the nearest city.
   for (const row of UA_KATOTTG_ROWS) {
     if (row[3] !== 'city_district') continue;
     const settlement = nearestSettlement(row);
     if (!settlement) continue;
-    const key = cityKey(settlement);
+    const key = codeToKey.get(settlement[0]) || cityKey(settlement);
     result[key] ||= {};
     pushUnique(result[key], 'districts', entriesByCode.get(row[0]));
   }
