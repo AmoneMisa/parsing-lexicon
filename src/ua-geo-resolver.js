@@ -5,6 +5,10 @@ import {
   ukraineLocationCoordinates,
   ukraineLocationGeocodeCandidates,
 } from './ua-geo-coordinates.js';
+import {
+  ukraineAdministrativeGeoSet,
+  ukraineAdministrativeGeocodeCandidates,
+} from './ua-geo-set.js';
 
 const LOCATION_KEYS = Object.freeze([
   'districts',
@@ -80,8 +84,6 @@ export function ukraineLocationCoordinateDescriptors() {
     }
   }
 
-  // Odesa metropolitan has richer semantic entities than the legacy city
-  // dictionary; include them in the same coverage list without duplicating rows.
   for (const entry of ODESA_METROPOLITAN_ENTITIES) {
     const type = ODESA_TYPE_TO_KEY[entry.type];
     if (!type) continue;
@@ -121,9 +123,7 @@ export function ukraineLocationCoordinateCoverage() {
 
 /**
  * Resolves coordinates for every requested Ukrainian dependency using an injected
- * lookup(query) function. This intentionally mirrors the Uzbekistan metro
- * resolver pattern: no network dependency in the lexicon, deterministic queries,
- * and verified static anchors always win.
+ * lookup(query) function. No network dependency is embedded in the lexicon.
  */
 export async function resolveUkraineLocationCoordinates(lookup, options = {}) {
   const rows = ukraineLocationCoordinateDescriptors();
@@ -159,6 +159,59 @@ export async function resolveUkraineLocationCoordinates(lookup, options = {}) {
     }));
   }
 
+  return freeze(results);
+}
+
+/**
+ * KATOTTG-wide coordinate descriptors. Official objects do not contain point
+ * geometry, so they are never assigned fake city-centre coordinates; instead
+ * the source hierarchy is converted to deterministic geocoding candidates.
+ */
+export function ukraineAdministrativeCoordinateDescriptors(options = {}) {
+  const types = options.types ? new Set(options.types) : null;
+  const parentCode = options.parentCode ? String(options.parentCode) : null;
+  const limit = Number.isFinite(options.limit) ? Math.max(0, options.limit) : Number.POSITIVE_INFINITY;
+  const rows = [];
+
+  for (const entity of ukraineAdministrativeGeoSet()) {
+    if (types && !types.has(entity.type)) continue;
+    if (parentCode && entity.parentCode !== parentCode) continue;
+    rows.push(freeze({
+      code: entity.code,
+      name: entity.name,
+      type: entity.type,
+      parentCode: entity.parentCode,
+      coordinates: null,
+      source: 'geocode',
+      candidates: ukraineAdministrativeGeocodeCandidates(entity),
+    }));
+    if (rows.length >= limit) break;
+  }
+  return freeze(rows);
+}
+
+export async function resolveUkraineAdministrativeCoordinates(lookup, options = {}) {
+  const rows = ukraineAdministrativeCoordinateDescriptors(options);
+  const maxLookups = Number.isFinite(options.maxLookups) ? Math.max(0, options.maxLookups) : Number.POSITIVE_INFINITY;
+  const results = [];
+  let spent = 0;
+
+  for (const row of rows) {
+    let coordinates = null;
+    if (typeof lookup === 'function') {
+      for (const query of row.candidates) {
+        if (spent >= maxLookups) break;
+        spent += 1;
+        coordinates = normalizedPoint(await lookup(query, row));
+        if (coordinates) break;
+      }
+    }
+    results.push(freeze({
+      ...row,
+      coordinates,
+      source: coordinates ? 'geocode' : 'unresolved',
+    }));
+  }
   return freeze(results);
 }
 
