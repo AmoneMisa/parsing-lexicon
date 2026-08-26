@@ -1,6 +1,6 @@
 const PHONE_RUN_RE = /\+?\d[\d\s().-]{7,}\d/gu;
 const ADDRESS_LABEL_RE = /(?:адрес|адреса|адресація|адресация|manzil|address|adresă|adresa)\s*[:=\-–—]\s*/iu;
-const PREFIX_STREET_MARKER = String.raw`(?:ул(?:ица)?|вул(?:иця)?|просп(?:ект)?|пр-т|переул(?:ок)?|пров(?:улок)?|проезд|наб(?:ережная)?|шоссе|str(?:ada)?\.?|street|st\.?|avenue|ave\.?|road|rd\.?|көше)`;
+const PREFIX_STREET_MARKER = String.raw`(?:(?:ул(?:ица)?|вул(?:иця)?|просп(?:ект)?|пр-т|переул(?:ок)?|пров(?:улок)?|проезд|наб(?:ережная)?|шоссе|str(?:ada)?|street|st|avenue|ave|road|rd|көше)\.?)`;
 const POSTFIX_STREET_MARKER = String.raw`(?:ko['’ʼ\u02bc]?cha(?:si)?|кўча(?:си)?|коча(?:си)?|kocha(?:si)?)`;
 const HOUSE_MARKER = String.raw`(?:дом|д\.|будинок|буд\.|house|h\.|uy|уй|nr\.?|no\.?|№)`;
 const BUILDING_MARKER = String.raw`(?:корп(?:ус)?\.?|к\.|строен(?:ие)?|стр\.|будова|секц(?:ия|ія)?|bloc|corp|building|bldg\.?|korpus)`;
