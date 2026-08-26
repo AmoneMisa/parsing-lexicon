@@ -1,3 +1,4 @@
+import { findPhoneLikeSpans } from './contact.js';
 import { aliasesOf, findCanonical, normalizeUnicode } from './normalization.js';
 import {
   CURRENCY_TERMS,
@@ -25,6 +26,8 @@ export {
   parseScaledAmount,
 } from './money-core.js';
 
+const CONTACT_MARKER_RE = /(?:телефон|тел\.?|phone|mobile|mob\.?|whatsapp|viber|telegram|контакт|contact|aloqa|murojaat|bog(?:['’ʻʼ‘`])?lanish)\s*[:：—-]?\s*$/iu;
+
 function hasSalaryContext(text) {
   return /(?:salary|зарплат|з\s*п\b|оплат|ставк|доход|оклад|компенсац|maosh|oylik|ish\s+haqi|жалақы|айлық|еңбекақы|salariu|оплата)/iu.test(text);
 }
@@ -35,6 +38,43 @@ function periodFromText(text) {
 
 function hasModifier(text, key) {
   return Boolean(findCanonical(text, [SALARY_MODIFIERS[key]], { partial: true }));
+}
+
+function protectedPhoneSpans(text) {
+  return findPhoneLikeSpans(text).filter((span) => {
+    const prefix = text.slice(Math.max(0, span.start - 32), span.start);
+    return CONTACT_MARKER_RE.test(prefix);
+  });
+}
+
+function overlapsProtectedPhone(start, end, spans) {
+  return spans.some((span) => start < span.end && end > span.start);
+}
+
+function moneyContextScore(text, start, end, scaled = false) {
+  const window = text.slice(Math.max(0, start - 36), Math.min(text.length, end + 40));
+  let score = 0;
+  if (moneyCurrencyFromText(window)) score += 5;
+  if (hasSalaryContext(window)) score += 4;
+  if (periodFromText(window)) score += 2;
+  if (scaled) score += 1;
+  return score;
+}
+
+function bestRange(text, protectedSpans) {
+  const ranges = new RegExp(MONEY_RANGE_RE.source, 'giu');
+  const candidates = [];
+  for (const match of text.matchAll(ranges)) {
+    const start = match.index ?? 0;
+    const end = start + match[0].length;
+    if (overlapsProtectedPhone(start, end, protectedSpans)) continue;
+    const scaled = Boolean(match[2] || match[4]);
+    const score = moneyContextScore(text, start, end, scaled);
+    if (score <= 0) continue;
+    candidates.push({ match, score, start });
+  }
+  candidates.sort((a, b) => b.score - a.score || a.start - b.start);
+  return candidates[0]?.match || null;
 }
 
 export function parseSalary(value) {
@@ -51,7 +91,8 @@ export function parseSalary(value) {
     || NUMBER_MULTIPLIERS.some((entry) => findCanonical(text, [entry], { partial: true }));
   if (!salaryContext && !negotiable) return null;
 
-  const range = text.match(MONEY_RANGE_RE);
+  const protectedSpans = protectedPhoneSpans(text);
+  const range = bestRange(text, protectedSpans);
   let min = null;
   let max = null;
   const approximate = hasModifier(text, 'approx');
@@ -68,17 +109,19 @@ export function parseSalary(value) {
     for (const match of text.matchAll(MONEY_SINGLE_RE)) {
       const start = match.index ?? 0;
       const end = start + match[0].length;
+      if (overlapsProtectedPhone(start, end, protectedSpans)) continue;
       const window = text.slice(Math.max(0, start - 24), Math.min(text.length, end + 32));
       const scaled = Boolean(match[2]);
-      const relevant = scaled || moneyCurrencyFromText(window) || hasSalaryContext(window) || periodFromText(window);
-      if (!relevant) continue;
+      const score = moneyContextScore(text, start, end, scaled);
+      if (score <= 0) continue;
       const parsed = parseScaledAmount(match[1], match[2]);
       if (parsed == null) continue;
       if (!scaled && !moneyCurrencyFromText(window) && parsed >= 1900 && parsed <= 2100 && !hasSalaryContext(window)) continue;
-      candidates.push(parsed);
+      candidates.push({ value: parsed, score, start });
     }
+    candidates.sort((a, b) => b.score - a.score || a.start - b.start);
     if (candidates.length) {
-      const valueAmount = candidates[0];
+      const valueAmount = candidates[0].value;
       if (hasModifier(text, 'to')) max = valueAmount;
       else if (hasModifier(text, 'from') || /\+\s*(?:$|\D)/u.test(text)) min = valueAmount;
       else min = max = valueAmount;
