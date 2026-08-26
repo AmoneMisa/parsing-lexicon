@@ -38,8 +38,6 @@ function mergeEntry(existing, incoming) {
   ].filter(Boolean))];
   const base = { ...(existing || {}), ...(incoming || {}) };
 
-  // KATOTTG enriches our curated parser identity; it must not replace an
-  // existing canonical Latin/parser-facing name when both describe one entity.
   const existingIsCurated = existing && existing.source !== 'katottg';
   const incomingIsKatottg = incoming?.source === 'katottg';
   const canonical = existingIsCurated && incomingIsKatottg
@@ -48,11 +46,18 @@ function mergeEntry(existing, incoming) {
   const name = existingIsCurated && incomingIsKatottg
     ? (existing.name || canonical)
     : (base.name || canonical);
+  const sources = [...new Set([
+    ...(existing?.sources || []), existing?.source,
+    ...(incoming?.sources || []), incoming?.source,
+  ].filter(Boolean))];
+  const source = existingIsCurated && incomingIsKatottg ? existing.source : base.source;
 
   return Object.freeze({
     ...base,
     canonical,
     name,
+    source,
+    ...(sources.length ? { sources: Object.freeze(sources) } : {}),
     type: base.type || base.entityType,
     aliases: Object.freeze(aliases),
     re: aliasesToRegex(aliases),
@@ -72,9 +77,6 @@ function identityKeys(entry) {
 }
 
 export function mergeLocationEntries(...lists) {
-  // Build connected components by any canonical/name/alias overlap. This lets
-  // official Ukrainian KATOTTG names enrich an existing transliterated curated
-  // entity instead of creating a second semantic identity.
   const groups = [];
   const keyToGroup = new Map();
 
@@ -116,8 +118,6 @@ export function mergeLocationEntries(...lists) {
       continue;
     }
 
-    // Same alias/name may legitimately exist under several parents. Keep one
-    // entity per parent while allowing an unscoped curated entry to enrich each.
     const unscoped = group.filter((entry) => !parentKey(entry));
     for (const parent of scopedParents) {
       const scoped = group.filter((entry) => parentKey(entry) === parent);
