@@ -16,7 +16,6 @@ export * from './geography.js';
 export * from './geography-display.js';
 export * from './central-asia.js';
 export * from './ukraine.js';
-export * from './ua-geo-coordinates.js';
 export * from './location-merge.js';
 export * from './locations.js';
 export * from './kz-location-extensions.js';
