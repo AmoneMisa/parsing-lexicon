@@ -1,4 +1,4 @@
-import { CITIES as CENTRAL_ASIA_CITIES } from './geo.js';
+import { UZ_CITIES, KZ_CITIES } from './geography-central-asia.js';
 import { findCanonical } from './normalization.js';
 import { lexiconEntity } from './lexicon-core.js';
 import { RO_CITY_EXTENSIONS } from './romania-geography.js';
@@ -61,17 +61,24 @@ export const KG_CITIES = Object.freeze([
   entity('Karakol', { ru: ['Каракол'], en: ['Karakol'], kk: ['Қаракөл'], uzLatn: ['Karakol'] }, { country: 'KG', type: 'city' }),
 ]);
 
-export const GEOGRAPHY_CITIES = Object.freeze([...CENTRAL_ASIA_CITIES, ...UA_CITIES, ...RO_CITIES, ...KG_CITIES]);
-export const GEOGRAPHY_CITIES_BY_COUNTRY = Object.freeze(Object.fromEntries(
-  [...new Set(GEOGRAPHY_CITIES.map((item) => item.country).filter(Boolean))].map((code) => [
+export const CITIES = Object.freeze([...UZ_CITIES, ...KZ_CITIES, ...UA_CITIES, ...RO_CITIES, ...KG_CITIES]);
+export const CITIES_BY_COUNTRY = Object.freeze(Object.fromEntries(
+  [...new Set(CITIES.map((item) => item.country).filter(Boolean))].map((code) => [
     code,
-    Object.freeze(GEOGRAPHY_CITIES.filter((item) => item.country === code)),
+    Object.freeze(CITIES.filter((item) => item.country === code)),
   ]),
 ));
 
-export function canonicalAnyCity(value, country = null) {
-  const catalog = country ? (GEOGRAPHY_CITIES_BY_COUNTRY[country] || []) : GEOGRAPHY_CITIES;
+export function canonicalCity(value, country = null) {
+  const catalog = country ? (CITIES_BY_COUNTRY[country] || []) : CITIES;
   return findCanonical(value, catalog)?.canonical || null;
+}
+
+// Backward-compatible aliases. New code should use CITIES/CITIES_BY_COUNTRY/canonicalCity.
+export const GEOGRAPHY_CITIES = CITIES;
+export const GEOGRAPHY_CITIES_BY_COUNTRY = CITIES_BY_COUNTRY;
+export function canonicalAnyCity(value, country = null) {
+  return canonicalCity(value, country);
 }
 
 export const UA_REGIONS = Object.freeze([

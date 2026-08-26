@@ -1,5 +1,5 @@
 import { COUNTRIES, canonicalCountryCode } from './countries.js';
-import { GEOGRAPHY_CITIES } from './geography.js';
+import { CITIES } from './geography.js';
 import { KZ_CITY_CATALOG, UZ_CITY_CATALOG } from './central-asia.js';
 import { UA_CITY_CATALOG } from './ukraine.js';
 import { aliasesOf, aliasesToRegex, normalizeForMatch } from './normalization.js';
@@ -44,7 +44,7 @@ export const HIRING_GLOBAL_CITIES = Object.freeze([
 const CITY_CATALOG = Object.freeze((() => {
   const byKey = new Map();
   for (const item of [
-    ...GEOGRAPHY_CITIES,
+    ...CITIES,
     ...KZ_CITY_CATALOG,
     ...UZ_CITY_CATALOG,
     ...UA_CITY_CATALOG,
