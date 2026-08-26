@@ -33,6 +33,12 @@ export const TASHKENT_HOUSING_LANDMARKS = Object.freeze([
   locationEntry('Yangi Choshtepa', 'local_area', [
     'Янги Чоштепа', 'Янги чоштепа', 'Yangi Choshtepa',
   ]),
+  locationEntry('Glinka', 'landmark', [
+    'Глинка', 'Glinka', 'Глинка ГАИ', 'ГАИ Глинка',
+  ]),
+  locationEntry('Dehqonobod', 'landmark', [
+    'Дехконабад', 'Дехканабад', 'Дехконобод', 'Деҳқонобод', 'Dehqonobod', 'Dehkanabad',
+  ]),
   locationEntry('Sergeli Car Bazaar', 'market', [
     'Сергели машинный базар',
     'Сергели машина бозор',
