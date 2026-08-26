@@ -1,4 +1,4 @@
-export type UzbekistanGeoPoint = Readonly<{ lat: number; lng: number }>;
+export type UzbekistanGeoPoint = Readonly<{ lat: number; lng: number; accuracyM?: number }>;
 export type UzbekistanCoordinateFallback = Readonly<UzbekistanGeoPoint & {
   accuracy: 'exact' | 'city';
   source: 'location' | 'city';
