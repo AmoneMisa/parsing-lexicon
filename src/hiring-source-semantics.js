@@ -2,6 +2,7 @@ import { CANDIDATE_FIELD_TERMS, JOB_FIELD_TERMS } from './hiring.js';
 import { aliasesOf, escapeRegex, normalizeUnicode } from './normalization.js';
 import { parseSalary } from './money.js';
 import { extractCandidateName } from './hiring-candidate-fields.js';
+import { countryCurrency } from './country-context.js';
 
 const FIELD_EXTRA_ALIASES = Object.freeze({
   candidate: Object.freeze({
@@ -256,12 +257,8 @@ export function extractCandidateStructuredBlock(value, key, maxLength = 800) {
   return match?.[1]?.replace(/\s+/g, ' ').trim() || null;
 }
 
-const DEFAULT_HIRING_CURRENCY = Object.freeze({
-  UZ: 'UZS', UA: 'UAH', KZ: 'KZT', KG: 'KGS', RO: 'RON', US: 'USD', GB: 'GBP', EU: 'EUR',
-});
-
 export function defaultHiringCurrency(country) {
-  return DEFAULT_HIRING_CURRENCY[String(country || '').trim().toUpperCase()] || null;
+  return countryCurrency(country);
 }
 
 const HIRING_CHARITY_APPEAL_RE = /(?:шелтер|притулок|прихисток|благодійн\p{L}*|благотворительн\p{L}*|донат\p{L}*|пожертв\p{L}*|збір\s+(?:кошт|грош)\p{L}*|сбор\s+средств|допоможіть|допомогти\s+(?:родин|дідус|бабус)\p{L}*|потребує\s+допомоги|нуждается\s+в\s+помощи|опікунств\p{L}*|інвалідніст\p{L}*|карта\s+для\s+допомоги|реквізити\s+для|monobank|банка\s+збор)/iu;
