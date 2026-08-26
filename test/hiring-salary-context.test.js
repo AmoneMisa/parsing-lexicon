@@ -4,6 +4,7 @@ import {
   defaultCurrencyForCountry,
   parseHiringSalaryWithContext,
 } from '../src/hiring-salary-context.js';
+import { parseNumericAmount } from '../src/money-core.js';
 
 test('Uzbek salary without explicit currency can use country fallback', () => {
   const salary = parseHiringSalaryWithContext('35 000 000 oylik', {
@@ -27,6 +28,13 @@ test('explicit currency always wins over geography fallback', () => {
   assert.equal(salary.currency, 'USD');
   assert.equal(salary.currencySource, 'explicit');
   assert.equal(salary.currencyCountry, null);
+  assert.equal(salary.min ?? salary.max, 2_000);
+});
+
+test('money numbers distinguish grouped comma thousands from decimal comma values', () => {
+  assert.equal(parseNumericAmount('1,500'), 1_500);
+  assert.equal(parseNumericAmount('12,500,000'), 12_500_000);
+  assert.equal(parseNumericAmount('12,5'), 12.5);
 });
 
 test('country fallback remains opt-in', () => {
