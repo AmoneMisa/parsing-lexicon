@@ -59,6 +59,9 @@
   "sideEffects": false,
   "engines": { "node": ">=20" },
   "scripts": { "test": "node --test" },
+  "dependencies": {
+    "libphonenumber-js": "^1.11.20"
+  },
   "keywords": ["parsing", "lexicon", "uzbek", "kazakh", "ukrainian", "romanian", "russian", "housing", "hiring", "salary", "professions", "geography"],
   "license": "MIT"
 }
