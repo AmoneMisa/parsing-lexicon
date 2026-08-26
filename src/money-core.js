@@ -8,12 +8,12 @@ import {
 export const MONEY_NUMBER_PATTERN = '\\d{1,3}(?:[ \\u00a0.,]\\d{3})+|\\d+(?:[.,]\\d+)?';
 export const MONEY_SCALE_PATTERN = 'k|к|тыс\\.?|тысяч(?:а|и)?|тис\\.?|thousand|ming|мың|m|м|млн\\.?|mln|million|миллион(?:ов)?|мільйон(?:ів)?|bn|млрд|mlrd|billion';
 export const MONEY_RANGE_RE = new RegExp(`(${MONEY_NUMBER_PATTERN})\\s*(${MONEY_SCALE_PATTERN})?\\s*(?:-|–|—|до|to|bis|dan\\s+gacha)\\s*(${MONEY_NUMBER_PATTERN})\\s*(${MONEY_SCALE_PATTERN})?`, 'iu');
-export const MONEY_SINGLE_RE = new RegExp(`(${MONEY_NUMBER_PATTERN})\\s*(${MONEY_SCALE_PATTERN})?`, 'giu');
+export const MONEY_SINGLE_RE = new RegExp(`(${MONEY_NUMBER_PATTERN})\\s*(${MONEY_SCALE_PATTERN})?(?=$|[^\\p{L}\\p{N}_])`, 'giu');
 
 export function parseNumericAmount(raw) {
   let value = String(raw || '').replace(/\u00a0/g, ' ').trim();
   if (!value) return null;
-  const grouped = /\d[ ,. ]\d{3}(?:[ ,. ]\d{3})*/.test(value);
+  const grouped = /\d[ ,.]\d{3}(?:[ ,.]\d{3})*/.test(value);
   if (grouped) value = value.replace(/[ ,.]/g, '');
   else value = value.replace(/\s+/g, '').replace(',', '.');
   const parsed = Number(value);
