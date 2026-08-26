@@ -1,4 +1,4 @@
-import { normalizeForMatch } from './normalization.js';
+import { aliasesToRegex, normalizeForMatch } from './normalization.js';
 import { locationCities } from './locations.js';
 import { ODESA_METROPOLITAN_ENTITIES } from './odesa-metropolitan.js';
 import { UA_KATOTTG_META, UA_KATOTTG_ROWS } from './generated/ua-katottg.js';
@@ -41,9 +41,28 @@ let administrativeByName = null;
 let administrativeChildren = null;
 let internalCache = null;
 
+function locationModelEntry(name, metadata = {}, aliases = []) {
+  const all = [...new Set([name, ...aliases].flat().filter(Boolean))];
+  return freeze({
+    canonical: name,
+    name,
+    aliases: freeze(all),
+    re: aliasesToRegex(all),
+    ...metadata,
+  });
+}
+
 function administrativeEntity(row) {
   const [code, name, category, type, parentCode] = row;
-  return freeze({ code, name, category, type, parentCode: parentCode || null, source: 'katottg' });
+  return locationModelEntry(name, {
+    code,
+    category,
+    type,
+    parentCode: parentCode || null,
+    parent: parentCode || null,
+    country: 'UA',
+    source: 'katottg',
+  });
 }
 
 function ensureAdministrativeIndexes() {
@@ -54,8 +73,9 @@ function ensureAdministrativeIndexes() {
   const children = new Map();
 
   for (const row of rows) {
+    if (byCode.has(row.code)) throw new Error(`Duplicate KATOTTG code: ${row.code}`);
     byCode.set(row.code, row);
-    const key = normalizeForMatch(row.name);
+    const key = normalizeForMatch(row.canonical);
     if (key) {
       const bucket = byName.get(key) || [];
       bucket.push(row);
@@ -76,7 +96,7 @@ function ensureAdministrativeIndexes() {
 
 export const UA_ADMINISTRATIVE_GEO_META = UA_KATOTTG_META;
 
-/** Official nationwide KATOTTG snapshot vendored into this package. */
+/** Official nationwide KATOTTG represented with the package's normal location-entry model. */
 export function ukraineAdministrativeGeoSet() {
   ensureAdministrativeIndexes();
   return administrativeCache;
@@ -121,33 +141,26 @@ export function ukraineAdministrativeAncestry(value) {
   return freeze(chain.reverse());
 }
 
-/** Deterministic offline query candidates; actual geocoder is injected by consumers. */
 export function ukraineAdministrativeGeocodeCandidates(value) {
   const row = typeof value === 'string' ? ukraineAdministrativeGeoByCode(value) : value;
   if (!row?.code) return freeze([]);
   const ancestry = ukraineAdministrativeAncestry(row);
-  const names = ancestry.map((entry) => entry.name).filter(Boolean);
-  const full = [...names, 'Ukraine'].join(', ');
-  const short = `${row.name}, Ukraine`;
-  return freeze([...new Set([full, short])]);
+  const names = ancestry.map((entry) => entry.canonical).filter(Boolean);
+  return freeze([...new Set([[...names, 'Ukraine'].join(', '), `${row.canonical}, Ukraine`])]);
 }
 
 function internalRow(city, type, entry) {
   const canonical = entry?.canonical || entry?.name;
   if (!canonical) return null;
-  return freeze({
+  return locationModelEntry(canonical, {
     city,
     type,
-    canonical,
-    aliases: freeze([...new Set(entry?.aliases || [])]),
-    source: 'curated',
-  });
+    country: 'UA',
+    source: entry?.source || 'curated',
+  }, entry?.aliases || []);
 }
 
-/**
- * Housing/search geography owned by parsing-lexicon: districts, microdistricts,
- * residential complexes, metro, streets, POIs, suburbs, local areas, etc.
- */
+/** Housing/search geography in the same location-entry model as the official layer. */
 export function ukraineInternalGeoSet() {
   if (internalCache) return internalCache;
   const rows = [];
@@ -158,7 +171,7 @@ export function ukraineInternalGeoSet() {
       for (const entry of dictionary?.[type] || []) {
         const row = internalRow(city, type, entry);
         if (!row) continue;
-        const id = `${city}\u0000${type}\u0000${row.canonical}`;
+        const id = `${city}\u0000${type}\u0000${normalizeForMatch(row.canonical)}`;
         if (seen.has(id)) continue;
         seen.add(id);
         rows.push(row);
@@ -171,7 +184,7 @@ export function ukraineInternalGeoSet() {
     if (!type) continue;
     const row = internalRow('Odesa', type, entry);
     if (!row) continue;
-    const id = `Odesa\u0000${type}\u0000${row.canonical}`;
+    const id = `Odesa\u0000${type}\u0000${normalizeForMatch(row.canonical)}`;
     if (seen.has(id)) continue;
     seen.add(id);
     rows.push(row);
