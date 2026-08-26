@@ -201,12 +201,18 @@ export function countryByCode(value: unknown): LexiconEntity | null;
 
 export const UZ_CITIES: readonly LexiconEntity[];
 export const KZ_CITIES: readonly LexiconEntity[];
-export const CITIES: readonly LexiconEntity[];
-export function canonicalCity(value: unknown, country?: CountryCode | null): string | null;
 export const UA_CITIES: readonly LexiconEntity[];
 export const RO_CITIES: readonly LexiconEntity[];
 export const KG_CITIES: readonly LexiconEntity[];
+/** Canonical cross-country city catalog. */
+export const CITIES: readonly LexiconEntity[];
+export const CITIES_BY_COUNTRY: Readonly<Partial<Record<CountryCode, readonly LexiconEntity[]>>>;
+export function canonicalCity(value: unknown, country?: CountryCode | null): string | null;
+/** @deprecated Use CITIES. */
 export const GEOGRAPHY_CITIES: readonly LexiconEntity[];
+/** @deprecated Use CITIES_BY_COUNTRY. */
+export const GEOGRAPHY_CITIES_BY_COUNTRY: Readonly<Partial<Record<CountryCode, readonly LexiconEntity[]>>>;
+/** @deprecated Use canonicalCity. */
 export function canonicalAnyCity(value: unknown, country?: CountryCode | null): string | null;
 export const UA_ADDITIONAL_CITIES: readonly LexiconEntity[];
 export const UA_CITY_CATALOG: readonly LexiconEntity[];

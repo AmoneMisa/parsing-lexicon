@@ -1,7 +1,17 @@
 export * from './lexicon-core.js';
 export * from './normalization.js';
 export * from './countries.js';
-export * from './geo.js';
+export {
+  TASHKENT_DISTRICTS,
+  canonicalTashkentDistrict,
+  TASHKENT_METRO,
+  tashkentMetroStation,
+  canonicalTashkentMetro,
+  tashkentMetroLabels,
+  TASHKENT_AREAS,
+  UZ_CITIES,
+  KZ_CITIES,
+} from './geo.js';
 export * from './geography.js';
 export * from './geography-display.js';
 export * from './central-asia.js';
