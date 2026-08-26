@@ -74,7 +74,6 @@ export const UA_CITY_COORDINATES = Object.freeze({
   'Mohyliv-Podilskyi': point(48.4500, 27.7833),
   Khmilnyk: point(49.5500, 27.9667),
   Smila: point(49.2167, 31.8667),
-  Kaniv: point(49.7518, 31.4600),
   Myrhorod: point(49.9640, 33.6124),
   Konotop: point(51.2375, 33.2083),
   Shostka: point(51.8657, 33.4766),
