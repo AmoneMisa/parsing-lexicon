@@ -19,6 +19,7 @@
     "./ukraine": "./src/ukraine.js",
     "./ua-geo-coordinates": { "types": "./src/ua-geo-coordinates.d.ts", "import": "./src/ua-geo-coordinates.js" },
     "./ua-geo-resolver": { "types": "./src/ua-geo-resolver.d.ts", "import": "./src/ua-geo-resolver.js" },
+    "./uz-geo-coordinates": { "types": "./src/uz-geo-coordinates.d.ts", "import": "./src/uz-geo-coordinates.js" },
     "./location-merge": "./src/location-merge.js",
     "./locations": "./src/locations.js",
     "./kz-location-extensions": "./src/kz-location-extensions.js",
