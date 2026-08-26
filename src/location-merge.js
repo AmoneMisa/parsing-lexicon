@@ -1,6 +1,9 @@
 import { aliasesToRegex, normalizeForMatch } from './normalization.js';
 
 export const LOCATION_LIST_KEYS = Object.freeze([
+  'regions',
+  'administrativeDistricts',
+  'communities',
   'districts',
   'microdistricts',
   'mahallas',
@@ -36,7 +39,7 @@ function mergeEntry(existing, incoming) {
 }
 
 function parentKey(entry) {
-  return normalizeForMatch(entry?.parent || entry?.district || '');
+  return normalizeForMatch(entry?.parent || entry?.parentCode || entry?.district || '');
 }
 
 export function mergeLocationEntries(...lists) {
@@ -65,10 +68,6 @@ export function mergeLocationEntries(...lists) {
       continue;
     }
 
-    // A market name can legitimately exist under multiple parents inside one
-    // city (for example Sairan in adjacent Almaty districts). Keep each scoped
-    // entity. Unscoped/base aliases are merged into every scoped variant so
-    // older dictionaries enrich rather than erase parent information.
     const unscoped = group.filter((entry) => !parentKey(entry));
     for (const parent of scopedParents) {
       const scoped = group.filter((entry) => parentKey(entry) === parent);
