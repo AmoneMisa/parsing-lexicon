@@ -1,0 +1,18 @@
+export type HousingAddressParts = Readonly<{
+  address: string | null;
+  street: string | null;
+  houseNumber: string | null;
+  building: string | null;
+  confidence: number;
+}>;
+
+export function parseHousingAddress(
+  value: unknown,
+  options?: Readonly<{ allowBare?: boolean; knownStreet?: string | null }>,
+): HousingAddressParts;
+
+export function composeHousingAddress(parts?: Readonly<{
+  street?: unknown;
+  houseNumber?: unknown;
+  building?: unknown;
+}>): string | null;
