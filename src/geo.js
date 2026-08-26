@@ -90,7 +90,7 @@ export const TASHKENT_METRO = Object.freeze([
   station('Qiyot', 'Кият', 'Qiyot', 'circle', ['Киёт', 'Қиёт']),
   station('Tolariq', 'Толарык', 'Tolariq', 'circle', ['Толарик', 'Толариқ']),
   station('Xonobod', 'Хонабад', 'Xonobod', 'circle', ['Ханабад']),
-  station('Quruvchilar', 'Курувчилар', 'Quruvchilar', 'circle', ['Қурувчилар']),
+  station('Quruvchilar', 'Курувчилар', 'circle', ['Қурувчилар']),
   station('Turon', 'Туран', 'Turon', 'circle', ['Турон']),
   station('Qipchoq', 'Кипчак', 'Qipchoq', 'circle', ['Қипчоқ']),
 ]);
@@ -150,11 +150,11 @@ export const TASHKENT_AREAS = Object.freeze({
   ]),
   Yunusabad: Object.freeze([
     area('Kashgar', ['кашгар', 'қашқар', 'qashqar', 'kashgar', 'ц 4', 'c 4']), area('Kiyot', ['киёт', 'қиёт', 'qiyot', 'kiyot', 'ц 5', 'c 5']),
-    area('Minor', ['минор', 'minor', 'ц 6', 'c 6']), area('TashGRES', ['ташгрэс', 'tashgres']), area('Dehqonobod', ['дехконобод', 'деҳқонобод', 'dehqonobod']),
+    area('Minor', ['минор', 'minor', 'ц 6', 'c 6']), area('TashGRES', ['ташгрэс', 'tashgres']),
   ]),
   Yakkasaray: Object.freeze([
     area('Bashlyk', ['башлык', 'бошлиқ', 'boshliq', 'bashlyk']), area('Kushbegi', ['кушбеги', 'қушбеги', 'qushbegi', 'kushbegi']),
-    area('Rakat', ['ракат', 'rakat']), area('Rakatboshi', ['ракатбоши', 'rakatboshi']), area('Glinka', ['глинка', 'glinka']),
+    area('Rakat', ['ракат', 'rakat']), area('Rakatboshi', ['ракатбоши', 'rakatboshi']),
   ]),
   Yangihayot: Object.freeze([
     area('Uzgarish', ['узгарыш', 'ўзгариш', "o'zgarish", 'uzgarish']), area('Dustlik-1', ['дустлик 1', 'дўстлик 1', "do'stlik 1", 'dustlik 1']),
