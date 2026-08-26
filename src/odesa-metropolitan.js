@@ -38,7 +38,7 @@ export const ODESA_MICRODISTRICT_EXTENSIONS = Object.freeze([
   entity('Чубаївка', 'microdistrict', ['Чубаевка','Чубаївка','Chubaivka','Chubayevka']),
   entity('411-та батарея', 'local_area', ['411 батарея','411-я батарея','411 батарея Одесса','411-та батарея','Мемориал 411 батареи']),
   entity('Дача Ковалевського', 'microdistrict', ['Дача Ковалевского','Дача Ковалевського','Дача Ковальского','Kovalevskoho Dacha','Kovalevskogo Dacha']),
-  entity('Золотий Берег', 'microdistrict', ['Золотой Берег','Золотий Берег','Golden Coast','16 станция Фонтана','16-та станція Великого Фонтану']),
+  entity('Золотий Берег', 'poi.beach', ['Золотой Берег','Золотий Берег','Golden Coast','16 станция Фонтана','16-та станція Великого Фонтану']),
   entity('Чорноморка', 'microdistrict', ['Черноморка','Чорноморка','Chornomorka','Chernomorka','Люстдорф','Lustdorf']),
   entity('Таїрова', 'microdistrict', ['Таирова','Таїрова','Tairova','район Таирова','ж/м Таирова','жилмассив Таирова']),
   entity('Черемушки', 'microdistrict', ['Черёмушки','Черемушки','Cheremushky','Cheryomushki','Черёмушки Одесса','Черемушки Одеса']),
