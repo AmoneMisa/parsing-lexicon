@@ -27,8 +27,24 @@ export function parseHousingPrice(value, fallbackCurrency = '') {
   const explicit = Boolean(findCanonical(text, CURRENCY_TERMS, { partial: true }));
   let price = null;
 
+  // Common Ukrainian/Russian classifieds shorthand: "10 т грн" / "10 т гр".
+  // Keep this housing-specific instead of adding globally ambiguous aliases
+  // `т` (tonne) and `гр` (gram) to the shared money lexicon. A nearby price
+  // keyword plus an explicit hryvnia shorthand makes the intent unambiguous.
+  const compactThousandUah = text.match(new RegExp(
+    `${PRICE_KEYWORD}[^\\r\\n]{0,48}?(\\d{1,6}(?:[.,]\\d{1,2})?)\\s*т(?:ыс\\.?)?\\s*(?:гр(?:н)?|₴|uah)(?=$|[^\\p{L}\\p{N}_])`,
+    'iu',
+  ));
+  if (compactThousandUah) {
+    const amount = parseNumericAmount(compactThousandUah[1]);
+    if (amount != null && amount >= 1 && amount <= 5_000_000) {
+      price = Math.round(amount * 1000);
+      currency = 'UAH';
+    }
+  }
+
   const labelled = text.match(new RegExp(`${PRICE_KEYWORD}\\s*[:\\-–—]?\\s*(${MONEY_NUMBER_PATTERN})`, 'i'));
-  if (labelled) {
+  if (price == null && labelled) {
     const amount = parseNumericAmount(labelled[1]);
     if (amount != null && amount >= 50 && amount <= 5_000_000_000) price = amount;
   }
