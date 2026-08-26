@@ -10,6 +10,7 @@
     "./lexicon-core": "./src/lexicon-core.js",
     "./normalization": "./src/normalization.js",
     "./countries": "./src/countries.js",
+    "./country-context": { "types": "./src/country-context.d.ts", "import": "./src/country-context.js" },
     "./geo": "./src/geo.js",
     "./geography": "./src/geography.js",
     "./geography-display": { "types": "./src/geography-display.d.ts", "import": "./src/geography-display.js" },
