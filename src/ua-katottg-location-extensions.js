@@ -9,11 +9,15 @@ const freeze = (value) => Object.freeze(value);
 function entry(row) {
   const [code, name, category, type, parentCode] = row;
   const aliases = freeze([name]);
+  let compiledRegex = null;
   return freeze({
     canonical: name,
     name,
     aliases,
-    re: aliasesToRegex(aliases),
+    get re() {
+      if (!compiledRegex) compiledRegex = aliasesToRegex(aliases);
+      return compiledRegex;
+    },
     code,
     katottgCode: code,
     category,
@@ -67,8 +71,6 @@ function preferredSettlementKey(row) {
   const sameNameCount = settlementNameCounts.get(normalized) || 0;
   const canonical = canonicalUkraineCity(row[1]);
 
-  // Curated city canonicals describe actual cities, not every village or
-  // settlement that happens to share the same official name.
   if (canonical && (sameNameCount <= 1 || CANONICAL_CITY_TYPES.has(row[3]))) return canonical;
   if (sameNameCount <= 1) return row[1];
 
@@ -79,9 +81,6 @@ function preferredSettlementKey(row) {
   return scope ? `${row[1]} (${scope})` : row[1];
 }
 
-// Human-readable hierarchy usually disambiguates same-name settlements. For the
-// rare case where KATOTTG itself contains two same-name objects under the same
-// hierarchy, append the stable official code rather than dropping either record.
 const preferredKeyCounts = new Map();
 for (const row of settlementRows) {
   const key = preferredSettlementKey(row);
@@ -143,7 +142,6 @@ function build() {
   ])));
 }
 
-/** Same canonical location-entry objects that feed locationCities('UA'). */
 export const UA_KATOTTG_LOCATION_ENTRIES = freeze([...entriesByCode.values()]);
 export const UA_KATOTTG_LOCATION_EXTENSIONS = build();
 export const UA_KATOTTG_LOCATION_META = UA_KATOTTG_META;
