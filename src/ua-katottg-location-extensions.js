@@ -1,6 +1,6 @@
 import { aliasesToRegex, normalizeForMatch } from './normalization.js';
 import { canonicalUkraineCity } from './ukraine.js';
-import { UA_KATOTTG_META, UA_KATOTTG_ROWS } from './generated/ua-katottg.js';
+import { UA_KATOTTG_META, UA_KATOTTG_ROWS } from './ua-location-catalog-katottg.js';
 
 const SETTLEMENT_TYPES = new Set(['special_city', 'city', 'urban_settlement', 'village', 'settlement']);
 const CANONICAL_CITY_TYPES = new Set(['special_city', 'city']);
