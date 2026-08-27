@@ -63,6 +63,12 @@ test('centralizes Sergeli metro typo aliases', () => {
   assert.equal(matchTashkentHousingMetro('Сергели')?.name, 'Sergeli');
 });
 
+test('keeps Kuylyuk massif separate from the Qoyliq metro station', () => {
+  assert.deepEqual(names('Куйлюк массив'), ['Kuylyuk']);
+  assert.equal(matchTashkentHousingMetro('Куйлюк массив'), null);
+  assert.equal(matchTashkentHousingMetro('метро Куйлюк')?.name, 'Qoyliq');
+});
+
 test('centralizes the historical housing label for Tashkent north railway station', () => {
   assert.equal(
     matchTashkentHousingTransit('До метро Ташкент Северный вокзал 5 минут')?.name,
