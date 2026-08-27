@@ -33,11 +33,6 @@ export const TASHKENT_HOUSING_LANDMARKS = Object.freeze([
   locationEntry('Yangi Choshtepa', 'local_area', [
     'Янги Чоштепа', 'Янги чоштепа', 'Yangi Choshtepa',
   ]),
-  locationEntry('Kuylyuk', 'local_area', [
-    'Куйлюк массив', 'Куйлик массив', 'Куйлюк массиви', 'Куйлик массиви',
-    'Kuylyuk massif', 'Kuylyuk massivi', 'Kuyliq massivi',
-    "Qo'yliq massivi", 'Qo‘yliq massivi', 'Qoʻyliq massivi', 'Қўйлиқ массиви',
-  ]),
   locationEntry('Glinka', 'landmark', [
     'Глинка', 'Glinka', 'Глинка ГАИ', 'ГАИ Глинка',
   ]),
@@ -128,7 +123,7 @@ const DISTRICT_CONTEXT_ALIASES = Object.freeze({
 });
 
 const NUMBERED_CONTEXT = '(?:tumani|тумани|district|район|massiv|массив)';
-const NUMBERED_SUFFIX_CONTEXT = '(?:chi|чи|й|квартал|kvartal|hudud(?:da)?|худуд(?:да)?)';
+const NUMBERED_SUFFIX_CONTEXT = '(?:chi|чи|й|квартал|kvartal|hudud(?:da)?|худуд(?:да)?|massiv(?:i)?|массив(?:и)?)';
 // The open \p{L}* suffix used to swallow any trailing letters, so
 // "туманность" (an unrelated word) satisfied this as if "туман" (district)
 // had been mentioned. {0,4} covers real case endings (туманда, туманидан)
@@ -189,7 +184,7 @@ const EXTRA_METRO_ALIASES = Object.freeze({
   Sergeli: Object.freeze(['Sergile', 'Sergele']),
 });
 
-const QOYLIQ_MASSIF_RE = /(?:куйлюк|куйлик|kuylyuk|kuyliq|qoyliq|qo[‘’ʻ']?yliq|қўйлиқ)\s+(?:массив(?:и)?|massiv(?:i)?)/iu;
+const QOYLIQ_MASSIF_RE = /(?:куйлюк|куйлик|kuylyuk|kuyliq|qoyliq|qo[‘’ʻ']?yliq|қўйлиқ)(?:\s+\d{1,2})?\s+(?:массив(?:и)?|massiv(?:i)?)/iu;
 
 /** Resolve listing typos/transliterations to an existing canonical metro entry. */
 export function matchTashkentHousingMetro(value) {
