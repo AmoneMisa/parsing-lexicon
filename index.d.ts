@@ -1,5 +1,5 @@
 export type LexiconLanguage = 'all' | 'ru' | 'en' | 'uk' | 'ro' | 'uzLatn' | 'uzCyrl' | 'kaaLat' | 'kaaCyrl' | 'kk';
-export type CountryCode = 'UZ' | 'KZ' | 'UA' | 'RO' | 'KG';
+export type CountryCode = 'UZ' | 'KZ' | 'UA' | 'RO' | 'KG' | 'GE' | 'AZ' | 'AM' | 'MD' | 'TJ' | 'TM' | 'PL' | 'DE' | 'GB' | 'US' | 'CA' | 'CN' | 'JP' | 'KR' | 'TW';
 export type AliasMap = Readonly<Partial<Record<LexiconLanguage, readonly string[]>>>;
 export type LexiconEntity = Readonly<{
   canonical: string;
@@ -204,16 +204,17 @@ export const KZ_CITIES: readonly LexiconEntity[];
 export const UA_CITIES: readonly LexiconEntity[];
 export const RO_CITIES: readonly LexiconEntity[];
 export const KG_CITIES: readonly LexiconEntity[];
+export const GLOBAL_CITIES: readonly LexiconEntity[];
 /** Canonical cross-country city catalog. */
 export const CITIES: readonly LexiconEntity[];
 export const CITIES_BY_COUNTRY: Readonly<Partial<Record<CountryCode, readonly LexiconEntity[]>>>;
-export function canonicalCity(value: unknown, country?: CountryCode | null): string | null;
+export function canonicalCity(value: unknown, country?: CountryCode | string | null): string | null;
 /** @deprecated Use CITIES. */
 export const GEOGRAPHY_CITIES: readonly LexiconEntity[];
 /** @deprecated Use CITIES_BY_COUNTRY. */
 export const GEOGRAPHY_CITIES_BY_COUNTRY: Readonly<Partial<Record<CountryCode, readonly LexiconEntity[]>>>;
 /** @deprecated Use canonicalCity. */
-export function canonicalAnyCity(value: unknown, country?: CountryCode | null): string | null;
+export function canonicalAnyCity(value: unknown, country?: CountryCode | string | null): string | null;
 export const UA_ADDITIONAL_CITIES: readonly LexiconEntity[];
 export const UA_CITY_CATALOG: readonly LexiconEntity[];
 export const UA_CITY_HISTORICAL_ALIASES: Readonly<Record<string, readonly string[]>>;
@@ -275,7 +276,8 @@ export const KZ_REGIONS: readonly LexiconEntity[];
 export const UA_REGIONS: readonly LexiconEntity[];
 export const RO_REGIONS: readonly LexiconEntity[];
 export const REGIONS: readonly LexiconEntity[];
-export function canonicalRegion(value: unknown, country?: CountryCode | null): string | null;
+export const REGIONS_BY_COUNTRY: Readonly<Partial<Record<CountryCode, readonly LexiconEntity[]>>>;
+export function canonicalRegion(value: unknown, country?: CountryCode | string | null): string | null;
 
 export const LOCATION_LIST_KEYS: readonly string[];
 export function locationEntry(name: string, ...aliases: string[]): LocationEntry;

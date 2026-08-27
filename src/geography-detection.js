@@ -1,60 +1,6 @@
 import { COUNTRIES, canonicalCountryCode } from './countries.js';
 import { CITIES } from './geography.js';
-import { KZ_CITY_CATALOG, UZ_CITY_CATALOG } from './central-asia.js';
-import { UA_CITY_CATALOG } from './ukraine.js';
 import { aliasesOf, aliasesToRegex, normalizeForMatch } from './normalization.js';
-
-const city = (canonical, country, aliases = []) => Object.freeze({
-  canonical,
-  country,
-  type: 'city',
-  aliases: Object.freeze({ all: Object.freeze([...new Set([canonical, ...aliases])]) }),
-});
-
-/** Cities used by hiring feeds outside the housing-focused geography catalogs. */
-export const HIRING_GLOBAL_CITIES = Object.freeze([
-  city('Tbilisi', 'GE', ['Тбилиси']),
-  city('Batumi', 'GE', ['Батуми']),
-  city('Baku', 'AZ', ['Баку']),
-  city('Yerevan', 'AM', ['Ереван', 'Єреван']),
-  city('Chisinau', 'MD', ['Chișinău', 'Chişinău', 'Кишинёв', 'Кишинев']),
-  city('Dushanbe', 'TJ', ['Душанбе']),
-  city('Ashgabat', 'TM', ['Ашхабад']),
-  city('Warsaw', 'PL', ['Warszawa', 'Варшава']),
-  city('Krakow', 'PL', ['Kraków', 'Краков']),
-  city('Berlin', 'DE', ['Берлин']),
-  city('Munich', 'DE', ['München', 'Мюнхен']),
-  city('London', 'GB', ['Лондон']),
-  city('New York', 'US', ['New York City', 'NYC', 'Нью-Йорк', 'Нью Йорк']),
-  city('Beijing', 'CN', ['Пекин', '北京']),
-  city('Shanghai', 'CN', ['Шанхай', '上海']),
-  city('Shenzhen', 'CN', ['Шэньчжэнь', '深圳']),
-  city('Guangzhou', 'CN', ['Гуанчжоу', '广州']),
-  city('Hangzhou', 'CN', ['Ханчжоу', '杭州']),
-  city('Tokyo', 'JP', ['Токио', '東京']),
-  city('Osaka', 'JP', ['Осака', '大阪']),
-  city('Kyoto', 'JP', ['Киото', '京都']),
-  city('Seoul', 'KR', ['Сеул', '서울']),
-  city('Busan', 'KR', ['Пусан', '부산']),
-  city('Taipei', 'TW', ['Тайбэй', '台北']),
-  city('Kaohsiung', 'TW', ['Гаосюн', '高雄']),
-  city('Taichung', 'TW', ['Тайчжун', '台中']),
-]);
-
-const CITY_CATALOG = Object.freeze((() => {
-  const byKey = new Map();
-  for (const item of [
-    ...CITIES,
-    ...KZ_CITY_CATALOG,
-    ...UZ_CITY_CATALOG,
-    ...UA_CITY_CATALOG,
-    ...HIRING_GLOBAL_CITIES,
-  ]) {
-    const key = `${item.country || ''}:${item.canonical}`;
-    if (!byKey.has(key)) byKey.set(key, item);
-  }
-  return [...byKey.values()];
-})());
 
 const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
@@ -68,7 +14,7 @@ function cityInflectionRegex(aliases) {
   return new RegExp(`(?<![\\p{L}\\p{N}])(?:${patterns.join('|')})(?![\\p{L}\\p{N}])`, 'iu');
 }
 
-const CITY_MATCHERS = CITY_CATALOG.map((item) => {
+const CITY_MATCHERS = CITIES.map((item) => {
   const aliases = [item.canonical, ...aliasesOf(item)];
   return Object.freeze({
     item,
