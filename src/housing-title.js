@@ -15,18 +15,32 @@ const CATEGORY = String.raw`(?:`
   + String.raw`|(?:apartments?|flats?|houses?|rooms?)\s+for\s+(?:rent|sale)`
   + String.raw`|rentals?|daily\s+rentals?`
   + String.raw`|ijaraga\s+berish|ijara|sotuvi`
+  // ro: "închiriere pe termen lung/scurt", "apartamente de vânzare" (subject
+  // leads here, so this alt embeds its own subject like the English "for
+  // rent/sale" form above), bare "închiriere"/"chirie"/"vânzare"
+  + String.raw`|(?:închiri\p{L}*|inchiri\p{L}*)\s+pe\s+termen\s+(?:lung|scurt)`
+  + String.raw`|(?:apartament\p{L}*|cas[aă]\p{L}*|case\p{L}*)\s+de\s+(?:vânzare|vanzare|închiriat|inchiriat)`
+  + String.raw`|închiri\p{L}*|inchiri\p{L}*|chirie\p{L}*|vânz\p{L}*|vanz\p{L}*`
+  // kk: "жалдау"/"жалға"/"жалға беру" (long rent), "ұзақ мерзімге жалдау"
+  // (long rent, spelled out), "тәуліктік жалдау" (short rent), "сату"/"сатылым"
+  + String.raw`|ұзақ\s+мерзімге\s+жалд\p{L}*|тәулік\p{L}*\s+жалд\p{L}*`
+  + String.raw`|жалд\p{L}*|жалғ\p{L}*(?:\s+беру\p{L}*)?|сат\p{L}*`
   + String.raw`)`;
 
 const SUBJECT = String.raw`(?:`
   + String.raw`квартир\p{L}*|кімнат\p{L}*|комнат\p{L}*|будинк\p{L}*|будинків|дом\p{L}*|житл\p{L}*|нерухомост\p{L}*|недвижимост\p{L}*`
   + String.raw`|apartments?|flats?|houses?|rooms?|property|real\s+estate`
   + String.raw`|kvartira\p{L}*|uylar|xona\p{L}*`
+  + String.raw`|apartament\p{L}*|cameră\p{L}*|camera\p{L}*|cas[aă]\p{L}*|case\p{L}*|locuinț\p{L}*|locuinta\p{L}*`
+  + String.raw`|пәтер\p{L}*|бөлме\p{L}*|үй\p{L}*`
   + String.raw`)`;
 
-// Only a single trailing locality clause counts as part of the heading — one
-// short comma- or dash-separated fragment such as ", Подільський район".
-// Anything richer means the title is saying something about this property.
-const LOCALITY_TAIL = String.raw`(?:\s*[,–—-]\s*[^\r\n,]{1,40})?`;
+// Trailing locality clauses, comma- or dash-separated, such as
+// ", Подільський район, біля станції метро". Each clause is capped in length
+// so this stays a location tail rather than swallowing real content — but a
+// digit anywhere still wins first via SPECIFIC_DETAIL, which is the actual
+// guard against misreading a real title as generic.
+const LOCALITY_TAIL = String.raw`(?:\s*[,–—-]\s*[^\r\n,]{1,40}){0,3}`;
 
 const GENERIC_TITLE_PATTERN = new RegExp(
   `^\\s*${CATEGORY}(?:\\s+${SUBJECT})?${LOCALITY_TAIL}\\s*$`,

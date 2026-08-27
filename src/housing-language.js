@@ -18,7 +18,7 @@ const HOUSING_LANGUAGE_SIGNALS = Object.freeze({
     minimum: 2,
   },
   uk: {
-    pattern: /(?:квартир\p{L}*|кімнат\p{L}*|поверх\p{L}*|будинк\p{L}*|цін\p{L}*|здається|продається|оренд\p{L}*|поруч|метро|сімейн\p{L}*|комунальн\p{L}*|ремонт\p{L}*|меблі\p{L}*|балкон\p{L}*|район\p{L}*)/giu,
+    pattern: /(?:квартир\p{L}*|кімнат\p{L}*|поверх\p{L}*|будинк\p{L}*|цін\p{L}*|здається|продається|оренд\p{L}*|поруч|метро|сімейн\p{L}*|комунальн\p{L}*|ремонт\p{L}*|мебл\p{L}*|балкон\p{L}*|район\p{L}*)/giu,
     minimum: 2,
   },
   en: {
@@ -27,6 +27,14 @@ const HOUSING_LANGUAGE_SIGNALS = Object.freeze({
   },
   uz: {
     pattern: /(?:kvartira\p{L}*|xona\p{L}*|qavat\p{L}*|uy\p{L}*|narx\p{L}*|ijara\p{L}*|beriladi|sotiladi|yaqin|metro|mebel\p{L}*|balkon\p{L}*|tuman\p{L}*)/giu,
+    minimum: 2,
+  },
+  ro: {
+    pattern: /(?:apartament\p{L}*|cameră\p{L}*|camera\p{L}*|etaj\p{L}*|cas[aă]\p{L}*|case\p{L}*|pre[țt]\p{L}*|închiri\p{L}*|inchiri\p{L}*|vânz\p{L}*|vanz\p{L}*|metrou\p{L}*|famil\p{L}*|utilit\p{L}*|mobilat\p{L}*|balcon\p{L}*|cartier\p{L}*)/giu,
+    minimum: 2,
+  },
+  kk: {
+    pattern: /(?:пәтер\p{L}*|бөлме\p{L}*|қабат\p{L}*|үй\p{L}*|баға\p{L}*|жалд\p{L}*|жалғ\p{L}*|сат\p{L}*|жақын\p{L}*|метро\p{L}*|отбасы\p{L}*|коммунал\p{L}*|жиһаз\p{L}*|балкон\p{L}*|аудан\p{L}*)/giu,
     minimum: 2,
   },
 });

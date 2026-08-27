@@ -12,6 +12,17 @@ test('marketplace category headings are generic', () => {
     'Оренда квартир',
     'Аренда',
     'Rentals, Kyiv',
+    'Închiriere pe termen lung apartamente, sector Botanica',
+    'Inchiriere pe termen scurt, Cluj',
+    'Apartamente de vânzare',
+    'Apartament de închiriat',
+    'Chirie apartament',
+    'Vânzare case',
+    'Ұзақ мерзімге жалдау пәтерлер',
+    'Жалға пәтерлер',
+    'Жалға беру, пәтерлер',
+    'Тәуліктік жалдау',
+    'Сатылым үйлер',
   ]) {
     assert.equal(isGenericHousingTitle(title), true, title);
     assert.equal(hasMeaningfulHousingTitle(title), false, title);
@@ -26,10 +37,21 @@ test('titles describing an actual property are kept', () => {
     'Cozy studio near Olimpiiska',
     'Долгосрочная аренда 3-комнатной квартиры',
     'Продам будинок з терасою у Львові',
+    'Apartament 2 camere, 54 mp, zona centrală',
+    'Închiriez cameră mobilată lângă metrou, 200 euro',
+    '3 бөлмелі пәтер, 70 шаршы метр, Алматы',
+    'Жалға беремін, 2 бөлме, 5 қабат',
   ]) {
     assert.equal(isGenericHousingTitle(title), false, title);
     assert.equal(hasMeaningfulHousingTitle(title), true, title);
   }
+});
+
+test('multiple trailing locality clauses are still a generic heading', () => {
+  assert.equal(
+    isGenericHousingTitle('Долгосрочная аренда квартир, Печерский район, возле метро Печерская'),
+    true,
+  );
 });
 
 test('a digit anywhere proves the title is specific', () => {
