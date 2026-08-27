@@ -33,3 +33,12 @@ test('parses an estimated hourly USD range with a unicode dash', () => {
   assert.equal(parsed.min, 55);
   assert.equal(parsed.max, 65);
 });
+
+test('parses an annual USD range when both endpoints repeat the currency symbol', () => {
+  const parsed = parseSalary('Annual Salary: $405,000 — $485,000 USD');
+  assert.ok(parsed);
+  assert.equal(parsed.period, 'year');
+  assert.equal(parsed.currency, 'USD');
+  assert.equal(parsed.min, 405_000);
+  assert.equal(parsed.max, 485_000);
+});
