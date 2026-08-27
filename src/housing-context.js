@@ -102,6 +102,8 @@ export const SMOKING_POLICY_TERMS = Object.freeze([
 export const DOCUMENT_STATUS_TERMS = Object.freeze([
   group('cadastralReady', { ru: ['кадастр есть', 'кадастр готов', 'кадастровые документы готовы'], en: ['cadastral documents ready', 'cadastre ready'], uk: ['кадастр готовий'], ro: ['cadastru gata'], uzLatn: ['kadastr bor', 'kadastr tayyor'], uzCyrl: ['кадастр бор', 'кадастр тайёр'], kk: ['кадастр дайын'] }),
   group('ownership', { ru: ['право собственности', 'документы на руках'], en: ['ownership title', 'title deed'], uk: ['право власності'], ro: ['drept de proprietate'], uzLatn: ['mulk huquqi'], uzCyrl: ['мулк ҳуқуқи'], kk: ['меншік құқығы'] }),
+  group('documentsReady', { ru: ['документы в порядке', 'документы готовы'], en: ['documents ready', 'documents in order'], uk: ['документи готові', 'документи в порядку'], ro: ['documente în regulă'], uzLatn: ['hujjatlari joyida', 'hujjatlar joyida', 'hujjatlar tayyor'], uzCyrl: ['ҳужжатлари жойида', 'ҳужжатлар жойида', 'ҳужжатлар тайёр'], kk: ['құжаттар дайын'] }),
+  group('contractAvailable', { ru: ['договор оформим', 'договор составим', 'договор оформляется'], en: ['contract available', 'contract can be arranged'], uk: ['договір оформимо'], ro: ['contract disponibil'], uzLatn: ['shartnoma ham qilib beriladi', 'shartnoma qilib beriladi'], uzCyrl: ['шартнома ҳам қилиб берилади', 'шартнома қилиб берилади'], kk: ['келісімшарт жасалады'] }),
   group('noEncumbrance', { ru: ['без обременений', 'обременений нет'], en: ['no encumbrances', 'free of encumbrances'], uk: ['без обтяжень'], ro: ['fără sarcini'], uzLatn: ['taqiqsiz'], uzCyrl: ['тақиқсиз'], kk: ['ауыртпалықсыз'] }),
   group('encumbered', { ru: ['в залоге', 'под арестом', 'есть обременение'], en: ['encumbered', 'under lien'], uk: ['в заставі', 'є обтяження'], ro: ['cu sarcini'], uzLatn: ['garovda'], uzCyrl: ['гаровда'], kk: ['кепілде'] }),
   group('nobodyRegistered', { ru: ['никто не прописан'], en: ['nobody registered'], uk: ['ніхто не зареєстрований'], ro: ['nimeni înregistrat'], uzLatn: ['hech kim ro‘yxatda emas'], uzCyrl: ['ҳеч ким рўйхатда эмас'], kk: ['ешкім тіркелмеген'] }),
@@ -114,7 +116,7 @@ export const FINANCING_TERMS = Object.freeze([
 ]);
 
 export const LOCATION_RELATIONS = Object.freeze([
-  group('near', { ru: ['рядом с', 'возле', 'около'], en: ['near', 'next to', 'close to'], uk: ['поруч', 'біля'], ro: ['lângă', 'aproape de'], uzLatn: ['yaqinida', 'yonida'], uzCyrl: ['яқинида', 'ёнида'], kk: ['жанында', 'маңында'] }),
+  group('near', { ru: ['рядом с', 'возле', 'около'], en: ['near', 'next to', 'close to'], uk: ['поруч', 'біля'], ro: ['lângă', 'aproape de'], uzLatn: ['yaqinida', 'yonida', 'yaqin'], uzCyrl: ['яқинида', 'ёнида', 'яқин'], kk: ['жанында', 'маңында'] }),
   group('opposite', { ru: ['напротив', 'через дорогу'], en: ['opposite', 'across the road'], uk: ['навпроти', 'через дорогу'], ro: ['vizavi', 'peste drum'], uzLatn: ['ro‘parasida'], uzCyrl: ['рўпарасида'], kk: ['қарсысында'] }),
   group('behind', { ru: ['за парком', 'за рынком', 'за базаром'], en: ['behind'], uk: ['за парком'], ro: ['în spatele'], uzLatn: ['orqasida'], uzCyrl: ['орқасида'], kk: ['артында'] }),
   group('intersection', { ru: ['на пересечении', 'на перекрёстке', 'перекрёсток'], en: ['at the intersection', 'crossroads'], uk: ['на перехресті'], ro: ['la intersecție'], uzLatn: ['chorrahada'], uzCyrl: ['чорраҳада'], kk: ['қиылыста'] }),
