@@ -1,5 +1,6 @@
 import { UZ_CITIES, KZ_CITIES } from './geography-central-asia.js';
 import { findCanonical } from './normalization.js';
+import { canonicalCountryCode } from './countries.js';
 import { lexiconEntity } from './lexicon-core.js';
 import { RO_CITY_EXTENSIONS } from './romania-geography.js';
 
@@ -59,9 +60,40 @@ export const KG_CITIES = Object.freeze([
   entity('Bishkek', { ru: ['Бишкек'], en: ['Bishkek'], kk: ['Бішкек'], uzLatn: ['Bishkek'] }, { country: 'KG', type: 'city' }),
   entity('Osh', { ru: ['Ош'], en: ['Osh'], kk: ['Ош'], uzLatn: ['Osh'] }, { country: 'KG', type: 'city' }),
   entity('Karakol', { ru: ['Каракол'], en: ['Karakol'], kk: ['Қаракөл'], uzLatn: ['Karakol'] }, { country: 'KG', type: 'city' }),
+
 ]);
 
-export const CITIES = Object.freeze([...UZ_CITIES, ...KZ_CITIES, ...UA_CITIES, ...RO_CITIES, ...KG_CITIES]);
+/** Canonical cities used across global hiring and housing ingestion. */
+export const GLOBAL_CITIES = Object.freeze([
+  entity('Tbilisi', { en: ['Tbilisi'], ru: ['Тбилиси'] }, { country: 'GE', type: 'city' }),
+  entity('Batumi', { en: ['Batumi'], ru: ['Батуми'] }, { country: 'GE', type: 'city' }),
+  entity('Baku', { en: ['Baku'], ru: ['Баку'] }, { country: 'AZ', type: 'city' }),
+  entity('Yerevan', { en: ['Yerevan'], ru: ['Ереван'], uk: ['Єреван'] }, { country: 'AM', type: 'city' }),
+  entity('Chisinau', { en: ['Chisinau'], ro: ['Chișinău', 'Chişinău'], ru: ['Кишинёв', 'Кишинев'] }, { country: 'MD', type: 'city' }),
+  entity('Dushanbe', { en: ['Dushanbe'], ru: ['Душанбе'] }, { country: 'TJ', type: 'city' }),
+  entity('Ashgabat', { en: ['Ashgabat'], ru: ['Ашхабад'] }, { country: 'TM', type: 'city' }),
+  entity('Warsaw', { en: ['Warsaw'], all: ['Warszawa'], ru: ['Варшава'] }, { country: 'PL', type: 'city' }),
+  entity('Krakow', { en: ['Krakow'], all: ['Kraków'], ru: ['Краков'] }, { country: 'PL', type: 'city' }),
+  entity('Berlin', { en: ['Berlin'], ru: ['Берлин'] }, { country: 'DE', type: 'city' }),
+  entity('Munich', { en: ['Munich'], all: ['München'], ru: ['Мюнхен'] }, { country: 'DE', type: 'city' }),
+  entity('London', { en: ['London'], ru: ['Лондон'] }, { country: 'GB', type: 'city' }),
+  entity('New York', { en: ['New York', 'New York City', 'NYC'], ru: ['Нью-Йорк', 'Нью Йорк'] }, { country: 'US', type: 'city' }),
+  entity('Beijing', { en: ['Beijing'], ru: ['Пекин'], all: ['北京'] }, { country: 'CN', type: 'city' }),
+  entity('Shanghai', { en: ['Shanghai'], ru: ['Шанхай'], all: ['上海'] }, { country: 'CN', type: 'city' }),
+  entity('Shenzhen', { en: ['Shenzhen'], ru: ['Шэньчжэнь'], all: ['深圳'] }, { country: 'CN', type: 'city' }),
+  entity('Guangzhou', { en: ['Guangzhou'], ru: ['Гуанчжоу'], all: ['广州'] }, { country: 'CN', type: 'city' }),
+  entity('Hangzhou', { en: ['Hangzhou'], ru: ['Ханчжоу'], all: ['杭州'] }, { country: 'CN', type: 'city' }),
+  entity('Tokyo', { en: ['Tokyo'], ru: ['Токио'], all: ['東京'] }, { country: 'JP', type: 'city' }),
+  entity('Osaka', { en: ['Osaka'], ru: ['Осака'], all: ['大阪'] }, { country: 'JP', type: 'city' }),
+  entity('Kyoto', { en: ['Kyoto'], ru: ['Киото'], all: ['京都'] }, { country: 'JP', type: 'city' }),
+  entity('Seoul', { en: ['Seoul'], ru: ['Сеул'], all: ['서울'] }, { country: 'KR', type: 'city' }),
+  entity('Busan', { en: ['Busan'], ru: ['Пусан'], all: ['부산'] }, { country: 'KR', type: 'city' }),
+  entity('Taipei', { en: ['Taipei'], ru: ['Тайбэй'], all: ['台北'] }, { country: 'TW', type: 'city' }),
+  entity('Kaohsiung', { en: ['Kaohsiung'], ru: ['Гаосюн'], all: ['高雄'] }, { country: 'TW', type: 'city' }),
+  entity('Taichung', { en: ['Taichung'], ru: ['Тайчжун'], all: ['台中'] }, { country: 'TW', type: 'city' }),
+]);
+
+export const CITIES = Object.freeze([...UZ_CITIES, ...KZ_CITIES, ...UA_CITIES, ...RO_CITIES, ...KG_CITIES, ...GLOBAL_CITIES]);
 export const CITIES_BY_COUNTRY = Object.freeze(Object.fromEntries(
   [...new Set(CITIES.map((item) => item.country).filter(Boolean))].map((code) => [
     code,
@@ -70,7 +102,8 @@ export const CITIES_BY_COUNTRY = Object.freeze(Object.fromEntries(
 ));
 
 export function canonicalCity(value, country = null) {
-  const catalog = country ? (CITIES_BY_COUNTRY[country] || []) : CITIES;
+  const code = country ? canonicalCountryCode(country) : null;
+  const catalog = country ? (code ? (CITIES_BY_COUNTRY[code] || []) : []) : CITIES;
   return findCanonical(value, catalog)?.canonical || null;
 }
 
@@ -171,6 +204,7 @@ export const REGIONS_BY_COUNTRY = Object.freeze(Object.fromEntries(
 ));
 
 export function canonicalRegion(value, country = null) {
-  const catalog = country ? (REGIONS_BY_COUNTRY[country] || []) : REGIONS;
+  const code = country ? canonicalCountryCode(country) : null;
+  const catalog = country ? (code ? (REGIONS_BY_COUNTRY[code] || []) : []) : REGIONS;
   return findCanonical(value, catalog, { partial: true })?.canonical || null;
 }
