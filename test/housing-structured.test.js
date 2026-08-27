@@ -8,6 +8,8 @@ import {
   parseHousingRoomCount,
   parseHousingSeller,
 } from '../src/housing-structured.js';
+import { parseHousingPrice } from '../src/housing-money.js';
+import { parseHousingAreaFromText, parseHousingResidentialComplex } from '../src/housing-text.js';
 
 test('normalizes multilingual room counts and floor fractions', () => {
   assert.equal(parseHousingRoomCount('Сдам 2-к квартиру'), 2);
@@ -73,4 +75,44 @@ test('binds infrastructure distance to nearby POI', () => {
   assert.equal(metro?.distance?.value, 5);
   assert.equal(metro?.distance?.mode, 'walk');
   assert.equal(school?.distance?.value, 15);
+});
+
+test('covers the supplied Dream House listing across shared housing parsers', () => {
+  const text = `
+    ЖК Dream House Яккасарайский район 8 этаж из 10
+    2 комнаты полноценные + кухня, гардеробная отдельной комнатой
+    2 санузла 80 квадратов Депозит за 1 месяц
+    Свое бесплатное парковочное место!
+    Ор-р 8 роддом, улица Абдулла Каххара
+    Цена 1200 у.е. + 50% комиссия агенства от первого месяца
+  `;
+
+  assert.equal(parseHousingResidentialComplex(text), 'Dream House');
+  assert.equal(parseHousingRoomCount(text), 2);
+  assert.deepEqual(parseHousingFloor(text), { floor: 8, totalFloors: 10 });
+  assert.equal(parseHousingAreaFromText(text), 80);
+  assert.equal(parseHousingPayments(text).deposit.required, true);
+  assert.equal(parseHousingPayments(text).deposit.amount, null);
+  assert.equal(parseHousingPayments(text).commission.percent, 50);
+  assert.deepEqual(parseHousingSeller(text), { type: 'agency', confidence: 1 });
+  assert.deepEqual(parseHousingPrice(text), { price: 1200, currency: 'USD' });
+  assert.ok(parseHousingInfrastructure(text).some(({ poi }) => poi === 'Maternity hospital'));
+});
+
+test('covers the supplied Qorasuv Cyrillic Uzbek listing semantics', () => {
+  const text = `
+    ЗУДЛИК БИЛАН УЙ ИЖАРАГА БЕРИЛАДИ!!!
+    Корасув Массиви
+    81-мактаб атрофида
+    16 этажлик дом
+    13-этаж
+    2 хона
+    2 млн 500 + агентство хизмати
+  `;
+
+  assert.equal(parseHousingRoomCount(text), 2);
+  assert.deepEqual(parseHousingFloor(text), { floor: 13, totalFloors: 16 });
+  assert.deepEqual(parseHousingPrice(text, 'UZS'), { price: 2_500_000, currency: 'UZS' });
+  assert.deepEqual(parseHousingSeller(text), { type: 'agency', confidence: 1 });
+  assert.ok(parseHousingInfrastructure(text).some(({ poi }) => poi === 'School'));
 });
