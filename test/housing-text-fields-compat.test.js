@@ -1,6 +1,12 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { parseHousingAmenities, parseHousingAreaFromText, parseHousingFloorFromText } from '../src/housing-text.js';
+import {
+  parseHousingAmenities,
+  parseHousingAreaFromText,
+  parseHousingFloorFromText,
+  parseHousingResidentialComplex,
+  parseHousingRoomsFromText,
+} from '../src/housing-text.js';
 
 test('housing text area parser preserves legacy free-text forms', () => {
   assert.equal(parseHousingAreaFromText('Площадь 80 квадратов'), 80);
@@ -15,6 +21,7 @@ test('housing text floor parser preserves compact and labelled forms', () => {
   assert.deepEqual(parseHousingFloorFromText('на 5-м этаже, этажность: 9'), { floor: 5, totalFloors: 9 });
   assert.deepEqual(parseHousingFloorFromText('1/0/-1 этаж подвал'), { floor: -1, totalFloors: null });
   assert.deepEqual(parseHousingFloorFromText('16 этажлик дом, 13-этаж'), { floor: 13, totalFloors: 16 });
+  assert.deepEqual(parseHousingFloorFromText('4- каватда квартира ижарага'), { floor: 4, totalFloors: null });
 });
 
 test('housing text floor parser does not mistake a building storey count for a unit floor', () => {
@@ -48,4 +55,17 @@ test('housing text amenities cover common sale listing features', () => {
     'heatedFloor',
     'freeParking',
   ]);
+});
+
+test('housing text parsers cover the supplied Cyrillic Uzbek room form', () => {
+  assert.equal(parseHousingRoomsFromText('1- хоналик квартира'), 1);
+  assert.equal(parseHousingRoomsFromText('2 хона'), 2);
+});
+
+test('housing text parsers cover the Dream House listing fields', () => {
+  const text = 'ЖК Dream House 8 этаж из 10 2 комнаты полноценные 80 квадратов';
+  assert.equal(parseHousingResidentialComplex(text), 'Dream House');
+  assert.equal(parseHousingRoomsFromText(text), 2);
+  assert.deepEqual(parseHousingFloorFromText(text), { floor: 8, totalFloors: 10 });
+  assert.equal(parseHousingAreaFromText(text), 80);
 });
