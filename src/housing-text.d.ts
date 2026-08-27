@@ -6,6 +6,7 @@ export declare function parseHousingAudience(value: unknown): 'family' | 'women'
 export declare function parseHousingAmenities(value: unknown): readonly (
   | 'dishwasher'
   | 'separateRooms'
+  | 'bed'
   | 'washingMachine'
   | 'refrigerator'
   | 'television'
