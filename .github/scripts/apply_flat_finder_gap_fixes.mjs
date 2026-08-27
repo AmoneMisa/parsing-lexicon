@@ -53,14 +53,3 @@ patch(
   "  Yashnobod: Object.freeze([\n    area('Asalabad-1'",
   "  Yangihayot: Object.freeze([\n    area('Yangi Choshtepa', ['янги чоштепа', 'yangi choshtepa']),\n  ]),\n  Yashnobod: Object.freeze([\n    area('Aviasozlar-3', ['авиасозлар 3', 'авиасозлар-3', 'aviasozlar 3', 'aviasozlar-3']),\n    area('Asalabad-1'",
 );
-
-patch(
-  'src/housing-address.js',
-  "    const prefix = line.match(new RegExp(`(?:^|[\\\\s,;])(${PREFIX_STREET_MARKER})\\\\s+(.+)$`, 'iu'));",
-  "    const prefixBare = line.match(new RegExp(\n      `(?:^|[\\\\s,;])(${PREFIX_STREET_MARKER})\\\\s*((?:${STREET_WORD}\\\\s+){0,3}${STREET_WORD})(?=$|[,;])`,\n      'iu',\n    ));\n    if (prefixBare) return result(clean(prefixBare[0]), prefixBare[2], null, null, 0.9);\n\n    const prefix = line.match(new RegExp(`(?:^|[\\\\s,;])(${PREFIX_STREET_MARKER})\\\\s+(.+)$`, 'iu'));",
-);
-patch(
-  'src/housing-address.js',
-  "function bareAddress(text) {\n  const tail = splitAddressTail(text);\n  if (!tail) return null;\n  const confidence = tail.houseNumber ? 0.85 : 0.55;",
-  "function bareAddress(text) {\n  const tail = splitAddressTail(text);\n  if (!tail) return null;\n  if (/^(?:центр|centre|center)$/iu.test(compactStreet(tail.street) || '')) return null;\n  const confidence = tail.houseNumber ? 0.85 : 0.55;",
-);
