@@ -68,6 +68,7 @@
   "sideEffects": false,
   "engines": { "node": ">=20" },
   "scripts": { "test": "node --test" },
+  "publishConfig": { "access": "public" },
   "dependencies": {
     "libphonenumber-js": "^1.11.20"
   },
