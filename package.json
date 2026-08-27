@@ -1,6 +1,6 @@
 {
   "name": "@whiteslove/parsing-lexicon",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "Shared deterministic multilingual parsing lexicon for Whiteslove housing and hiring services",
   "repository": {
     "type": "git",
@@ -41,6 +41,11 @@
     "./housing-context": { "types": "./src/housing-context.d.ts", "import": "./src/housing-context.js" },
     "./housing-address": { "types": "./src/housing-address.d.ts", "import": "./src/housing-address.js" },
     "./housing-structured": { "types": "./src/housing-structured.d.ts", "import": "./src/housing-structured.js" },
+    "./housing-safety": { "types": "./src/housing-safety.d.ts", "import": "./src/housing-safety.js" },
+    "./housing-title": { "types": "./src/housing-title.d.ts", "import": "./src/housing-title.js" },
+    "./housing-language": { "types": "./src/housing-language.d.ts", "import": "./src/housing-language.js" },
+    "./housing-features": { "types": "./src/housing-features.d.ts", "import": "./src/housing-features.js" },
+    "./housing-listing-fields": { "types": "./src/housing-listing-fields.d.ts", "import": "./src/housing-listing-fields.js" },
     "./housing-text": { "types": "./src/housing-text.d.ts", "import": "./src/housing-text.js" },
     "./housing-source-aliases": { "types": "./src/housing-source-aliases.d.ts", "import": "./src/housing-source-aliases.js" },
     "./hiring": "./src/hiring.js",
