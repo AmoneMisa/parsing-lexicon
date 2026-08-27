@@ -2,14 +2,28 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import {
+  CENTRAL_ASIA_LOCATION_DICTIONARIES,
+  KZ_EXPANDED_LOCATION_DICTIONARIES,
+  LOCATION_DICTIONARIES,
+  UZ_EXPANDED_LOCATION_DICTIONARIES,
   UZ_LOCATION_EXTENSIONS,
   canonicalKazakhstanCity,
   canonicalUzbekistanCity,
+  centralAsiaLocationCities,
   matchCentralAsiaLocationEntities,
   normalizedAliasKeys,
 } from '../src/index.js';
 
 const names = (result, type) => result.matches.filter((item) => item.type === type).map((item) => item.name);
+
+test('Central Asia matchers consume the canonical country location registry', () => {
+  assert.equal(KZ_EXPANDED_LOCATION_DICTIONARIES, LOCATION_DICTIONARIES.KZ);
+  assert.equal(UZ_EXPANDED_LOCATION_DICTIONARIES, LOCATION_DICTIONARIES.UZ);
+  assert.equal(CENTRAL_ASIA_LOCATION_DICTIONARIES.KZ, LOCATION_DICTIONARIES.KZ);
+  assert.equal(CENTRAL_ASIA_LOCATION_DICTIONARIES.UZ, LOCATION_DICTIONARIES.UZ);
+  assert.equal(centralAsiaLocationCities('KZ'), LOCATION_DICTIONARIES.KZ);
+  assert.equal(centralAsiaLocationCities('UZ'), LOCATION_DICTIONARIES.UZ);
+});
 
 test('Kazakhstan city catalog keeps current, common and historical aliases', () => {
   assert.equal(canonicalKazakhstanCity('Алма-Ата'), 'Almaty');
