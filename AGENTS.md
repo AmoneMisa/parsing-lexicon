@@ -2,15 +2,29 @@
 
 This file is mandatory reading before changing parsing, geography, location dictionaries, or public exports in this repository.
 
-## Core rule
+## Core rules
 
-Preserve the existing architecture. Do not solve a data-coverage task by introducing a parallel dictionary, a second merge path, a new public API, or a new file hierarchy unless the current architecture cannot represent the data correctly.
+Preserve the existing architecture. Do not solve a data-coverage task by introducing a parallel dictionary, a second merge path, a new public API, or a new file hierarchy unless the current architecture genuinely cannot represent the data correctly.
+
+Prefer the simplest change that fits the current architecture. Do not add abstractions, wrappers, indirection, compatibility layers, helper modules, or files unless they have a concrete architectural responsibility and remove more complexity than they add.
+
+Do not duplicate data. One entity/data set must have one canonical owner. Other layers consume or reference that owner; they must not copy/redeclare the same dataset or rebuild an equivalent registry.
 
 The canonical location shape is:
 
 `country -> city -> location collections`
 
 The public canonical registry is `LOCATION_DICTIONARIES` from `src/locations.js`.
+
+## Coordinates are out of scope
+
+This package is a parsing lexicon. It must not own geographic coordinates.
+
+Do not add latitude/longitude, bounding boxes, map points, geocoding coordinates, or coordinate catalogs to `parsing-lexicon`.
+
+Coordinates belong strictly in the separate geography/coordinate package. Keep lexical aliases and parsing entities here; keep coordinate data there. Never duplicate coordinate data between packages.
+
+If a task requires both alias parsing and coordinates, add/resolve the canonical lexical entity in this package and connect it to the coordinate package at the consumer/application layer. Do not embed coordinates here as a shortcut.
 
 ## Location ownership
 
@@ -65,13 +79,17 @@ A data-coverage change should normally require no public API change.
 
 If a public export is deprecated, keep compatibility deliberately and document the canonical replacement.
 
-## Files
+## Files and complexity
 
 Do not create extra files for small data additions. Put data into the existing country/city source that owns it.
 
 Create a new file only when it establishes a meaningful architectural boundary or the existing file has a clearly different responsibility. Never create a file solely to avoid editing the correct existing module.
 
 Do not create per-city files unless the repository is explicitly migrated to that model. The current architecture uses country-specific sources containing city-keyed dictionaries.
+
+Do not create duplicate "v2", "expanded", "full", "combined", or "normalized" datasets when the canonical registry can be consumed directly. Compatibility export names may remain, but they should reference the canonical data rather than maintain another copy.
+
+Avoid speculative generalization. If one existing helper solves the task, use it instead of creating a framework around it.
 
 ## Geography catalogs vs location dictionaries
 
@@ -81,6 +99,8 @@ Do not conflate city catalogs with city-local location data.
 - `LOCATION_DICTIONARIES[country][city]` contains districts, microdistricts, mahallas, metro, streets, landmarks, residential complexes, etc.
 
 A new city alias belongs in the geography catalog. A district/microdistrict/metro/POI belonging to that city belongs in the location dictionary.
+
+Neither layer owns coordinates.
 
 ## Tests required
 
@@ -92,7 +112,8 @@ For architecture changes, add regression assertions that protect the architectur
 - renamed entities resolve to one current canonical;
 - aliases still resolve after moving data;
 - parent-scoped duplicate names remain scoped;
-- public compatibility functions still return the canonical city dictionary.
+- public compatibility functions still return the canonical city dictionary;
+- no second copy of a country/city registry is introduced.
 
 CI currently tests supported Node versions through the repository workflow; do not merge architecture changes while that matrix is failing.
 
@@ -102,10 +123,11 @@ Before making a change, inspect the current `master` and answer these questions 
 
 1. Which existing country/city source owns this data?
 2. Is there already a constructor/merge helper for this shape?
-3. Am I creating duplicate canonical ownership?
+3. Am I creating duplicate canonical ownership or duplicate data?
 4. Am I adding a second aggregation path instead of using `LOCATION_DICTIONARIES`?
-5. Can this be implemented without new files or exports?
-6. Which regression test will prevent the old architecture/problem from returning?
+5. Can this be implemented without new files, exports, abstractions, or wrappers?
+6. Am I accidentally adding coordinate data that belongs in the separate coordinate package?
+7. Which regression test will prevent the old architecture/problem from returning?
 
 If the answer reveals a conflict with this file, preserve the architecture first and then add the requested coverage.
 
