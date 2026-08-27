@@ -1,6 +1,6 @@
 {
   "name": "@whiteslove/parsing-lexicon",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Shared deterministic multilingual parsing lexicon for Whiteslove housing and hiring services",
   "repository": {
     "type": "git",
@@ -37,6 +37,7 @@
     "./odesa-metropolitan": "./src/odesa-metropolitan.js",
     "./housing": "./src/housing.js",
     "./housing-intent": { "types": "./src/housing-intent.d.ts", "import": "./src/housing-intent.js" },
+    "./housing-commercial": { "types": "./src/housing-commercial.d.ts", "import": "./src/housing-commercial.js" },
     "./housing-context": { "types": "./src/housing-context.d.ts", "import": "./src/housing-context.js" },
     "./housing-address": { "types": "./src/housing-address.d.ts", "import": "./src/housing-address.js" },
     "./housing-structured": { "types": "./src/housing-structured.d.ts", "import": "./src/housing-structured.js" },
