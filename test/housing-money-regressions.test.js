@@ -25,6 +25,17 @@ test('housing multipliers still parse complete scale words', () => {
   });
 });
 
+test('parses Uzbek classifieds split-million notation', () => {
+  assert.deepEqual(
+    parseHousingPrice('2 хона 2 млн 500 + агентство хизмати', 'UZS'),
+    { price: 2_500_000, currency: 'UZS' },
+  );
+  assert.deepEqual(parseHousingPrice('ijara 3 mln 250', 'UZS'), {
+    price: 3_250_000,
+    currency: 'UZS',
+  });
+});
+
 test('currency codes do not match as a substring of an unrelated word', () => {
   // "cad" is a substring of "cadastru" (RO: cadastral record) — it must not
   // be read as a 100 CAD price.
