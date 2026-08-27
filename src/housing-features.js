@@ -15,7 +15,7 @@ export function parseHousingFeatures(value) {
     petsAllowed: null,
   });
 
-  const internet = has(text, tokenRe(String.raw`интернет|wi[ -]?fi|роутер|router|інтернет`)) ? true : null;
+  const internet = has(text, tokenRe(String.raw`интернет|wi[ -]?fi|we[ -]?fi|вай[ -]?фай|vayfay|роутер|router|інтернет`)) ? true : null;
   const courtyard = has(text, tokenRe(String.raw`двор(?:ик|а|е|ом)?|внутренн(?:ий|его)\s+двор|подворье|двір(?:ик|і|ом)?|courtyard|yard`)) ? true : null;
   const gazebo = has(text, tokenRe(String.raw`беседк(?:а|и|е|у|ой)|альтанк(?:а|и|у|ою)|gazebo`)) ? true : null;
 
