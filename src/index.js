@@ -31,6 +31,7 @@ export * from './tashkent-pois.js';
 export * from './odesa-metropolitan.js';
 export * from './housing.js';
 export * from './housing-intent.js';
+export * from './housing-commercial.js';
 export * from './housing-context.js';
 export * from './housing-address.js';
 export * from './housing-features.js';
