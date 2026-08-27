@@ -118,6 +118,12 @@ function explicitStreetAddress(text) {
     const prefixTyped = prefixTypedStreetAddress(line);
     if (prefixTyped) return prefixTyped;
 
+    const boundedPrefix = line.match(new RegExp(
+      `(?:^|[\\s,;])${PREFIX_STREET_MARKER}\\s*((?:${STREET_WORD}\\s+){0,3}${STREET_WORD})(?=$|[,;])`,
+      'iu',
+    ));
+    if (boundedPrefix) return result(boundedPrefix[0], boundedPrefix[1], null, null, 0.9);
+
     const prefix = line.match(new RegExp(`(?:^|[\\s,;])(${PREFIX_STREET_MARKER})\\s+(.+)$`, 'iu'));
     if (prefix) {
       const tail = splitAddressTail(prefix[2]);
@@ -166,6 +172,7 @@ function labelledAddress(text) {
 function bareAddress(text) {
   const tail = splitAddressTail(text);
   if (!tail) return null;
+  if (/^(?:центр|centre|center)$/iu.test(compactStreet(tail.street) || '')) return null;
   const confidence = tail.houseNumber ? 0.85 : 0.55;
   return result(text, tail.street, tail.houseNumber, tail.building, confidence);
 }
