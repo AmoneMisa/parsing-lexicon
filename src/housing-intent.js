@@ -130,3 +130,8 @@ export function resolveHousingIntent(value) {
     dealType: durationDeal.canonical,
   });
 }
+
+export function classifyHousingDealType(value) {
+  return resolveHousingIntent(value)?.dealType || null;
+}
+
