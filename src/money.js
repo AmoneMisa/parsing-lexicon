@@ -1,6 +1,7 @@
 import { findPhoneLikeSpans } from './contact.js';
 import { aliasesOf, findCanonical, normalizeUnicode } from './normalization.js';
 import {
+  CURRENCY_SYMBOL_CANDIDATES,
   CURRENCY_TERMS,
   NUMBER_MULTIPLIERS,
   SALARY_MODIFIERS,
@@ -67,10 +68,23 @@ function moneyContextScore(text, start, end, scaled = false) {
   return score;
 }
 
+function rangeSearchText(text) {
+  // MONEY_RANGE_RE intentionally parses numeric structure only. Currency symbols
+  // may legally repeat around both endpoints ("$55 — $65"); blank them with
+  // equal-length whitespace so the range parser can see the numbers while all
+  // original indices still line up with phone protection/context scoring.
+  let normalized = text;
+  for (const symbol of Object.keys(CURRENCY_SYMBOL_CANDIDATES)) {
+    normalized = normalized.split(symbol).join(' '.repeat(symbol.length));
+  }
+  return normalized;
+}
+
 function bestRange(text, protectedSpans) {
   const ranges = new RegExp(MONEY_RANGE_RE.source, 'giu');
   const candidates = [];
-  for (const match of text.matchAll(ranges)) {
+  const searchable = rangeSearchText(text);
+  for (const match of searchable.matchAll(ranges)) {
     const start = match.index ?? 0;
     const end = start + match[0].length;
     if (overlapsProtectedPhone(start, end, protectedSpans)) continue;
