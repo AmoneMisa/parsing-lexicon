@@ -132,6 +132,17 @@ export function resolveHousingIntent(value) {
 }
 
 export function classifyHousingDealType(value) {
-  return resolveHousingIntent(value)?.dealType || null;
+  const resolved = resolveHousingIntent(value)?.dealType;
+  if (resolved) return resolved;
+
+  // Some housing feeds omit an explicit rent verb but still use established
+  // Uzbek offer/share shorthand. Keep this fallback package-owned so consumers
+  // do not carry their own multilingual regexes.
+  const text = String(value || '');
+  if (!text) return null;
+  if (/(?:sherik(?:ka|lik)|шерик(?:ка|лик)|(?:1|bir)\s+ta\s+qiz\s+sherik|(?:1|бир)\s*та\s*(?:бола|киши|қиз|киз)\s*керак|1\s*хонага[^\r\n]{0,40}(?:киши|одам)\s*турилади|oila(?:ga)?\s+qo['’`]?yiladi|oila(?:ga)?\s+quyiladi|(?:хонали|квартир)[^\r\n]{0,100}турибди[^\r\n]{0,30}\d+\s*\$|квартира\s+бор)/iu.test(text)) {
+    return 'longRent';
+  }
+  return null;
 }
 
