@@ -2,6 +2,14 @@
 
 This file is mandatory reading before changing parsing, geography, location dictionaries, or public exports in this repository.
 
+## Repository workflow
+
+Do not merge any pull request into `master` without explicit user approval in the current task/conversation. Preparing a branch or PR is allowed; merging is not.
+
+When a PR is approved for merge, use **squash merge only**. Do not use merge commits or rebase-merge for repository changes.
+
+Do not add temporary technical artifacts to the repository: scratch files, migration notes, generated reports, debug scripts, one-off helper files, duplicate documentation, or staging files. Only commit files that belong to the intended architecture or were explicitly requested.
+
 ## Core rules
 
 Preserve the existing architecture. Do not solve a data-coverage task by introducing a parallel dictionary, a second merge path, a new public API, or a new file hierarchy unless the current architecture genuinely cannot represent the data correctly.
@@ -20,11 +28,15 @@ The public canonical registry is `LOCATION_DICTIONARIES` from `src/locations.js`
 
 This package is a parsing lexicon. It must not own geographic coordinates.
 
+The canonical coordinates/geography package is:
+
+**https://github.com/AmoneMisa/geo-catalog**
+
 Do not add latitude/longitude, bounding boxes, map points, geocoding coordinates, or coordinate catalogs to `parsing-lexicon`.
 
-Coordinates belong strictly in the separate geography/coordinate package. Keep lexical aliases and parsing entities here; keep coordinate data there. Never duplicate coordinate data between packages.
+Coordinates belong strictly in `AmoneMisa/geo-catalog`. Keep lexical aliases and parsing entities here; keep coordinate data there. Never duplicate coordinate data between packages.
 
-If a task requires both alias parsing and coordinates, add/resolve the canonical lexical entity in this package and connect it to the coordinate package at the consumer/application layer. Do not embed coordinates here as a shortcut.
+If a task requires both alias parsing and coordinates, add/resolve the canonical lexical entity in this package and connect it to `geo-catalog` at the consumer/application layer. Do not embed coordinates here as a shortcut.
 
 ## Location ownership
 
@@ -87,7 +99,7 @@ Create a new file only when it establishes a meaningful architectural boundary o
 
 Do not create per-city files unless the repository is explicitly migrated to that model. The current architecture uses country-specific sources containing city-keyed dictionaries.
 
-Do not create duplicate "v2", "expanded", "full", "combined", or "normalized" datasets when the canonical registry can be consumed directly. Compatibility export names may remain, but they should reference the canonical data rather than maintain another copy.
+Do not create duplicate `v2`, `expanded`, `full`, `combined`, or `normalized` datasets when the canonical registry can be consumed directly. Compatibility export names may remain, but they should reference the canonical data rather than maintain another copy.
 
 Avoid speculative generalization. If one existing helper solves the task, use it instead of creating a framework around it.
 
@@ -115,7 +127,7 @@ For architecture changes, add regression assertions that protect the architectur
 - public compatibility functions still return the canonical city dictionary;
 - no second copy of a country/city registry is introduced.
 
-CI currently tests supported Node versions through the repository workflow; do not merge architecture changes while that matrix is failing.
+CI currently tests supported Node versions through the repository workflow. Do not propose a merge while that matrix is failing.
 
 ## Before editing
 
@@ -126,8 +138,9 @@ Before making a change, inspect the current `master` and answer these questions 
 3. Am I creating duplicate canonical ownership or duplicate data?
 4. Am I adding a second aggregation path instead of using `LOCATION_DICTIONARIES`?
 5. Can this be implemented without new files, exports, abstractions, or wrappers?
-6. Am I accidentally adding coordinate data that belongs in the separate coordinate package?
-7. Which regression test will prevent the old architecture/problem from returning?
+6. Am I accidentally adding coordinate data that belongs in `AmoneMisa/geo-catalog`?
+7. Am I introducing a temporary technical file that does not belong to the architecture?
+8. Which regression test will prevent the old architecture/problem from returning?
 
 If the answer reveals a conflict with this file, preserve the architecture first and then add the requested coverage.
 
