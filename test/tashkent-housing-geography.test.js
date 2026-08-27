@@ -75,6 +75,11 @@ test('keeps canonical Kuylyuk massif separate from the Qoyliq metro station', ()
   assert.equal(matchTashkentHousingMetro('метро Куйлюк')?.name, 'Qoyliq');
 });
 
+test('matches Qorasuv massif through the canonical Tashkent location registry', () => {
+  const result = matchCentralAsiaLocationEntities('Корасув Массиви, 81-мактаб атрофида', 'UZ', 'Tashkent');
+  assert.ok(result.matches.some((entry) => entry.type === 'microdistrict' && entry.name === 'Qorasuv'));
+});
+
 test('centralizes the historical housing label for Tashkent north railway station', () => {
   assert.equal(
     matchTashkentHousingTransit('До метро Ташкент Северный вокзал 5 минут')?.name,
