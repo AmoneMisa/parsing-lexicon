@@ -91,7 +91,7 @@ export const UA_MAJOR_LOCATION_EXTENSIONS = Object.freeze({
 
   Zaporizhzhia: city({
     districts: [
-      ['Voznesenivskyi','Вознесенівський','Вознесеновский'],['Dniprovskyi','Дніпровський','Днепровский'],['Zavodskyi','Заводський','Заводской'],['Komunarskyi','Комунарський','Коммунарский'],['Oleksandrivskyi','Олександрівський','Александровский'],['Khortytskyi','Хортицький','Хортицкий'],['Shevchenkivskyi','Шевченківський','Шевченковский'],
+      ['Voznesenivskyi','Вознесенівський','Вознесеновский'],['Dniprovskyi','Дніпровський','Днепровский'],['Zavodskyi','Заводський','Заводской'],['Kosmichnyi','Космічний','Космический','Komunarskyi','Комунарський','Коммунарский'],['Oleksandrivskyi','Олександрівський','Александровский'],['Khortytskyi','Хортицький','Хортицкий'],['Shevchenkivskyi','Шевченківський','Шевченковский'],
     ],
     microdistricts: [
       ['Center','Центр'],['Malyi Rynok','Малий ринок','Малый рынок'],['Sotsmisto','Соцмісто','Соцгород'],['Verkhnia Khortytsia','Верхня Хортиця','Верхняя Хортица'],['Baburka','Бабурка'],['Khortytskyi','Хортицький','Хортицкий'],['Osypenkivskyi','Осипенківський','Осипенковский'],['Borodynskyi','Бородінський','Бородинский'],['Pravyi Bereh','Правий берег','Правый берег'],['Velykyi Luh','Великий Луг'],['Kremlivskyi','Кремлевский'],['Dniprovski Porohy','Дніпровські пороги','Днепровские пороги'],['Kosmichnyi','Космічний','Космический','Космос'],['Pivdennyi','Південний','Южный'],['Pisky','Піски','Пески'],['Pivdennyi-1','1 Южный'],['Pivdennyi-2','2 Южный'],['Pivdennyi-3','3 Южный'],['Shevchenkivskyi','Шевченковский'],['Zelenyi Yar','Зелений Яр','Зелёный Яр'],['Pavlo-Kychkas','Павло-Кичкас','Кичкас'],['Zavodskyi','Заводской'],
