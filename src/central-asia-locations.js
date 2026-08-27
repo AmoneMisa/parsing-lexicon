@@ -1,5 +1,5 @@
 import { LOCATION_DICTIONARIES } from './locations.js';
-import { LOCATION_LIST_KEYS, mergeLocationCountries } from './location-merge.js';
+import { LOCATION_LIST_KEYS } from './location-merge.js';
 import { aliasesOf, aliasesToRegex, normalizeForMatch } from './normalization.js';
 import {
   KZ_CITY_CATALOG,
@@ -7,18 +7,13 @@ import {
   canonicalKazakhstanCity,
   canonicalUzbekistanCity,
 } from './central-asia.js';
-import { KZ_AMBIGUOUS_LOCAL_NAMES, KZ_LOCATION_EXTENSIONS, KZ_SEARCH_CLUSTERS } from './kz-location-extensions.js';
-import { UZ_AMBIGUOUS_LOCAL_NAMES, UZ_LOCATION_EXTENSIONS } from './uz-location-extensions.js';
+import { KZ_AMBIGUOUS_LOCAL_NAMES, KZ_SEARCH_CLUSTERS } from './kz-location-extensions.js';
+import { UZ_AMBIGUOUS_LOCAL_NAMES } from './uz-location-extensions.js';
 
-export const KZ_EXPANDED_LOCATION_DICTIONARIES = mergeLocationCountries(
-  LOCATION_DICTIONARIES.KZ || {},
-  KZ_LOCATION_EXTENSIONS,
-);
-
-export const UZ_EXPANDED_LOCATION_DICTIONARIES = mergeLocationCountries(
-  LOCATION_DICTIONARIES.UZ || {},
-  UZ_LOCATION_EXTENSIONS,
-);
+// Compatibility names retained for consumers. The canonical dictionaries are
+// assembled once in locations.js; matcher layers must consume, not re-merge.
+export const KZ_EXPANDED_LOCATION_DICTIONARIES = LOCATION_DICTIONARIES.KZ || Object.freeze({});
+export const UZ_EXPANDED_LOCATION_DICTIONARIES = LOCATION_DICTIONARIES.UZ || Object.freeze({});
 
 export const CENTRAL_ASIA_LOCATION_DICTIONARIES = Object.freeze({
   KZ: KZ_EXPANDED_LOCATION_DICTIONARIES,
