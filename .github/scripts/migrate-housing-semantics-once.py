@@ -14,9 +14,10 @@ p.write_text(s + '\n')
 
 p = Path('src/housing.js')
 s = p.read_text()
-if "from './normalization.js'" not in s:
+if "import { findCanonical } from './normalization.js';" not in s:
     s = s.replace("import { lexiconEntity } from './lexicon-core.js';\n", "import { lexiconEntity } from './lexicon-core.js';\nimport { findCanonical } from './normalization.js';\n", 1)
-s = s.replace("uzLatn: ['uy', 'hovli', 'xovli'], uzCyrl: ['уй', 'ҳовли', 'ховли']", "uzLatn: ['hovli', 'xovli'], uzCyrl: ['ҳовли', 'ховли']")
+s = s.replace("uzLatn: ['uy', 'hovli', 'xovli']", "uzLatn: ['hovli', 'xovli']")
+s = s.replace("uzCyrl: ['уй', 'ҳовли', 'ховли']", "uzCyrl: ['ҳовли', 'ховли']")
 if 'export function resolveHousingOccupancy' not in s:
     s = s.rstrip() + r'''
 
