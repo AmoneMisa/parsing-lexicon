@@ -27,7 +27,10 @@ export {
   parseScaledAmount,
 } from './money-core.js';
 
-const CONTACT_MARKER_RE = /(?:телефон|тел\.?|phone|mobile|mob\.?|whatsapp|viber|telegram|контакт|contact|aloqa|murojaat|bog(?:['’ʻʼ‘`])?lanish)\s*[:：—-]?\s*$/iu;
+// A leading boundary keeps "тел"/"phone" etc. from matching as a suffix of an
+// unrelated word ("хостел", "котел", "telegraph"), which would wrongly mark a
+// following phone-like number as a protected contact span.
+const CONTACT_MARKER_RE = /(?<![\p{L}\p{N}_])(?:телефон|тел\.?|phone|mobile|mob\.?|whatsapp|viber|telegram|контакт|contact|aloqa|murojaat|bog(?:['’ʻʼ‘`])?lanish)\s*[:：—-]?\s*$/iu;
 const JOBS_I18N_PERIOD_RE = /\bjobs\.per(hour|day|shift|week|month|year|project|piece)\b/iu;
 
 function hasSalaryContext(text) {

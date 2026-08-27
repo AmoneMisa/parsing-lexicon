@@ -166,7 +166,9 @@ export function parsePrimaryContact(value) {
     const digits = intl[0].replace(/\D/g, '');
     if (digits.length >= 10 && digits.length <= 15) return `+${digits}`;
   }
-  const keyword = text.match(/(?:tel|тел|phone|моб|whats?app|viber|telegram|звонит|звоніть|aloqa|byla|contact)[^\d+]{0,8}(\+?\d[\d\s().-]{6,}\d)/iu);
+  // Bounded like the `trailing` keyword below: "тел"/"phone" must be a whole
+  // word, not a suffix of an unrelated word ("хостел", "котел").
+  const keyword = text.match(/(?<![\p{L}\p{N}_])(?:tel|тел|phone|моб|whats?app|viber|telegram|звонит|звоніть|aloqa|byla|contact)(?![\p{L}\p{N}_])[^\d+]{0,8}(\+?\d[\d\s().-]{6,}\d)/iu);
   if (keyword) {
     const digits = keyword[1].replace(/\D/g, '');
     if (digits.length >= 9 && digits.length <= 15) return keyword[1].trim();

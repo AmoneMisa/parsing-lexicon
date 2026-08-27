@@ -33,6 +33,9 @@ test('audience, amenities and contacts preserve consumer behavior', () => {
   assert.deepEqual(parseHousingAmenities('Есть посудомоечная машина, стиральная машина и TV'), ['dishwasher', 'washingMachine', 'television']);
   assert.equal(parsePrimaryContact('Тел: 771443473'), '771443473');
   assert.equal(parsePrimaryContact('Пишите @owner_test'), '@owner_test');
+  // "Хостел"/"котел" end in the same letters as "тел" (phone) but are not a
+  // contact keyword — a nearby number must not be read as a phone contact.
+  assert.equal(parsePrimaryContact('Хостел, 89991234567 в час'), null);
 });
 
 test('payment and seller semantics cover Telegram broker shorthand', () => {

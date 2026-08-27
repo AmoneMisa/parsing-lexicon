@@ -10,7 +10,10 @@ import {
 import { maskPhoneLikeSpans } from './contact.js';
 
 const PRICE_KEYWORD = '(?:цена|ціна|нарх(?:и)?|narx|price|стоимост[ьи]|аренд(?:а|ная\\s+плата)?|rent)';
-const PRICE_CURRENCY = `(?:${moneyCurrencyPattern()})`;
+// moneyCurrencyPattern() includes short codes (cad, ron, aed...) with no
+// boundary of its own, so "100 cadastru" would otherwise read "cad" off an
+// unrelated word as the Canadian dollar.
+const PRICE_CURRENCY = `(?:(?<![\\p{L}\\p{N}_])(?:${moneyCurrencyPattern()})(?![\\p{L}\\p{N}_]))`;
 
 function escapeRegex(value) {
   return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -51,8 +54,11 @@ export function parseHousingPrice(value, fallbackCurrency = '') {
 
   if (price == null) {
     let tagged = null;
-    const reNumSym = new RegExp(`(${MONEY_NUMBER_PATTERN})\\s*${PRICE_CURRENCY}`, 'ig');
-    const reSymNum = new RegExp(`${PRICE_CURRENCY}\\s*(${MONEY_NUMBER_PATTERN})`, 'ig');
+    // 'u' is required for PRICE_CURRENCY's \p{L}/\p{N} boundary escapes to work
+    // as Unicode property classes — without it they silently match nothing,
+    // which had made the boundary guard a no-op.
+    const reNumSym = new RegExp(`(${MONEY_NUMBER_PATTERN})\\s*${PRICE_CURRENCY}`, 'igu');
+    const reSymNum = new RegExp(`${PRICE_CURRENCY}\\s*(${MONEY_NUMBER_PATTERN})`, 'igu');
     for (const regex of [reNumSym, reSymNum]) {
       let match;
       while ((match = regex.exec(text)) !== null) {

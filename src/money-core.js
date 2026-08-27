@@ -10,7 +10,15 @@ import {
 // the generic decimal form so a range parser consumes the complete endpoint.
 export const MONEY_NUMBER_PATTERN = '(?:\\d{1,3}(?:[ \\u00a0]\\d{3})+(?:[.,]\\d+)?|\\d{1,3}(?:,\\d{3})+(?:\\.\\d+)?|\\d{1,3}(?:\\.\\d{3})+(?:,\\d+)?|\\d+(?:[.,]\\d+)?)';
 export const MONEY_SCALE_PATTERN = 'k|к|тыс\\.?|тысяч(?:а|и)?|тис\\.?|thousand|ming|мың|m|м|млн\\.?|mln|million|миллион(?:ов)?|мільйон(?:ів)?|bn|млрд|mlrd|billion';
-export const MONEY_RANGE_RE = new RegExp(`(${MONEY_NUMBER_PATTERN})\\s*(${MONEY_SCALE_PATTERN})?\\s*(?:-|–|—|до|to|bis|dan\\s+gacha)\\s*(${MONEY_NUMBER_PATTERN})\\s*(${MONEY_SCALE_PATTERN})?`, 'iu');
+// Each scale group needs the token-boundary guard MONEY_SINGLE_RE already has
+// below: without it, "2 до 3 месяцев" reads "м" off "месяцев" as the million
+// abbreviation and turns 3 into 3,000,000. The boundary is nested inside the
+// optional group (rather than placed after it) so a scale match that fails
+// the boundary check simply falls back to "no scale" instead of failing the
+// whole alternative — otherwise a no-space separator like "5до10" (no scale
+// present at all) would stop matching, since "до" doesn't satisfy the
+// boundary either.
+export const MONEY_RANGE_RE = new RegExp(`(${MONEY_NUMBER_PATTERN})\\s*(?:(${MONEY_SCALE_PATTERN})(?=$|[^\\p{L}\\p{N}_]))?\\s*(?:-|–|—|до|to|bis|dan\\s+gacha)\\s*(${MONEY_NUMBER_PATTERN})\\s*(?:(${MONEY_SCALE_PATTERN})(?=$|[^\\p{L}\\p{N}_]))?`, 'iu');
 export const MONEY_SINGLE_RE = new RegExp(`(${MONEY_NUMBER_PATTERN})\\s*(${MONEY_SCALE_PATTERN})?(?=$|[^\\p{L}\\p{N}_])`, 'giu');
 
 export function parseNumericAmount(raw) {

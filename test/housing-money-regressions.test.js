@@ -24,3 +24,11 @@ test('housing multipliers still parse complete scale words', () => {
     currency: 'UZS',
   });
 });
+
+test('currency codes do not match as a substring of an unrelated word', () => {
+  // "cad" is a substring of "cadastru" (RO: cadastral record) — it must not
+  // be read as a 100 CAD price.
+  assert.deepEqual(parseHousingPrice('100 cadastru'), { price: null, currency: '' });
+  assert.deepEqual(parseHousingPrice('rent 1200 CAD'), { price: 1200, currency: 'CAD' });
+  assert.deepEqual(parseHousingPrice('CAD 1200 rent'), { price: 1200, currency: 'CAD' });
+});

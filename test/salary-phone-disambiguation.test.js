@@ -51,3 +51,20 @@ test('legitimate grouped salary ranges remain parseable', () => {
 test('phone-only contact text is not promoted to salary', () => {
   assert.equal(parseSalary('Телефон: 095 082 01 03'), null);
 });
+
+test('a salary range is not wrongly protected as a phone number after an unrelated word ending in "тел"', () => {
+  // "хостел"/"котел" end in the same letters as "тел" (phone), but are not
+  // a contact marker — a following number range must still be readable.
+  assert.deepEqual(
+    parseSalary('Рядом хостел: 95000 - 120000 руб, зарплата достойная'),
+    {
+      min: 95000,
+      max: 120000,
+      currency: 'RUB',
+      period: null,
+      gross: null,
+      negotiable: false,
+      approximate: false,
+    },
+  );
+});
