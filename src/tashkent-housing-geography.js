@@ -124,7 +124,11 @@ const DISTRICT_CONTEXT_ALIASES = Object.freeze({
 
 const NUMBERED_CONTEXT = '(?:tumani|тумани|district|район|massiv|массив)';
 const NUMBERED_SUFFIX_CONTEXT = '(?:chi|чи|й|квартал|kvartal|hudud(?:da)?|худуд(?:да)?)';
-const DISTRICT_MARKER = '(?:район|туман\\p{L}*|tumani|district)';
+// The open \p{L}* suffix used to swallow any trailing letters, so
+// "туманность" (an unrelated word) satisfied this as if "туман" (district)
+// had been mentioned. {0,4} covers real case endings (туманда, туманидан)
+// while excluding unrelated 5+-letter continuations.
+const DISTRICT_MARKER = '(?:район|туман\\p{L}{0,4}|tumani|district)';
 
 function normalizedAlternatives(values) {
   return values

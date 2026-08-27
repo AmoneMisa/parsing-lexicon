@@ -52,6 +52,9 @@ test('centralizes numbered massif aliases and typo variants', () => {
   assert.equal(hasTashkentAreaAlias('квартира Сергели рядом с рынком', 'Sergeli'), true);
   assert.equal(hasExplicitTashkentDistrict('Sergele tumani, kvartira ijaraga', 'Sergeli'), true);
   assert.equal(hasExplicitTashkentDistrict('Чиланзарский район', 'Chilanzar'), true);
+  // "туманность" (an unrelated word) must not be mistaken for "туман"
+  // (district) plus a case ending.
+  assert.equal(hasExplicitTashkentDistrict('Сергели туманность видна ночью', 'Sergeli'), false);
 });
 
 test('centralizes Sergeli metro typo aliases', () => {
