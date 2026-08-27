@@ -27,12 +27,18 @@ export {
 } from './money-core.js';
 
 const CONTACT_MARKER_RE = /(?:телефон|тел\.?|phone|mobile|mob\.?|whatsapp|viber|telegram|контакт|contact|aloqa|murojaat|bog(?:['’ʻʼ‘`])?lanish)\s*[:：—-]?\s*$/iu;
+const JOBS_I18N_PERIOD_RE = /\bjobs\.per(hour|day|shift|week|month|year|project|piece)\b/iu;
 
 function hasSalaryContext(text) {
   return /(?:salary|зарплат|з\s*п\b|оплат|ставк|доход|оклад|компенсац|maosh|oylik|ish\s+haqi|жалақы|айлық|еңбекақы|salariu|оплата)/iu.test(text);
 }
 
 function periodFromText(text) {
+  // Some vacancy sources leak untranslated i18n keys into salary strings,
+  // e.g. "$208K/jobs.perWeek". Treat those markers as first-class periods
+  // instead of letting consumers fall back to an incorrect monthly salary.
+  const jobsMarker = String(text || '').match(JOBS_I18N_PERIOD_RE);
+  if (jobsMarker?.[1]) return jobsMarker[1].toLowerCase();
   return findCanonical(text, SALARY_PERIODS, { partial: true })?.canonical || null;
 }
 
