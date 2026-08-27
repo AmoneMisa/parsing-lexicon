@@ -27,6 +27,7 @@ test('housing text floor parser does not mistake a building storey count for a u
 test('housing text amenities cover mixed Uzbek/Russian listing vocabulary', () => {
   const text = `splani, shkaf, mebel va oshxona jihozlari; televizor, muzlatgich, konditsioner, wefi; kir yuvish mashinasi (Samsung aftomat). yashash uchun barcha jihozlari bor.`;
   assert.deepEqual(parseHousingAmenities(text), [
+    'bed',
     'washingMachine',
     'refrigerator',
     'television',
