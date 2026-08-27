@@ -1,6 +1,6 @@
 import {
   LOCATION_DICTIONARIES as BASE_LOCATION_DICTIONARIES,
-  UA_EXTRA_LOCATION_DICTIONARIES,
+  UA_EXTRA_LOCATION_DICTIONARIES as RAW_UA_EXTRA_LOCATION_DICTIONARIES,
   UA_REGION_ENTRIES,
   UA_SECONDARY_CITIES,
   matchUkraineRegion,
@@ -14,12 +14,12 @@ import { UA_REGIONAL_LOCATION_EXTENSIONS } from './ua-location-extensions-region
 import { UA_SECONDARY_LOCATION_EXTENSIONS } from './ua-secondary-cities.js';
 import { UA_METRO_LOCATION_EXTENSIONS } from './ua-location-extensions-metro.js';
 
-const UA_LEGACY_LOCATION_ADDITIONS = Object.freeze({
-  ...UA_EXTRA_LOCATION_DICTIONARIES,
+export const UA_EXTRA_LOCATION_DICTIONARIES = Object.freeze({
+  ...RAW_UA_EXTRA_LOCATION_DICTIONARIES,
   Zaporizhzhia: Object.freeze({
-    ...UA_EXTRA_LOCATION_DICTIONARIES.Zaporizhzhia,
+    ...RAW_UA_EXTRA_LOCATION_DICTIONARIES.Zaporizhzhia,
     districts: Object.freeze(
-      (UA_EXTRA_LOCATION_DICTIONARIES.Zaporizhzhia?.districts || [])
+      (RAW_UA_EXTRA_LOCATION_DICTIONARIES.Zaporizhzhia?.districts || [])
         .filter(({ name }) => name !== 'Komunarskyi'),
     ),
   }),
@@ -37,7 +37,7 @@ const COUNTRY_LOCATION_DICTIONARIES = Object.freeze({
   ),
   UA: mergeLocationCountries(
     BASE_LOCATION_DICTIONARIES.UA || {},
-    UA_LEGACY_LOCATION_ADDITIONS,
+    UA_EXTRA_LOCATION_DICTIONARIES,
     UA_MAJOR_LOCATION_EXTENSIONS,
     UA_REGIONAL_LOCATION_EXTENSIONS,
     UA_SECONDARY_LOCATION_EXTENSIONS,
@@ -51,7 +51,6 @@ export const LOCATION_DICTIONARIES = COUNTRY_LOCATION_DICTIONARIES;
 // Compatibility exports. Legacy seeds are not canonical ownership; consumers
 // should use LOCATION_DICTIONARIES/locationCities().
 export {
-  UA_EXTRA_LOCATION_DICTIONARIES,
   UA_REGION_ENTRIES,
   UA_SECONDARY_CITIES,
   matchUkraineRegion,
