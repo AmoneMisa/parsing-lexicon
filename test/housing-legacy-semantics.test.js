@@ -11,6 +11,9 @@ test('deal type stays multilingual', () => {
   assert.equal(classifyHousingDealType('Квартира посуточно'), 'shortRent');
   assert.equal(classifyHousingDealType('Уй ижарага берилади'), 'longRent');
   assert.equal(classifyHousingDealType('Пәтер жалға беріледі'), 'longRent');
+  assert.equal(classifyHousingDealType("Uy yangi remontdan chiqqan. Oila qo’yiladi. 500$ Makler 50%"), 'longRent');
+  assert.equal(classifyHousingDealType('2 хонали 3 этажда ремонти яхши холатда турибди 350$'), 'longRent');
+  assert.equal(classifyHousingDealType('Uch tepa 12-kvartalda 1 ta qiz sherikka olinadi'), 'longRent');
 });
 
 test('room-only and property semantics stay shared', () => {
@@ -33,4 +36,6 @@ test('payment and seller semantics cover Telegram broker shorthand', () => {
   assert.deepEqual(parseHousingPayments('M50%').commission, { required: true, percent: 50 });
   assert.equal(parseHousingSeller('M50%').type, 'agency');
   assert.deepEqual(parseHousingPayments('без комиссии').commission, { required: false, percent: null });
+  assert.notEqual(parseHousingSeller('Квартира ЖК NRG BAXT БЕЗ МАКЛЕР!').type, 'agency');
+  assert.notEqual(parseHousingSeller('Ижара шартнома йук. Без Маклер').type, 'agency');
 });

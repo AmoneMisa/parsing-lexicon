@@ -120,8 +120,8 @@ export const CURRENCIES = Object.freeze([
 
 export const SELLER_TERMS = Object.freeze({
   owner: group('owner', {
-    ru: ['собственник', 'хозяин', 'от хозяина', 'без посредников'], en: ['owner', 'direct owner', 'no agent'], uk: ['власник', 'власниця', 'від власника', 'без посередників'], ro: ['proprietar', 'direct proprietar', 'fără agenție', 'fara agentie', 'fără intermediari'],
-    uzLatn: ['egasi', 'uy egasi', 'mulkdor', 'maklersiz', 'vositachisiz'], uzCyrl: ['эгаси', 'уй эгаси', 'мулкдор', 'маклерсиз', 'воситачисиз'], kk: ['иесі', 'үй иесі', 'меншік иесі', 'делдалсыз'],
+    ru: ['собственник', 'хозяин', 'от хозяина', 'без посредников', 'без посредника', 'без риелтора', 'без риэлтора', 'без маклера', 'без маклер', 'без агента'], en: ['owner', 'direct owner', 'no agent', 'no broker', 'no realtor'], uk: ['власник', 'власниця', 'від власника', 'без посередників'], ro: ['proprietar', 'direct proprietar', 'fără agenție', 'fara agentie', 'fără intermediari'],
+    uzLatn: ['egasi', 'uy egasi', 'mulkdor', 'maklersiz', 'vositachisiz'], uzCyrl: ['эгаси', 'уй эгаси', 'мулкдор', 'маклерсиз', 'воситачисиз', 'без маклер'], kk: ['иесі', 'үй иесі', 'меншік иесі', 'делдалсыз'],
   }),
   agency: group('agency', {
     ru: ['агентство', 'агент', 'риелтор', 'риэлтор', 'маклер', 'посредник'], en: ['agency', 'agent', 'realtor', 'broker'], uk: ['агентство', 'агент', 'рієлтор', 'риелтор', 'посередник'], ro: ['agenție', 'agentie', 'agent imobiliar', 'agenție imobiliară', 'agentie imobiliara', 'broker'],
