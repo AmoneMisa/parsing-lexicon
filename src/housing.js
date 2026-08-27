@@ -219,7 +219,10 @@ export function resolveHousingPropertyType(value) {
   const flat = PROPERTY_TYPES.find((entry) => entry.canonical === 'flat');
   if (flat && findCanonical(text, [flat], { partial: true })) return 'flat';
   const genericUzbekHome = /(?:^|[^\p{L}\p{N}_])(?:uy|уй)(?=$|[^\p{L}\p{N}_])/iu.test(text);
-  const explicitHouse = /(?:hovli|xovli|ҳовли|ховли|house|casa|dom|villa|будин|коттедж|вілл|вилл|(?:^|[^\p{L}\p{N}_])(?:дом|үй)(?=$|[^\p{L}\p{N}_]))/iu.test(text);
+  // "dom" is only 3 letters and matches as a bare substring of unrelated
+  // English words (e.g. "seldom", "random"), so it needs the same token
+  // boundary already applied to its Cyrillic counterpart "дом" below.
+  const explicitHouse = /(?:hovli|xovli|ҳовли|ховли|house|casa|villa|будин|коттедж|вілл|вилл|(?:^|[^\p{L}\p{N}_])(?:дом|үй|dom)(?=$|[^\p{L}\p{N}_]))/iu.test(text);
   if (genericUzbekHome && !explicitHouse) return null;
   return findCanonical(text, PROPERTY_TYPES, { partial: true })?.canonical || null;
 }

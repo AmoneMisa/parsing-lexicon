@@ -15,3 +15,9 @@ test('housing text floor parser preserves compact and labelled forms', () => {
   assert.deepEqual(parseHousingFloorFromText('на 5-м этаже, этажность: 9'), { floor: 5, totalFloors: 9 });
   assert.deepEqual(parseHousingFloorFromText('1/0/-1 этаж подвал'), { floor: -1, totalFloors: null });
 });
+
+test('housing text floor parser does not mistake a building storey count for a unit floor', () => {
+  // "8 qavatli uy" states the building has 8 storeys; it says nothing about
+  // which floor the advertised unit is on.
+  assert.deepEqual(parseHousingFloorFromText('8 qavatli uy sotiladi'), { floor: null, totalFloors: 8 });
+});

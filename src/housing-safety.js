@@ -61,7 +61,7 @@ const SINGLE_FEMALE_TENANT_PATTERNS = Object.freeze([
     + String.raw`(?:только|лише|нужн\p{L}*|потрібн\p{L}*|ищ[еуy]\p{L}*|шука\p{L}*|подсел\p{L}*|підсел\p{L}*)`
     + GAP_NO_NEGATION_RU(24)
     + NOT_NEGATED_RU
-    + String.raw`[^\p{L}\p{N}_](?:одн(?:а|ої|ой|у|ту)|1)\s+(?:девушк\p{L}*|дівчин\p{L}*|женщин\p{L}*|жінк\p{L}*)`,
+    + String.raw`[^\p{L}\p{N}_](?:одн(?:а|ої|ой|у)|1)\s+(?:девушк\p{L}*|дівчин\p{L}*|женщин\p{L}*|жінк\p{L}*)`,
     'iu',
   ),
   // uk/ru reversed order: "одна девушка нужна"

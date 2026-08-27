@@ -22,6 +22,9 @@ test('room-only and property semantics stay shared', () => {
   assert.equal(resolveHousingPropertyType('Квартира в новом доме'), 'flat');
   assert.equal(resolveHousingPropertyType('hovli sotiladi'), 'house');
   assert.notEqual(resolveHousingPropertyType('uy yangi remontdan chiqqan'), 'house');
+  // "dom" is 3 letters and must not match as a bare substring of an unrelated
+  // English word ("seldom") when disambiguating generic Uzbek "uy".
+  assert.equal(resolveHousingPropertyType('uy sotiladi, seldom used'), null);
 });
 
 test('audience, amenities and contacts preserve consumer behavior', () => {
