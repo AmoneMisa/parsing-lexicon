@@ -5,7 +5,10 @@ import {
   NUMBER_MULTIPLIERS,
 } from './money-lexicon.js';
 
-export const MONEY_NUMBER_PATTERN = '\\d{1,3}(?:[ \\u00a0.,]\\d{3})+|\\d+(?:[.,]\\d+)?';
+// Monetary values in job descriptions commonly combine thousands grouping with
+// decimals (e.g. 137,000.00 or 137.000,00). Keep the grouped variants ahead of
+// the generic decimal form so a range parser consumes the complete endpoint.
+export const MONEY_NUMBER_PATTERN = '(?:\\d{1,3}(?:[ \\u00a0]\\d{3})+(?:[.,]\\d+)?|\\d{1,3}(?:,\\d{3})+(?:\\.\\d+)?|\\d{1,3}(?:\\.\\d{3})+(?:,\\d+)?|\\d+(?:[.,]\\d+)?)';
 export const MONEY_SCALE_PATTERN = 'k|к|тыс\\.?|тысяч(?:а|и)?|тис\\.?|thousand|ming|мың|m|м|млн\\.?|mln|million|миллион(?:ов)?|мільйон(?:ів)?|bn|млрд|mlrd|billion';
 export const MONEY_RANGE_RE = new RegExp(`(${MONEY_NUMBER_PATTERN})\\s*(${MONEY_SCALE_PATTERN})?\\s*(?:-|–|—|до|to|bis|dan\\s+gacha)\\s*(${MONEY_NUMBER_PATTERN})\\s*(${MONEY_SCALE_PATTERN})?`, 'iu');
 export const MONEY_SINGLE_RE = new RegExp(`(${MONEY_NUMBER_PATTERN})\\s*(${MONEY_SCALE_PATTERN})?(?=$|[^\\p{L}\\p{N}_])`, 'giu');
@@ -13,9 +16,32 @@ export const MONEY_SINGLE_RE = new RegExp(`(${MONEY_NUMBER_PATTERN})\\s*(${MONEY
 export function parseNumericAmount(raw) {
   let value = String(raw || '').replace(/\u00a0/g, ' ').trim();
   if (!value) return null;
-  const grouped = /\d[ ,.]\d{3}(?:[ ,.]\d{3})*/.test(value);
-  if (grouped) value = value.replace(/[ ,.]/g, '');
-  else value = value.replace(/\s+/g, '').replace(',', '.');
+
+  // Spaces are unambiguous thousands separators in supported salary formats.
+  value = value.replace(/\s+/g, '');
+
+  const lastComma = value.lastIndexOf(',');
+  const lastDot = value.lastIndexOf('.');
+  if (lastComma >= 0 && lastDot >= 0) {
+    // When both separators are present, the final separator is decimal and the
+    // other one is grouping: 137,000.00 / 137.000,00.
+    const decimal = lastComma > lastDot ? ',' : '.';
+    const grouping = decimal === ',' ? /\./g : /,/g;
+    value = value.replace(grouping, '');
+    if (decimal === ',') value = value.replace(',', '.');
+  } else {
+    const separator = lastComma >= 0 ? ',' : lastDot >= 0 ? '.' : null;
+    if (separator) {
+      const escaped = separator === '.' ? '\\.' : ',';
+      const groupingRe = new RegExp(`^\\d{1,3}(?:${escaped}\\d{3})+$`);
+      if (groupingRe.test(value)) {
+        value = value.split(separator).join('');
+      } else if (separator === ',') {
+        value = value.replace(',', '.');
+      }
+    }
+  }
+
   const parsed = Number(value);
   return Number.isFinite(parsed) ? parsed : null;
 }
