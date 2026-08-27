@@ -33,6 +33,15 @@ test('visa sponsorship negative signal remains explicit', () => {
   assert.ok(parsed.workAuthorization.includes('workPermitRequired'));
 });
 
+test('explicit we-do-sponsor wording is recognized as sponsorship offered', () => {
+  const parsed = parseHiringContext(
+    "Visa sponsorship: We do sponsor visas! However, we aren't able to successfully sponsor visas for every role and every candidate.",
+    { mode: 'vacancy' },
+  );
+  assert.ok(parsed.workAuthorization.includes('sponsorshipOffered'));
+  assert.ok(!parsed.workAuthorization.includes('noSponsorship'));
+});
+
 test('classifies obvious job-service and closed-vacancy noise', () => {
   assert.equal(classifyHiringMessage('Помогу найти работу. Подбор вакансий под ваше резюме.'), 'job_service');
   assert.equal(classifyHiringMessage('Вакансия закрыта, сотрудник найден.'), 'closed_vacancy');
