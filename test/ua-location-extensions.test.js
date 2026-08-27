@@ -2,25 +2,28 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import {
-  UA_MAJOR_LOCATION_EXTENSIONS,
-  UA_METRO_LOCATION_EXTENSIONS,
-  UA_REGIONAL_LOCATION_EXTENSIONS,
+  LOCATION_DICTIONARIES,
+  dictionaryFor,
   locationCities,
-  mergeLocationCountries,
 } from '../src/index.js';
 
-const ua = mergeLocationCountries(
-  locationCities('UA'),
-  UA_MAJOR_LOCATION_EXTENSIONS,
-  UA_REGIONAL_LOCATION_EXTENSIONS,
-  UA_METRO_LOCATION_EXTENSIONS,
-);
+const ua = locationCities('UA');
 
 function match(city, type, text) {
   return (ua[city]?.[type] || []).find((entry) => entry.re.test(text))?.name || null;
 }
 
-test('major Ukraine city extensions merge into the shared dictionary', () => {
+test('locationCities exposes the canonical country registry directly', () => {
+  assert.equal(locationCities('UA'), LOCATION_DICTIONARIES.UA);
+  assert.equal(locationCities('KZ'), LOCATION_DICTIONARIES.KZ);
+  assert.equal(locationCities('UZ'), LOCATION_DICTIONARIES.UZ);
+  assert.equal(locationCities('RO'), LOCATION_DICTIONARIES.RO);
+  assert.equal(dictionaryFor('UA', 'Kremenchuk'), ua.Kremenchuk);
+  assert.ok(locationCities('KZ').Shymkent);
+  assert.ok(locationCities('UZ').Namangan);
+});
+
+test('major Ukraine city data belongs to the canonical registry', () => {
   assert.equal(match('Kyiv', 'microdistricts', 'Троещина'), 'Troyeshchyna');
   assert.equal(match('Kharkiv', 'residentialComplexes', 'ЖК Воробьёвы Горы'), 'Vorobiovi Hory');
   assert.equal(match('Odesa', 'districts', 'Малиновский район'), 'Khadzhybeiskyi');
@@ -30,7 +33,7 @@ test('major Ukraine city extensions merge into the shared dictionary', () => {
   assert.equal(match('Kryvyi Rih', 'microdistricts', '95-й квартал'), '95 Kvartal');
 });
 
-test('regional Ukraine extensions expose districts microdistricts complexes and POIs', () => {
+test('regional Ukraine data belongs to the canonical registry', () => {
   assert.equal(match('Rivne', 'microdistricts', 'Льнокомбинат'), 'Lonokombinat');
   assert.equal(match('Kherson', 'districts', 'Суворовский район'), 'Tsentralnyi');
   assert.equal(match('Vinnytsia', 'residentialComplexes', 'ЖК Набережный квартал'), 'Naberezhnyi Kvartal');
@@ -51,6 +54,16 @@ test('regional Ukraine extensions expose districts microdistricts complexes and 
   assert.equal(match('Bila Tserkva', 'landmarks', 'дендропарк Олександрія'), 'Oleksandriia Arboretum');
 });
 
-test('Kharkiv metro extension keeps station aliases separate from neighborhood context', () => {
+test('historical district aliases resolve to one current canonical district', () => {
+  assert.equal(match('Zaporizhzhia', 'districts', 'Комунарський район'), 'Kosmichnyi');
+  assert.deepEqual(
+    ua.Zaporizhzhia.districts
+      .filter((entry) => entry.re.test('Комунарський район'))
+      .map(({ name }) => name),
+    ['Kosmichnyi'],
+  );
+});
+
+test('Kharkiv metro extension is already part of the canonical registry', () => {
   assert.equal(match('Kharkiv', 'metro', 'Ак. Павлова'), 'Akademika Pavlova');
 });
