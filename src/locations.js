@@ -14,6 +14,17 @@ import { UA_REGIONAL_LOCATION_EXTENSIONS } from './ua-location-extensions-region
 import { UA_SECONDARY_LOCATION_EXTENSIONS } from './ua-secondary-cities.js';
 import { UA_METRO_LOCATION_EXTENSIONS } from './ua-location-extensions-metro.js';
 
+const UA_LEGACY_LOCATION_ADDITIONS = Object.freeze({
+  ...UA_EXTRA_LOCATION_DICTIONARIES,
+  Zaporizhzhia: Object.freeze({
+    ...UA_EXTRA_LOCATION_DICTIONARIES.Zaporizhzhia,
+    districts: Object.freeze(
+      (UA_EXTRA_LOCATION_DICTIONARIES.Zaporizhzhia?.districts || [])
+        .filter(({ name }) => name !== 'Komunarskyi'),
+    ),
+  }),
+});
+
 const COUNTRY_LOCATION_DICTIONARIES = Object.freeze({
   ...BASE_LOCATION_DICTIONARIES,
   KZ: mergeLocationCountries(
@@ -26,7 +37,7 @@ const COUNTRY_LOCATION_DICTIONARIES = Object.freeze({
   ),
   UA: mergeLocationCountries(
     BASE_LOCATION_DICTIONARIES.UA || {},
-    UA_EXTRA_LOCATION_DICTIONARIES,
+    UA_LEGACY_LOCATION_ADDITIONS,
     UA_MAJOR_LOCATION_EXTENSIONS,
     UA_REGIONAL_LOCATION_EXTENSIONS,
     UA_SECONDARY_LOCATION_EXTENSIONS,
@@ -37,8 +48,8 @@ const COUNTRY_LOCATION_DICTIONARIES = Object.freeze({
 /** Canonical country -> city -> location dictionary registry. */
 export const LOCATION_DICTIONARIES = COUNTRY_LOCATION_DICTIONARIES;
 
-// Compatibility exports. Data is still sourced from the legacy seed while
-// consumers migrate to LOCATION_DICTIONARIES/locationCities().
+// Compatibility exports. Legacy seeds are not canonical ownership; consumers
+// should use LOCATION_DICTIONARIES/locationCities().
 export {
   UA_EXTRA_LOCATION_DICTIONARIES,
   UA_REGION_ENTRIES,
