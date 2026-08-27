@@ -33,6 +33,11 @@ export const TASHKENT_HOUSING_LANDMARKS = Object.freeze([
   locationEntry('Yangi Choshtepa', 'local_area', [
     'Янги Чоштепа', 'Янги чоштепа', 'Yangi Choshtepa',
   ]),
+  locationEntry('Kuylyuk', 'local_area', [
+    'Куйлюк массив', 'Куйлик массив', 'Куйлюк массиви', 'Куйлик массиви',
+    'Kuylyuk massif', 'Kuylyuk massivi', 'Kuyliq massivi',
+    "Qo'yliq massivi", 'Qo‘yliq massivi', 'Qoʻyliq massivi', 'Қўйлиқ массиви',
+  ]),
   locationEntry('Glinka', 'landmark', [
     'Глинка', 'Glinka', 'Глинка ГАИ', 'ГАИ Глинка',
   ]),
@@ -184,12 +189,18 @@ const EXTRA_METRO_ALIASES = Object.freeze({
   Sergeli: Object.freeze(['Sergile', 'Sergele']),
 });
 
+const QOYLIQ_MASSIF_RE = /(?:куйлюк|куйлик|kuylyuk|kuyliq|qoyliq|qo[‘’ʻ']?yliq|қўйлиқ)\s+(?:массив(?:и)?|massiv(?:i)?)/iu;
+
 /** Resolve listing typos/transliterations to an existing canonical metro entry. */
 export function matchTashkentHousingMetro(value) {
   const text = String(value ?? '');
   if (!text) return null;
   for (const station of TASHKENT_METRO) {
-    if (station.re.test(text)) return station;
+    if (!station.re.test(text)) continue;
+    // Qoyliq is also a large housing massif. In housing text an explicit
+    // "массив/massiv" marker wins over the homonymous metro station.
+    if (station.name === 'Qoyliq' && QOYLIQ_MASSIF_RE.test(text)) continue;
+    return station;
   }
   for (const [canonical, aliases] of Object.entries(EXTRA_METRO_ALIASES)) {
     if (!aliasesToRegex(aliases).test(text)) continue;
