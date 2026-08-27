@@ -99,7 +99,7 @@ export function parseHousingFloorFromText(value) {
     if (floor >= 1 && floor <= 40 && total >= 2 && total <= 40 && floor <= total) return { floor, totalFloors: total };
   }
 
-  const labelledPair = t.match(/([1-9]\d?)\s*-?\s*(?:qavat|этаж|поверх|қабат|кават|қават)\s*(?:\/|из|iz|of)\s*([1-9]\d?)\s*-?\s*(?:qavatli|qavat|этаж(?:ей|ный)?|поверх(?:ів|овий)?|қабатты?|каватли|қаватли)/i);
+  const labelledPair = t.match(/([1-9]\d?)\s*-?\s*(?:qavat|этаж|поверх|қабат|кават|қават)\s*(?:\/|из|iz|of)\s*([1-9]\d?)(?:\s*-?\s*(?:qavatli|qavat|этаж(?:ей|ный)?|поверх(?:ів|овий)?|қабатты?|каватли|қаватли))?/i);
   if (labelledPair) {
     const floor = Number(labelledPair[1]);
     const total = Number(labelledPair[2]);
@@ -121,7 +121,7 @@ export function parseHousingFloorFromText(value) {
   if (single) {
     const floor = Number(single[1]);
     if (valid(floor, null)) {
-      const explicitTotal = t.match(/(?:этажность|этажей|этажлик|поверхови|поверховість|qavatlar(?:\s*soni)?|qavatli|қабатты?|каватли|қаватли)\D{0,6}(\d{1,2})/);
+      const explicitTotal = t.match(/(?:этажность|этажей|поверховість|qavatlar(?:\s*soni)?)\D{0,6}(\d{1,2})/);
       const leadingTotal = t.match(/([1-9]\d?)\s*-?\s*(?:этаж(?:н[а-яё]*|лик)|поверхов[а-яіїґ]*|qavatli|қабатты?|каватли|қаватли)\s*(?:дом|здани|будин|uy|bino)?/i);
       const total = explicitTotal ? Number(explicitTotal[1]) : leadingTotal ? Number(leadingTotal[1]) : null;
       return { floor, totalFloors: total && total >= floor && total <= 200 ? total : null };
@@ -138,7 +138,7 @@ export function parseHousingFloorFromText(value) {
   // A building's total floor count ("8 qavatli uy", "этажность: 9") is still
   // worth reporting even when no unit floor is stated at all.
   const totalOnly =
-    t.match(/(?:этажность|этажей|этажлик|поверхови|поверховість|qavatlar(?:\s*soni)?|qavatli|қабатты?|каватли|қаватли)\D{0,6}(\d{1,2})/) ||
+    t.match(/(?:этажность|этажей|поверховість|qavatlar(?:\s*soni)?)\D{0,6}(\d{1,2})/) ||
     t.match(/([1-9]\d?)\s*-?\s*(?:этаж(?:н[а-яё]*|лик)|поверхов[а-яіїґ]*|qavatli|қабатты?|каватли|қаватли)\s*(?:дом|здани|будин|uy|bino)?/i);
   if (totalOnly) {
     const total = Number(totalOnly[1]);
