@@ -2,9 +2,9 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import {
-  parseHousingRoomCount,
+  parseHousingRoomsFromText,
   parseHousingResidentialComplex,
-} from '../src/housing-structured.js';
+} from '../src/housing-text.js';
 
 test('shared room parser preserves legacy free-text forms', () => {
   for (const [text, expected] of [
@@ -19,7 +19,7 @@ test('shared room parser preserves legacy free-text forms', () => {
     ['2 бөлме', 2],
     ['двухкомнатная квартира', 2],
     ['трьох кімнатна квартира', 3],
-  ]) assert.equal(parseHousingRoomCount(text), expected, text);
+  ]) assert.equal(parseHousingRoomsFromText(text), expected, text);
 });
 
 test('shared residential-complex parser preserves marker and headline forms', () => {
