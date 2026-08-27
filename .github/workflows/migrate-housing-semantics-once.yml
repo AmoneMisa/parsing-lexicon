@@ -20,6 +20,7 @@ jobs:
         with:
           node-version: '24'
       - run: python3 .github/scripts/migrate-housing-semantics-once.py
+      - run: python3 .github/scripts/fix-property-type-once.py
       - run: |
           cat > test/housing-legacy-semantics.test.js <<'EOF'
           import assert from 'node:assert/strict';
@@ -62,7 +63,7 @@ jobs:
       - run: npm install --ignore-scripts --no-audit --no-fund
       - run: npm test
       - run: |
-          git rm .github/workflows/migrate-housing-semantics-once.yml .github/scripts/migrate-housing-semantics-once.py
+          git rm .github/workflows/migrate-housing-semantics-once.yml .github/scripts/migrate-housing-semantics-once.py .github/scripts/fix-property-type-once.py
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add package.json index.d.ts src/housing-intent.js src/housing-intent.d.ts src/housing.js src/housing-text.js src/housing-text.d.ts src/contact.js src/contact.d.ts src/housing-structured.js test/housing-legacy-semantics.test.js
