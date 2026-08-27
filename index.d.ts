@@ -373,3 +373,9 @@ export * from './src/housing-context.js';
 export * from './src/hiring-context.js';
 export * from './src/housing-intent.js';
 export * from './src/housing-structured.js';
+
+// housing semantic helper declarations added in 0.2.5
+export function resolveHousingOccupancy(value: unknown): 'wholeProperty' | 'room' | 'sharedRoom' | 'bedSpace' | null;
+export function looksHousingRoomOnly(value: unknown): boolean;
+export function resolveHousingPropertyType(value: unknown): 'flat' | 'house' | 'room' | 'studio' | 'townhouse' | 'dormitory' | null;
+

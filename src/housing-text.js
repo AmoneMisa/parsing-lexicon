@@ -135,3 +135,27 @@ export function parseHousingFloorFromText(value) {
   return { floor: null, totalFloors: null };
 }
 
+export function parseHousingAudience(value) {
+  const text = String(value || '');
+  if (!text) return null;
+  const t = text.toLowerCase();
+  if (/(?:семейн|сімейн|для семь|для сім)[^.\n]{0,80}(?:одиноч|мужчин|женщин|чоловік|жінок)|(?:одиноч|мужчин|женщин|чоловік|жінок)[^.\n]{0,80}(?:семейн|сімейн|для семь|для сім)/u.test(t)) return null;
+  if (/(для семь|семейн|сімейн|для сім|для родин|for famil|families?|pentru famil|oila(?:ga| uchun|\s+qo['’`]?yiladi|\s+quyiladi)|оила|отбасы)/u.test(t)) return 'family';
+  if (/(девуш|девоч|для дівч|дівчат|for girls|for women|only girls|doar fete|\bfete\b|qiz(?:lar|la)?(?:ga| uchun)?|(?:қ|к)из(?:лар|ла)?|қыздар)/u.test(t)) return 'women';
+  if (/(парн(ей|ям)|для мужчин|мужчинам|для хлопц|for men\b|for boys|doar b[aă]ie[țt]i|yigit(lar)?(ga| uchun)?|(?:ў|у)гил\s*бол|жігіт|ер адам)/u.test(t)) return 'men';
+  return null;
+}
+
+export function parseHousingAmenities(value) {
+  const text = String(value || '');
+  if (!text) return Object.freeze([]);
+  const amenities = [];
+  if (/(?:посудомо|посудомийн|dishwasher|idish\s*yuvish|idishyuvg|ma[șs]ina de sp[ăa]lat vase)/iu.test(text)) amenities.push('dishwasher');
+  if (/(?:комнат\p{L}*\s+раздельн|изолированн\p{L}*\s+комнат|separate\s+rooms?)/iu.test(text)) amenities.push('separateRooms');
+  if (/(?:стиральн\p{L}*\s+машин|washing\s+machine|kir\s*yuvish\s*mashin|kirmoshina)/iu.test(text)) amenities.push('washingMachine');
+  if (/(?:телевизор|телевизион|televizor|television|\btv\b)/iu.test(text)) amenities.push('television');
+  if (/(?:постельн\p{L}*\s+бель|bed\s*linen|toza\s+choyshab|yostiq\s+jild)/iu.test(text)) amenities.push('bedLinen');
+  if (/(?:полотенц|towels?|sochiq)/iu.test(text)) amenities.push('towels');
+  return Object.freeze(amenities);
+}
+

@@ -157,3 +157,25 @@ export function findTelegramContacts(value) {
 export function normalizeTelegramContact(value) {
   return findTelegramContacts(value)[0] || null;
 }
+
+export function parsePrimaryContact(value) {
+  const text = String(value || '');
+  if (!text) return null;
+  const intl = text.match(/\+\d[\d\s().-]{7,}\d/);
+  if (intl) {
+    const digits = intl[0].replace(/\D/g, '');
+    if (digits.length >= 10 && digits.length <= 15) return `+${digits}`;
+  }
+  const keyword = text.match(/(?:tel|тел|phone|моб|whats?app|viber|telegram|звонит|звоніть|aloqa|byla|contact)[^\d+]{0,8}(\+?\d[\d\s().-]{6,}\d)/iu);
+  if (keyword) {
+    const digits = keyword[1].replace(/\D/g, '');
+    if (digits.length >= 9 && digits.length <= 15) return keyword[1].trim();
+  }
+  const trailing = text.match(/(\+?\d[\d\s().-]{6,}\d)\s*(?:tel|тел(?:ефон)?|phone|моб|whats?app|viber|telegram|aloqa|contact)(?=$|[^\p{L}\p{N}_])/iu);
+  if (trailing) {
+    const digits = trailing[1].replace(/\D/g, '');
+    if (digits.length >= 9 && digits.length <= 15) return trailing[1].trim();
+  }
+  return findTelegramContacts(text)[0]?.handle || null;
+}
+

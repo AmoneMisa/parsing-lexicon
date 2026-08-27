@@ -42,3 +42,5 @@ export function parsePhoneNumbers(value: unknown, options?: ParsePhoneOptions): 
 export function normalizePhone(value: unknown, options?: ParsePhoneOptions): ParsedPhoneNumber | null;
 export function findTelegramContacts(value: unknown): readonly TelegramContact[];
 export function normalizeTelegramContact(value: unknown): TelegramContact | null;
+export declare function parsePrimaryContact(value: unknown): string | null;
+

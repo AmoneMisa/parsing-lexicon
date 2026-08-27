@@ -1,4 +1,5 @@
 import { lexiconEntity } from './lexicon-core.js';
+import { findCanonical } from './normalization.js';
 import { HOUSING_DEAL_TYPES } from './housing-intent.js';
 const group = (canonical, aliases, extra = {}) => lexiconEntity(canonical, aliases, extra);
 
@@ -76,7 +77,7 @@ export const PROPERTY_TYPES = Object.freeze([
   }),
   group('house', {
     ru: ['дом', 'частный дом', 'коттедж'], en: ['house', 'home', 'cottage'], uk: ['будинок', 'приватний будинок', 'котедж'], ro: ['casă', 'casa', 'vilă', 'vila'],
-    uzLatn: ['uy', 'hovli', 'xovli'], uzCyrl: ['уй', 'ҳовли', 'ховли'], kk: ['үй', 'жеке үй', 'коттедж'],
+    uzLatn: ['hovli', 'xovli'], uzCyrl: ['ҳовли', 'ховли'], kk: ['үй', 'жеке үй', 'коттедж'],
   }),
   group('room', {
     ru: ['комната', 'комнату'], en: ['room'], uk: ['кімната'], ro: ['cameră', 'camera'], uzLatn: ['xona', 'hona'], uzCyrl: ['хона'], kk: ['бөлме'],
@@ -198,3 +199,28 @@ export function flattenAliases(item) {
   if (!item?.aliases) return [];
   return Object.values(item.aliases).flat();
 }
+
+export function resolveHousingOccupancy(value) {
+  const match = findCanonical(value, HOUSING_OCCUPANCY_TYPES, { partial: true });
+  return match?.canonical || null;
+}
+
+export function looksHousingRoomOnly(value) {
+  const text = String(value || '');
+  if (!text) return false;
+  const occupancy = resolveHousingOccupancy(text);
+  if (occupancy === 'room' || occupancy === 'sharedRoom' || occupancy === 'bedSpace') return true;
+  return /подселени|підселен|комнату\s+в|кімнату\s+в|сда[её]тся\s+комната|сдается\s+комната|сдам\s+комнату|здам\s+кімнат|room\s+in\s+a\s+(?:shared\s+)?flat|room\s+for\s+rent|shared\s+(?:flat|apartment|room)|roommate|flatmate|xona\s+ijaraga|xona\s+beriladi|sherik(?:ka|lik)|шерик(?:ка|лик)|(?:1|бир)\s*та\s*(?:бола|киши|қиз|киз)\s*керак|1\s*хонага[^\r\n]{0,40}(?:киши|одам)\s*турилади|бөлме\s+жалға|închiriez\s+camer[ăa]|ищу[^\r\n]{0,60}сосед|ищем[^\r\n]{0,60}сосед|нужен[^\r\n]{0,60}сосед|нужна[^\r\n]{0,60}сосед|шукаю[^\r\n]{0,60}сусід|шукаємо[^\r\n]{0,60}сусід|потрібен[^\r\n]{0,60}сусід|потрібна[^\r\n]{0,60}сусід|співмешкан|співжител|соседк|сусідк/iu.test(text);
+}
+
+export function resolveHousingPropertyType(value) {
+  const text = String(value || '');
+  if (!text) return null;
+  const flat = PROPERTY_TYPES.find((entry) => entry.canonical === 'flat');
+  if (flat && findCanonical(text, [flat], { partial: true })) return 'flat';
+  const genericUzbekHome = /(?:^|[^\p{L}\p{N}_])(?:uy|уй)(?=$|[^\p{L}\p{N}_])/iu.test(text);
+  const explicitHouse = /(?:hovli|xovli|ҳовли|ховли|house|casa|dom|villa|будин|коттедж|вілл|вилл|(?:^|[^\p{L}\p{N}_])(?:дом|үй)(?=$|[^\p{L}\p{N}_]))/iu.test(text);
+  if (genericUzbekHome && !explicitHouse) return null;
+  return findCanonical(text, PROPERTY_TYPES, { partial: true })?.canonical || null;
+}
+

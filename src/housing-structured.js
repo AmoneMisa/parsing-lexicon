@@ -127,8 +127,9 @@ export function parseHousingPayments(value) {
   }
 
   const noCommission = SELLER_TERMS.noCommission && findCanonical(text, [SELLER_TERMS.noCommission], { partial: true });
-  const commissionPercent = toNumber(text.match(/(?:комисси\p{L}*|commission|comision|komissiya)[^\d%]{0,16}(\d{1,3}(?:[.,]\d+)?)\s*%/iu)?.[1]);
-  const commissionMentioned = SELLER_TERMS.commission && findCanonical(text, [SELLER_TERMS.commission], { partial: true });
+  const shorthandCommission = text.match(/(?:^|[^\p{L}\p{N}_])[mм]\s*[:.\-]?\s*(\d{1,3})\s*%/iu);
+  const commissionPercent = toNumber(shorthandCommission?.[1] ?? text.match(/(?:комисси\p{L}*|commission|comision|komissiya|маклер|makler|rieltor|vositachi)[^\d%]{0,16}(\d{1,3}(?:[.,]\d+)?)\s*%/iu)?.[1]);
+  const commissionMentioned = Boolean(shorthandCommission) || (SELLER_TERMS.commission && findCanonical(text, [SELLER_TERMS.commission], { partial: true }));
 
   return deepFreeze({
     deposit: {
@@ -150,7 +151,7 @@ export function parseHousingSeller(value) {
   const text = normalizeUnicode(value ?? '');
   if (!text) return deepFreeze({ type: null, confidence: 0 });
   const owner = SELLER_TERMS.owner && findCanonical(text, [SELLER_TERMS.owner], { partial: true });
-  const agency = SELLER_TERMS.agency && findCanonical(text, [SELLER_TERMS.agency], { partial: true });
+  const agency = (SELLER_TERMS.agency && findCanonical(text, [SELLER_TERMS.agency], { partial: true })) || /(?:^|[^\p{L}\p{N}_])[mм]\s*\d{1,3}\s*%/iu.test(text);
   if (owner && !agency) return deepFreeze({ type: 'owner', confidence: 1 });
   if (agency && !owner) return deepFreeze({ type: 'agency', confidence: 1 });
   if (owner && agency) return deepFreeze({ type: null, confidence: 0.45 });
