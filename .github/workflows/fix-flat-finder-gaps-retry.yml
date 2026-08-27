@@ -16,7 +16,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-      - run: npm ci
+      - run: npm install --ignore-scripts --package-lock=false
       - run: node .github/scripts/apply_flat_finder_gap_fixes.mjs
       - run: npm test
       - name: Commit source fixes
