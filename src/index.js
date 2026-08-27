@@ -43,6 +43,7 @@ export * from './housing-structured.js';
 export * from './hiring.js';
 export * from './hiring-languages.js';
 export * from './hiring-context.js';
+export { parseHiringContext } from './hiring-context-compat.js';
 export * from './money.js';
 export * from './hiring-professions.js';
 export * from './hiring-advanced.js';
