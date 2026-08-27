@@ -1,11 +1,6 @@
 import { aliasesToRegex, aliasesOf } from './normalization.js';
 import { TASHKENT_DISTRICTS, TASHKENT_METRO } from './geo.js';
 import { UA_REGIONS as UA_REGION_LEXICON } from './geography.js';
-import { mergeLocationCityDictionaries } from './location-merge.js';
-import { UA_MAJOR_LOCATION_EXTENSIONS } from './ua-location-extensions-major.js';
-import { UA_REGIONAL_LOCATION_EXTENSIONS } from './ua-location-extensions-regional.js';
-import { UA_SECONDARY_LOCATION_EXTENSIONS } from './ua-secondary-cities.js';
-import { UA_METRO_LOCATION_EXTENSIONS } from './ua-location-extensions-metro.js';
 
 function entries(rows) {
   return Object.freeze(rows.map(([name, ...aliases]) => {
@@ -410,47 +405,6 @@ export function matchUkraineRegion(text) {
 export function matchUkraineSecondaryCity(text) {
   for (const [city, data] of Object.entries(UA_SECONDARY_CITIES)) {
     if (data.re.test(String(text || ''))) return { city, ...data };
-  }
-  return null;
-}
-
-export function dictionaryFor(countryCode, city) {
-  if (countryCode === 'UA' && UA_EXTRA_LOCATION_DICTIONARIES[city]) {
-    return { ...UA_EXTRA_LOCATION_DICTIONARIES[city], ...(LOCATION_DICTIONARIES.UA?.[city] || {}) };
-  }
-  return LOCATION_DICTIONARIES[countryCode]?.[city] || null;
-}
-
-export function locationCities(countryCode) {
-  if (countryCode !== 'UA') return LOCATION_DICTIONARIES[countryCode] || {};
-  const legacy = { ...UA_EXTRA_LOCATION_DICTIONARIES, ...(LOCATION_DICTIONARIES.UA || {}) };
-  const names = [...new Set([
-    ...Object.keys(legacy),
-    ...Object.keys(UA_MAJOR_LOCATION_EXTENSIONS),
-    ...Object.keys(UA_REGIONAL_LOCATION_EXTENSIONS),
-    ...Object.keys(UA_SECONDARY_LOCATION_EXTENSIONS),
-    ...Object.keys(UA_METRO_LOCATION_EXTENSIONS),
-  ])];
-  return Object.freeze(Object.fromEntries(names.map((city) => [
-    city,
-    mergeLocationCityDictionaries(
-      legacy[city],
-      UA_MAJOR_LOCATION_EXTENSIONS[city],
-      UA_REGIONAL_LOCATION_EXTENSIONS[city],
-      UA_SECONDARY_LOCATION_EXTENSIONS[city],
-      UA_METRO_LOCATION_EXTENSIONS[city],
-    ),
-  ])));
-}
-
-export function matchDictionaryLocation(text, countryCode, city = null) {
-  const country = locationCities(countryCode);
-  const cities = city && country[city] ? [[city, country[city]]] : Object.entries(country);
-  for (const [cityName, data] of cities) {
-    for (const type of ['districts', 'microdistricts', 'residentialComplexes', 'metro', 'streets', 'landmarks']) {
-      const match = (data[type] || []).find((entry) => entry.re.test(String(text || '')));
-      if (match) return { city: cityName, type, name: match.name, aliases: match.aliases };
-    }
   }
   return null;
 }
