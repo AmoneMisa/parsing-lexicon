@@ -7,10 +7,10 @@ import { LOCATION_RELATIONS, parseHousingContext } from './housing-context.js';
 import { resolveHousingIntent } from './housing-intent.js';
 
 const NUMBER_WORDS = Object.freeze([
-  [/(?<![\p{L}\p{N}_])(?:однушк\p{L}*|однокомнатн\p{L}*|1\s*[- ]?к(?:омн\p{L}*)?|1\s*xona(?:li)?|1\s*хона(?:лик|ли)?|1\s*бөлмелі|one[- ]bedroom|one[- ]room)(?![\p{L}\p{N}_])/iu, 1],
-  [/(?<![\p{L}\p{N}_])(?:двушк\p{L}*|двухкомнатн\p{L}*|2\s*[- ]?к(?:омн\p{L}*)?|2\s*xona(?:li)?|2\s*хона(?:лик|ли)?|2\s*бөлмелі|two[- ]bedroom|two[- ]room)(?![\p{L}\p{N}_])/iu, 2],
-  [/(?<![\p{L}\p{N}_])(?:тр[её]шк\p{L}*|трехкомнатн\p{L}*|трёхкомнатн\p{L}*|3\s*[- ]?к(?:омн\p{L}*)?|3\s*xona(?:li)?|3\s*хона(?:лик|ли)?|3\s*бөлмелі|three[- ]bedroom|three[- ]room)(?![\p{L}\p{N}_])/iu, 3],
-  [/(?<![\p{L}\p{N}_])(?:четыр[её]хкомнатн\p{L}*|четыр[её]шк\p{L}*|4\s*[- ]?к(?:омн\p{L}*)?|4\s*xona(?:li)?|4\s*хона(?:лик|ли)?|4\s*бөлмелі|four[- ]bedroom|four[- ]room)(?![\p{L}\p{N}_])/iu, 4],
+  [/(?<![\p{L}\p{N}_])(?:однушк\p{L}*|однокомнатн\p{L}*|1\s*[- ]?к(?:омн\p{L}*)?|1\s*[- ]?xona(?:li)?|1\s*[- ]?хона(?:лик|ли)?|1\s*бөлмелі|one[- ]bedroom|one[- ]room)(?![\p{L}\p{N}_])/iu, 1],
+  [/(?<![\p{L}\p{N}_])(?:двушк\p{L}*|двухкомнатн\p{L}*|2\s*[- ]?к(?:омн\p{L}*)?|2\s*[- ]?xona(?:li)?|2\s*[- ]?хона(?:лик|ли)?|2\s*бөлмелі|two[- ]bedroom|two[- ]room)(?![\p{L}\p{N}_])/iu, 2],
+  [/(?<![\p{L}\p{N}_])(?:тр[её]шк\p{L}*|трехкомнатн\p{L}*|трёхкомнатн\p{L}*|3\s*[- ]?к(?:омн\p{L}*)?|3\s*[- ]?xona(?:li)?|3\s*[- ]?хона(?:лик|ли)?|3\s*бөлмелі|three[- ]bedroom|three[- ]room)(?![\p{L}\p{N}_])/iu, 3],
+  [/(?<![\p{L}\p{N}_])(?:четыр[её]хкомнатн\p{L}*|четыр[её]шк\p{L}*|4\s*[- ]?к(?:омн\p{L}*)?|4\s*[- ]?xona(?:li)?|4\s*[- ]?хона(?:лик|ли)?|4\s*бөлмелі|four[- ]bedroom|four[- ]room)(?![\p{L}\p{N}_])/iu, 4],
 ]);
 
 function toNumber(value) {
@@ -28,7 +28,7 @@ export function parseHousingRoomCount(value) {
   const text = normalizeUnicode(value ?? '');
   if (!text) return null;
   for (const [re, rooms] of NUMBER_WORDS) if (re.test(text)) return rooms;
-  const numeric = text.match(/(?:^|[^\p{L}\p{N}])(\d{1,2})\s*(?:[- ]?комнат\p{L}*|[- ]?к(?:\.|\b)|xona(?:li)?|хона(?:лик|ли)?|бөлмелі|rooms?)(?=$|[^\p{L}\p{N}])/iu);
+  const numeric = text.match(/(?:^|[^\p{L}\p{N}])(\d{1,2})\s*(?:[- ]?комнат\p{L}*|[- ]?к(?:\.|\b)|[- ]?xona(?:li)?|[- ]?хона(?:лик|ли)?|бөлмелі|rooms?)(?=$|[^\p{L}\p{N}])/iu);
   const rooms = toNumber(numeric?.[1]);
   return rooms != null && rooms >= 1 && rooms <= 20 ? rooms : null;
 }
@@ -41,6 +41,15 @@ export function parseHousingFloor(value) {
   if (fraction) {
     const floor = toNumber(fraction[1]);
     const totalFloors = toNumber(fraction[2]);
+    if (floor != null && totalFloors != null && floor <= totalFloors && totalFloors <= 200) {
+      return deepFreeze({ floor, totalFloors });
+    }
+  }
+
+  const reversePair = text.match(/(?:^|[^\d])(\d{1,3})\s*-?\s*(?:этаж|поверх|floor|etaj|qavat|қабат|кават|қават)\s*(?:\/|из|of|iz)\s*(\d{1,3})(?=$|[^\d])/iu);
+  if (reversePair) {
+    const floor = toNumber(reversePair[1]);
+    const totalFloors = toNumber(reversePair[2]);
     if (floor != null && totalFloors != null && floor <= totalFloors && totalFloors <= 200) {
       return deepFreeze({ floor, totalFloors });
     }
