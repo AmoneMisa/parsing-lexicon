@@ -4,7 +4,7 @@ import { composeHousingAddress, parseHousingAddress } from '../src/housing-addre
 
 test('parses explicit Ukrainian street, house and building', () => {
   assert.deepEqual(parseHousingAddress('вул. Воробкевича 12, корпус 2'), {
-    address: 'вул. Воробкевича 12 корпус 2',
+    address: 'Воробкевича 12 корп. 2',
     street: 'Воробкевича',
     houseNumber: '12',
     building: '2',

@@ -18,8 +18,8 @@ function parseBedrooms(text) {
 }
 
 function parseBathrooms(text) {
-  const match = text.match(/(\d)\s*(?:сан\s?узл|с\/?у\b|ванн[аы]|bathroom|sanuzel|hammom)/iu)
-    || text.match(/(?:сан\s?узл\p{L}*|bathrooms?|sanuzel|hammom)\D{0,4}(\d)/iu);
+  const match = text.match(/(\d)\s*(?:сан\s?уз(?:е)?л\p{L}*|с\/?у(?=$|[^\p{L}\p{N}_])|ванн[аы]|bathrooms?|sanuzel|hammom)/iu)
+    || text.match(/(?:сан\s?уз(?:е)?л\p{L}*|bathrooms?|sanuzel|hammom)\D{0,4}(\d)/iu);
   return number(match, 1, 10);
 }
 
@@ -32,7 +32,7 @@ function parseBuildingYear(text) {
 }
 
 function parseMinRentTerm(text) {
-  const match = text.match(/(?:минимальн\p{L}*\s+(?:срок|термин)\p{L}*|минимум|не\s+менее|від\s+|minimum(?:\s+term)?|at\s+least)\s*[:\-]?\s*(\d{1,3})\s*(дн\p{L}*|сут\p{L}*|недел\p{L}*|тижн\p{L}*|месяц\p{L}*|мес\.?|місяц\p{L}*|год\p{L}*|рік|days?|weeks?|months?|years?)/iu);
+  const match = text.match(/(?:минимальн\p{L}*\s+(?:срок|термин)\p{L}*(?:\s+аренд\p{L}*)?|минимум|не\s+менее|від\s+|minimum(?:\s+term)?|at\s+least)\s*[:\-]?\s*(\d{1,3})\s*(дн\p{L}*|сут\p{L}*|недел\p{L}*|тижн\p{L}*|месяц\p{L}*|мес\.?|місяц\p{L}*|год\p{L}*|рік|days?|weeks?|months?|years?)/iu);
   if (!match) return null;
   const value = Number(match[1]);
   const unitText = match[2].toLocaleLowerCase();
