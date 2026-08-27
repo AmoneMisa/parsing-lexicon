@@ -68,6 +68,9 @@ export const UA_REGIONAL_LOCATION_EXTENSIONS = Object.freeze({
   }),
 
   Cherkasy: city({
+    districts: [
+      ['Prydniprovskyi','Придніпровський','Приднепровский'],['Sosnivskyi','Соснівський','Сосновский'],
+    ],
     microdistricts: [
       ['Tsentr','Центр'],['Mytnytsia','Митниця','Мытница'],['Kazbet','Казбет'],['Sosnivka','Соснівка','Сосновка'],['Pivdenno-Zakhidnyi','Південно-Західний','Юго-Западный','ПЗР','ЮЗР'],['Dakhnivka','Дахнівка','Дахновка'],['Khimpaselyshche','Хімселище','Химпосёлок','Химпоселок'],['Zelenyi','Зелений','Зелёный'],['Lunacharskyi','Луначарський','Лесной'],['D','Район Д'],['700-richchia','700-річчя','700-летия'],
     ],
@@ -90,7 +93,7 @@ export const UA_REGIONAL_LOCATION_EXTENSIONS = Object.freeze({
       ['European','ЖК Європейський','ЖК Европейский'],['Standard','ЖК Стандарт'],['Family Park','ЖК Family Park'],['Simeinyi','ЖК Сімейний'],['Peliustkovyi','ЖК Пелюстковий'],['Levada','ЖК Левада'],['Dynastiia','ЖК Династія','ЖК Династия'],['Petrivskyi Kvartal','ЖК Петровський квартал','ЖК Петровский квартал'],['City Park','ЖК City Park'],['Victory Club House','ЖК Victory Club House'],
     ],
     landmarks: [
-      ['Korpusnyi Garden','Корпусний сад','Корпусный сад'],['Round Square','Кругла площа','Круглая площадь'],['White Arbor','Біла альтанка','Белая беседка'],['Ivanova Hora','Іванова гора'],['Peremoha Park','парк Перемога','парк Победа'],['Poltava Dendropark','Полтавський дендропарк'],['Poltava Battle Museum','музей Полтавської битви'],['Poltava Battle Field','Поле Полтавської битви'],
+      ['Korpusnyi Garden','Корпусний сад','Корпусный сад'],['Round Square','Кругла площа','Круглая площадь'],['White Arbor','Біла альтанка','Белая беседка'],['Ivanova Hora','Іванова гора'],['Peremoha Park','парк Перемога','парк Победы'],['Poltava Dendropark','Полтавський дендропарк'],['Poltava Battle Museum','музей Полтавської битви'],['Poltava Battle Field','Поле Полтавської битви'],
     ],
   }),
 
@@ -212,6 +215,9 @@ export const UA_REGIONAL_LOCATION_EXTENSIONS = Object.freeze({
   }),
 
   Kropyvnytskyi: city({
+    districts: [
+      ['Podilskyi','Подільський','Подольский','Ленінський','Ленинский'],['Fortechnyi','Фортечний','Фортечный','Кіровський','Кировский'],
+    ],
     microdistricts: [
       ['Tsentr','Центр'],['Kovalivka','Ковалівка','Ковалёвка'],['Novomykolaivka','Новомиколаївка','Новониколаевка'],['Katranivka','Катранівка','Катрановка'],['Balashivka','Балашівка','Балашовка'],['Maslianykivka','Масляниківка','Маслениковка'],['Velyka Balka','Велика Балка','Большая Балка'],['Lelekivka','Лелеківка','Лелековка'],['Ozerna Balka','Озерна Балка'],['Cheremushky','Черемушки'],['Popova','Попова'],['Zhadova','Жадова'],['Patsaieva','Пацаєва','Пацая'],['Shkilnyi','Шкільний','Школьный'],['Arnautovo','Арнаутово'],['101 microdistrict','101 мікрорайон'],
     ],
@@ -224,11 +230,14 @@ export const UA_REGIONAL_LOCATION_EXTENSIONS = Object.freeze({
   }),
 
   Kremenchuk: city({
+    districts: [
+      ['Avtozavodskyi','Автозаводський','Автозаводской'],['Kriukivskyi','Крюківський','Крюковский'],
+    ],
     microdistricts: [
       ['Tsentr','Центр'],['Molodizhnyi','Молодіжний','Молодёжный'],['Rakivka','Раківка','Раковка'],['Kriukiv','Крюків','Крюков'],['Velyka Kokhnivka','Велика Кохнівка','Большая Кохновка'],['Nahirna Chastyna','Нагірна частина','Нагорная часть'],['Pershyi Zanasyp','Перший Занасип','Первый Занасып'],['Druhyi Zanasyp','Другий Занасип'],['Tretii Zanasyp','Третій Занасип'],['Pyvzavod','Пивзавод'],['Vodokanal','Водоканал'],['Avtokrazivskyi','Автокразівський','Автокразовский'],
     ],
     residentialComplexes: [
-      ['Dniprovska Riviera','ЖК Дніпровська Рив\'єра','ЖК Днепровская Ривьера'],['Tsentralnyi','ЖК Центральний','ЖК Центральный'],
+      ['Dniprovska Riviera','ЖК Дніпровська Рів\'єра','ЖК Днепровская Ривьера'],['Tsentralnyi','ЖК Центральний','ЖК Центральный'],
     ],
     landmarks: [
       ['Prydniprovskyi Park','парк Придніпровський','парк Приднепровский'],['Peace Park','парк Миру'],['Dnipro Embankment','набережна Дніпра'],['Kriukivskyi Bridge','Крюківський міст','Крюковский мост'],['Victory Square','площа Перемоги','площадь Победы'],
