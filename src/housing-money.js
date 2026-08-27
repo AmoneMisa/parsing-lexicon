@@ -12,8 +12,13 @@ import { maskPhoneLikeSpans } from './contact.js';
 const PRICE_KEYWORD = '(?:цена|ціна|нарх(?:и)?|narx|price|стоимост[ьи]|аренд(?:а|ная\\s+плата)?|rent)';
 // moneyCurrencyPattern() includes short codes (cad, ron, aed...) with no
 // boundary of its own, so "100 cadastru" would otherwise read "cad" off an
-// unrelated word as the Canadian dollar.
-const PRICE_CURRENCY = `(?:(?<![\\p{L}\\p{N}_])(?:${moneyCurrencyPattern()})(?![\\p{L}\\p{N}_]))`;
+// unrelated word as the Canadian dollar. Only the side facing away from the
+// paired number gets a boundary: the side facing the number is legitimately
+// adjacent to a digit with no separator ("350$", "$100"), so guarding it
+// too would reject those ordinary forms.
+const CURRENCY_ALT = `(?:${moneyCurrencyPattern()})`;
+const PRICE_CURRENCY_AFTER_NUMBER = `(?:${CURRENCY_ALT}(?![\\p{L}\\p{N}_]))`;
+const PRICE_CURRENCY_BEFORE_NUMBER = `(?:(?<![\\p{L}\\p{N}_])${CURRENCY_ALT})`;
 
 function escapeRegex(value) {
   return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -54,11 +59,11 @@ export function parseHousingPrice(value, fallbackCurrency = '') {
 
   if (price == null) {
     let tagged = null;
-    // 'u' is required for PRICE_CURRENCY's \p{L}/\p{N} boundary escapes to work
-    // as Unicode property classes — without it they silently match nothing,
+    // 'u' is required for the \p{L}/\p{N} boundary escapes to work as
+    // Unicode property classes — without it they silently match nothing,
     // which had made the boundary guard a no-op.
-    const reNumSym = new RegExp(`(${MONEY_NUMBER_PATTERN})\\s*${PRICE_CURRENCY}`, 'igu');
-    const reSymNum = new RegExp(`${PRICE_CURRENCY}\\s*(${MONEY_NUMBER_PATTERN})`, 'igu');
+    const reNumSym = new RegExp(`(${MONEY_NUMBER_PATTERN})\\s*${PRICE_CURRENCY_AFTER_NUMBER}`, 'igu');
+    const reSymNum = new RegExp(`${PRICE_CURRENCY_BEFORE_NUMBER}\\s*(${MONEY_NUMBER_PATTERN})`, 'igu');
     for (const regex of [reNumSym, reSymNum]) {
       let match;
       while ((match = regex.exec(text)) !== null) {
