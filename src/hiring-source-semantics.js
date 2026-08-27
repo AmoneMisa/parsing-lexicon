@@ -197,7 +197,12 @@ export function detectVisaSponsorshipWording(value) {
   return null;
 }
 
-export const TEMPORARY_WORK_AUTH_RE = /\b(?:opt|cpt|stem\s+opt)\b/iu;
+// Bare "opt" needs case-sensitive "OPT" (the Optional Practical Training
+// abbreviation is written that way in real postings) — a case-insensitive
+// `\bopt\b` also matched the common English verb ("opt-in", "opt out").
+// "cpt" and "stem opt" don't collide with ordinary words, so they stay
+// case-insensitive via explicit character classes instead of the `i` flag.
+export const TEMPORARY_WORK_AUTH_RE = /\b(?:[Cc][Pp][Tt]|[Ss][Tt][Ee][Mm]\s+[Oo][Pp][Tt])\b|\bOPT\b/u;
 
 export function detectRecruitmentAgency(value) {
   return /recruit(?:ment|ing) agency|staffing agency|talent agency|кадров(?:ое|е) агентство|рекрут(?:ингов|инг)\p{L}* агентство|агентство по подбору/iu.test(String(value || ''));

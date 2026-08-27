@@ -12,6 +12,7 @@ import {
   extractNiceToHaveContext,
   parseCandidateSalary,
   parseHiringSourceSalary,
+  TEMPORARY_WORK_AUTH_RE,
 } from '../src/hiring-source-semantics.js';
 
 test('structured source fields reuse shared field dictionaries', () => {
@@ -62,6 +63,15 @@ test('vacancy source semantics centralize US, sponsorship, agency and nice-to-ha
   assert.match(extractNiceToHaveContext('Requirements. Nice to have: Vue, GraphQL. Benefits.'), /Vue, GraphQL/);
 });
 
+
+test('temporary work auth marker requires an actual OPT/CPT abbreviation', () => {
+  assert.equal(TEMPORARY_WORK_AUTH_RE.test('Applicants on STEM OPT or CPT are welcome to apply.'), true);
+  assert.equal(TEMPORARY_WORK_AUTH_RE.test('has cpt authorization'), true);
+  assert.equal(TEMPORARY_WORK_AUTH_RE.test('On OPT, seeking sponsorship'), true);
+  // The common English verb "opt" must not be mistaken for the abbreviation.
+  assert.equal(TEMPORARY_WORK_AUTH_RE.test('Candidates may opt-in for updates'), false);
+  assert.equal(TEMPORARY_WORK_AUTH_RE.test('please opt out of the mailing list'), false);
+});
 
 test('marks approximate experience wording', () => {
   const [mention] = extractCandidateExperienceMentions('Tajriba: 3 yil atrofida');

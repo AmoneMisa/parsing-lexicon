@@ -74,6 +74,11 @@ test('candidate goal, features, role and relocation semantics are reusable', () 
   assert.equal(isCandidateNonRoleValue('онлайн'), true);
   assert.equal(detectCandidateRemotePreference('Только офис'), false);
   assert.equal(detectCandidateRemotePreference('Ищу удалённую работу'), true);
+  // "удаленность"/"віддаленості" describe an object's distance, not a work
+  // preference, and must not be mistaken for one (no signal -> null, not
+  // "explicitly not remote").
+  assert.equal(detectCandidateRemotePreference('Удаленность объекта от центра города не имеет значения'), null);
+  assert.equal(detectCandidateRemotePreference('Оцінка віддаленості складу від траси важлива'), null);
 });
 
 test('candidate profession repair keeps role semantics out of consumer regex catalogs', () => {

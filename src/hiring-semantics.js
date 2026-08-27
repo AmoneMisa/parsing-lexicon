@@ -19,7 +19,10 @@ const STATUS_ONLY_RE = /^(?:talaba|student|студент(?:ка)?|студен�
 const FLEXIBLE_ROLE_RE = /^(?:нет|без)\s+разницы(?:\s+.*)?$|^не\s*важно(?:\s+.*)?$|^farqi\s+yo['’ʻʼ‘`]?q$|^любая\s+(?:работа|занятость)(?:\s+.*)?$/iu;
 const NON_ROLE_RE = /^(?:удал[её]нно|работа\s+на\s+удал[её]н\p{L}*\s+основе|remote|onlayn|online|онлайн|farqi\s+yo['’ʻʼ‘`]?q|bilmaym\p{L}*|ish\s+ker(?:e|a)\s+onlayn|любая\s+(?:работа|занятость)|немає|нет|не\s+указано|not\s+specified)$/iu;
 const REMOTE_NEGATIVE_RE = /(?:onsite|on-site|office\s+only|тільки\s+офіс|только\s+офис|офисн(?:ый|ая)\s+формат|офлайн|без\s+удал[её]нк|удал[её]нк\p{L}*\s+не\s+рассматрива|не\s+рассматрива\p{L}*\s+удал[её]н|remote\s+(?:not|no)|faqat\s+ofis|ofisda\s+ish(?:lash)?)/iu;
-const REMOTE_POSITIVE_RE = /(?:\bremote\b|\bremotely\b|удал[её]н(?:но|ка|ный|ная|н\p{L}*)?|віддален(?:о|а|ий)?|дистанц(?:ионно|ійно)|masofaviy|(?<!\p{L})onlayn(?!\p{L})|online\s+(?:work|job)|онлайн\s+работ)/iu;
+// The open `\p{L}*` suffixes used to match "удаленность"/"віддаленості" (an
+// object's distance from something) as a remote-work preference. Case
+// endings are now enumerated explicitly and both stems are token-bounded.
+const REMOTE_POSITIVE_RE = /(?:\bremote\b|\bremotely\b|(?<!\p{L})удал[её]н(?:но|ка|н(?:ый|ая|ую|ых|ым|ой|ое|ые))?(?!\p{L})|(?<!\p{L})віддален(?:о|а|ий)?(?!\p{L})|дистанц(?:ионно|ійно)|masofaviy|(?<!\p{L})onlayn(?!\p{L})|online\s+(?:work|job)|онлайн\s+работ)/iu;
 
 const FEATURE_RULES = Object.freeze([
   ['student', /\bstudent\b|студент|студентк|talaba/iu],
