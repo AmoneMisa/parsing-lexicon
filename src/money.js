@@ -1,6 +1,7 @@
 import { findPhoneLikeSpans } from './contact.js';
 import { aliasesOf, findCanonical, normalizeUnicode } from './normalization.js';
 import {
+  CURRENCY_SYMBOL_CANDIDATES,
   CURRENCY_TERMS,
   NUMBER_MULTIPLIERS,
   SALARY_MODIFIERS,
@@ -27,12 +28,18 @@ export {
 } from './money-core.js';
 
 const CONTACT_MARKER_RE = /(?:телефон|тел\.?|phone|mobile|mob\.?|whatsapp|viber|telegram|контакт|contact|aloqa|murojaat|bog(?:['’ʻʼ‘`])?lanish)\s*[:：—-]?\s*$/iu;
+const JOBS_I18N_PERIOD_RE = /\bjobs\.per(hour|day|shift|week|month|year|project|piece)\b/iu;
 
 function hasSalaryContext(text) {
   return /(?:salary|зарплат|з\s*п\b|оплат|ставк|доход|оклад|компенсац|maosh|oylik|ish\s+haqi|жалақы|айлық|еңбекақы|salariu|оплата)/iu.test(text);
 }
 
 function periodFromText(text) {
+  // Some vacancy sources leak untranslated i18n keys into salary strings,
+  // e.g. "$208K/jobs.perWeek". Treat those markers as first-class periods
+  // instead of letting consumers fall back to an incorrect monthly salary.
+  const jobsMarker = String(text || '').match(JOBS_I18N_PERIOD_RE);
+  if (jobsMarker?.[1]) return jobsMarker[1].toLowerCase();
   return findCanonical(text, SALARY_PERIODS, { partial: true })?.canonical || null;
 }
 
@@ -61,10 +68,23 @@ function moneyContextScore(text, start, end, scaled = false) {
   return score;
 }
 
+function rangeSearchText(text) {
+  // MONEY_RANGE_RE intentionally parses numeric structure only. Currency symbols
+  // may legally repeat around both endpoints ("$55 — $65"); blank them with
+  // equal-length whitespace so the range parser can see the numbers while all
+  // original indices still line up with phone protection/context scoring.
+  let normalized = text;
+  for (const symbol of Object.keys(CURRENCY_SYMBOL_CANDIDATES)) {
+    normalized = normalized.split(symbol).join(' '.repeat(symbol.length));
+  }
+  return normalized;
+}
+
 function bestRange(text, protectedSpans) {
   const ranges = new RegExp(MONEY_RANGE_RE.source, 'giu');
   const candidates = [];
-  for (const match of text.matchAll(ranges)) {
+  const searchable = rangeSearchText(text);
+  for (const match of searchable.matchAll(ranges)) {
     const start = match.index ?? 0;
     const end = start + match[0].length;
     if (overlapsProtectedPhone(start, end, protectedSpans)) continue;
