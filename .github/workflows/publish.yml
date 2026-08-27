@@ -2,8 +2,12 @@ name: Publish package
 
 on:
   push:
+    branches:
+      - master
     tags:
       - 'v*'
+    paths:
+      - package.json
   workflow_dispatch:
 
 permissions:
