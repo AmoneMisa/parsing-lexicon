@@ -2,6 +2,10 @@
   "name": "@whiteslove/parsing-lexicon",
   "version": "0.2.0",
   "description": "Shared deterministic multilingual parsing lexicon for Whiteslove housing and hiring services",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AmoneMisa/parsing-lexicon.git"
+  },
   "type": "module",
   "main": "./src/index.js",
   "types": "./index.d.ts",
