@@ -87,7 +87,7 @@ export function parseHousingFloorFromText(value) {
   const text = String(value || '');
   if (!text) return { floor: null, totalFloors: null };
   const t = text.toLowerCase();
-  const floorWord = '(?:этаж(?:да)?|поверх|qavat|қабат|қабатт|etaj|floor|эт\\.)';
+  const floorWord = '(?:этаж(?:да)?|поверх|qavat(?:da)?|қабат(?:та)?|кават(?:да)?|қават(?:да)?|etaj|floor|эт\\.)';
   const valid = (floor, total) => floor >= 0 && floor <= 200 && (total == null || (total >= floor && total <= 200));
 
   if (/(?:^|\n)[^\d\r\n]{0,8}[1-9]\s*\/\s*0\s*\/\s*-1\s*(?:этаж|эт\.?)?[^\r\n]*(?:подвал|цоколь)/im.test(t)) return { floor: -1, totalFloors: null };
@@ -99,7 +99,7 @@ export function parseHousingFloorFromText(value) {
     if (floor >= 1 && floor <= 40 && total >= 2 && total <= 40 && floor <= total) return { floor, totalFloors: total };
   }
 
-  const labelledPair = t.match(/([1-9]\d?)\s*-?\s*(?:qavat|этаж|поверх|қабат)\s*(?:\/|из|iz|of)\s*([1-9]\d?)\s*-?\s*(?:qavatli|qavat|этаж(?:ей|ный)?|поверх(?:ів|овий)?|қабатты?)/i);
+  const labelledPair = t.match(/([1-9]\d?)\s*-?\s*(?:qavat|этаж|поверх|қабат|кават|қават)\s*(?:\/|из|iz|of)\s*([1-9]\d?)\s*-?\s*(?:qavatli|qavat|этаж(?:ей|ный)?|поверх(?:ів|овий)?|қабатты?|каватли|қаватли)/i);
   if (labelledPair) {
     const floor = Number(labelledPair[1]);
     const total = Number(labelledPair[2]);
@@ -116,13 +116,13 @@ export function parseHousingFloorFromText(value) {
 
   // "li" excludes Uzbek "N qavatli" (an N-storey building), which states the
   // building's total floor count, not which floor this unit is on.
-  const notLetter = '(?!н|ей|ів|ност|ка|ки|s|li|лик)';
+  const notLetter = '(?!н|ей|ів|ност|ка|ки|s|li|ли|лик)';
   const single = t.match(new RegExp(`(\\d{1,2})[^\\S\\r\\n]*-?[^\\S\\r\\n]*(?:го|ом|ым|ой|ий|nd|rd|th|st|й|м|е)?[^\\S\\r\\n]*${floorWord}${notLetter}`)) || t.match(new RegExp(`${floorWord}\\s*[:№#]?\\s*(\\d{1,2})\\b`));
   if (single) {
     const floor = Number(single[1]);
     if (valid(floor, null)) {
-      const explicitTotal = t.match(/(?:этажность|этажей|этажлик|поверхови|поверховість|qavatlar(?:\s*soni)?|qavatli|қабатты?)\D{0,6}(\d{1,2})/);
-      const leadingTotal = t.match(/([1-9]\d?)\s*-?\s*(?:этаж(?:н[а-яё]*|лик)|поверхов[а-яіїґ]*|qavatli|қабатты?)\s*(?:дом|здани|будин|uy|bino)?/i);
+      const explicitTotal = t.match(/(?:этажность|этажей|этажлик|поверхови|поверховість|qavatlar(?:\s*soni)?|qavatli|қабатты?|каватли|қаватли)\D{0,6}(\d{1,2})/);
+      const leadingTotal = t.match(/([1-9]\d?)\s*-?\s*(?:этаж(?:н[а-яё]*|лик)|поверхов[а-яіїґ]*|qavatli|қабатты?|каватли|қаватли)\s*(?:дом|здани|будин|uy|bino)?/i);
       const total = explicitTotal ? Number(explicitTotal[1]) : leadingTotal ? Number(leadingTotal[1]) : null;
       return { floor, totalFloors: total && total >= floor && total <= 200 ? total : null };
     }
@@ -138,8 +138,8 @@ export function parseHousingFloorFromText(value) {
   // A building's total floor count ("8 qavatli uy", "этажность: 9") is still
   // worth reporting even when no unit floor is stated at all.
   const totalOnly =
-    t.match(/(?:этажность|этажей|этажлик|поверхови|поверховість|qavatlar(?:\s*soni)?|qavatli|қабатты?)\D{0,6}(\d{1,2})/) ||
-    t.match(/([1-9]\d?)\s*-?\s*(?:этаж(?:н[а-яё]*|лик)|поверхов[а-яіїґ]*|qavatli|қабатты?)\s*(?:дом|здани|будин|uy|bino)?/i);
+    t.match(/(?:этажность|этажей|этажлик|поверхови|поверховість|qavatlar(?:\s*soni)?|qavatli|қабатты?|каватли|қаватли)\D{0,6}(\d{1,2})/) ||
+    t.match(/([1-9]\d?)\s*-?\s*(?:этаж(?:н[а-яё]*|лик)|поверхов[а-яіїґ]*|qavatli|қабатты?|каватли|қаватли)\s*(?:дом|здани|будин|uy|bino)?/i);
   if (totalOnly) {
     const total = Number(totalOnly[1]);
     if (total >= 1 && total <= 200) return { floor: null, totalFloors: total };
