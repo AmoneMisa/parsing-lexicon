@@ -66,7 +66,7 @@ function parseUtilitiesAmount(text) {
 
 function parseCommunalSeparated(text, country) {
   if (/(коммунал\p{L}*(?:\s+услуг\p{L}*)?\s*(?:отдельно|сверху|плюс|оплачива\p{L}*\s*отдельно)|свет\s*вода\s*газ\s*отдельно|kommunal\p{L}*\s*(?:alohida|ustiga)|utilities?\s*(?:separate|extra|not included))/iu.test(text)) return true;
-  if (/(коммунал\p{L}*(?:\s+услуг\p{L}*)?\s*(?:включ|входит|в\s*стоимост)|вс[её]\s*включ|all\s*inclusive|kommunal\p{L}*\s*(?:kiritilgan|ichida)|utilities?\s*included)/iu.test(text)) return false;
+  if (/(коммунал\p{L}*(?:\s+услуг\p{L}*)?\s*(?:включ|входит|в\s*стоимост)|вс[её]\s*включ|all\s*inclusive|kommunal\p{L}*\s*(?:kiritilgan|ichida)|комунал(?:каси)?\s+ичида|коммунал(?:каси)?\s+ичида|utilities?\s*included)/iu.test(text)) return false;
   return String(country || '').toUpperCase() === 'UA' ? true : null;
 }
 
@@ -107,9 +107,9 @@ export function parseHousingListingFields(value, { country = '' } = {}) {
     courtyard: features.courtyard,
     gazebo: features.gazebo,
     dishwasher: bool(text, /посудомоечн\p{L}*|посудомойк\p{L}*|dishwasher|mașin[ăa]\s+de\s+spălat\s+vase/iu),
-    airConditioner: bool(text, /кондицион|сплит[- ]?систем|konditsioner|klimat|air\s*con|aer\s+condi[țt]ionat/iu),
+    airConditioner: bool(text, /кондицион|сплит[- ]?систем|konditsioner|kansaner|klimat|air\s*con|aer\s+condi[țt]ionat/iu),
     gas,
-    newBuilding: bool(text, /новостро|новобуд|новый\s+дом|new\s*build|newly\s*built|yangi\s+(?:bino|qurilgan|uy)|bloc\s+nou/iu),
+    newBuilding: bool(text, /новостро|новобуд|новый\s+дом|novast(?:royka|iroyka)|navast(?:royka|iroyka)|new\s*build|newly\s*built|yangi\s+(?:bino|qurilgan|uy)|bloc\s+nou/iu),
     communalSeparated: parseCommunalSeparated(text, country),
     parking: bool(text, /паркинг|парков|машино[- ]?мест|parking|avtoturargoh|mashina\s*joyi/iu),
     elevator,

@@ -25,6 +25,7 @@ export const TASHKENT_AREA_ADDITIONS = Object.freeze({
     area('Abdurauf Fitrat', ['абдурауф фитрат', 'abdurauf fitrat']),
   ]),
   'Mirzo Ulugbek': Object.freeze([
+    area('Alayskiy C-2', ['алайский ц 2', 'алайский ц-2', 'alayskiy c 2', 'alayskiy c-2']),
     area('Feruza-1', ['феруза 1', 'feruza 1']),
     area('Buz-1', ['буз 1', 'бўз 1', 'boz 1', 'bo z 1']),
     area('Turon', ['турон', 'turon']),
@@ -42,6 +43,7 @@ export const TASHKENT_AREA_ADDITIONS = Object.freeze({
     area('Almazar Massif', ['массив алмазар', 'массив олмазор', 'almazar massivi', 'olmazor massivi']),
   ]),
   Shaykhantahur: Object.freeze([
+    area('Labzak C-13', ['лабзак ц 13', 'лабзак ц-13', 'labzak c 13', 'labzak c-13']),
     area('Gulabad', ['гульабад', 'гулабад', 'gulobod', 'gulabad', 'ц 26', 'c 26']),
     area('Aktepa', ['актепа шайхантахур', 'oqtepa shayxontohur']),
     area('Ibn Sino-1', ['ибн сино 1', 'ibn sino 1']),
@@ -49,14 +51,20 @@ export const TASHKENT_AREA_ADDITIONS = Object.freeze({
     area('Jarariq', ['джарарык', 'жарарик', 'jarariq', 'jararik']),
   ]),
   Yunusabad: Object.freeze([
+    area('Kashgar C-4', ['кашгар ц 4', 'кашгар ц-4', 'kashgar c 4', 'kashgar c-4']),
     area('Katta Hasanboy', ['катта хасанбой', 'katta hasanboy']),
   ]),
   Yakkasaray: Object.freeze([
+    area('Glinka', ['глинка', 'glinka']),
     area('Bobur', ['массив бобур', 'bobur massivi']),
     area('Konstitutsiya', ['конституция массив', 'konstitutsiya massivi']),
     area('Hamid Sulaymonov', ['хамид сулаймонов', 'hamid sulaymonov']),
   ]),
+  Yangihayot: Object.freeze([
+    area('Yangi Choshtepa', ['янги чоштепа', 'yangi choshtepa']),
+  ]),
   Yashnobod: Object.freeze([
+    area('Aviasozlar-3', ['авиасозлар 3', 'авиасозлар-3', 'aviasozlar 3', 'aviasozlar-3']),
     area('Asalabad-1', ['асалабад 1', 'asalobod 1', 'asalabad 1']),
     area('Asalabad-2', ['асалабад 2', 'asalobod 2', 'asalabad 2']),
     area('Mumtoz', ['мумтаз', 'mumtoz']),
