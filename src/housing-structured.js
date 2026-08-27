@@ -55,7 +55,9 @@ export function parseHousingFloor(value) {
     }
   }
 
-  const explicit = text.match(/(?:этаж|поверх|floor|etaj|qavat|қабат|кават|қават)\s*[:№#-]?\s*(\d{1,3})\s*(?:[,;/]|из|of|din|dan)?\s*(?:дом\s*)?(?:из\s*)?(\d{1,3})?\s*(?:этаж\p{L}*|поверх\p{L}*|floors?|etaje|qavatli|қабатты|каватли|қаватли)?/iu);
+  // Keep marker-before-number forms on one physical line. Otherwise a line like
+  // "13-этаж\n2 хона" can be misread as "этаж 2".
+  const explicit = text.match(/(?:этаж|поверх|floor|etaj|qavat|қабат|кават|қават)[^\S\r\n]*[:№#-]?[^\S\r\n]*(\d{1,3})[^\S\r\n]*(?:[,;/]|из|of|din|dan)?[^\S\r\n]*(?:дом[^\S\r\n]*)?(?:из[^\S\r\n]*)?(\d{1,3})?[^\S\r\n]*(?:этаж\p{L}*|поверх\p{L}*|floors?|etaje|qavatli|қабатты|каватли|қаватли)?/iu);
   let floor = toNumber(explicit?.[1]);
   let totalFloors = toNumber(explicit?.[2]);
 
