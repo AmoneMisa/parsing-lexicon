@@ -42,3 +42,11 @@ test('parses an annual USD range when both endpoints repeat the currency symbol'
   assert.equal(parsed.min, 405_000);
   assert.equal(parsed.max, 485_000);
 });
+
+test('parses grouped salary endpoints that also contain decimal cents', () => {
+  const parsed = parseSalary('The San Francisco, CA base pay range for this role is $137,000.00 - $207,000.00. This salary range is an estimate.');
+  assert.ok(parsed);
+  assert.equal(parsed.currency, 'USD');
+  assert.equal(parsed.min, 137_000);
+  assert.equal(parsed.max, 207_000);
+});
