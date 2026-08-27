@@ -1,0 +1,120 @@
+name: Close geography catalog gap once
+
+on:
+  push:
+    branches:
+      - refactor/close-geography-catalog-gap
+
+permissions:
+  contents: write
+
+jobs:
+  refactor:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: refactor/close-geography-catalog-gap
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Refactor geography ownership
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          geo = Path('src/geography.js')
+          text = geo.read_text()
+          text = text.replace(
+              "import { findCanonical } from './normalization.js';\n",
+              "import { findCanonical } from './normalization.js';\nimport { canonicalCountryCode } from './countries.js';\n",
+          )
+
+          anchor = "]);\n\nexport const CITIES = Object.freeze([...UZ_CITIES, ...KZ_CITIES, ...UA_CITIES, ...RO_CITIES, ...KG_CITIES]);"
+          if anchor not in text:
+              raise SystemExit('geography city anchor not found')
+          global_cities = """\n]);\n\n/** Canonical cities used across global hiring and housing ingestion. */\nexport const GLOBAL_CITIES = Object.freeze([\n  entity('Tbilisi', { en: ['Tbilisi'], ru: ['Тбилиси'] }, { country: 'GE', type: 'city' }),\n  entity('Batumi', { en: ['Batumi'], ru: ['Батуми'] }, { country: 'GE', type: 'city' }),\n  entity('Baku', { en: ['Baku'], ru: ['Баку'] }, { country: 'AZ', type: 'city' }),\n  entity('Yerevan', { en: ['Yerevan'], ru: ['Ереван'], uk: ['Єреван'] }, { country: 'AM', type: 'city' }),\n  entity('Chisinau', { en: ['Chisinau'], ro: ['Chișinău', 'Chişinău'], ru: ['Кишинёв', 'Кишинев'] }, { country: 'MD', type: 'city' }),\n  entity('Dushanbe', { en: ['Dushanbe'], ru: ['Душанбе'] }, { country: 'TJ', type: 'city' }),\n  entity('Ashgabat', { en: ['Ashgabat'], ru: ['Ашхабад'] }, { country: 'TM', type: 'city' }),\n  entity('Warsaw', { en: ['Warsaw'], all: ['Warszawa'], ru: ['Варшава'] }, { country: 'PL', type: 'city' }),\n  entity('Krakow', { en: ['Krakow'], all: ['Kraków'], ru: ['Краков'] }, { country: 'PL', type: 'city' }),\n  entity('Berlin', { en: ['Berlin'], ru: ['Берлин'] }, { country: 'DE', type: 'city' }),\n  entity('Munich', { en: ['Munich'], all: ['München'], ru: ['Мюнхен'] }, { country: 'DE', type: 'city' }),\n  entity('London', { en: ['London'], ru: ['Лондон'] }, { country: 'GB', type: 'city' }),\n  entity('New York', { en: ['New York', 'New York City', 'NYC'], ru: ['Нью-Йорк', 'Нью Йорк'] }, { country: 'US', type: 'city' }),\n  entity('Beijing', { en: ['Beijing'], ru: ['Пекин'], all: ['北京'] }, { country: 'CN', type: 'city' }),\n  entity('Shanghai', { en: ['Shanghai'], ru: ['Шанхай'], all: ['上海'] }, { country: 'CN', type: 'city' }),\n  entity('Shenzhen', { en: ['Shenzhen'], ru: ['Шэньчжэнь'], all: ['深圳'] }, { country: 'CN', type: 'city' }),\n  entity('Guangzhou', { en: ['Guangzhou'], ru: ['Гуанчжоу'], all: ['广州'] }, { country: 'CN', type: 'city' }),\n  entity('Hangzhou', { en: ['Hangzhou'], ru: ['Ханчжоу'], all: ['杭州'] }, { country: 'CN', type: 'city' }),\n  entity('Tokyo', { en: ['Tokyo'], ru: ['Токио'], all: ['東京'] }, { country: 'JP', type: 'city' }),\n  entity('Osaka', { en: ['Osaka'], ru: ['Осака'], all: ['大阪'] }, { country: 'JP', type: 'city' }),\n  entity('Kyoto', { en: ['Kyoto'], ru: ['Киото'], all: ['京都'] }, { country: 'JP', type: 'city' }),\n  entity('Seoul', { en: ['Seoul'], ru: ['Сеул'], all: ['서울'] }, { country: 'KR', type: 'city' }),\n  entity('Busan', { en: ['Busan'], ru: ['Пусан'], all: ['부산'] }, { country: 'KR', type: 'city' }),\n  entity('Taipei', { en: ['Taipei'], ru: ['Тайбэй'], all: ['台北'] }, { country: 'TW', type: 'city' }),\n  entity('Kaohsiung', { en: ['Kaohsiung'], ru: ['Гаосюн'], all: ['高雄'] }, { country: 'TW', type: 'city' }),\n  entity('Taichung', { en: ['Taichung'], ru: ['Тайчжун'], all: ['台中'] }, { country: 'TW', type: 'city' }),\n]);\n\nexport const CITIES = Object.freeze([...UZ_CITIES, ...KZ_CITIES, ...UA_CITIES, ...RO_CITIES, ...KG_CITIES, ...GLOBAL_CITIES]);"""
+          text = text.replace(anchor, global_cities, 1)
+
+          old_city = """export function canonicalCity(value, country = null) {\n  const catalog = country ? (CITIES_BY_COUNTRY[country] || []) : CITIES;\n  return findCanonical(value, catalog)?.canonical || null;\n}"""
+          new_city = """export function canonicalCity(value, country = null) {\n  const code = country ? canonicalCountryCode(country) : null;\n  const catalog = country ? (code ? (CITIES_BY_COUNTRY[code] || []) : []) : CITIES;\n  return findCanonical(value, catalog)?.canonical || null;\n}"""
+          if old_city not in text:
+              raise SystemExit('canonicalCity block not found')
+          text = text.replace(old_city, new_city, 1)
+
+          old_region = """export function canonicalRegion(value, country = null) {\n  const catalog = country ? (REGIONS_BY_COUNTRY[country] || []) : REGIONS;\n  return findCanonical(value, catalog, { partial: true })?.canonical || null;\n}"""
+          new_region = """export function canonicalRegion(value, country = null) {\n  const code = country ? canonicalCountryCode(country) : null;\n  const catalog = country ? (code ? (REGIONS_BY_COUNTRY[code] || []) : []) : REGIONS;\n  return findCanonical(value, catalog, { partial: true })?.canonical || null;\n}"""
+          if old_region not in text:
+              raise SystemExit('canonicalRegion block not found')
+          text = text.replace(old_region, new_region, 1)
+          geo.write_text(text)
+
+          detection = Path('src/geography-detection.js')
+          text = detection.read_text()
+          marker = "const escapeRegex = "
+          pos = text.find(marker)
+          if pos < 0:
+              raise SystemExit('detection marker not found')
+          text = """import { COUNTRIES, canonicalCountryCode } from './countries.js';\nimport { CITIES } from './geography.js';\nimport { aliasesOf, aliasesToRegex, normalizeForMatch } from './normalization.js';\n\n""" + text[pos:]
+          text = text.replace('const CITY_MATCHERS = CITY_CATALOG.map((item) => {', 'const CITY_MATCHERS = CITIES.map((item) => {', 1)
+          detection.write_text(text)
+
+          display = Path('src/geography-display.js')
+          text = display.read_text()
+          imports = """import { COUNTRIES } from './countries.js';\nimport { CITIES, REGIONS } from './geography.js';\n\n"""
+          if not text.startswith('// Centralized presentation names'):
+              raise SystemExit('unexpected geography-display header')
+          text = imports + text
+
+          start = text.index('function languageKey(locale) {')
+          end = text.index('export function geographyMetroLabelWithAlias')
+          replacement = """function languageKey(locale) {\n  return String(locale || 'en').toLowerCase().split(/[-_]/)[0];\n}\n\nfunction preferredEntityLabel(entry, locale) {\n  if (!entry) return null;\n  const key = languageKey(locale);\n  const aliases = entry.aliases?.[key] || entry.aliases?.all || entry.aliases?.en || [];\n  return aliases[0] || entry.canonical || null;\n}\n\nfunction canonicalEntityLabel(catalog, value, locale) {\n  const entry = catalog.find((item) => item.canonical === value);\n  return preferredEntityLabel(entry, locale);\n}\n\nexport function geographyDisplayName(value, locale = 'en', kind = 'any') {\n  const text = String(value || '').trim();\n  if (!text) return '';\n  const language = languageKey(locale);\n  const tables = GEOGRAPHY_DISPLAY_NAMES[language];\n\n  if (kind === 'country') {\n    const code = text.toUpperCase();\n    const explicit = tables?.country?.[code];\n    if (explicit) return explicit;\n    const country = COUNTRIES.find((item) => item.code === code || item.canonical === text);\n    return preferredEntityLabel(country, locale) || text;\n  }\n  if (kind === 'city') return tables?.city?.[text] || canonicalEntityLabel(CITIES, text, locale) || text;\n  if (kind === 'region') return tables?.region?.[text] || canonicalEntityLabel(REGIONS, text, locale) || text;\n  if (kind === 'district') return tables?.district?.[text] || text;\n  if (kind === 'metro') return tables?.metro?.[text] || text;\n\n  return tables?.country?.[text.toUpperCase()]\n    || tables?.city?.[text]\n    || tables?.region?.[text]\n    || tables?.district?.[text]\n    || tables?.metro?.[text]\n    || canonicalEntityLabel(CITIES, text, locale)\n    || canonicalEntityLabel(REGIONS, text, locale)\n    || preferredEntityLabel(COUNTRIES.find((item) => item.code === text.toUpperCase() || item.canonical === text), locale)\n    || text;\n}\n\n"""
+          text = text[:start] + replacement + text[end:]
+          display.write_text(text)
+
+          display_types = Path('src/geography-display.d.ts')
+          text = display_types.read_text()
+          text = text.replace("'country' | 'city' | 'district' | 'metro' | 'any'", "'country' | 'region' | 'city' | 'district' | 'metro' | 'any'")
+          text = text.replace("  city: Readonly<Record<string, string>>;\n", "  city: Readonly<Record<string, string>>;\n  region?: Readonly<Record<string, string>>;\n")
+          display_types.write_text(text)
+
+          typings = Path('index.d.ts')
+          text = typings.read_text()
+          text = text.replace(
+              "export type CountryCode = 'UZ' | 'KZ' | 'UA' | 'RO' | 'KG';",
+              "export type CountryCode = 'UZ' | 'KZ' | 'UA' | 'RO' | 'KG' | 'GE' | 'AZ' | 'AM' | 'MD' | 'TJ' | 'TM' | 'PL' | 'DE' | 'GB' | 'US' | 'CA' | 'CN' | 'JP' | 'KR' | 'TW';",
+          )
+          text = text.replace(
+              "export const KG_CITIES: readonly LexiconEntity[];\n/** Canonical cross-country city catalog. */",
+              "export const KG_CITIES: readonly LexiconEntity[];\nexport const GLOBAL_CITIES: readonly LexiconEntity[];\n/** Canonical cross-country city catalog. */",
+          )
+          text = text.replace(
+              "export function canonicalCity(value: unknown, country?: CountryCode | null): string | null;",
+              "export function canonicalCity(value: unknown, country?: CountryCode | string | null): string | null;",
+          )
+          text = text.replace(
+              "export function canonicalAnyCity(value: unknown, country?: CountryCode | null): string | null;",
+              "export function canonicalAnyCity(value: unknown, country?: CountryCode | string | null): string | null;",
+          )
+          text = text.replace(
+              "export const REGIONS: readonly LexiconEntity[];\nexport function canonicalRegion(value: unknown, country?: CountryCode | null): string | null;",
+              "export const REGIONS: readonly LexiconEntity[];\nexport const REGIONS_BY_COUNTRY: Readonly<Partial<Record<CountryCode, readonly LexiconEntity[]>>>;\nexport function canonicalRegion(value: unknown, country?: CountryCode | string | null): string | null;",
+          )
+          typings.write_text(text)
+
+          test_file = Path('test/geography-architecture.test.js')
+          test_file.write_text("""import test from 'node:test';\nimport assert from 'node:assert/strict';\nimport { readFile } from 'node:fs/promises';\nimport { COUNTRIES } from '../src/countries.js';\nimport { CITIES, CITIES_BY_COUNTRY, GLOBAL_CITIES, REGIONS_BY_COUNTRY, canonicalCity, canonicalRegion } from '../src/geography.js';\nimport { detectCityFromText, detectCountryCodeFromText } from '../src/geography-detection.js';\nimport { geographyDisplayName } from '../src/geography-display.js';\n\ntest('canonical CITIES is the only city catalog used by free-text detection', async () => {\n  const source = await readFile(new URL('../src/geography-detection.js', import.meta.url), 'utf8');\n  assert.match(source, /const CITY_MATCHERS = CITIES\\.map/u);\n  assert.doesNotMatch(source, /CITY_CATALOG|HIRING_GLOBAL_CITIES|KZ_CITY_CATALOG|UZ_CITY_CATALOG|UA_CITY_CATALOG/u);\n});\n\ntest('global hiring cities belong to the canonical geography catalog', () => {\n  assert.ok(GLOBAL_CITIES.length > 20);\n  assert.equal(canonicalCity('NYC'), 'New York');\n  assert.equal(canonicalCity('東京'), 'Tokyo');\n  assert.equal(canonicalCity('Кишинёв'), 'Chisinau');\n  assert.equal(detectCityFromText('Role based in München')?.canonical, 'Munich');\n  assert.equal(detectCountryCodeFromText('Remote role in 서울'), 'KR');\n  assert.ok(CITIES_BY_COUNTRY.US.some(({ canonical }) => canonical === 'New York'));\n});\n\ntest('country-scoped canonicalization accepts codes and aliases consistently', () => {\n  assert.equal(canonicalCity('Київ', 'UA'), 'Kyiv');\n  assert.equal(canonicalCity('Київ', 'Ukraine'), 'Kyiv');\n  assert.equal(canonicalCity('Київ', 'Украина'), 'Kyiv');\n  assert.equal(canonicalCity('Київ', 'KZ'), null);\n  assert.equal(canonicalRegion('Одеська область', 'Ukraine'), 'Odesa Oblast');\n  assert.ok(REGIONS_BY_COUNTRY.UA.some(({ canonical }) => canonical === 'Odesa Oblast'));\n});\n\ntest('canonical geography entities have valid country ownership and no duplicate country/canonical pair', () => {\n  const countryCodes = new Set(COUNTRIES.map(({ code }) => code));\n  const keys = new Set();\n  for (const item of CITIES) {\n    assert.ok(countryCodes.has(item.country), `unknown country ${item.country} for ${item.canonical}`);\n    const key = `${item.country}:${item.canonical}`;\n    assert.ok(!keys.has(key), `duplicate canonical city ${key}`);\n    keys.add(key);\n  }\n});\n\ntest('display API falls back to canonical entity aliases and supports regions', () => {\n  assert.equal(geographyDisplayName('Munich', 'ru', 'city'), 'Мюнхен');\n  assert.equal(geographyDisplayName('Tokyo', 'ru', 'city'), 'Токио');\n  assert.equal(geographyDisplayName('Odesa Oblast', 'ru', 'region'), 'Одесская область');\n  assert.equal(geographyDisplayName('DE', 'ru', 'country'), 'Германия');\n});\n""")
+          PY
+      - name: Install and test
+        run: npm install --ignore-scripts --no-audit --no-fund && npm test
+      - name: Commit refactor and remove one-shot workflow
+        shell: bash
+        run: |
+          rm .github/workflows/close-geography-gap-once.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/geography.js src/geography-detection.js src/geography-display.js src/geography-display.d.ts index.d.ts test/geography-architecture.test.js .github/workflows/close-geography-gap-once.yml
+          git commit -m 'refactor: make geography catalogs canonical'
+          git push origin HEAD:refactor/close-geography-catalog-gap
