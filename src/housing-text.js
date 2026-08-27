@@ -73,3 +73,65 @@ export function parseHousingResidentialComplex(value) {
   const name = words.join(' ').trim();
   return /[a-zA-Zа-яёіїґ]{2,}/i.test(name) ? name : null;
 }
+
+export function parseHousingAreaFromText(value) {
+  const text = String(value || '');
+  if (!text) return null;
+  const match =
+    text.match(/(\d{2,4})\s*(?:m2|m²|мкв|м2|м²|sq ?m|кв\.?\s*м|квадрат[а-яё]*)/i) ||
+    text.match(/(?:^|\n)[^\d\r\n]{0,8}[1-9]\s*[¹²³⁴⁵⁶⁷⁸⁹]?\s*\/\s*[0-9]{1,2}\s*\/\s*[0-9]{1,2}\s+(\d{2,4})\s*кв(?=\s|$)/im);
+  return match ? Number(match[1]) : null;
+}
+
+export function parseHousingFloorFromText(value) {
+  const text = String(value || '');
+  if (!text) return { floor: null, totalFloors: null };
+  const t = text.toLowerCase();
+  const floorWord = '(?:этаж(?:да)?|поверх|qavat|қабат|қабатт|etaj|floor|эт\\.)';
+  const valid = (floor, total) => floor >= 0 && floor <= 200 && (total == null || (total >= floor && total <= 200));
+
+  if (/(?:^|\n)[^\d\r\n]{0,8}[1-9]\s*\/\s*0\s*\/\s*-1\s*(?:этаж|эт\.?)?[^\r\n]*(?:подвал|цоколь)/im.test(t)) return { floor: -1, totalFloors: null };
+
+  const compact = t.match(/(?:^|\n)[^\d\r\n]{0,8}[1-9]\s*[¹²³⁴⁵⁶⁷⁸⁹]?\s*\/\s*([0-9]{1,2})\s*\/\s*([0-9]{1,2})[.,;:]?(?=\s|$)/m);
+  if (compact) {
+    const floor = Number(compact[1]);
+    const total = Number(compact[2]);
+    if (floor >= 1 && floor <= 40 && total >= 2 && total <= 40 && floor <= total) return { floor, totalFloors: total };
+  }
+
+  const labelledPair = t.match(/([1-9]\d?)\s*-?\s*(?:qavat|этаж|поверх|қабат)\s*(?:\/|из|iz|of)\s*([1-9]\d?)\s*-?\s*(?:qavatli|qavat|этаж(?:ей|ный)?|поверх(?:ів|овий)?|қабатты?)/i);
+  if (labelledPair) {
+    const floor = Number(labelledPair[1]);
+    const total = Number(labelledPair[2]);
+    if (floor <= 40 && total <= 40 && floor <= total) return { floor, totalFloors: total };
+  }
+
+  const sep = '(?:\\/|из|iz|of)';
+  const pair = t.match(new RegExp(`${floorWord}\\D{0,4}(\\d{1,2})\\s*${sep}\\s*(\\d{1,2})`)) || t.match(new RegExp(`(\\d{1,2})\\s*${sep}\\s*(\\d{1,2})\\s*${floorWord}`));
+  if (pair) {
+    const floor = Number(pair[1]);
+    const total = Number(pair[2]);
+    if (valid(floor, total)) return { floor, totalFloors: total };
+  }
+
+  const notLetter = '(?!н|ей|ів|ност|ка|ки|s)';
+  const single = t.match(new RegExp(`(\\d{1,2})[^\\S\\r\\n]*-?[^\\S\\r\\n]*(?:го|ом|ым|ой|ий|nd|rd|th|st|й|м|е)?[^\\S\\r\\n]*${floorWord}${notLetter}`)) || t.match(new RegExp(`${floorWord}\\s*[:№#]?\\s*(\\d{1,2})\\b`));
+  if (single) {
+    const floor = Number(single[1]);
+    if (valid(floor, null)) {
+      const explicitTotal = t.match(/(?:этажность|этажей|поверхови|поверховість|qavatlar(?:\s*soni)?|qavatli|қабатты?)\D{0,6}(\d{1,2})/);
+      const leadingTotal = t.match(/([1-9]\d?)\s*-?\s*(?:этажн[а-яё]*|поверхов[а-яіїґ]*|qavatli|қабатты?)\s*(?:дом|здани|будин|uy|bino)?/i);
+      const total = explicitTotal ? Number(explicitTotal[1]) : leadingTotal ? Number(leadingTotal[1]) : null;
+      return { floor, totalFloors: total && total >= floor && total <= 200 ? total : null };
+    }
+  }
+
+  const bare = t.match(/(?<![\d/])([1-9]\d?)\s*\/\s*([1-9]\d?)(?![\d/])/);
+  if (bare) {
+    const floor = Number(bare[1]);
+    const total = Number(bare[2]);
+    if (floor >= 1 && floor <= 40 && total >= 2 && total <= 40 && floor <= total) return { floor, totalFloors: total };
+  }
+  return { floor: null, totalFloors: null };
+}
+
