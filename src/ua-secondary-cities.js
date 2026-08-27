@@ -34,7 +34,7 @@ export const UA_SECONDARY_CITY_NAMES = Object.freeze([
 ]);
 
 export const UA_SECONDARY_LOCATION_EXTENSIONS = Object.freeze({
-  Izmail: city({ microdistricts: [['Tsentr','Центр'],['Krepost','Крепость'],['Kopana Balka','Копана Балка'],['Broska','Броска']], landmarks: [['Suvorov Avenue','проспект Незалежності','проспект Суворова'],['Izmail Fortress','Ізмаїльська фортеця','Измаильская крепость'],['Danube Embankment','набережна Дунаю','набережная Дуная'],['Izmail Port','Ізмаїльський порт','Измаильский порт']] }),
+  Izmail: city({ microdistricts: [['Tsentr','Центр'],['BAM','БАМ','Бам'],['Krepost','Крепость'],['Kopana Balka','Копана Балка'],['Broska','Броска']], landmarks: [['Suvorov Avenue','проспект Незалежності','проспект Суворова'],['Izmail Fortress','Ізмаїльська фортеця','Измаильская крепость'],['Danube Embankment','набережна Дунаю','набережная Дуная'],['Izmail Port','Ізмаїльський порт','Измаильский порт']] }),
   Chornomorsk: city({ microdistricts: [['Tsentr','Центр'],['Primorskyi','Приморський','Приморский'],['Molodizhnyi','Молодіжний','Молодежный']], landmarks: [['Primorskyi Park','Приморський парк','Приморский парк'],['Chornomorsk Port','порт Чорноморськ','порт Черноморск'],['Central Beach','Центральний пляж','Центральный пляж']] }),
   Pivdenne: city({ microdistricts: [['Tsentr','Центр'],['Primorskyi','Приморський','Приморский']], landmarks: [['Pivdennyi Port','порт Південний','порт Южный'],['Primorskyi Park','Приморський парк','Приморский парк']] }),
   'Bilhorod-Dnistrovskyi': city({ microdistricts: [['Tsentr','Центр'],['Vokzal','Вокзал'],['Portovyi','Портовий','Портовый']], landmarks: [['Akkerman Fortress','Аккерманська фортеця','Аккерманская крепость'],['Dnister Estuary','Дністровський лиман','Днестровский лиман']] }),
