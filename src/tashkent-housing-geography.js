@@ -102,31 +102,35 @@ const METRO_AFTER_RE = /^\s*[:\-–—]?\s*(?:метро|metro|станц(?:ия
 const METRO_INSIDE_RE = /(?:метро|metro|станц(?:ия|ии)?|station)/iu;
 const DISTRICT_BEFORE_RE = /(?:район|р-н|рн|туман\p{L}{0,4}|tumani|district)\s*[:\-–—]?\s*$/iu;
 const DISTRICT_AFTER_RE = /^\s*[:\-–—]?\s*(?:район|р-н|рн|туман\p{L}{0,4}|tumani|district)(?=$|[^\p{L}\p{N}_])/iu;
+const DISTRICT_INSIDE_RE = /(?:район|р-н|рн|туман\p{L}{0,4}|tumani|district)/iu;
 const AREA_BEFORE_RE = /(?:массив(?:и)?|massiv(?:i)?|жилмассив|ж\/м|микрорайон|мкр\.?|mavze(?:si)?|мавзе(?:си)?|квартал|kvartal|daha|даха|даҳа)\s*[:\-–—]?\s*$/iu;
 const AREA_AFTER_RE = /^\s*(?:\d{1,2}[aа]?\s*)?[:\-–—]?\s*(?:массив(?:и)?|massiv(?:i)?|жилмассив|ж\/м|микрорайон|мкр\.?|mavze(?:si)?|мавзе(?:си)?|квартал|kvartal|daha|даха|даҳа)(?=$|[^\p{L}\p{N}_])/iu;
+const AREA_INSIDE_RE = /(?:массив(?:и)?|massiv(?:i)?|жилмассив|ж\/м|микрорайон|мкр\.?|mavze(?:si)?|мавзе(?:си)?|квартал|kvartal|daha|даха|даҳа)/iu;
 const MAHALLA_BEFORE_RE = /(?:махалл(?:а|я)|маҳалла(?:си)?|mahalla(?:si)?|mfy|мфй)\s*[:\-–—]?\s*$/iu;
 const MAHALLA_AFTER_RE = /^\s*[:\-–—]?\s*(?:махалл(?:а|я)|маҳалла(?:си)?|mahalla(?:si)?|mfy|мфй)(?=$|[^\p{L}\p{N}_])/iu;
+const MAHALLA_INSIDE_RE = /(?:махалл(?:а|я)|маҳалла(?:си)?|mahalla(?:si)?|mfy|мфй)/iu;
 const LANDMARK_AFTER_RE = /^\s*[:\-–—]?\s*(?:базар|рынок|bozor(?:i)?|мечет\p{L}*|масжид|masjid|mosque|парк|park|mall|молл|вокзал|аэропорт|airport)(?=$|[^\p{L}\p{N}_])/iu;
 const LANDMARK_BEFORE_RE = /(?:базар|рынок|bozor(?:i)?|мечет\p{L}*|масжид|masjid|mosque|парк|park|mall|молл|вокзал|аэропорт|airport)\s*[:\-–—]?\s*$/iu;
+const LANDMARK_INSIDE_RE = /(?:базар|рынок|bozor(?:i)?|мечет\p{L}*|масжид|masjid|mosque|парк|park|mall|молл|вокзал|аэропорт|airport)/iu;
 
 function hasExplicitMetroContext(text, match) {
   return matchContext(text, match, METRO_BEFORE_RE, METRO_AFTER_RE, METRO_INSIDE_RE);
 }
 
 function hasExplicitDistrictContext(text, match) {
-  return matchContext(text, match, DISTRICT_BEFORE_RE, DISTRICT_AFTER_RE);
+  return matchContext(text, match, DISTRICT_BEFORE_RE, DISTRICT_AFTER_RE, DISTRICT_INSIDE_RE);
 }
 
 function hasExplicitAreaContext(text, match) {
-  return matchContext(text, match, AREA_BEFORE_RE, AREA_AFTER_RE);
+  return matchContext(text, match, AREA_BEFORE_RE, AREA_AFTER_RE, AREA_INSIDE_RE);
 }
 
 function hasExplicitMahallaContext(text, match) {
-  return matchContext(text, match, MAHALLA_BEFORE_RE, MAHALLA_AFTER_RE);
+  return matchContext(text, match, MAHALLA_BEFORE_RE, MAHALLA_AFTER_RE, MAHALLA_INSIDE_RE);
 }
 
 function hasExplicitLandmarkContext(text, match) {
-  return matchContext(text, match, LANDMARK_BEFORE_RE, LANDMARK_AFTER_RE);
+  return matchContext(text, match, LANDMARK_BEFORE_RE, LANDMARK_AFTER_RE, LANDMARK_INSIDE_RE);
 }
 
 /** Return all housing landmarks in stable catalogue-priority order. */
