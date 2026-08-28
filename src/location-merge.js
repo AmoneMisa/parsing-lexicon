@@ -7,6 +7,7 @@ export const LOCATION_LIST_KEYS = Object.freeze([
   'localAreas',
   'suburbs',
   'settlements',
+  'developmentAreas',
   'residentialComplexes',
   'metro',
   'streets',
