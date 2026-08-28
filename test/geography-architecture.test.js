@@ -7,7 +7,7 @@ import { TASHKENT_DISTRICTS } from '../src/geo.js';
 import { detectCityFromText, detectCountryCodeFromText } from '../src/geography-detection.js';
 import { GEOGRAPHY_DISPLAY_NAMES, geographyDisplayName } from '../src/geography-display.js';
 import { LOCATION_LIST_KEYS } from '../src/location-merge.js';
-import { matchDictionaryLocation } from '../src/locations.js';
+import { LOCATION_DICTIONARIES, matchDictionaryLocation } from '../src/locations.js';
 
 test('canonical CITIES is the only city catalog used by free-text detection', async () => {
   const source = await readFile(new URL('../src/geography-detection.js', import.meta.url), 'utf8');
@@ -71,10 +71,18 @@ test('location matcher consumes the canonical collection key list', async () => 
   assert.ok(LOCATION_LIST_KEYS.includes('mahallas'));
   assert.ok(LOCATION_LIST_KEYS.includes('localAreas'));
   assert.ok(LOCATION_LIST_KEYS.includes('suburbs'));
+  assert.ok(LOCATION_LIST_KEYS.includes('developmentAreas'));
 
   assert.deepEqual(matchDictionaryLocation('Обихаёт', 'UZ', 'Namangan')?.type, 'mahallas');
   assert.deepEqual(matchDictionaryLocation('Киргули', 'UZ', 'Fergana')?.type, 'localAreas');
   assert.deepEqual(matchDictionaryLocation('Бесагаш', 'KZ', 'Almaty')?.type, 'suburbs');
+  assert.deepEqual(matchDictionaryLocation('Tashkent City', 'UZ', 'Tashkent')?.type, 'developmentAreas');
+});
+
+test('Tashkent City has one canonical semantic owner in the runtime registry', () => {
+  const tashkent = LOCATION_DICTIONARIES.UZ.Tashkent;
+  assert.ok(tashkent.developmentAreas.some(({ name }) => name === 'Tashkent City'));
+  assert.equal(tashkent.residentialComplexes.some(({ name }) => name === 'Tashkent City'), false);
 });
 
 test('Ukraine runtime locations no longer use the legacy UA seed', async () => {
