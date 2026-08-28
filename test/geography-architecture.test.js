@@ -5,6 +5,8 @@ import { COUNTRIES } from '../src/countries.js';
 import { CITIES, CITIES_BY_COUNTRY, GLOBAL_CITIES, REGIONS_BY_COUNTRY, canonicalCity, canonicalRegion } from '../src/geography.js';
 import { detectCityFromText, detectCountryCodeFromText } from '../src/geography-detection.js';
 import { geographyDisplayName } from '../src/geography-display.js';
+import { LOCATION_LIST_KEYS } from '../src/location-merge.js';
+import { matchDictionaryLocation } from '../src/locations.js';
 
 test('canonical CITIES is the only city catalog used by free-text detection', async () => {
   const source = await readFile(new URL('../src/geography-detection.js', import.meta.url), 'utf8');
@@ -40,6 +42,18 @@ test('city ownership is valid and unique', () => {
     assert.ok(!keys.has(key), `duplicate city ${key}`);
     keys.add(key);
   }
+});
+
+test('location matcher consumes the canonical collection key list', async () => {
+  const source = await readFile(new URL('../src/locations.js', import.meta.url), 'utf8');
+  assert.match(source, /for \(const type of LOCATION_LIST_KEYS\)/u);
+  assert.ok(LOCATION_LIST_KEYS.includes('mahallas'));
+  assert.ok(LOCATION_LIST_KEYS.includes('localAreas'));
+  assert.ok(LOCATION_LIST_KEYS.includes('suburbs'));
+
+  assert.deepEqual(matchDictionaryLocation('Обихаёт', 'UZ', 'Namangan')?.type, 'mahallas');
+  assert.deepEqual(matchDictionaryLocation('Киргули', 'UZ', 'Fergana')?.type, 'localAreas');
+  assert.deepEqual(matchDictionaryLocation('Бесагаш', 'KZ', 'Almaty')?.type, 'suburbs');
 });
 
 test('display derives labels from canonical entities and supports regions', () => {

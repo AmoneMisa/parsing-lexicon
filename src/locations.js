@@ -6,7 +6,7 @@ import {
   matchUkraineRegion,
   matchUkraineSecondaryCity,
 } from './location-data.js';
-import { mergeLocationCountries } from './location-merge.js';
+import { LOCATION_LIST_KEYS, mergeLocationCountries } from './location-merge.js';
 import { KZ_LOCATION_EXTENSIONS } from './kz-location-extensions.js';
 import { UZ_LOCATION_EXTENSIONS } from './uz-location-extensions.js';
 import { UA_MAJOR_LOCATION_EXTENSIONS } from './ua-location-extensions-major.js';
@@ -68,9 +68,10 @@ export function locationCities(countryCode) {
 export function matchDictionaryLocation(text, countryCode, city = null) {
   const country = locationCities(countryCode);
   const cities = city && country[city] ? [[city, country[city]]] : Object.entries(country);
+  const value = String(text || '');
   for (const [cityName, data] of cities) {
-    for (const type of ['districts', 'microdistricts', 'residentialComplexes', 'metro', 'streets', 'landmarks']) {
-      const match = (data[type] || []).find((entry) => entry.re.test(String(text || '')));
+    for (const type of LOCATION_LIST_KEYS) {
+      const match = (data[type] || []).find((entry) => entry?.re?.test(value));
       if (match) return { city: cityName, type, name: match.name, aliases: match.aliases };
     }
   }
