@@ -112,10 +112,8 @@ const CONTEXT_PATTERNS = Object.freeze({
 function hasExplicitContext(value, candidate) {
   const pattern = CONTEXT_PATTERNS[candidate.type];
   if (!pattern) return false;
-  const start = candidate.start;
-  const end = candidate.end;
-  const before = value.slice(Math.max(0, start - 40), start);
-  const after = value.slice(end, Math.min(value.length, end + 40));
+  const before = value.slice(Math.max(0, candidate.start - 40), candidate.start);
+  const after = value.slice(candidate.end, Math.min(value.length, candidate.end + 40));
   return pattern.before.test(before) || pattern.after.test(after) || Boolean(pattern.inside?.test(candidate.matchedText));
 }
 
@@ -125,6 +123,15 @@ function overlaps(a, b) {
 
 function containsSpan(outer, inner) {
   return outer.start <= inner.start && outer.end >= inner.end;
+}
+
+const SEMANTIC_CHAR_RE = /[\p{L}\p{N}_]/u;
+function semanticBounds(value, match) {
+  let start = match.index ?? 0;
+  let end = start + match[0].length;
+  while (start < end && !SEMANTIC_CHAR_RE.test(value[start])) start += 1;
+  while (end > start && !SEMANTIC_CHAR_RE.test(value[end - 1])) end -= 1;
+  return { start, end };
 }
 
 function publicMatch(candidate) {
@@ -139,8 +146,7 @@ function findEntryMatches(text, cityName, data) {
     for (const item of data?.[key] || []) {
       const match = value.match(item?.re);
       if (!match) continue;
-      const start = match.index ?? 0;
-      const end = start + match[0].length;
+      const { start, end } = semanticBounds(value, match);
       const candidate = {
         country: item.country || null,
         city: cityName,
@@ -154,7 +160,7 @@ function findEntryMatches(text, cityName, data) {
         language: item.language || null,
         start,
         end,
-        matchedText: match[0],
+        matchedText: value.slice(start, end),
         explicitContext: false,
       };
       candidate.explicitContext = hasExplicitContext(value, candidate);
