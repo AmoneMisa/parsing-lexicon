@@ -36,7 +36,6 @@ export const TASHKENT_AREA_ADDITIONS = Object.freeze({
     area('Feruza-1', ['феруза 1', 'feruza 1']),
     area('Buz-1', ['буз 1', 'бўз 1', 'boz 1', 'bo z 1']),
     area('Turon', ['турон', 'turon']),
-    area('Riyoziy', ['риёзий', 'riyoziy']),
   ]),
   Sergeli: Object.freeze([
     area('Sergeli-2 G-40', ['сергели 2 г 40', 'sergeli 2 g 40'], 'microdistrict'),
@@ -70,6 +69,7 @@ export const TASHKENT_AREA_ADDITIONS = Object.freeze({
     area('Asalabad-1', ['асалабад 1', 'asalobod 1', 'asalabad 1']),
     area('Asalabad-2', ['асалабад 2', 'asalobod 2', 'asalabad 2']),
     area('Mumtoz', ['мумтаз', 'mumtoz']),
+    area('Riyoziy', ['риёзий', 'риезий', 'mavlono riyoziy', 'mavlono riyozi', 'riyoziy']),
   ]),
 });
 
