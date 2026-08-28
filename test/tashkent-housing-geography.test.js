@@ -118,7 +118,7 @@ test('explicit Minor context chooses one semantic type', () => {
 });
 
 test('longer POI phrase suppresses a shorter homonymous geography token', () => {
-  const market = matchCentralAsiaLocationEntities('Сергели машинный базар, Ташкент', 'UZ', 'Tashkent');
+  const market = matchCentralAsiaLocationEntities('Сергелийский авторынок, Ташкент', 'UZ', 'Tashkent');
   assert.ok(market.matches.some((entry) => entry.type === 'poi' && entry.name === 'Sergeli Car Bazaar'));
   assert.equal(market.matches.some((entry) => entry.type === 'metro' && entry.name === 'Sergeli'), false);
   assert.equal(market.matches.some((entry) => entry.type === 'microdistrict' && entry.name === 'Sergeli'), false);
