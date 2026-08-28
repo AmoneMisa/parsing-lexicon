@@ -7,6 +7,7 @@ import {
   matchUkraineSecondaryCity,
 } from './location-data.js';
 import { LOCATION_LIST_KEYS, mergeLocationCountries } from './location-merge.js';
+import { aliasesToRegex } from './normalization.js';
 import { KZ_LOCATION_EXTENSIONS } from './kz-location-extensions.js';
 import { UZ_LOCATION_EXTENSIONS } from './uz-location-extensions.js';
 import { UA_MAJOR_LOCATION_EXTENSIONS } from './ua-location-extensions-major.js';
@@ -55,6 +56,22 @@ function normalizeUzSemanticLocations(country) {
   const qorasuv = (tashkent.microdistricts || []).find(({ name }) => name === 'Qorasuv');
   if (!qorasuv) return country;
 
+  const qorasuvAliases = Object.freeze([...new Set([
+    ...(qorasuv.aliases || []),
+    'Qorasuv dahasi',
+    'Qorasuv daha',
+    'Қорасув даҳаси',
+    'Корасув дахаси',
+    'Карасу даха',
+  ])]);
+  const qorasuvArea = Object.freeze({
+    ...qorasuv,
+    type: 'local_area',
+    parent: 'Mirzo Ulugbek',
+    aliases: qorasuvAliases,
+    re: aliasesToRegex(qorasuvAliases),
+  });
+
   return Object.freeze({
     ...country,
     Tashkent: Object.freeze({
@@ -62,7 +79,7 @@ function normalizeUzSemanticLocations(country) {
       microdistricts: Object.freeze((tashkent.microdistricts || []).filter(({ name }) => name !== 'Qorasuv')),
       localAreas: Object.freeze([
         ...(tashkent.localAreas || []),
-        Object.freeze({ ...qorasuv, type: 'local_area', parent: 'Mirzo Ulugbek' }),
+        qorasuvArea,
       ]),
     }),
   });
