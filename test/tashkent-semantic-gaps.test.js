@@ -15,7 +15,15 @@ test('Tashkent canonical dictionary does not expose unsupported generic massif s
   const microdistricts = new Set((tashkent.microdistricts || []).map((entry) => entry.name));
   const localAreas = new Map((tashkent.localAreas || []).map((entry) => [entry.name, entry]));
 
-  for (const name of ['Sergeli', 'Yunusabad-20', 'Yunusabad-21', 'Yunusabad-22']) {
+  for (const name of [
+    'Sergeli',
+    'Sebzar',
+    'Tashselmash',
+    'Yangi Choshtepa',
+    'Yunusabad-20',
+    'Yunusabad-21',
+    'Yunusabad-22',
+  ]) {
     assert.equal(microdistricts.has(name), false, name);
   }
 
@@ -96,6 +104,11 @@ test('Tashkent current mavze and daha names are canonical local areas', () => {
     ['Kushbegi', 'Yakkasaray'],
     ['Alimkent', 'Yashnobod'],
     ['Tuzel-4', 'Yashnobod'],
+    ['Olimpiya', 'Almazar'],
+    ['Sebzor', 'Almazar'],
+    ['Tashselmash', 'Yashnobod'],
+    ['Yangi Choshtepa', 'Yangihayot'],
+    ['Taxtapul', 'Almazar'],
   ]) {
     assert.equal(localAreas.get(name)?.parent, parent, name);
     assert.equal(localAreas.get(name)?.type, 'local_area', name);
@@ -129,6 +142,11 @@ test('Tashkent matcher resolves historical and housing locality aliases', () => 
     ['Бешагач, Ташкент', 'Beshagach'],
     ['Qoratosh mavzesi, Toshkent', 'Karatash'],
     ['Тузель 4, Ташкент', 'Tuzel-4'],
+    ['Олимпия массив, Ташкент', 'Olimpiya'],
+    ['Себзар массив, Ташкент', 'Sebzor'],
+    ['Ташсельмаш, Ташкент', 'Tashselmash'],
+    ['Янги Чоштепа массив, Ташкент', 'Yangi Choshtepa'],
+    ['Тахтапул массив, Ташкент', 'Taxtapul'],
   ];
 
   for (const [text, expected] of cases) {
@@ -138,7 +156,7 @@ test('Tashkent matcher resolves historical and housing locality aliases', () => 
 });
 
 test('same-name mahalla and mavze stay distinct under explicit context', () => {
-  for (const canonical of ['Qalqon', "Chamanbog'", "Sug'diyona"]) {
+  for (const canonical of ['Qalqon', "Chamanbog'", "Sug'diyona", 'Olimpiya', 'Sebzor', 'Yangi Choshtepa']) {
     const mahalla = matchCentralAsiaLocationEntities(`${canonical} mahallasi, Toshkent`, 'UZ', 'Tashkent');
     assert.ok(names(mahalla, 'mahalla').includes(canonical), canonical);
     assert.equal(names(mahalla, 'local_area').includes(canonical), false, canonical);
@@ -147,6 +165,18 @@ test('same-name mahalla and mavze stay distinct under explicit context', () => {
     assert.ok(names(mavze, 'local_area').includes(canonical), canonical);
     assert.equal(names(mavze, 'mahalla').includes(canonical), false, canonical);
   }
+});
+
+test('Taxtapul mahalla and mavze resolve to their different current districts', () => {
+  const mahalla = matchCentralAsiaLocationEntities('Taxtapul mahallasi, Toshkent', 'UZ', 'Tashkent');
+  const mahallaMatch = mahalla.matches.find((entry) => entry.type === 'mahalla' && entry.name === 'Taxtapul');
+  assert.equal(mahallaMatch?.parent, 'Shaykhantahur');
+  assert.equal(names(mahalla, 'local_area').includes('Taxtapul'), false);
+
+  const mavze = matchCentralAsiaLocationEntities('Taxtapul mavzesi, Toshkent', 'UZ', 'Tashkent');
+  const areaMatch = mavze.matches.find((entry) => entry.type === 'local_area' && entry.name === 'Taxtapul');
+  assert.equal(areaMatch?.parent, 'Almazar');
+  assert.equal(names(mavze, 'mahalla').includes('Taxtapul'), false);
 });
 
 test('Riyoziy compatibility area follows its current Yashnobod parent', () => {
