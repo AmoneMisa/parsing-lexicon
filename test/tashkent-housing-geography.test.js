@@ -48,13 +48,12 @@ test('classifies verified residential massifs as microdistrict semantics', () =>
   const areas = Object.values(TASHKENT_AREAS).flat();
   for (const name of [
     'Sebzar', 'Olympia',
-    'Karasu-1', 'Karasu-2', 'Karasu-3', 'Karasu-4',
+    'Karasu-1', 'Karasu-2', 'Karasu-3', 'Karasu-4', 'Karasu-6',
     'TTZ-1', 'TTZ-2', 'TTZ-3', 'TTZ-4',
     'Dustlik-1', 'Dustlik-2', 'Yangi Choshtepa', 'Sputnik', 'Tashselmash',
   ]) {
     assert.equal(areas.find((item) => item.name === name)?.type, 'microdistrict', name);
   }
-  assert.equal(areas.find((item) => item.name === 'Karasu-6')?.type, 'local_area');
   assert.equal(areas.some((item) => item.name === 'Sergeli Car Bazaar'), false);
 });
 
