@@ -57,8 +57,35 @@ const nukusMahallas = NUKUS_MFY_NAMES.map((name) => ({
 
 export const UZ_LOCATION_EXTENSIONS = Object.freeze({
   Tashkent: city({
+    mahallas: [
+      { name: 'Khastimam', aliases: ['Хастимом'], parent: 'Almazar' },
+      { name: 'Yangi Tashkent', aliases: ['Yangi Toshkent','Янги Тошкент','Янги Ташкент'], parent: 'Almazar' },
+      { name: 'Umid', aliases: ['Умид'], parent: 'Almazar' },
+      { name: 'Kashgar', aliases: ['Qashqar','Кашгар'], parent: 'Yunusabad' },
+      { name: 'Buyuk Turan', aliases: ['Buyuk Turon','Буюк Турон','Буюк Туран'], parent: 'Yunusabad' },
+      { name: 'Minor', aliases: ['Минор'], parent: 'Yunusabad' },
+      { name: 'Labzak', aliases: ['Лабзак'], parent: 'Shaykhantahur' },
+      { name: 'Rakat', aliases: ['Ракат'], parent: 'Yakkasaray' },
+      { name: 'Belaryk', aliases: ['Беларык'], parent: 'Yakkasaray' },
+      { name: 'Shahjahan', aliases: ['Shahjahon','Шахжахон'], parent: 'Yakkasaray' },
+      { name: 'Mukimiy', aliases: ['Muqimiy','Мукими','Муқимий'], parent: 'Yakkasaray' },
+      { name: 'Birlashgan', aliases: ['Бирлашган'], parent: 'Yashnobod' },
+      { name: 'Nadyra', aliases: ['Nodira','Нодира'], parent: 'Yashnobod' },
+      { name: 'Makhmur', aliases: ['Maxmur','Махмур'], parent: 'Yashnobod' },
+      { name: 'Munavvarqori', aliases: ['Munavvar Qori','Мунаввар Қори','Мунаввар Кори'], parent: 'Mirzo Ulugbek' },
+      { name: 'Beshkapa', aliases: ['Бешкапа'], parent: 'Mirzo Ulugbek' },
+      { name: 'Chashtepa', aliases: ['Чаштепа'], parent: 'Yangihayot' },
+      { name: 'Yangi Darhan', aliases: ['Yangi Darxon','Янги Дархан','Янги Дархон'], parent: 'Yangihayot' },
+    ],
     microdistricts: [
       ['Qorasuv', 'Qorasuv massivi', 'Korasuv massivi', 'Корасув Массиви', 'Корасув массиви', 'Карасу массив', 'Карасу массиви', 'Қорасув массиви'],
+    ],
+    localAreas: [
+      { name: 'Sergeli-3A', aliases: ['Sergeli 3A','Сергели-3А','Сергели 3А'], parent: 'Sergeli' },
+      { name: 'Sergeli-5A', aliases: ['Sergeli 5A','Сергели-5А','Сергели 5А'], parent: 'Sergeli' },
+      { name: 'Sergeli-7A', aliases: ['Sergeli 7A','Сергели-7А','Сергели 7А'], parent: 'Sergeli' },
+      { name: 'Yangidarhan-1', aliases: ['Yangi Darhan-1','Yangi Darxon-1','Янги Дархан-1','Янги Дархон-1'], parent: 'Yangihayot' },
+      { name: 'Yangidarhan-2', aliases: ['Yangi Darhan-2','Yangi Darxon-2','Янги Дархан-2','Янги Дархон-2'], parent: 'Yangihayot' },
     ],
   }),
 
