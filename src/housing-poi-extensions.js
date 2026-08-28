@@ -102,6 +102,17 @@ export const HOUSING_POI_EXTENSIONS = Object.freeze([
     en: ['NRG Roxat', 'NRG Rohat'],
     uzLatn: ['NRG Roxat', 'NRG Rohat'],
   }, { category: 'residential_complex', display: { ru: 'NRG Roxat', en: 'NRG Roxat' } }),
+  group('Assalom Jomiy', {
+    ru: ['Ассалом Жомий', 'ЖК Ассалом Жомий', 'жилой комплекс Ассалом Жомий'],
+    en: ['Assalom Jomiy', 'Assalom Jomiy residential complex'],
+    uzLatn: ['Assalom Jomiy', 'Assalom Jomiy turar joy majmuasi'],
+    uzCyrl: ['Ассалом Жомий'],
+  }, { category: 'residential_complex', display: { ru: 'ЖК «Ассалом Жомий»', en: 'Assalom Jomiy' } }),
+  group('Jomiy Roundabout', {
+    ru: ['круг Жомий', 'круг жомий', 'кольцо Жомий'],
+    en: ['Jomiy Roundabout', 'Jomiy circle'],
+    uzLatn: ['Jomiy aylanmasi', 'Jomiy krug'],
+  }, { category: 'landmark', display: { ru: 'Круг Жомий', en: 'Jomiy Roundabout' } }),
   group('Yunusabad-19', {
     ru: ['Юнусабад-19', 'Юнусабад -19', 'Юнусабад 19'],
     en: ['Yunusabad-19', 'Yunusabad 19'],
