@@ -77,10 +77,24 @@ export function parseHousingResidentialComplex(value) {
 export function parseHousingAreaFromText(value) {
   const text = String(value || '');
   if (!text) return null;
-  const match =
-    text.match(/(\d{2,4})\s*(?:m2|m²|мкв|м2|м²|sq ?m|кв\.?\s*м|квадрат[а-яё]*)/i) ||
-    text.match(/(?:^|\n)[^\d\r\n]{0,8}[1-9]\s*[¹²³⁴⁵⁶⁷⁸⁹]?\s*\/\s*[0-9]{1,2}\s*\/\s*[0-9]{1,2}\s+(\d{2,4})\s*кв(?=\s|$)/im);
-  return match ? Number(match[1]) : null;
+
+  const unit = String.raw`(?:m2|m²|мкв|м2|м²|sq\s?m|кв\.?\s*м|квадрат(?:н(?:ый|ая|ое|ые|ых))?\s*м(?:етр(?:а|ов)?)?)`;
+  const toArea = (raw) => {
+    const number = Number(String(raw || '').replace(/\s+/g, '').replace(',', '.'));
+    return Number.isFinite(number) && number > 0 && number <= 100000 ? number : null;
+  };
+
+  const labelled = text.match(new RegExp(
+    String.raw`(?:общая\s+площадь|площадь\s+общая|total\s+area|umumiy\s+maydon|suprafa(?:ță|ta)\s+total(?:ă|a)?)\s*[:=\-]?\s*(\d{1,4}(?:[.,]\d{1,2})?)\s*${unit}`,
+    'iu',
+  ));
+  if (labelled) return toArea(labelled[1]);
+
+  const generic = text.match(new RegExp(String.raw`(?<![\d.,])(\d{1,4}(?:[.,]\d{1,2})?)\s*${unit}`, 'iu'));
+  if (generic) return toArea(generic[1]);
+
+  const compact = text.match(/(?:^|\n)[^\d\r\n]{0,8}[1-9]\s*[¹²³⁴⁵⁶⁷⁸⁹]?\s*\/\s*[0-9]{1,2}\s*\/\s*[0-9]{1,2}\s+(\d{2,4}(?:[.,]\d{1,2})?)\s*кв(?=\s|$)/im);
+  return compact ? toArea(compact[1]) : null;
 }
 
 export function parseHousingFloorFromText(value) {
