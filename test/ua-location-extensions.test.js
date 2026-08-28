@@ -33,6 +33,17 @@ test('major Ukraine city data belongs to the canonical registry', () => {
   assert.equal(match('Kryvyi Rih', 'microdistricts', '95-й квартал'), '95 Kvartal');
 });
 
+test('Kyiv legacy non-metro coverage belongs to the canonical major owner', () => {
+  assert.equal(match('Kyiv', 'districts', 'Подольский район'), 'Podilskyi');
+  assert.equal(match('Kyiv', 'residentialComplexes', 'Тетрис Холл'), 'Tetris Hall');
+  assert.equal(match('Kyiv', 'residentialComplexes', 'Юнит Хоум'), 'UNIT.Home');
+  assert.equal(match('Kyiv', 'residentialComplexes', 'Креатор Сіті'), 'Creator City');
+  assert.equal(match('Kyiv', 'streets', 'улица Крещатик'), 'Khreshchatyk Street');
+  assert.equal(match('Kyiv', 'streets', 'проспект Победы'), 'Beresteiskyi Avenue');
+  assert.equal(match('Kyiv', 'streets', 'улица Глубочицкая'), 'Hlybochytska Street');
+  assert.equal(match('Kyiv', 'landmarks', 'Киевский вокзал'), 'Kyiv Central Railway Station');
+});
+
 test('regional Ukraine data belongs to the canonical registry', () => {
   assert.equal(match('Rivne', 'microdistricts', 'Льнокомбинат'), 'Lonokombinat');
   assert.equal(match('Kherson', 'districts', 'Суворовский район'), 'Tsentralnyi');

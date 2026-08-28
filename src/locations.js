@@ -32,8 +32,10 @@ function withoutMetro(dictionary = {}) {
 }
 
 const UA_BASE_LOCATION_DICTIONARIES = Object.freeze({
-  ...(BASE_LOCATION_DICTIONARIES.UA || {}),
-  Kyiv: withoutMetro(BASE_LOCATION_DICTIONARIES.UA?.Kyiv),
+  ...Object.fromEntries(
+    Object.entries(BASE_LOCATION_DICTIONARIES.UA || {})
+      .filter(([city]) => city !== 'Kyiv'),
+  ),
   Kharkiv: withoutMetro(BASE_LOCATION_DICTIONARIES.UA?.Kharkiv),
 });
 
