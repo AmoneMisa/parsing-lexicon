@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import { TASHKENT_AREAS } from '../src/geo.js';
+import { TASHKENT_AREA_ADDITIONS } from '../src/tashkent-colloquial.js';
 import { locationCities } from '../src/locations.js';
 import { matchCentralAsiaLocationEntities } from '../src/central-asia-locations.js';
 
@@ -99,4 +100,9 @@ test('same-name mahalla and mavze stay distinct under explicit context', () => {
   const mavze = matchCentralAsiaLocationEntities('Qalqon mavzesi, Toshkent', 'UZ', 'Tashkent');
   assert.ok(names(mavze, 'local_area').includes('Qalqon'));
   assert.equal(names(mavze, 'mahalla').includes('Qalqon'), false);
+});
+
+test('Riyoziy compatibility area follows its current Yashnobod parent', () => {
+  assert.equal(TASHKENT_AREA_ADDITIONS['Mirzo Ulugbek'].some((entry) => entry.name === 'Riyoziy'), false);
+  assert.equal(TASHKENT_AREA_ADDITIONS.Yashnobod.some((entry) => entry.name === 'Riyoziy'), true);
 });
