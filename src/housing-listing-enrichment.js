@@ -22,7 +22,7 @@ const APPLIANCE_PATTERNS = Object.freeze([
   ['Microwave', /(?:микроволнов|microwave|mikrovolnov|mikravolnof)/iu],
   ['Vacuum cleaner', /(?:пылесос|vacuum\s+cleaner|pilesos|pedesos)/iu],
   ['Oven', /(?:духовк|oven|duxovka|duhofka|dxofka)/iu],
-  ['Kitchen', /(?:кухн|kitchen|oshxona)/iu],
+  ['Kitchen', /(?:кухн|kitchen|oshxona|kuxn\p{L}*)/iu],
 ]);
 
 const FIRST_RENT_UZ_RE = /(?:hali\s+hech\s+kim\s+(?:yashamagan|turmagan)|ҳали\s+ҳеч\s+ким\s+(?:яшамаган|турмаган))/iu;
