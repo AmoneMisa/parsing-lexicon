@@ -127,6 +127,19 @@ test('keeps canonical Kuylyuk massif separate from the Qoyliq metro station', ()
   assert.equal(matchTashkentHousingMetro('метро Куйлюк')?.name, 'Qoyliq');
 });
 
+test('current Tashkent administrative parents own moved neighborhood canonicals', () => {
+  for (const [canonical, expectedDistrict] of [
+    ['Takhtapul', 'Shaykhantahur'],
+    ['Beshagach', 'Chilanzar'],
+    ['Uzgarish', 'Sergeli'],
+  ]) {
+    const owners = Object.entries(TASHKENT_AREAS)
+      .filter(([, entries]) => entries.some((entry) => entry.canonical === canonical))
+      .map(([district]) => district);
+    assert.deepEqual(owners, [expectedDistrict], canonical);
+  }
+});
+
 test('explicit Minor context chooses one semantic type', () => {
   const metro = matchCentralAsiaLocationEntities('метро Минор, Ташкент', 'UZ', 'Tashkent');
   assert.ok(metro.matches.some((entry) => entry.type === 'metro' && entry.name === 'Minor'));
