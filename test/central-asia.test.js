@@ -111,9 +111,11 @@ test('Uzbek mahallas are parent-aware across repeated names', () => {
   assert.ok(bare.candidates.length >= 2);
 });
 
-test('Tashkent extensions cover geo-catalog mahalla and local-area gaps', () => {
+test('Tashkent extensions cover spatial entities with their actual semantic types', () => {
   const mahallas = new Map(UZ_LOCATION_EXTENSIONS.Tashkent.mahallas.map((entry) => [entry.name, entry]));
+  const microdistricts = new Map(UZ_LOCATION_EXTENSIONS.Tashkent.microdistricts.map((entry) => [entry.name, entry]));
   const localAreas = new Map(UZ_LOCATION_EXTENSIONS.Tashkent.localAreas.map((entry) => [entry.name, entry]));
+  const developmentAreas = new Map(UZ_LOCATION_EXTENSIONS.Tashkent.developmentAreas.map((entry) => [entry.name, entry]));
 
   for (const [name, parent] of [
     ['Khastimam', 'Almazar'], ['Yangi Tashkent', 'Almazar'], ['Umid', 'Almazar'],
@@ -126,20 +128,24 @@ test('Tashkent extensions cover geo-catalog mahalla and local-area gaps', () => 
     assert.equal(mahallas.get(name)?.parent, parent, `missing/scoped Tashkent mahalla: ${name}`);
   }
 
-  for (const [name, parent] of [
-    ['Sergeli-3A', 'Sergeli'], ['Sergeli-5A', 'Sergeli'], ['Sergeli-7A', 'Sergeli'],
-    ['Yangidarhan-1', 'Yangihayot'], ['Yangidarhan-2', 'Yangihayot'],
-  ]) {
-    assert.equal(localAreas.get(name)?.parent, parent, `missing/scoped Tashkent local area: ${name}`);
+  for (const name of ['Sergeli-3A', 'Sergeli-5A', 'Sergeli-7A']) {
+    assert.equal(microdistricts.get(name)?.parent, 'Yangihayot', `wrong Tashkent microdistrict parent: ${name}`);
   }
+
+  for (const name of ['Yangidarhan-1', 'Yangidarhan-2']) {
+    assert.equal(localAreas.get(name)?.parent, 'Yangihayot', `missing/scoped Tashkent local area: ${name}`);
+  }
+
+  assert.equal(developmentAreas.get('Tashkent City')?.type, 'development_area');
 });
 
-test('Tashkent gap aliases resolve without hiding the Minor metro type', () => {
+test('Tashkent gap aliases resolve without hiding stronger semantic types', () => {
   const mahalla = matchCentralAsiaLocationEntities('Янги Дархон MFY, Ташкент', 'UZ', 'Tashkent');
   assert.ok(names(mahalla, 'mahalla').includes('Yangi Darhan'));
 
   const sergeli = matchCentralAsiaLocationEntities('Сергели 5А массив, Ташкент', 'UZ', 'Tashkent');
-  assert.ok(names(sergeli, 'local_area').includes('Sergeli-5A'));
+  assert.ok(names(sergeli, 'microdistrict').includes('Sergeli-5A'));
+  assert.ok(sergeli.matches.some((entry) => entry.name === 'Sergeli-5A' && entry.parent === 'Yangihayot'));
 
   const minorMahalla = matchCentralAsiaLocationEntities('Минор махалла, Ташкент', 'UZ', 'Tashkent');
   assert.ok(names(minorMahalla, 'mahalla').includes('Minor'));
