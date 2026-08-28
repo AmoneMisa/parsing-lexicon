@@ -8,6 +8,7 @@ import {
   parseScaledAmount,
 } from './money-core.js';
 import { maskPhoneLikeSpans } from './contact.js';
+import { DEPOSIT_TERMS, SELLER_TERMS } from './housing.js';
 
 const PRICE_KEYWORD = '(?:цена|ціна|нарх(?:и)?|narx(?:i)?|price|стоимост[ьи]|аренд(?:а|ная\\s+плата)?|rent)';
 // moneyCurrencyPattern() includes short codes (cad, ron, aed...) with no
@@ -19,9 +20,32 @@ const PRICE_KEYWORD = '(?:цена|ціна|нарх(?:и)?|narx(?:i)?|price|с�
 const CURRENCY_ALT = `(?:${moneyCurrencyPattern()})`;
 const PRICE_CURRENCY_AFTER_NUMBER = `(?:${CURRENCY_ALT}(?![\\p{L}\\p{N}_]))`;
 const PRICE_CURRENCY_BEFORE_NUMBER = `(?:(?<![\\p{L}\\p{N}_])${CURRENCY_ALT})`;
+const PAYMENT_AMOUNT_TERMS = Object.freeze([
+  DEPOSIT_TERMS.deposit,
+  SELLER_TERMS.commission,
+].filter(Boolean));
+const PRICE_KEYWORD_RE = new RegExp(PRICE_KEYWORD, 'iu');
 
 function escapeRegex(value) {
   return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function isPaymentScopedAmount(text, start, end) {
+  const left = text
+    .slice(Math.max(0, start - 56), start)
+    .split(/[\r\n.;!?]/u)
+    .pop() || '';
+  const right = text
+    .slice(end, Math.min(text.length, end + 28))
+    .split(/[\r\n.;!?]/u)[0] || '';
+
+  // "deposit 500$" / "commission 100$" are payment details, not the
+  // listing price. For the reverse form ("500$ deposit"), only suppress the
+  // amount when there is no explicit price/rent label immediately to its left;
+  // this preserves text such as "rent 800$, deposit 500$".
+  if (findCanonical(left, PAYMENT_AMOUNT_TERMS, { partial: true })) return true;
+  return !PRICE_KEYWORD_RE.test(left)
+    && Boolean(findCanonical(right, PAYMENT_AMOUNT_TERMS, { partial: true }));
 }
 
 const APPROXIMATE_RE = /около|примерно|~|≈/iu;
@@ -86,6 +110,7 @@ export function parseHousingPrice(value, fallbackCurrency = '') {
     for (const regex of [reNumSym, reSymNum]) {
       let match;
       while ((match = regex.exec(text)) !== null) {
+        if (isPaymentScopedAmount(text, match.index ?? 0, regex.lastIndex)) continue;
         const amount = parseNumericAmount(match[1]);
         if (amount != null && amount >= 50 && amount <= 5_000_000_000 && (tagged == null || amount > tagged)) tagged = amount;
       }
@@ -121,9 +146,12 @@ export function parseHousingPrice(value, fallbackCurrency = '') {
   }
 
   if (price == null) {
-    const matches = text.match(/\d{1,3}(?:[ \u00A0.,]\d{3})+|\d{4,}/g) || [];
+    const bareAmountRe = /\d{1,3}(?:[ \u00A0.,]\d{3})+|\d{4,}/g;
     let best = null;
-    for (const raw of matches) {
+    for (const match of text.matchAll(bareAmountRe)) {
+      const raw = match[0];
+      const start = match.index ?? 0;
+      if (isPaymentScopedAmount(text, start, start + raw.length)) continue;
       const digits = raw.replace(/[\s.,]/g, '');
       if (digits[0] === '0') continue;
       const amount = parseNumericAmount(raw);
