@@ -169,7 +169,7 @@ export function parseHousingAudience(value) {
   if (/(?:семейн|сімейн|для семь|для сім)[^.\n]{0,80}(?:одиноч|мужчин|женщин|чоловік|жінок)|(?:одиноч|мужчин|женщин|чоловік|жінок)[^.\n]{0,80}(?:семейн|сімейн|для семь|для сім)/u.test(t)) return null;
   if (/(для семь|семейн|сімейн|для сім|для родин|for famil|families?|pentru famil|oila(?:ga| uchun|\s+qo['’`]?yiladi|\s+quyiladi)|оила|отбасы|zaks\s+qog['‘’`ʻʼ]?ozi|nikoh\s+guvohnomasi)/u.test(t)) return 'family';
   if (/(девуш|девоч|для дівч|дівчат|for girls|for women|only girls|doar fete|\bfete\b|qiz(?:lar|la)?(?:ga| uchun)?|(?:қ|к)из(?:лар|ла)?|қыздар)/u.test(t)) return 'women';
-  if (/(парн(ей|ям)|для мужчин|мужчинам|для хлопц|for men\b|for boys|doar b[aă]ie[țt]i|yigit(lar)?(ga| uchun)?|(?:ў|у)гил\s*бол|жігіт|ер адам)/u.test(t)) return 'men';
+  if (/(парн(ей|ям)|для мужчин|мужчинам|для хлопц|for men\b|for boys|doar b[aă]ie[țt]i|yigit(lar)?(ga| uchun)?|o['‘’`ʻʼ]?g['‘’`ʻʼ]?il\s+bol(?:a|la|lar)?(?:ga)?|(?:ў|у)гил\s*бол|жігіт|ер адам)/u.test(t)) return 'men';
   return null;
 }
 
@@ -192,7 +192,7 @@ export function parseHousingAmenities(value) {
   if (/(?:пластиков\p{L}*\s+окн|plastic\s+windows?|pvc\s+windows?)/iu.test(text)) amenities.push('plasticWindows');
   if (/(?:т[её]пл\p{L}*\s+пол|heated\s+floor|underfloor\s+heating|issiq\s+pol)/iu.test(text)) amenities.push('heatedFloor');
   if (/(?:бесплатн\p{L}*\s+парков|free\s+parking|bepul\s+(?:parking|avtoturargoh))/iu.test(text)) amenities.push('freeParking');
-  if (/(?:вс[её]\s+необходим\p{L}*|для\s+проживани\p{L}*\s+вс[её]\s+есть|yashash\s+uchun\s+barcha\s+jihoz|hamma\s+sharoitlari\s+(?:bor|bir)|яшаш\s+учун\s+барча\s+жиҳоз)/iu.test(text)) amenities.push('moveInReady');
+  if (/(?:вс[её]\s+необходим\p{L}*|для\s+проживани\p{L}*\s+вс[её]\s+есть|yashash\s+uchun\s+barcha\s+jihoz|hamma\s+sharoit(?:lari)?\s+(?:bor|bir)|яшаш\s+учун\s+барча\s+жиҳоз)/iu.test(text)) amenities.push('moveInReady');
   if (/(?:постельн\p{L}*\s+бель|bed\s*linen|toza\s+choyshab|yostiq\s+jild)/iu.test(text)) amenities.push('bedLinen');
   if (/(?:полотенц|towels?|sochiq)/iu.test(text)) amenities.push('towels');
   return Object.freeze(amenities);

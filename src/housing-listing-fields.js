@@ -70,7 +70,7 @@ function parseUtilitiesAmount(text) {
 }
 
 function parseCommunalSeparated(text, country) {
-  if (/(коммунал\p{L}*(?:\s+услуг\p{L}*)?\s*(?:отдельно|сверху|плюс|оплачива\p{L}*\s*отдельно)|свет\s*вода\s*газ\s*отдельно|kommunal\p{L}*\s*(?:alohida|ustiga)|utilities?\s*(?:separate|extra|not included))/iu.test(text)) return true;
+  if (/(коммунал\p{L}*(?:\s+услуг\p{L}*)?\s*(?:отдельно|сверху|плюс|оплачива\p{L}*\s*отдельно)|свет\s*вода\s*газ\s*отдельно|k[oa]munal\p{L}*\s*(?:alohida|aloxida|ustiga)|utilities?\s*(?:separate|extra|not included))/iu.test(text)) return true;
   if (/(коммунал\p{L}*(?:\s+услуг\p{L}*)?\s*(?:включ|входит|в\s*стоимост)|вс[её]\s*включ|all\s*inclusive|kommunal\p{L}*\s*(?:kiritilgan|ichida)|комунал(?:каси)?\s+ичида|коммунал(?:каси)?\s+ичида|utilities?\s*included)/iu.test(text)) return false;
   return String(country || '').toUpperCase() === 'UA' ? true : null;
 }

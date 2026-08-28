@@ -20,7 +20,7 @@ import {
 import { parseHousingListingFields } from '../src/housing-listing-fields.js';
 import { parseHousingContext } from '../src/housing-context.js';
 import { resolveHousingIntent } from '../src/housing-intent.js';
-import { resolveHousingOccupancy } from '../src/housing.js';
+import { resolveHousingOccupancy, resolveHousingPropertyType } from '../src/housing.js';
 
 test('normalizes multilingual room counts and floor fractions', () => {
   assert.equal(parseHousingRoomCount('Сдам 2-к квартиру'), 2);
@@ -74,6 +74,18 @@ test('parses the supplied Uzbek women-only flat-share description', () => {
     'airConditioner',
     'moveInReady',
   ]);
+});
+
+test('parses the supplied Uzbek men-only courtyard bed-space description', () => {
+  const text = 'Arenda kvartira Chilonzor faqat ogil bollarga student yandex taksida ishlidigonlarga zor variant hamma sharoit bor 24/7 ishlimiz hovli joy kvartira emas narxi 450000 ming som oyiga 50,000 ming som kamunalka aloxida hamma sharoit 210 tagacha odam olamiz qogan malumot telefon orqali +998909160285';
+  const result = parseHousingStructured(text, { country: 'UZ' });
+
+  assert.equal(parseHousingAudience(text), 'men');
+  assert.equal(resolveHousingOccupancy(text), 'bedSpace');
+  assert.equal(resolveHousingPropertyType(text), 'house');
+  assert.ok(result.amenities.includes('moveInReady'));
+  assert.equal(result.listingFields.communalSeparated, true);
+  assert.deepEqual(result.price, { price: 450_000, currency: 'UZS' });
 });
 
 test('extracts typed area details without collapsing labels', () => {

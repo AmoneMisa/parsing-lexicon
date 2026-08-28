@@ -66,7 +66,7 @@ export const HOUSING_OCCUPANCY_TYPES = Object.freeze([
   }),
   group('bedSpace', {
     ru: ['койко-место', 'койкоместо', 'спальное место'], en: ['bed space', 'bedspace', 'bed for rent'], uk: ['ліжко-місце', 'ліжкомісце', 'спальне місце'], ro: ['loc de dormit', 'pat de închiriat', 'pat de inchiriat'],
-    uzLatn: ['yotoq joy', 'joy ijaraga', 'koyka joy'], uzCyrl: ['ётоқ жой', 'жой ижарага'], kk: ['жатын орын', 'төсек орын'],
+    uzLatn: ['yotoq joy', 'joy ijaraga', 'koyka joy', 'tagacha odam olamiz'], uzCyrl: ['ётоқ жой', 'жой ижарага'], kk: ['жатын орын', 'төсек орын'],
   }),
 ]);
 
@@ -217,12 +217,14 @@ export function resolveHousingPropertyType(value) {
   const text = String(value || '');
   if (!text) return null;
   const flat = PROPERTY_TYPES.find((entry) => entry.canonical === 'flat');
-  if (flat && findCanonical(text, [flat], { partial: true })) return 'flat';
+  const flatNegated = /(?:kvartira|квартира)\s+emas(?=$|[^\p{L}\p{N}_])/iu.test(text);
+  if (!flatNegated && flat && findCanonical(text, [flat], { partial: true })) return 'flat';
   const genericUzbekHome = /(?:^|[^\p{L}\p{N}_])(?:uy|уй)(?=$|[^\p{L}\p{N}_])/iu.test(text);
   // "dom" is only 3 letters and matches as a bare substring of unrelated
   // English words (e.g. "seldom", "random"), so it needs the same token
   // boundary already applied to its Cyrillic counterpart "дом" below.
   const explicitHouse = /(?:hovli|xovli|ҳовли|ховли|house|casa|villa|будин|коттедж|вілл|вилл|(?:^|[^\p{L}\p{N}_])(?:дом|үй|dom)(?=$|[^\p{L}\p{N}_]))/iu.test(text);
+  if (flatNegated && explicitHouse) return 'house';
   if (genericUzbekHome && !explicitHouse) return null;
   return findCanonical(text, PROPERTY_TYPES, { partial: true })?.canonical || null;
 }
