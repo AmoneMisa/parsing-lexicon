@@ -122,7 +122,7 @@ export const TASHKENT_AREAS = Object.freeze({
     area('Karakamysh-2/3', ['каракамыш 2 3', 'қорақамиш 2 3', 'qoraqamish 2 3', 'karakamish 2 3']),
     area('Karakamysh-2/4', ['каракамыш 2 4', 'қорақамиш 2 4', 'qoraqamish 2 4', 'karakamish 2 4']),
     area('Karakamysh-2/5', ['каракамыш 2 5', 'қорақамиш 2 5', 'qoraqamish 2 5', 'karakamish 2 5']),
-    area('Olympia', ['олимпия', 'olimpiya', 'olympia']), area('Vuzgorodok', ['вузгородок', 'вуз городок', 'vuzgorodok']),
+    area('Olympia', ['олимпия', 'olimpiya', 'olympia'], 'microdistrict'), area('Vuzgorodok', ['вузгородок', 'вуз городок', 'vuzgorodok']),
     area('Medgorodok', ['медгородок', 'мед городок', 'medgorodok']), area('Takhtapul', ['тахтапуль', 'тахтапул', 'taxtapul', 'takhtapul']),
     area('Chimbay', ['чимбай', 'chimboy', 'chimbay']),
   ]),
@@ -133,8 +133,9 @@ export const TASHKENT_AREAS = Object.freeze({
   'Mirzo Ulugbek': Object.freeze([
     area('Buyuk Ipak Yuli', ['буюк ипак йули', 'буюк ипак йўли', 'buyuk ipak yuli', "buyuk ipak yo'li", 'ц 1', 'c 1']),
     area('Alay', ['олой', 'алайский', 'алайск', 'alay', 'ц 2', 'c 2']),
-    ...[1, 2, 3, 4, 6].map((n) => area(`Karasu-${n}`, [`карасу ${n}`, `қорасув ${n}`, `qorasuv ${n}`, `karasu ${n}`])),
-    ...[1, 2, 3, 4].map((n) => area(`TTZ-${n}`, [`ттз ${n}`, `ttz ${n}`])),
+    ...[1, 2, 3, 4].map((n) => area(`Karasu-${n}`, [`карасу ${n}`, `қорасув ${n}`, `qorasuv ${n}`, `karasu ${n}`], 'microdistrict')),
+    area('Karasu-6', ['карасу 6', 'қорасув 6', 'qorasuv 6', 'karasu 6']),
+    ...[1, 2, 3, 4].map((n) => area(`TTZ-${n}`, [`ттз ${n}`, `ttz ${n}`], 'microdistrict')),
     area('Yalangach', ['ялангач', 'yalangach', "yalang'och"]), area('Feruza', ['феруза', 'feruza']), area('Geofizika', ['геофизика', 'поселок геофизиков', 'geofizika']),
   ]),
   Sergeli: Object.freeze([
@@ -157,8 +158,8 @@ export const TASHKENT_AREAS = Object.freeze({
     area('Rakat', ['ракат', 'rakat']), area('Rakatboshi', ['ракатбоши', 'rakatboshi']),
   ]),
   Yangihayot: Object.freeze([
-    area('Uzgarish', ['узгарыш', 'ўзгариш', "o'zgarish", 'uzgarish']), area('Dustlik-1', ['дустлик 1', 'дўстлик 1', "do'stlik 1", 'dustlik 1']),
-    area('Dustlik-2', ['дустлик 2', 'дўстлик 2', "do'stlik 2", 'dustlik 2']), area('Yangi Choshtepa', ['янги чоштепа', 'yangi choshtepa'], 'microdistrict'), area('Sputnik', ['спутник', 'йўлдош', "yo'ldosh", 'yoldosh'], 'microdistrict'),
+    area('Uzgarish', ['узгарыш', 'ўзгариш', "o'zgarish", 'uzgarish']), area('Dustlik-1', ['дустлик 1', 'дўстлик 1', "do'stlik 1", 'dustlik 1'], 'microdistrict'),
+    area('Dustlik-2', ['дустлик 2', 'дўстлик 2', "do'stlik 2", 'dustlik 2'], 'microdistrict'), area('Yangi Choshtepa', ['янги чоштепа', 'yangi choshtepa'], 'microdistrict'), area('Sputnik', ['спутник', 'йўлдош', "yo'ldosh", 'yoldosh'], 'microdistrict'),
   ]),
   Yashnobod: Object.freeze([
     area('Kuylyuk Center', ['куйлюк центр', 'куйлик центр', "qo'yliq markaz", 'kuylyuk center']),
