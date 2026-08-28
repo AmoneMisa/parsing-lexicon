@@ -25,13 +25,6 @@ export const UA_EXTRA_LOCATION_DICTIONARIES = Object.freeze({
   }),
 });
 
-const UA_BASE_LOCATION_DICTIONARIES = Object.freeze(
-  Object.fromEntries(
-    Object.entries(BASE_LOCATION_DICTIONARIES.UA || {})
-      .filter(([city]) => city !== 'Kyiv' && city !== 'Kharkiv' && city !== 'Odesa' && city !== 'Dnipro'),
-  ),
-);
-
 const COUNTRY_LOCATION_DICTIONARIES = Object.freeze({
   ...BASE_LOCATION_DICTIONARIES,
   KZ: mergeLocationCountries(
@@ -43,7 +36,6 @@ const COUNTRY_LOCATION_DICTIONARIES = Object.freeze({
     UZ_LOCATION_EXTENSIONS,
   ),
   UA: mergeLocationCountries(
-    UA_BASE_LOCATION_DICTIONARIES,
     UA_EXTRA_LOCATION_DICTIONARIES,
     UA_MAJOR_LOCATION_EXTENSIONS,
     UA_REGIONAL_LOCATION_EXTENSIONS,

@@ -92,6 +92,29 @@ test('Dnipro legacy coverage belongs to the canonical major owner', () => {
   assert.equal(match('Dnipro', 'landmarks', 'Днепр-Главный'), 'Dnipro Railway Station');
 });
 
+test('Lviv legacy coverage belongs to the canonical major owner', () => {
+  assert.equal(match('Lviv', 'microdistricts', 'Пасечная'), 'Pasichna');
+  assert.equal(match('Lviv', 'microdistricts', 'Знесенье'), 'Znesinnia');
+  assert.equal(match('Lviv', 'microdistricts', 'Клепаров'), 'Klepariv');
+  assert.equal(match('Lviv', 'residentialComplexes', 'ЖК Велика Британія'), 'Great Britain');
+  assert.equal(match('Lviv', 'residentialComplexes', 'Авалон Ярд'), 'Avalon Yard');
+  assert.equal(match('Lviv', 'residentialComplexes', 'Авалон Флекс'), 'Avalon Flex');
+  assert.equal(match('Lviv', 'residentialComplexes', 'Парус Сити'), 'Parus City');
+  assert.equal(match('Lviv', 'residentialComplexes', 'Викинг Парк'), 'Viking Park');
+  assert.equal(match('Lviv', 'residentialComplexes', 'Місто Трав'), 'Misto Trav');
+  assert.equal(match('Lviv', 'residentialComplexes', 'Вашингтон Сіті'), 'Washington City');
+  assert.equal(match('Lviv', 'streets', 'проспект Свободы'), 'Svobody Avenue');
+  assert.equal(match('Lviv', 'streets', 'улица Городоцкая'), 'Horodotska Street');
+  assert.equal(match('Lviv', 'streets', 'улица Шевченко'), 'Shevchenka Street');
+  assert.equal(match('Lviv', 'streets', 'улица Стрыйская'), 'Stryiska Street');
+  assert.equal(match('Lviv', 'streets', 'улица Лычаковская'), 'Lychakivska Street');
+  assert.equal(match('Lviv', 'streets', 'улица Зеленая'), 'Zelena Street');
+  assert.equal(match('Lviv', 'streets', 'улица Кульпарковская'), 'Kulparkivska Street');
+  assert.equal(match('Lviv', 'landmarks', 'Бернардинський монастир'), 'Bernardine Monastery');
+  assert.equal(match('Lviv', 'landmarks', 'Головний залізничний вокзал Львів'), 'Lviv Railway Station');
+  assert.equal(match('Lviv', 'landmarks', 'Львовский вокзал'), 'Lviv Railway Station');
+});
+
 test('regional Ukraine data belongs to the canonical registry', () => {
   assert.equal(match('Rivne', 'microdistricts', 'Льнокомбинат'), 'Lonokombinat');
   assert.equal(match('Kherson', 'districts', 'Суворовский район'), 'Tsentralnyi');

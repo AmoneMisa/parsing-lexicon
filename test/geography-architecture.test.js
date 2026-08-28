@@ -56,10 +56,11 @@ test('location matcher consumes the canonical collection key list', async () => 
   assert.deepEqual(matchDictionaryLocation('Бесагаш', 'KZ', 'Almaty')?.type, 'suburbs');
 });
 
-test('migrated major-city locations no longer use the legacy runtime owner', async () => {
+test('Ukraine runtime locations no longer use the legacy UA seed', async () => {
   const source = await readFile(new URL('../src/locations.js', import.meta.url), 'utf8');
-  assert.match(source, /city !== 'Kyiv' && city !== 'Kharkiv' && city !== 'Odesa' && city !== 'Dnipro'/u);
-  assert.doesNotMatch(source, /Kharkiv:\s*withoutMetro/u);
+  assert.doesNotMatch(source, /BASE_LOCATION_DICTIONARIES\.UA/u);
+  assert.doesNotMatch(source, /UA_BASE_LOCATION_DICTIONARIES/u);
+  assert.match(source, /UA:\s*mergeLocationCountries\(\s*UA_EXTRA_LOCATION_DICTIONARIES/u);
 });
 
 test('display derives labels from canonical entities and supports regions', () => {

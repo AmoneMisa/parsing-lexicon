@@ -54,6 +54,8 @@ Country/city data belongs in the existing country-specific sources:
 
 `src/location-data.js` is a legacy seed / compatibility data layer. Do not add new KZ, UZ, or UA coverage there when an existing country-specific source can represent it.
 
+The legacy `LOCATION_DICTIONARIES.UA` seed in `src/location-data.js` is compatibility storage only. It must not be merged into the runtime canonical `LOCATION_DICTIONARIES.UA`; runtime Ukraine location coverage comes exclusively from the UA-specific owners listed above.
+
 Matcher/consumer modules such as `src/central-asia-locations.js` must consume `LOCATION_DICTIONARIES`. They must not merge country extension dictionaries again.
 
 ## Canonical names and aliases
