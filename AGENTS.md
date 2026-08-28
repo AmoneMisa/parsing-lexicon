@@ -10,6 +10,8 @@ When a PR is approved for merge, use **squash merge only**. Do not use merge com
 
 Do not add temporary technical artifacts to the repository: scratch files, migration notes, generated reports, debug scripts, one-off helper files, duplicate documentation, or staging files. Only commit files that belong to the intended architecture or were explicitly requested.
 
+`AUDIT.md` is an intentional repository document and an explicit exception to the generated-report rule above. Preserve it and update it when audit findings materially change; do not delete it as cleanup unless explicitly requested.
+
 ## Core rules
 
 Preserve the existing architecture. Do not solve a data-coverage task by introducing a parallel dictionary, a second merge path, a new public API, or a new file hierarchy unless the current architecture genuinely cannot represent the data correctly.
