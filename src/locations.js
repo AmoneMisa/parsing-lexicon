@@ -56,8 +56,10 @@ function normalizeUzSemanticLocations(country) {
   const qorasuv = (tashkent.microdistricts || []).find(({ name }) => name === 'Qorasuv');
   if (!qorasuv) return country;
 
+  // Bare Qorasuv is ambiguous with numbered Qorasuv/Karasu blocks. The
+  // umbrella area therefore requires an area/massif/daha form in free text.
   const qorasuvAliases = Object.freeze([...new Set([
-    ...(qorasuv.aliases || []),
+    ...(qorasuv.aliases || []).filter((alias) => !/^(?:qorasuv|korasuv|корасув|карасу)$/iu.test(String(alias).trim())),
     'Qorasuv dahasi',
     'Qorasuv daha',
     'Қорасув даҳаси',
