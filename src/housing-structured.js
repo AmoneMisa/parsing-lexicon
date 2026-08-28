@@ -65,7 +65,7 @@ export function parseHousingFloor(value) {
   const text = normalizeUnicode(value ?? '');
   if (!text) return deepFreeze({ floor: null, totalFloors: null });
 
-  const fraction = text.match(/(?:^|[^\d])(\d{1,3})\s*\/\s*(\d{1,3})(?=$|[^\d])/u);
+  const fraction = text.match(/(?:^|[^\d])(\d{1,3})\s*[\/\\]\s*(\d{1,3})(?=$|[^\d])/u);
   if (fraction) {
     const floor = toNumber(fraction[1]);
     const totalFloors = toNumber(fraction[2]);
