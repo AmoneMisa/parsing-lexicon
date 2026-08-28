@@ -20,7 +20,7 @@ export const TASHKENT_DISTRICTS = Object.freeze([
   entity('Yunusabad', { uzLatn: ['Yunusobod', 'Yunusobod tumani', 'Yunusabad'], uzCyrl: ['Юнусобод', 'Юнусобод тумани'], ru: ['Юнусабад', 'Юнусабадский район'], en: ['Yunusabad', 'Yunusobod'] }),
   entity('Yakkasaray', { uzLatn: ['Yakkasaroy', 'Yakkasaroy tumani', 'Yakkasaray'], uzCyrl: ['Яккасарой', 'Яккасарой тумани'], ru: ['Яккасарай', 'Яккасарайский район'], en: ['Yakkasaray', 'Yakkasaroy'] }),
   entity('Yangihayot', { uzLatn: ['Yangihayot', 'Yangihayot tumani'], uzCyrl: ['Янгиҳаёт', 'Янгиҳаёт тумани', 'Янгихаёт'], ru: ['Янгихаётский район', 'Янгихаёт'], en: ['Yangihayot'] }),
-  entity('Yashnobod', { uzLatn: ['Yashnobod', 'Yashnobod tumani'], uzCyrl: ['Яшнобод', 'Яшнобод тумани'], ru: ['Яшнабад', 'Яшнабадский район'], en: ['Yashnobod', 'Yashnabad'] }),
+  entity('Yashnobod', { uzLatn: ['Yashnobod', 'Yashnobod tumani', 'Yashnabod', 'Yashnabod tumani'], uzCyrl: ['Яшнобод', 'Яшнобод тумани'], ru: ['Яшнабад', 'Яшнабадский район'], en: ['Yashnobod', 'Yashnabad'] }),
 ]);
 
 export function canonicalTashkentDistrict(value) {

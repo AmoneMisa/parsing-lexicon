@@ -1,7 +1,7 @@
 import { deepFreeze } from './lexicon-core.js';
 import { findAllCanonical, normalizeUnicode } from './normalization.js';
 import { GENERIC_LANDMARK_TERMS } from './landmarks.js';
-import { matchTashkentHousingDistrict, matchTashkentHousingMetro } from './tashkent-housing-geography.js';
+import { matchTashkentHousingDistrict, matchTashkentHousingMetro, matchTashkentHousingQuarter } from './tashkent-housing-geography.js';
 import { TASHKENT_LANDMARKS } from './tashkent-pois.js';
 import { parseHousingRoomCount, parseHousingFloor, parseHousingAreas } from './housing-structured.js';
 import { parseHousingListingFields } from './housing-listing-fields.js';
@@ -18,10 +18,10 @@ const GENERIC_CATEGORY = Object.freeze({
 });
 
 const APPLIANCE_PATTERNS = Object.freeze([
-  ['Washing machine', /(?:кир\s*машин|стиральн\p{L}*\s+машин|washing\s+machine|kir\s*moshina|kirmoshina|kir\s*yuvish\s+mashin)/iu],
-  ['Microwave', /(?:микроволнов|microwave|mikrovolnov|mikravolnof)/iu],
-  ['Vacuum cleaner', /(?:пылесос|vacuum\s+cleaner|pilesos|pedesos)/iu],
-  ['Oven', /(?:духовк|oven|duxovka|duhofka|dxofka)/iu],
+  ['Washing machine', /(?:кир\s*машин|кирмошин\p{L}*|стиральн\p{L}*\s+машин|washing\s+machine|kir\s*moshina|kirmoshina|kir\s*yuvish\s+mashin)/iu],
+  ['Microwave', /(?:микроволнов|микравалноф\p{L}*|microwave|mikrovolnov|mikravolnof)/iu],
+  ['Vacuum cleaner', /(?:пылесос|педесос|vacuum\s+cleaner|pilesos|pedesos)/iu],
+  ['Oven', /(?:духовк|дхофк\p{L}*|oven|duxovka|duhofka|dxofka)/iu],
   ['Kitchen', /(?:кухн|kitchen|oshxona|kuxn\p{L}*)/iu],
 ]);
 
@@ -141,6 +141,11 @@ const COMMISSION_AMOUNT_LEADING_RE = /(\d{1,3}(?:[\s.,]\d{3})*|\d+(?:[.,]\d+)?)\
 
 export function parseHousingCommissionAmount(value) {
   const text = normalizeUnicode(value ?? '');
+  // A listing that explicitly says "no broker/commission" cannot also have a
+  // commission amount — without this guard, an unrelated number near the
+  // negated broker word (e.g. a room count in "2 xonali ... maklersiz")
+  // could be misread as the commission amount.
+  if (NO_BROKER_RE.test(text)) return null;
   const match = text.match(COMMISSION_AMOUNT_RE) || text.match(COMMISSION_AMOUNT_LEADING_RE);
   if (!match) return null;
   const amount = Number(String(match[1]).replace(/\s+/g, '').replace(',', '.'));
@@ -193,7 +198,8 @@ export function parseHousingListingEnrichment(value, { country = '' } = {}) {
   const audience = parseHousingAudience(text);
   const perPersonPrice = parseHousingPerPersonPrice(text, { country });
   const observedAmenities = parseHousingObservedAmenities(text);
-  const district = matchTashkentHousingDistrict(text)?.name || null;
+  const quarter = matchTashkentHousingQuarter(text);
+  const district = matchTashkentHousingDistrict(text)?.name || quarter?.district || null;
   const metro = matchTashkentHousingMetro(text)?.name || null;
   const parsedRc = specificResidentialComplex(text) || parseHousingResidentialComplex(text);
   const commission = parseHousingCommission(text);
@@ -243,6 +249,7 @@ export function parseHousingListingEnrichment(value, { country = '' } = {}) {
     nearby: parseHousingNearby(text),
     amenities: observedAmenities,
     district: district || null,
+    quarter: quarter ? { number: quarter.number, suffix: quarter.suffix } : null,
     metro: metro || null,
     residenceComplex: parsedRc || null,
     address: address.address,

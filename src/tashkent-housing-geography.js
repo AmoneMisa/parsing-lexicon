@@ -252,6 +252,23 @@ export function matchTashkentHousingDistrict(value) {
   return null;
 }
 
+/**
+ * Resolve a numbered massif/quarter mention (e.g. "Юнусабад-7 кв",
+ * "Yunusabad-7") that matchTashkentHousingDistrict() deliberately defers,
+ * returning the district it belongs to alongside the quarter number.
+ */
+export function matchTashkentHousingQuarter(value) {
+  const text = String(value ?? '');
+  if (!text) return null;
+  for (const canonical of Object.keys(TASHKENT_NUMBERED_AREA_ALIASES)) {
+    const numbered = matchTashkentNumberedArea(text, canonical);
+    if (!numbered) continue;
+    const district = TASHKENT_HOUSING_DISTRICTS.find((entry) => entry.name === canonical) || null;
+    return Object.freeze({ district: district?.name || canonical, number: numbered.number, suffix: numbered.suffix });
+  }
+  return null;
+}
+
 const EXTRA_METRO_ALIASES = Object.freeze({
   Sergeli: Object.freeze(['Sergile', 'Sergele']),
 });
@@ -272,6 +289,11 @@ export function matchTashkentHousingMetro(value) {
     const match = text.match(station.re);
     if (!match) continue;
     if (hasExplicitMetroContext(text, match)) return station;
+    // "Toshkent" is both a metro station and the city's own name, so a bare
+    // mention ("Toshkent shahri") is not evidence of the station the way a
+    // bare mention of any other station name would be. Require an explicit
+    // metro context for this one station specifically.
+    if (station.name === 'Toshkent') continue;
     if (station.name === 'Qoyliq' && QOYLIQ_MASSIF_RE.test(text)) continue;
     const areaCanonical = METRO_NUMBERED_AREA[station.name];
     if (areaCanonical && matchTashkentNumberedArea(text, areaCanonical)) continue;

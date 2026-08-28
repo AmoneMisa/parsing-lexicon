@@ -44,6 +44,7 @@ export interface HousingListingEnrichment {
   nearby?: readonly string[];
   amenities?: readonly string[];
   district?: string | null;
+  quarter?: { number: number; suffix: string } | null;
   metro?: string | null;
   residenceComplex?: string | null;
   address?: string | null;
