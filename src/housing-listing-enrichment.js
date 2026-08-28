@@ -1,7 +1,7 @@
 import { deepFreeze } from './lexicon-core.js';
 import { findAllCanonical, normalizeUnicode } from './normalization.js';
 import { GENERIC_LANDMARK_TERMS } from './landmarks.js';
-import { canonicalTashkentDistrict, canonicalTashkentMetro } from './geo.js';
+import { matchTashkentHousingDistrict, matchTashkentHousingMetro } from './tashkent-housing-geography.js';
 import { TASHKENT_LANDMARKS } from './tashkent-pois.js';
 import { parseHousingRoomCount, parseHousingFloor, parseHousingAreas } from './housing-structured.js';
 import { parseHousingListingFields } from './housing-listing-fields.js';
@@ -193,8 +193,8 @@ export function parseHousingListingEnrichment(value, { country = '' } = {}) {
   const audience = parseHousingAudience(text);
   const perPersonPrice = parseHousingPerPersonPrice(text, { country });
   const observedAmenities = parseHousingObservedAmenities(text);
-  const district = canonicalTashkentDistrict(text);
-  const metro = canonicalTashkentMetro(text);
+  const district = matchTashkentHousingDistrict(text)?.name || null;
+  const metro = matchTashkentHousingMetro(text)?.name || null;
   const parsedRc = specificResidentialComplex(text) || parseHousingResidentialComplex(text);
   const commission = parseHousingCommission(text);
   const commissionAmount = parseHousingCommissionAmount(text);
