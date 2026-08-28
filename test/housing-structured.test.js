@@ -21,6 +21,7 @@ import { parseHousingListingFields } from '../src/housing-listing-fields.js';
 import { parseHousingContext } from '../src/housing-context.js';
 import { resolveHousingIntent } from '../src/housing-intent.js';
 import { resolveHousingOccupancy, resolveHousingPropertyType } from '../src/housing.js';
+import { matchCentralAsiaLocationEntities } from '../src/central-asia-locations.js';
 
 test('normalizes multilingual room counts and floor fractions', () => {
   assert.equal(parseHousingRoomCount('Сдам 2-к квартиру'), 2);
@@ -57,7 +58,7 @@ test('parses the supplied Uzbek family rental description without dropping struc
     amount: 500,
     currency: 'USD',
   });
-  assert.deepEqual(result.price, { price: null, currency: 'USD' });
+  assert.deepEqual(result.price, { amount: null, currency: 'USD', approximate: false });
 });
 
 test('parses the supplied Uzbek women-only flat-share description', () => {
@@ -85,7 +86,21 @@ test('parses the supplied Uzbek men-only courtyard bed-space description', () =>
   assert.equal(resolveHousingPropertyType(text), 'house');
   assert.ok(result.amenities.includes('moveInReady'));
   assert.equal(result.listingFields.communalSeparated, true);
-  assert.deepEqual(result.price, { price: 450_000, currency: 'UZS' });
+  assert.deepEqual(result.price, { amount: 450_000, currency: 'UZS', approximate: false });
+});
+
+test('parses the supplied Navoiy rental without inventing a location from prose', () => {
+  const text = 'Ижарага берилади Орентир 3 поликленика ПАНОРАМА ресторан якин 2 хонали 3 этаж Нархи 2500.000 сум КАМИ ЙУК БУЛИШИ КАМУНАЛ ТУЛОВЛАРИ АЛОХИДА (оилага) МАКЛЕР ХИЗМАТИ БОР 90 6467376 кунгирок килинг ёки телеграмга хабар ёзинг вариантлар бор СРОЧНО ИЖАРАГА БЕРИЛАДИ';
+  const result = parseHousingStructured(text, { country: 'UZ' });
+  const locations = matchCentralAsiaLocationEntities(text, 'UZ', 'Navoiy');
+
+  assert.equal(result.rooms, 2);
+  assert.deepEqual(result.floor, { floor: 3, totalFloors: null });
+  assert.deepEqual(result.price, { amount: 2_500_000, currency: 'UZS', approximate: false });
+  assert.equal(result.listingFields.communalSeparated, true);
+  assert.equal(result.payments.utilities, 'utilitiesSeparate');
+  assert.equal(result.address.address, null);
+  assert.deepEqual(locations.matches, []);
 });
 
 test('extracts typed area details without collapsing labels', () => {
@@ -172,7 +187,7 @@ test('covers the supplied Dream House listing across shared housing parsers', ()
   assert.equal(parseHousingPayments(text).deposit.amount, null);
   assert.equal(parseHousingPayments(text).commission.percent, 50);
   assert.deepEqual(parseHousingSeller(text), { type: 'agency', confidence: 1 });
-  assert.deepEqual(parseHousingPrice(text), { price: 1200, currency: 'USD' });
+  assert.deepEqual(parseHousingPrice(text), { amount: 1200, currency: 'USD', approximate: false });
   assert.ok(parseHousingInfrastructure(text).some(({ poi }) => poi === 'Maternity hospital'));
 });
 
@@ -190,7 +205,7 @@ test('unified structured parser composes the supplied Dream House listing', () =
   assert.equal(result.rooms, 2);
   assert.deepEqual(result.floor, { floor: 8, totalFloors: 10 });
   assert.equal(result.area.total, 80);
-  assert.deepEqual(result.price, { price: 1200, currency: 'USD' });
+  assert.deepEqual(result.price, { amount: 1200, currency: 'USD', approximate: false });
   assert.equal(result.address.street, 'Абдулла Каххара');
   assert.equal(result.address.houseNumber, null);
   assert.equal(result.listingFields.bathrooms, 2);
@@ -212,7 +227,7 @@ test('covers the supplied Qorasuv Cyrillic Uzbek listing semantics', () => {
 
   assert.equal(parseHousingRoomCount(text), 2);
   assert.deepEqual(parseHousingFloor(text), { floor: 13, totalFloors: 16 });
-  assert.deepEqual(parseHousingPrice(text, 'UZS'), { price: 2_500_000, currency: 'UZS' });
+  assert.deepEqual(parseHousingPrice(text, 'UZS'), { amount: 2_500_000, currency: 'UZS', approximate: false });
   assert.deepEqual(parseHousingSeller(text), { type: 'agency', confidence: 1 });
   assert.ok(parseHousingInfrastructure(text).some(({ poi }) => poi === 'School'));
 });
@@ -225,7 +240,7 @@ test('structured contacts bind a same-line contact person to the phone', () => {
     +998997990183 Сохиба
   `, { country: 'UZ' });
 
-  assert.deepEqual(result.price, { price: 2_500_000, currency: 'UZS' });
+  assert.deepEqual(result.price, { amount: 2_500_000, currency: 'UZS', approximate: false });
   assert.equal(result.contacts.phones.length, 1);
   assert.equal(result.contacts.phones[0].number, '+998997990183');
   assert.equal(result.contacts.phones[0].name, 'Сохиба');
@@ -249,7 +264,7 @@ test('covers the supplied Uzbek Latin equipment and infrastructure listing end t
     Narxi 250$
   `;
 
-  assert.deepEqual(parseHousingPrice(text, 'UZS'), { price: 250, currency: 'USD' });
+  assert.deepEqual(parseHousingPrice(text, 'UZS'), { amount: 250, currency: 'USD', approximate: false });
 
   const pois = new Set(parseHousingInfrastructure(text).map(({ poi }) => poi));
   for (const poi of ['Main road', 'Public transport', 'Kindergarten', 'Supermarket', 'Korzinka']) {
@@ -327,8 +342,8 @@ test('negative amenity wording wins over bare amenity mentions', () => {
 });
 
 test('parses split millions written with the full million word', () => {
-  assert.deepEqual(parseHousingPrice('Narxi 2 миллион 500', 'UZS'), { price: 2_500_000, currency: 'UZS' });
-  assert.deepEqual(parseHousingPrice('2 млн. 500', 'UZS'), { price: 2_500_000, currency: 'UZS' });
+  assert.deepEqual(parseHousingPrice('Narxi 2 миллион 500', 'UZS'), { amount: 2_500_000, currency: 'UZS', approximate: false });
+  assert.deepEqual(parseHousingPrice('2 млн. 500', 'UZS'), { amount: 2_500_000, currency: 'UZS', approximate: false });
 });
 
 test('preserves numbered and named landmark identity around canonical POIs', () => {
@@ -359,6 +374,6 @@ test('structured parser strips Threads chrome and preserves the account as sourc
   assert.equal(result.text.includes('nika_imgrund'), false);
   assert.equal(result.text.includes('Translate'), false);
   assert.equal(result.rooms, 2);
-  assert.deepEqual(result.price, { price: 1200, currency: 'USD' });
+  assert.deepEqual(result.price, { amount: 1200, currency: 'USD', approximate: false });
   assert.equal(result.listingFields.internet, true);
 });

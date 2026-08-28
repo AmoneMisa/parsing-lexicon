@@ -5,43 +5,48 @@ import {parseHousingPrice} from '../src/housing-money.js';
 
 test('housing multipliers do not match measurement or word prefixes', () => {
   assert.deepEqual(parseHousingPrice('Yunusobod 500 m2 hovli sotiladi', 'UZS'), {
-    price: null,
+    amount: null,
     currency: 'UZS',
+    approximate: false,
   });
   assert.deepEqual(parseHousingPrice('Sergele metroda 5 minut metroga piyoda', 'UZS'), {
-    price: null,
+    amount: null,
     currency: 'UZS',
+    approximate: false,
   });
 });
 
 test('housing multipliers still parse complete scale words', () => {
   assert.deepEqual(parseHousingPrice('Цена 5 миллионов', 'UZS'), {
-    price: 5_000_000,
+    amount: 5_000_000,
     currency: 'UZS',
+    approximate: false,
   });
   assert.deepEqual(parseHousingPrice('Narxi 200 000 kunlik', 'UZS'), {
-    price: 200_000,
+    amount: 200_000,
     currency: 'UZS',
+    approximate: false,
   });
 });
 
 test('parses Uzbek classifieds split-million notation', () => {
   assert.deepEqual(
     parseHousingPrice('2 хона 2 млн 500 + агентство хизмати', 'UZS'),
-    { price: 2_500_000, currency: 'UZS' },
+    { amount: 2_500_000, currency: 'UZS', approximate: false },
   );
   assert.deepEqual(parseHousingPrice('ijara 3 mln 250', 'UZS'), {
-    price: 3_250_000,
+    amount: 3_250_000,
     currency: 'UZS',
+    approximate: false,
   });
 });
 
 test('currency codes do not match as a substring of an unrelated word', () => {
   // "cad" is a substring of "cadastru" (RO: cadastral record) — it must not
   // be read as a 100 CAD price.
-  assert.deepEqual(parseHousingPrice('100 cadastru'), { price: null, currency: '' });
-  assert.deepEqual(parseHousingPrice('rent 1200 CAD'), { price: 1200, currency: 'CAD' });
-  assert.deepEqual(parseHousingPrice('CAD 1200 rent'), { price: 1200, currency: 'CAD' });
+  assert.deepEqual(parseHousingPrice('100 cadastru'), { amount: null, currency: '', approximate: false });
+  assert.deepEqual(parseHousingPrice('rent 1200 CAD'), { amount: 1200, currency: 'CAD', approximate: false });
+  assert.deepEqual(parseHousingPrice('CAD 1200 rent'), { amount: 1200, currency: 'CAD', approximate: false });
 });
 
 test('a currency symbol directly touching its number (no space) still parses', () => {
@@ -50,7 +55,11 @@ test('a currency symbol directly touching its number (no space) still parses', (
   // ordinary way prices are written ("350$", "$100").
   assert.deepEqual(
     parseHousingPrice('2 хонали 3 этажда ремонти яхши холатда турибди 350$', 'UZS'),
-    { price: 350, currency: 'USD' },
+    { amount: 350, currency: 'USD', approximate: false },
   );
-  assert.deepEqual(parseHousingPrice('rent $100 monthly'), { price: 100, currency: 'USD' });
+  assert.deepEqual(parseHousingPrice('rent $100 monthly'), { amount: 100, currency: 'USD', approximate: false });
+});
+
+test('marks an approximate price when the text hedges the amount', () => {
+  assert.deepEqual(parseHousingPrice('Цена около 800$'), { amount: 800, currency: 'USD', approximate: true });
 });

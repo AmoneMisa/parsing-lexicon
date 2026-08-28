@@ -1,6 +1,7 @@
 export type HousingPriceParseResult = Readonly<{
-  price: number | null;
+  amount: number | null;
   currency: string;
+  approximate: boolean;
 }>;
 
 export function parseHousingPrice(value: unknown, fallbackCurrency?: string): HousingPriceParseResult;

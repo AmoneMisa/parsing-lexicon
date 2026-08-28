@@ -49,8 +49,16 @@ export function parseHousingRoomCount(value) {
   }
   for (const [re, rooms] of NUMBER_WORDS) if (re.test(text)) return rooms;
   const numeric = text.match(/(?:^|[^\p{L}\p{N}])(\d{1,2})\s*(?:(?:-\s*)?комнат\p{L}*|(?:-\s*)?к(?:\.|\b)|(?:-\s*)?xona(?:li)?|(?:-\s*)?хона(?:лик|ли)?|бөлмелі|rooms?)(?=$|[^\p{L}\p{N}])/iu);
-  const rooms = toNumber(numeric?.[1]);
-  return rooms != null && rooms >= 1 && rooms <= 20 ? rooms : null;
+  if (numeric) {
+    const rooms = toNumber(numeric[1]);
+    if (rooms != null && rooms >= 1 && rooms <= 20) return rooms;
+  }
+
+  // Structured "Label - Value" reposts (Telegram channel copies of OLX ads)
+  // put the label before the number: "Комнат - 4" instead of "4 комнаты".
+  const reversed = text.match(/(?:комнат\p{L}*|xona(?:lar)?(?:i)?|хона(?:лар)?(?:и|лик|ли)?|rooms?)\s*[-:–—]\s*(\d{1,2})(?=$|[^\p{L}\p{N}])/iu);
+  const reversedRooms = toNumber(reversed?.[1]);
+  return reversedRooms != null && reversedRooms >= 1 && reversedRooms <= 20 ? reversedRooms : null;
 }
 
 export function parseHousingFloor(value) {
@@ -89,6 +97,12 @@ export function parseHousingFloor(value) {
   if (totalFloors == null) {
     const total = text.match(/(?:дом\s*)?(\d{1,3})\s*(?:[- ]?этаж(?:н\p{L}*|лик)|поверхов\p{L}*|storey|story|floors?\s+total|qavatli|қабатты|каватли|қаватли)/iu);
     totalFloors = toNumber(total?.[1]);
+  }
+
+  if (totalFloors == null) {
+    // Structured "Label - Value" reposts: "Этажность - 5" instead of "5 этажей".
+    const reversedTotal = text.match(/(?:этажность|поверховість|qavatlilik|қабаттылық)\s*[-:–—]\s*(\d{1,3})(?=$|[^\p{L}\p{N}])/iu);
+    totalFloors = toNumber(reversedTotal?.[1]);
   }
 
   if (floor != null && (floor < -5 || floor > 200)) floor = null;

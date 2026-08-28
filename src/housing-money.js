@@ -24,9 +24,11 @@ function escapeRegex(value) {
   return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
+const APPROXIMATE_RE = /около|примерно|~|≈/iu;
+
 export function parseHousingPrice(value, fallbackCurrency = '') {
   const original = String(value || '');
-  if (!original) return Object.freeze({ price: null, currency: fallbackCurrency || '' });
+  if (!original) return Object.freeze({ amount: null, currency: fallbackCurrency || '', approximate: false });
 
   // Contact spans are removed once, before every money branch. A phone can
   // therefore never win as a labelled, currency-tagged or fallback amount.
@@ -48,6 +50,20 @@ export function parseHousingPrice(value, fallbackCurrency = '') {
     if (amount != null && amount >= 1 && amount <= 5_000_000) {
       price = Math.round(amount * 1000);
       currency = 'UAH';
+    }
+  }
+
+  // Uzbek ads also use a dot as a thousands separator after four leading
+  // digits: "2500.000 сум" means 2,500,000 UZS, not 2,500 UZS.
+  const expandedUzbekThousands = text.match(new RegExp(
+    `${PRICE_KEYWORD}[^\\d\\r\\n]{0,16}(\\d{4})[.]000\\s*(?:с[ўу]м|so['‘’ʻʼ]?m|som|sum|uzs)(?=$|[^\\p{L}\\p{N}_])`,
+    'iu',
+  ));
+  if (price == null && expandedUzbekThousands) {
+    const amount = Number(expandedUzbekThousands[1]) * 1000;
+    if (amount >= 1_000_000 && amount <= 5_000_000_000) {
+      price = amount;
+      currency = 'UZS';
     }
   }
 
@@ -118,7 +134,7 @@ export function parseHousingPrice(value, fallbackCurrency = '') {
     currency = price >= 1_000_000 || (dailyUzbek && price >= 10_000) ? 'UZS' : 'USD';
   }
 
-  return Object.freeze({ price, currency });
+  return Object.freeze({ amount: price, currency, approximate: price != null && APPROXIMATE_RE.test(text) });
 }
 
 // Compatibility name for callers migrating from Flat Finder's local parser.

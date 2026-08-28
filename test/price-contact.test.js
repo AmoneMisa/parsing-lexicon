@@ -20,24 +20,15 @@ test('phone-like spans are detected without crossing line boundaries', () => {
 });
 
 test('phone numbers cannot become housing price candidates', () => {
-  assert.deepEqual(parseHousingPrice(wantedChernivtsi, 'UAH'), {
-    price: 10000,
-    currency: 'UAH',
-  });
+  assert.deepEqual(parseHousingPrice(wantedChernivtsi, 'UAH'), { amount: 10000, currency: 'UAH', approximate: false });
 });
 
 test('explicit small hard-currency rent remains parseable', () => {
-  assert.deepEqual(parseHousingPrice('Аренда: 450$ в месяц', 'UZS'), {
-    price: 450,
-    currency: 'USD',
-  });
+  assert.deepEqual(parseHousingPrice('Аренда: 450$ в месяц', 'UZS'), { amount: 450, currency: 'USD', approximate: false });
 });
 
 test('bare Uzbek small rent keeps established USD convention', () => {
-  assert.deepEqual(parseHousingPrice('Narx: 450', 'UZS'), {
-    price: 450,
-    currency: 'USD',
-  });
+  assert.deepEqual(parseHousingPrice('Narx: 450', 'UZS'), { amount: 450, currency: 'USD', approximate: false });
 });
 
 test('salary parser preserves shared money behavior after core extraction', () => {

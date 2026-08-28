@@ -7,8 +7,9 @@ const ODESA_LISTING = `Сдам 1 комнатную квартиру улица
 
 test('parses compact UAH price from Odessa free-text listing', () => {
   assert.deepEqual(parseHousingPrice(ODESA_LISTING), {
-    price: 10000,
+    amount: 10000,
     currency: 'UAH',
+    approximate: false,
   });
 });
 

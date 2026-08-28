@@ -83,12 +83,6 @@ test('currency display metadata is localized without duplicating the currency ca
 });
 
 test('housing price parser consumes expanded currency names without a second parser', () => {
-  assert.deepEqual(parseHousingPrice('Аренда 950 CHF в месяц', 'EUR'), {
-    price: 950,
-    currency: 'CHF',
-  });
-  assert.deepEqual(parseHousingPrice('Rent 1200 CAD monthly', 'USD'), {
-    price: 1200,
-    currency: 'CAD',
-  });
+  assert.deepEqual(parseHousingPrice('Аренда 950 CHF в месяц', 'EUR'), { amount: 950, currency: 'CHF', approximate: false });
+  assert.deepEqual(parseHousingPrice('Rent 1200 CAD monthly', 'USD'), { amount: 1200, currency: 'CAD', approximate: false });
 });

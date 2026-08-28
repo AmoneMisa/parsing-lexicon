@@ -6,6 +6,7 @@ import { TASHKENT_LANDMARKS } from './tashkent-pois.js';
 import { parseHousingRoomCount, parseHousingFloor, parseHousingAreas } from './housing-structured.js';
 import { parseHousingListingFields } from './housing-listing-fields.js';
 import { parseHousingResidentialComplex } from './housing-text.js';
+import { parseHousingAddress } from './housing-address.js';
 import { HOUSING_LANDMARK_EXTENSIONS, HOUSING_POI_EXTENSIONS } from './housing-poi-extensions.js';
 
 const GENERIC_CATEGORY = Object.freeze({
@@ -131,7 +132,26 @@ export function parseHousingPerPersonPrice(value, { country = '' } = {}) {
   if (scale === 'ming' || scale === 'минг') amount *= 1000;
   else if (scale === 'million' || scale === 'mln' || scale === 'млн') amount *= 1_000_000;
   const currency = String(country || '').toUpperCase() === 'UZ' || /(?:ming|минг)/iu.test(match[0]) ? 'UZS' : null;
-  return deepFreeze({ amount, currency, scope: 'person' });
+  const approximate = /около|примерно|~|≈/iu.test(text);
+  return deepFreeze({ amount, currency, approximate, scope: 'person' });
+}
+
+const COMMISSION_AMOUNT_RE = /(?:риэлтор\p{L}*|риелтор\p{L}*|маклер(?:у|ской)?|агентств\p{L}*|makler(?:ga)?|vositachi(?:ga)?|commission|broker(?:'s)?\s+fee)[^\r\n\d]{0,24}(\d{1,3}(?:[\s.,]\d{3})*|\d+(?:[.,]\d+)?)\s*(\$|usd|€|eur|сум|uzs|₴|грн|uah|тг|kzt)?/iu;
+const COMMISSION_AMOUNT_LEADING_RE = /(\d{1,3}(?:[\s.,]\d{3})*|\d+(?:[.,]\d+)?)\s*(\$|usd|€|eur|сум|uzs|₴|грн|uah|тг|kzt)?[^\r\n\d]{0,24}(?:риэлтор\p{L}*|риелтор\p{L}*|маклер(?:у|ской)?|агентств\p{L}*|makler(?:ga)?|vositachi(?:ga)?|commission|broker(?:'s)?\s+fee)/iu;
+
+export function parseHousingCommissionAmount(value) {
+  const text = normalizeUnicode(value ?? '');
+  const match = text.match(COMMISSION_AMOUNT_RE) || text.match(COMMISSION_AMOUNT_LEADING_RE);
+  if (!match) return null;
+  const amount = Number(String(match[1]).replace(/\s+/g, '').replace(',', '.'));
+  if (!Number.isFinite(amount) || amount <= 0) return null;
+  const raw = (match[2] || '').toLocaleLowerCase();
+  const currency = /\$|usd/u.test(raw) ? 'USD'
+    : /€|eur/u.test(raw) ? 'EUR'
+      : /сум|uzs/u.test(raw) ? 'UZS'
+        : /₴|грн|uah/u.test(raw) ? 'UAH'
+          : /тг|kzt/u.test(raw) ? 'KZT' : null;
+  return deepFreeze({ amount, currency, approximate: /около|примерно|~|≈/iu.test(match[0]) });
 }
 
 export function parseHousingTransitRoutes(value) {
@@ -177,6 +197,8 @@ export function parseHousingListingEnrichment(value, { country = '' } = {}) {
   const metro = canonicalTashkentMetro(text);
   const parsedRc = specificResidentialComplex(text) || parseHousingResidentialComplex(text);
   const commission = parseHousingCommission(text);
+  const commissionAmount = parseHousingCommissionAmount(text);
+  const address = parseHousingAddress(text);
 
   return deepFreeze({
     rooms: parseHousingRoomCount(text),
@@ -208,14 +230,14 @@ export function parseHousingListingEnrichment(value, { country = '' } = {}) {
     utilitiesAmount: listingFields.utilitiesAmount ?? null,
     commission,
     commissionPercent: commission === false ? 0 : null,
+    commissionAmount,
     audience: audience.primary,
     audienceAlternatives: audience.alternatives,
     roomOnly: parseHousingRoomShare(text),
     studentTarget: parseHousingStudentTarget(text),
     landlordPresent: parseHousingLandlordPresent(text),
     priceScope: perPersonPrice?.scope || null,
-    perPersonPriceAmount: perPersonPrice?.amount ?? null,
-    perPersonPriceCurrency: perPersonPrice?.currency ?? null,
+    perPersonPrice,
     transitRoutes: parseHousingTransitRoutes(text),
     walkMinutes: walkMinutes(text),
     nearby: parseHousingNearby(text),
@@ -223,5 +245,9 @@ export function parseHousingListingEnrichment(value, { country = '' } = {}) {
     district: district || null,
     metro: metro || null,
     residenceComplex: parsedRc || null,
+    address: address.address,
+    addressStreet: address.street,
+    addressHouseNumber: address.houseNumber,
+    addressBuilding: address.building,
   });
 }

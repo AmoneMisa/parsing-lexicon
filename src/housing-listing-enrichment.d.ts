@@ -1,5 +1,6 @@
 export type HousingAudience = 'women' | 'men' | 'family';
-export interface HousingPerPersonPrice { amount: number; currency: string | null; scope: 'person' }
+export interface HousingPerPersonPrice { amount: number; currency: string | null; approximate: boolean; scope: 'person' }
+export interface HousingCommissionAmount { amount: number; currency: string | null; approximate: boolean }
 export interface HousingListingEnrichment {
   rooms?: number | null;
   areaSqm?: number | null;
@@ -30,14 +31,14 @@ export interface HousingListingEnrichment {
   utilitiesAmount?: { amount: number; currency: string | null; approximate?: boolean } | null;
   commission?: boolean | null;
   commissionPercent?: number | null;
+  commissionAmount?: HousingCommissionAmount | null;
   audience?: HousingAudience | null;
   audienceAlternatives?: readonly HousingAudience[];
   roomOnly?: boolean;
   studentTarget?: boolean;
   landlordPresent?: boolean;
   priceScope?: 'person' | null;
-  perPersonPriceAmount?: number | null;
-  perPersonPriceCurrency?: string | null;
+  perPersonPrice?: HousingPerPersonPrice | null;
   transitRoutes?: readonly string[];
   walkMinutes?: number | null;
   nearby?: readonly string[];
@@ -45,6 +46,10 @@ export interface HousingListingEnrichment {
   district?: string | null;
   metro?: string | null;
   residenceComplex?: string | null;
+  address?: string | null;
+  addressStreet?: string | null;
+  addressHouseNumber?: string | null;
+  addressBuilding?: string | null;
 }
 
 export function parseHousingNearby(value: unknown): readonly string[];
@@ -53,6 +58,7 @@ export function parseHousingRoomShare(value: unknown): boolean;
 export function parseHousingLandlordPresent(value: unknown): boolean;
 export function parseHousingStudentTarget(value: unknown): boolean;
 export function parseHousingCommission(value: unknown): boolean | null;
+export function parseHousingCommissionAmount(value: unknown): HousingCommissionAmount | null;
 export function parseHousingPerPersonPrice(value: unknown, options?: { country?: string }): HousingPerPersonPrice | null;
 export function parseHousingTransitRoutes(value: unknown): readonly string[];
 export function parseHousingObservedAmenities(value: unknown): readonly string[];

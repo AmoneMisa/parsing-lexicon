@@ -79,6 +79,13 @@ export function parseHiringSalaryWithContext(value, options = {}) {
 
 const VACANCY_COMPENSATION_RE = /(?:salary|salary\s+range|base\s+pay|pay\s+range|annual\s+pay|compensation(?:\s+range)?|заработн\p{L}*\s+плат\p{L}*|зарплат\p{L}*|оклад\p{L}*|вилка\s+оплат\p{L}*|оплата\s+труда|компенсац\p{L}*|ставка)/giu;
 
+// AI-recruiting/staffing postings (e.g. Mercor) routinely mention funding,
+// valuation or revenue figures in the same listing as the actual salary. A
+// wide compensation window can grab "$50M Series B" instead of the real pay
+// range, so when this noise is present anywhere in the text, narrow the
+// window around each compensation keyword to keep only nearby money.
+const VACANCY_COMPENSATION_NOISE_RE = /(?:valuation|funding|raised\s+\$|series\s+[a-e]\b|\bARR\b|revenue|GMV|market\s+cap|equity\s+grant|stock\s+options?)/iu;
+
 /**
  * Vacancy descriptions often mention unrelated money: company revenue, customer
  * spend, relocation bonuses, benchmark payouts, etc. Do not turn those amounts
@@ -90,10 +97,12 @@ export function parseHiringVacancySalary(value, options = {}) {
   if (!text) return null;
   if (text.length <= 240) return parseHiringSalaryWithContext(text, options);
 
+  const radius = VACANCY_COMPENSATION_NOISE_RE.test(text) ? 60 : 280;
+
   VACANCY_COMPENSATION_RE.lastIndex = 0;
   for (const match of text.matchAll(VACANCY_COMPENSATION_RE)) {
     const start = match.index ?? 0;
-    const window = text.slice(Math.max(0, start - 80), Math.min(text.length, start + match[0].length + 280));
+    const window = text.slice(Math.max(0, start - 80), Math.min(text.length, start + match[0].length + radius));
     const parsed = parseHiringSalaryWithContext(window, options);
     if (parsed && (parsed.min != null || parsed.max != null)) return parsed;
   }
