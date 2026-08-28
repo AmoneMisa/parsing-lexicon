@@ -78,6 +78,20 @@ test('Odesa legacy coverage belongs to the canonical major owner', () => {
   assert.equal(match('Odesa', 'landmarks', 'Аркадия'), 'Arcadia');
 });
 
+test('Dnipro legacy coverage belongs to the canonical major owner', () => {
+  assert.equal(match('Dnipro', 'microdistricts', 'Калиновский'), 'Kalinovskyi');
+  assert.equal(match('Dnipro', 'residentialComplexes', 'Феличита'), 'Felicita');
+  assert.equal(match('Dnipro', 'residentialComplexes', 'Женева ЖК'), 'Geneva');
+  assert.equal(match('Dnipro', 'residentialComplexes', 'ЖК Маяк'), 'Mayak');
+  assert.equal(match('Dnipro', 'residentialComplexes', 'Манхеттен Днепр'), 'Manhattan');
+  assert.equal(match('Dnipro', 'residentialComplexes', 'ЖК Салют'), 'Salyut');
+  assert.equal(match('Dnipro', 'streets', 'проспект Карла Маркса'), 'Dmytra Yavornytskoho Avenue');
+  assert.equal(match('Dnipro', 'streets', 'Набережная Победы'), 'Naberezhna Peremohy');
+  assert.equal(match('Dnipro', 'streets', 'проспект Александра Поля'), 'Oleksandra Polia Avenue');
+  assert.equal(match('Dnipro', 'streets', 'Правди проспект'), 'Slobozhanskyi Avenue');
+  assert.equal(match('Dnipro', 'landmarks', 'Днепр-Главный'), 'Dnipro Railway Station');
+});
+
 test('regional Ukraine data belongs to the canonical registry', () => {
   assert.equal(match('Rivne', 'microdistricts', 'Льнокомбинат'), 'Lonokombinat');
   assert.equal(match('Kherson', 'districts', 'Суворовский район'), 'Tsentralnyi');
