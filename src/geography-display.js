@@ -49,7 +49,7 @@ export const GEOGRAPHY_DISPLAY_NAMES = Object.freeze({
     district: Object.freeze({
       Chilanzar: 'Чиланзар', Yunusabad: 'Юнусабад', 'Mirzo Ulugbek': 'Мирзо-Улугбек',
       Yakkasaray: 'Яккасарай', Shaykhantahur: 'Шайхантахур', Yashnobod: 'Яшнабад', Sergeli: 'Сергели',
-      Uchtepa: 'Учтепа', Mirobod: 'Мирабад', Bektemir: 'Бектемир', Olmazor: 'Алмазар',
+      Uchtepa: 'Учтепа', Mirobod: 'Мирабад', Bektemir: 'Бектемир', Almazar: 'Алмазар', Yangihayot: 'Янгихаёт',
       Almaly: 'Алмалинский', Bostandyk: 'Бостандыкский', Medeu: 'Медеуский', Auezov: 'Ауэзовский',
       Turksib: 'Турксибский', Nauryzbay: 'Наурызбайский', Alatau: 'Алатауский', Zhetysu: 'Жетысуский',
       Podil: 'Подол', Pechersk: 'Печерск', Pecherskyi: 'Печерский', Obolon: 'Оболонь',
