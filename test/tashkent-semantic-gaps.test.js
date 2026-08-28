@@ -39,3 +39,64 @@ test('Tashkent matcher preserves umbrella-area vs numbered-block semantics', () 
   const sputnik = matchCentralAsiaLocationEntities('Sputnik massivi, Toshkent', 'UZ', 'Tashkent');
   assert.ok(names(sputnik, 'microdistrict').includes('Sputnik'));
 });
+
+test('Tashkent current mavze and daha names are canonical local areas', () => {
+  const tashkent = locationCities('UZ').Tashkent;
+  const localAreas = new Map((tashkent.localAreas || []).map((entry) => [entry.name, entry]));
+
+  for (const [name, parent] of [
+    ['Suvsoz-1', 'Bektemir'],
+    ['Suvsoz-5', 'Bektemir'],
+    ["Bo'z-2", 'Mirzo Ulugbek'],
+    ['Ahmad Yugnakiy', 'Mirzo Ulugbek'],
+    ['Humoyun', 'Mirzo Ulugbek'],
+    ['Feruza', 'Mirzo Ulugbek'],
+    ['Quruvchi', 'Sergeli'],
+    ["Bog'ko'cha", 'Shaykhantahur'],
+    ['Gulobod', 'Shaykhantahur'],
+    ["Beshqo'rg'on-4", 'Almazar'],
+    ["Qo'yliq-4", 'Mirobod'],
+    ["Qo'yliq-7", 'Sergeli'],
+    ['Parkent-Riyoziy', 'Yashnobod'],
+    ['Parkent-Siolkovskiy', 'Yashnobod'],
+    ['Qalqon', 'Yashnobod'],
+    ["Bog'bon", 'Yashnobod'],
+    ['Aviasozlar-4', 'Yashnobod'],
+  ]) {
+    assert.equal(localAreas.get(name)?.parent, parent, name);
+    assert.equal(localAreas.get(name)?.type, 'local_area', name);
+  }
+});
+
+test('Tashkent matcher resolves historical and housing locality aliases', () => {
+  const cases = [
+    ['Водник 1 массив, Ташкент', 'Suvsoz-1'],
+    ['Солнечный массив, Ташкент', 'Ahmad Yugnakiy'],
+    ['Ясный массив, Ташкент', 'Humoyun'],
+    ['Северо-Восток массив, Ташкент', 'Feruza'],
+    ['Ц-27 массив, Ташкент', "Bog'ko'cha"],
+    ['Ц-26 массив, Ташкент', 'Gulobod'],
+    ['Куйлюк 6 массив, Ташкент', "Qo'yliq-6"],
+    ['Мавлоно Риёзи массив, Ташкент', 'Parkent-Riyoziy'],
+    ['Harbiylar-58a mavzesi, Toshkent', 'Qalqon'],
+    ['Normuhammedov mavzesi, Toshkent', "Bog'bon"],
+    ['Лисунова 1а массив, Ташкент', 'Aviasozlar-2'],
+    ['Академгородок, Ташкент', 'Akademgorodok'],
+    ['Ц-7, Ташкент', 'C-7'],
+  ];
+
+  for (const [text, expected] of cases) {
+    const result = matchCentralAsiaLocationEntities(text, 'UZ', 'Tashkent');
+    assert.ok(names(result, 'local_area').includes(expected), `${text} -> ${expected}`);
+  }
+});
+
+test('same-name mahalla and mavze stay distinct under explicit context', () => {
+  const mahalla = matchCentralAsiaLocationEntities('Qalqon mahallasi, Toshkent', 'UZ', 'Tashkent');
+  assert.ok(names(mahalla, 'mahalla').includes('Qalqon'));
+  assert.equal(names(mahalla, 'local_area').includes('Qalqon'), false);
+
+  const mavze = matchCentralAsiaLocationEntities('Qalqon mavzesi, Toshkent', 'UZ', 'Tashkent');
+  assert.ok(names(mavze, 'local_area').includes('Qalqon'));
+  assert.equal(names(mavze, 'mahalla').includes('Qalqon'), false);
+});
