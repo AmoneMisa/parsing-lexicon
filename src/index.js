@@ -40,6 +40,8 @@ export * from './housing-safety.js';
 export * from './housing-title.js';
 export * from './housing-language.js';
 export * from './housing-structured.js';
+export * from './housing-source-aliases.js';
+export * from './housing-text.js';
 export * from './hiring.js';
 export * from './hiring-languages.js';
 export * from './hiring-context.js';
