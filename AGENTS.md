@@ -2,6 +2,12 @@
 
 This file is mandatory reading before changing parsing, geography, location dictionaries, or public exports in this repository.
 
+## This is the canonical home for all consumer parsing/vocabulary
+
+Free-text parsing, semantic classification, and multilingual vocabulary for housing and hiring data must live here, not in `flat-finder` or `Personal Site` (or any other consumer). Those repos consume this package's exports and are responsible for display only.
+
+If a consumer needs to parse something this package cannot yet do, the fix belongs here — add or extend the parser/vocabulary in the correct existing module, bump the version, and let the consumer bump its pin. Do not let a consumer grow a local "compatibility" regex layer to patch a gap or bug in an older pinned version instead of fixing it here (this happened with `hiringLexicon.ts` in Personal Site against parsing-lexicon <=0.2.7 and was deleted once the underlying bugs were fixed in 0.2.14 — that pattern should not recur).
+
 ## Repository workflow
 
 Do not merge any pull request into `master` without explicit user approval in the current task/conversation. Preparing a branch or PR is allowed; merging is not.
