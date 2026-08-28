@@ -40,6 +40,14 @@ export function extractCandidateName(value) {
     .trim().replace(/\s{2,}/g, ' ').slice(0, 100);
 }
 
+const HIDDEN_NAME_RE = /^(?:[?？��]{2,}|(?:фио|ф\.и\.о\.?|піб|имя|ім['’ʼ]я|name|full name)?\s*(?:скрыт\p{L}*|прихован\p{L}*|hidden|yashiril\p{L}*|ascuns)|не\s+указан\p{L}*|not\s+specified|anonymous|аноним\p{L}*|onlayn|online|resume|резюме)$/iu;
+
+/** Detects a source board's "name hidden"/anonymous placeholder value. */
+export function isCandidateNameHidden(value) {
+  const text = String(value ?? '').trim();
+  return text ? HIDDEN_NAME_RE.test(text) : false;
+}
+
 export function extractCandidateAge(value, now = new Date()) {
   const text = String(value || '');
   const patterns = [
