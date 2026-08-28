@@ -1,6 +1,7 @@
 import { deepFreeze } from './lexicon-core.js';
 import { findAllCanonical, findCanonical, normalizeUnicode } from './normalization.js';
 import { CURRENCY_TERMS } from './money.js';
+import { moneyCurrencyFromText } from './money-core.js';
 import { DEPOSIT_TERMS, SELLER_TERMS, UTILITY_TERMS } from './housing.js';
 import { GENERIC_LANDMARK_TERMS } from './landmarks.js';
 import { LOCATION_RELATIONS, parseHousingContext } from './housing-context.js';
@@ -36,7 +37,13 @@ function toNumber(value) {
 }
 
 function currencyNear(text) {
-  return findCanonical(text, CURRENCY_TERMS, { partial: true })?.canonical || null;
+  // findCanonical's partial match requires the alias to be its own
+  // space-delimited token, so a currency symbol glued directly to its
+  // number with no space ("500.$", "350$") never matches. Fall back to
+  // moneyCurrencyFromText, which detects symbols and codes independent of
+  // surrounding whitespace (used by parseHousingPrice for the same reason).
+  return findCanonical(text, CURRENCY_TERMS, { partial: true })?.canonical
+    || moneyCurrencyFromText(text) || null;
 }
 
 export function parseHousingRoomCount(value) {

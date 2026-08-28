@@ -9,7 +9,7 @@ import {
 } from './money-core.js';
 import { maskPhoneLikeSpans } from './contact.js';
 
-const PRICE_KEYWORD = '(?:цена|ціна|нарх(?:и)?|narx|price|стоимост[ьи]|аренд(?:а|ная\\s+плата)?|rent)';
+const PRICE_KEYWORD = '(?:цена|ціна|нарх(?:и)?|narx(?:i)?|price|стоимост[ьи]|аренд(?:а|ная\\s+плата)?|rent)';
 // moneyCurrencyPattern() includes short codes (cad, ron, aed...) with no
 // boundary of its own, so "100 cadastru" would otherwise read "cad" off an
 // unrelated word as the Canadian dollar. Only the side facing away from the
