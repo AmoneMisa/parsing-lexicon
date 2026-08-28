@@ -79,6 +79,23 @@ test('Tashkent current mavze and daha names are canonical local areas', () => {
     ['Asalobod-2', 'Yashnobod'],
     ['ToshGRES', 'Yunusabad'],
     ["Sug'diyona", 'Sergeli'],
+    ['Karakamysh-2/4', 'Almazar'],
+    ['Chimbay', 'Almazar'],
+    ['Medgorodok', 'Almazar'],
+    ['Vuzgorodok', 'Almazar'],
+    ['Hospitalny', 'Mirobod'],
+    ['Movarounnahr', 'Mirobod'],
+    ['Yalangach', 'Mirzo Ulugbek'],
+    ['Yangi Sergeli', 'Sergeli'],
+    ['Nakkoshlik', 'Chilanzar'],
+    ['Beshagach', 'Chilanzar'],
+    ['Beltepa', 'Shaykhantahur'],
+    ['Jangoh', 'Shaykhantahur'],
+    ['Karatash', 'Shaykhantahur'],
+    ['Bashlyk', 'Yakkasaray'],
+    ['Kushbegi', 'Yakkasaray'],
+    ['Alimkent', 'Yashnobod'],
+    ['Tuzel-4', 'Yashnobod'],
   ]) {
     assert.equal(localAreas.get(name)?.parent, parent, name);
     assert.equal(localAreas.get(name)?.type, 'local_area', name);
@@ -106,6 +123,12 @@ test('Tashkent matcher resolves historical and housing locality aliases', () => 
     ['Asalabad-2 mavzesi, Toshkent', 'Asalobod-2'],
     ['ТашГРЭС массив, Ташкент', 'ToshGRES'],
     ['Согдиана массив, Ташкент', "Sug'diyona"],
+    ['Қорақамиш 2/5, Toshkent', 'Karakamysh-2/5'],
+    ['Вуз городок, Ташкент', 'Vuzgorodok'],
+    ['Госпиталка, Ташкент', 'Hospitalny'],
+    ['Бешагач, Ташкент', 'Beshagach'],
+    ['Qoratosh mavzesi, Toshkent', 'Karatash'],
+    ['Тузель 4, Ташкент', 'Tuzel-4'],
   ];
 
   for (const [text, expected] of cases) {
