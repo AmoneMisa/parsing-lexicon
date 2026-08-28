@@ -31,8 +31,6 @@ const TASHKENT_UNSUPPORTED_SEED_MICRODISTRICTS = new Set([
   'Yunusabad-21',
   'Yunusabad-22',
 ]);
-const TASHKENT_SEED_SPUTNIK = (BASE_LOCATION_DICTIONARIES.UZ?.Tashkent?.microdistricts || [])
-  .find(({ name }) => name === 'Sputnik');
 
 // The UZ seed is compatibility storage. In 0.3 semantic corrections are
 // applied before merging it with the canonical Uzbekistan extension layer.
@@ -42,12 +40,8 @@ const UZ_BASE_LOCATION_DICTIONARIES = Object.freeze({
     ...(BASE_LOCATION_DICTIONARIES.UZ?.Tashkent || {}),
     microdistricts: Object.freeze(
       (BASE_LOCATION_DICTIONARIES.UZ?.Tashkent?.microdistricts || [])
-        .filter(({ name }) => name !== 'Sputnik' && !TASHKENT_UNSUPPORTED_SEED_MICRODISTRICTS.has(name)),
+        .filter(({ name }) => !TASHKENT_UNSUPPORTED_SEED_MICRODISTRICTS.has(name)),
     ),
-    localAreas: Object.freeze([
-      ...(BASE_LOCATION_DICTIONARIES.UZ?.Tashkent?.localAreas || []),
-      ...(TASHKENT_SEED_SPUTNIK ? [Object.freeze({ ...TASHKENT_SEED_SPUTNIK, type: 'local_area', parent: 'Yangihayot' })] : []),
-    ]),
     residentialComplexes: Object.freeze(
       (BASE_LOCATION_DICTIONARIES.UZ?.Tashkent?.residentialComplexes || [])
         .filter(({ name }) => name !== 'Tashkent City'),
