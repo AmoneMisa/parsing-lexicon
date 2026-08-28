@@ -1,6 +1,6 @@
 const PHONE_RUN_RE = /\+?\d[\d\s().-]{7,}\d/gu;
 const ADDRESS_LABEL_RE = /(?:адрес|адреса|адресація|адресация|manzil|address|adresă|adresa)\s*[:=\-–—]\s*/iu;
-const PREFIX_STREET_MARKER = String.raw`(?:(?:ул(?:ица)?|вул(?:иця)?|просп(?:ект)?|пр-т|переул(?:ок)?|пров(?:улок)?|проезд|наб(?:ережная)?|шоссе|str(?:ada)?|street|st|avenue|ave|road|rd|көше)\.?)`;
+const PREFIX_STREET_MARKER = String.raw`(?:(?:ул(?:ица)?|вул(?:иця)?|пр|просп(?:ект)?|пр-т|переул(?:ок)?|пров(?:улок)?|проезд|наб(?:ережная)?|шоссе|str(?:ada)?|street|st|avenue|ave|road|rd|көше)\.?)`;
 const POSTFIX_STREET_MARKER = String.raw`(?:ko['’ʼ\u02bc]?cha(?:si)?|кўча(?:си)?|коча(?:си)?|kocha(?:si)?)`;
 const POSTFIX_STREET_TYPE = String.raw`(?:вулиця|улица|провулок|переулок|проспект|бульвар|набережна|набережная|шосе|шоссе|площа|площадь|узвіз|спуск|алея|аллея|дорога|тупик)`;
 const HOUSE_MARKER = String.raw`(?:дом|д\.|будинок|буд\.|house|h\.|uy|уй|nr\.?|no\.?|№)`;
@@ -8,6 +8,8 @@ const BUILDING_MARKER = String.raw`(?:корп(?:ус)?\.?|к\.|строен(?:�
 const NUMBER_TOKEN = String.raw`\d{1,5}(?:[-\/]?[\p{L}])?(?:[\/-]\d{1,4}(?:[-\/]?[\p{L}])?)?`;
 const STREET_WORD = String.raw`[\p{L}'’.-]{2,48}`;
 const PROPERTY_AREA_LINE_RE = /(?:^|[^\p{L}\p{N}_])(?:(?:общая|жилая|полезная|кухонная)\s+площадь|площадь\s+(?:квартиры|дома|комнаты))(?=$|[^\p{L}\p{N}_])/iu;
+const NON_ADDRESS_BARE_RE = /^(?:(?:(?:перш(?:ий|ому)|перв(?:ый|ом)|друг(?:ий|ому)|втор(?:ой|ом)|трет(?:ій|ьем|ий)|\d{1,3}(?:-?й)?)\s+(?:поверх|этаж|floor|qavat|қабат))|(?:поверх|этаж|floor|qavat|қабат)(?:\s|$)|(?:район|р-н|рн|мікрорайон|микрорайон|мкр\.?|жк|ж\.к\.|жилой\s+комплекс|житловий\s+комплекс|residential\s+complex)(?:\s|$)|(?:недалеко|поруч|рядом|біля|около|возле)(?=$|[^\p{L}\p{N}_])|(?:зупинка|остановка|станція|станция)(?:\s|$))/iu;
+const DELIMITED_STREET_REJECT_RE = /(?:^|\s)(?:город|місто|city|район|р-н|рн|мікрорайон|микрорайон|мкр|жк|метро|поверх|этаж|floor|qavat|кімнат\p{L}*|комнат\p{L}*|квартира|квартири|квартиры|оренда|аренда|продаж\p{L}*|цена|ціна|площад\p{L}*|площа|зупинка|остановка)(?:\s|$)/iu;
 
 function clean(value) {
   return String(value ?? '')
@@ -113,8 +115,6 @@ function explicitStreetAddress(text) {
     .slice(0, 12);
 
   for (const line of lines) {
-    // Property measurements such as "Общая площадь 51,7 кв.м" used to be
-    // mistaken for a named square followed by house number 51.
     if (PROPERTY_AREA_LINE_RE.test(line)) continue;
 
     const postfixTyped = postfixTypedStreetAddress(line);
@@ -174,13 +174,44 @@ function labelledAddress(text) {
   return parseHousingAddress(line, { allowBare: true });
 }
 
+function plausibleDelimitedStreet(value) {
+  const segment = clean(value);
+  if (!segment || segment.length > 80 || DELIMITED_STREET_REJECT_RE.test(segment)) return false;
+  if (/\d/u.test(segment) || !/\p{L}{2,}/u.test(segment)) return false;
+  const words = segment.split(/\s+/u);
+  if (words.length < 1 || words.length > 5) return false;
+  return words.every((word) => /^[\p{L}'’.-]{2,48}$/u.test(word));
+}
+
+function delimitedBareAddress(text) {
+  const lines = String(text).split(/[\r\n|]/u).slice(0, 12);
+  for (const rawLine of lines) {
+    const segments = rawLine.split(/[,;]/u).map(clean).filter(Boolean);
+    for (let i = 0; i < segments.length - 1; i += 1) {
+      if (!plausibleDelimitedStreet(segments[i])) continue;
+      const house = segments[i + 1].match(new RegExp(`^(${NUMBER_TOKEN})$`, 'iu'));
+      if (!house) continue;
+      const street = segments[i];
+      const houseNumber = house[1];
+      let building = null;
+      const next = segments[i + 2] || '';
+      const buildingMatch = next.match(new RegExp(`^${BUILDING_MARKER}\\s*(${NUMBER_TOKEN})$`, 'iu'));
+      if (buildingMatch) building = buildingMatch[1];
+      const address = composeHousingAddress({ street, houseNumber, building });
+      return result(address, street, houseNumber, building, 0.92);
+    }
+  }
+  return null;
+}
+
 function bareAddress(text) {
-  if (PROPERTY_AREA_LINE_RE.test(text)) return null;
-  const tail = splitAddressTail(text);
+  const cleaned = clean(text);
+  if (!cleaned || PROPERTY_AREA_LINE_RE.test(cleaned) || NON_ADDRESS_BARE_RE.test(cleaned)) return null;
+  const tail = splitAddressTail(cleaned);
   if (!tail) return null;
   if (/^(?:центр|centre|center)$/iu.test(compactStreet(tail.street) || '')) return null;
   const confidence = tail.houseNumber ? 0.85 : 0.55;
-  return result(text, tail.street, tail.houseNumber, tail.building, confidence);
+  return result(cleaned, tail.street, tail.houseNumber, tail.building, confidence);
 }
 
 /**
@@ -190,6 +221,9 @@ function bareAddress(text) {
  * `knownStreet` may be supplied when a location dictionary has already
  * canonicalized the street. In that mode the parser only accepts a house/building
  * number immediately adjacent to that exact street mention.
+ *
+ * `allowDelimitedBare` accepts only a short `street, house-number` pair and is
+ * intended for consumers that already have strong city/area context.
  *
  * `allowBare` should be used only when the input is already known to be an
  * address field (for example a source-provided address), not on arbitrary post
@@ -210,7 +244,12 @@ export function parseHousingAddress(value, options = {}) {
   const explicit = explicitStreetAddress(text);
   if (explicit) return explicit;
 
-  if (options.allowBare === true) return bareAddress(text) || result(text);
+  if (options.allowDelimitedBare === true) {
+    const delimited = delimitedBareAddress(text);
+    if (delimited) return delimited;
+  }
+
+  if (options.allowBare === true) return bareAddress(text) || result(null);
   return result(null);
 }
 

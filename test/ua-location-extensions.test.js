@@ -54,6 +54,11 @@ test('regional Ukraine data belongs to the canonical registry', () => {
   assert.equal(match('Bila Tserkva', 'landmarks', 'дендропарк Олександрія'), 'Oleksandriia Arboretum');
 });
 
+test('secondary Ukraine cities keep Dubno Tsukrovyi aliases in the canonical registry', () => {
+  assert.equal(match('Dubno', 'microdistricts', 'район Цукровий'), 'Tsukrovyi');
+  assert.equal(match('Dubno', 'microdistricts', 'Сахарный район'), 'Tsukrovyi');
+});
+
 test('historical district aliases resolve to one current canonical district', () => {
   assert.equal(match('Zaporizhzhia', 'districts', 'Комунарський район'), 'Kosmichnyi');
   assert.deepEqual(

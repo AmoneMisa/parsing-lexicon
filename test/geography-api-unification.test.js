@@ -26,3 +26,9 @@ test('legacy geography names and geo subpath delegate to canonical ownership', (
   assert.equal(geoCompat.CITIES_BY_COUNTRY, geography.CITIES_BY_COUNTRY);
   assert.equal(geoCompat.canonicalCity('Самарканд'), 'Samarkand');
 });
+
+test('presentation names localize Ukraine canonical keys without changing storage values', () => {
+  assert.equal(api.geographyDisplayName('Dubno', 'ru', 'city'), 'Дубно');
+  assert.equal(api.geographyDisplayName('Industrialnyi', 'ru', 'district'), 'Индустриальный');
+  assert.equal(api.geographyDisplayName('Tsukrovyi', 'ru', 'microdistrict'), 'Сахарный');
+});
