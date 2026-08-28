@@ -13,12 +13,13 @@ function entries(rows = [], defaults = {}) {
   }));
 }
 
-function city({ districts = [], mahallas = [], microdistricts = [], localAreas = [], residentialComplexes = [], landmarks = [], suburbs = [] }) {
+function city({ districts = [], mahallas = [], microdistricts = [], localAreas = [], developmentAreas = [], residentialComplexes = [], landmarks = [], suburbs = [] }) {
   return Object.freeze({
     ...(districts.length ? { districts: entries(districts, { entityType: 'district', country: 'UZ' }) } : {}),
     ...(mahallas.length ? { mahallas: entries(mahallas, { entityType: 'mahalla', country: 'UZ' }) } : {}),
     ...(microdistricts.length ? { microdistricts: entries(microdistricts, { entityType: 'microdistrict', country: 'UZ' }) } : {}),
     ...(localAreas.length ? { localAreas: entries(localAreas, { entityType: 'local_area', country: 'UZ' }) } : {}),
+    ...(developmentAreas.length ? { developmentAreas: entries(developmentAreas, { entityType: 'development_area', country: 'UZ' }) } : {}),
     ...(residentialComplexes.length ? { residentialComplexes: entries(residentialComplexes, { entityType: 'residential_complex', country: 'UZ' }) } : {}),
     ...(landmarks.length ? { landmarks: entries(landmarks, { entityType: 'poi', country: 'UZ' }) } : {}),
     ...(suburbs.length ? { suburbs: entries(suburbs, { entityType: 'suburb', country: 'UZ' }) } : {}),
@@ -57,8 +58,38 @@ const nukusMahallas = NUKUS_MFY_NAMES.map((name) => ({
 
 export const UZ_LOCATION_EXTENSIONS = Object.freeze({
   Tashkent: city({
+    mahallas: [
+      { name: 'Khastimam', aliases: ['Хастимом'], parent: 'Almazar' },
+      { name: 'Yangi Tashkent', aliases: ['Yangi Toshkent','Янги Тошкент','Янги Ташкент'], parent: 'Almazar' },
+      { name: 'Umid', aliases: ['Умид'], parent: 'Almazar' },
+      { name: 'Kashgar', aliases: ['Qashqar','Кашгар'], parent: 'Yunusabad' },
+      { name: 'Buyuk Turan', aliases: ['Buyuk Turon','Буюк Турон','Буюк Туран'], parent: 'Yunusabad' },
+      { name: 'Minor', aliases: ['Минор'], parent: 'Yunusabad' },
+      { name: 'Labzak', aliases: ['Лабзак'], parent: 'Shaykhantahur' },
+      { name: 'Rakat', aliases: ['Ракат'], parent: 'Yakkasaray' },
+      { name: 'Belaryk', aliases: ['Беларык'], parent: 'Yakkasaray' },
+      { name: 'Shahjahan', aliases: ['Shahjahon','Шахжахон'], parent: 'Yakkasaray' },
+      { name: 'Mukimiy', aliases: ['Muqimiy','Мукими','Муқимий'], parent: 'Yakkasaray' },
+      { name: 'Birlashgan', aliases: ['Бирлашган'], parent: 'Yashnobod' },
+      { name: 'Nadyra', aliases: ['Nodira','Нодира'], parent: 'Yashnobod' },
+      { name: 'Makhmur', aliases: ['Maxmur','Махмур'], parent: 'Yashnobod' },
+      { name: 'Munavvarqori', aliases: ['Munavvar Qori','Мунаввар Қори','Мунаввар Кори'], parent: 'Mirzo Ulugbek' },
+      { name: 'Beshkapa', aliases: ['Бешкапа'], parent: 'Mirzo Ulugbek' },
+      { name: 'Chashtepa', aliases: ['Чаштепа'], parent: 'Yangihayot' },
+      { name: 'Yangi Darhan', aliases: ['Yangi Darxon','Янги Дархан','Янги Дархон'], parent: 'Yangihayot' },
+    ],
     microdistricts: [
       ['Qorasuv', 'Qorasuv massivi', 'Korasuv massivi', 'Корасув Массиви', 'Корасув массиви', 'Карасу массив', 'Карасу массиви', 'Қорасув массиви'],
+      { name: 'Sergeli-3A', aliases: ['Sergeli 3A','Сергели-3А','Сергели 3А','Сергели 3А массив','Сергели-3А массив'], parent: 'Yangihayot' },
+      { name: 'Sergeli-5A', aliases: ['Sergeli 5A','Сергели-5А','Сергели 5А','Сергели 5А массив','Сергели-5А массив'], parent: 'Yangihayot' },
+      { name: 'Sergeli-7A', aliases: ['Sergeli 7A','Сергели-7А','Сергели 7А','Сергели 7А массив','Сергели-7А массив'], parent: 'Yangihayot' },
+    ],
+    localAreas: [
+      { name: 'Yangidarhan-1', aliases: ['Yangi Darhan-1','Yangi Darxon-1','Янги Дархан-1','Янги Дархон-1'], parent: 'Yangihayot' },
+      { name: 'Yangidarhan-2', aliases: ['Yangi Darhan-2','Yangi Darxon-2','Янги Дархан-2','Янги Дархон-2'], parent: 'Yangihayot' },
+    ],
+    developmentAreas: [
+      ['Tashkent City', 'Ташкент Сити', 'Toshkent City', 'Tashkent City IBC'],
     ],
   }),
 

@@ -47,6 +47,24 @@ test('parseHousingCommissionAmount ignores listings with no monetary commission 
   assert.equal(parseHousingCommissionAmount('Сдается квартира, без комиссии'), null);
 });
 
+test('housing enrichment does not turn a metro-only Olmazor mention into Almazar district', () => {
+  const metro = parseHousingListingEnrichment('Квартира рядом с метро Олмазор', { country: 'UZ' });
+  assert.equal(metro.metro, 'Olmazor');
+  assert.equal(metro.district, null);
+
+  const district = parseHousingListingEnrichment('Квартира, Алмазарский район', { country: 'UZ' });
+  assert.equal(district.district, 'Almazar');
+  assert.equal(district.metro, null);
+});
+
+test('housing enrichment keeps Kuylyuk massif distinct from Qoyliq metro', () => {
+  const massif = parseHousingListingEnrichment('Сдам квартиру, Куйлюк 5 массив', { country: 'UZ' });
+  assert.equal(massif.metro, null);
+
+  const metro = parseHousingListingEnrichment('Сдам квартиру рядом с метро Куйлюк', { country: 'UZ' });
+  assert.equal(metro.metro, 'Qoyliq');
+});
+
 // TODO(follow-up): add exact-text regressions for #3428, #8398667, #8390002,
 // #8388527, #8390008, #8386865, #8386867, and a Mercor job-posting example
 // once the raw source text for each is supplied — see the plan's "Known

@@ -1,6 +1,13 @@
 import { TASHKENT_AREAS } from './geo.js';
 
-const area = (name, aliases) => Object.freeze({ name, aliases: Object.freeze(aliases) });
+const area = (name, aliases, type = 'local_area') => Object.freeze({
+  canonical: name,
+  name,
+  type,
+  country: 'UZ',
+  city: 'Tashkent',
+  aliases: Object.freeze(aliases),
+});
 
 /** Additions to the core Tashkent catalog; entries here do not duplicate geo.js rows. */
 export const TASHKENT_AREA_ADDITIONS = Object.freeze({
@@ -18,7 +25,7 @@ export const TASHKENT_AREA_ADDITIONS = Object.freeze({
     area('Binokor-2', ['бинокор 2', 'binokor 2']),
     area('Majnuntol', ['мажнунтол', 'majnuntol']),
     area('Olima Oshirova', ['олима оширова', 'olima oshirova']),
-    area('Bektemir', ['бектемир массив', 'bektemir massivi']),
+    area('Bektemir', ['бектемир массив', 'bektemir massivi'], 'microdistrict'),
   ]),
   Mirobod: Object.freeze([
     area('Farovon', ['фаровон', 'farovon']),
@@ -32,15 +39,15 @@ export const TASHKENT_AREA_ADDITIONS = Object.freeze({
     area('Riyoziy', ['риёзий', 'riyoziy']),
   ]),
   Sergeli: Object.freeze([
-    area('Sergeli-2 G-40', ['сергели 2 г 40', 'sergeli 2 g 40']),
+    area('Sergeli-2 G-40', ['сергели 2 г 40', 'sergeli 2 g 40'], 'microdistrict'),
     area('Babur Quarter', ['квартал бабур', 'бабур квартал', 'babur kvartal']),
   ]),
   Uchtepa: Object.freeze([
     area('Al-Khorezmi-2', ['аль хорезми 2', 'ал хорезми 2', 'al xorazmiy 2', 'al khorezmi 2']),
-    area('Shark', ['массив шарк', 'шарк массив', 'sharq massivi']),
+    area('Shark', ['массив шарк', 'шарк массив', 'sharq massivi'], 'microdistrict'),
   ]),
   Chilanzar: Object.freeze([
-    area('Almazar Massif', ['массив алмазар', 'массив олмазор', 'almazar massivi', 'olmazor massivi']),
+    area('Almazar Massif', ['массив алмазар', 'массив олмазор', 'almazar massivi', 'olmazor massivi'], 'microdistrict'),
   ]),
   Shaykhantahur: Object.freeze([
     area('Labzak C-13', ['лабзак ц 13', 'лабзак ц-13', 'labzak c 13', 'labzak c-13']),
@@ -55,16 +62,11 @@ export const TASHKENT_AREA_ADDITIONS = Object.freeze({
     area('Katta Hasanboy', ['катта хасанбой', 'katta hasanboy']),
   ]),
   Yakkasaray: Object.freeze([
-    area('Glinka', ['глинка', 'glinka']),
-    area('Bobur', ['массив бобур', 'bobur massivi']),
-    area('Konstitutsiya', ['конституция массив', 'konstitutsiya massivi']),
+    area('Bobur', ['массив бобур', 'bobur massivi'], 'microdistrict'),
+    area('Konstitutsiya', ['конституция массив', 'konstitutsiya massivi'], 'microdistrict'),
     area('Hamid Sulaymonov', ['хамид сулаймонов', 'hamid sulaymonov']),
   ]),
-  Yangihayot: Object.freeze([
-    area('Yangi Choshtepa', ['янги чоштепа', 'yangi choshtepa']),
-  ]),
   Yashnobod: Object.freeze([
-    area('Aviasozlar-3', ['авиасозлар 3', 'авиасозлар-3', 'aviasozlar 3', 'aviasozlar-3']),
     area('Asalabad-1', ['асалабад 1', 'asalobod 1', 'asalabad 1']),
     area('Asalabad-2', ['асалабад 2', 'asalobod 2', 'asalabad 2']),
     area('Mumtoz', ['мумтаз', 'mumtoz']),

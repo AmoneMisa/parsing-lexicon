@@ -3,10 +3,11 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { COUNTRIES } from '../src/countries.js';
 import { CITIES, CITIES_BY_COUNTRY, GLOBAL_CITIES, REGIONS_BY_COUNTRY, canonicalCity, canonicalRegion } from '../src/geography.js';
+import { TASHKENT_DISTRICTS } from '../src/geo.js';
 import { detectCityFromText, detectCountryCodeFromText } from '../src/geography-detection.js';
 import { GEOGRAPHY_DISPLAY_NAMES, geographyDisplayName } from '../src/geography-display.js';
 import { LOCATION_LIST_KEYS } from '../src/location-merge.js';
-import { matchDictionaryLocation } from '../src/locations.js';
+import { LOCATION_DICTIONARIES, matchDictionaryLocation } from '../src/locations.js';
 
 test('canonical CITIES is the only city catalog used by free-text detection', async () => {
   const source = await readFile(new URL('../src/geography-detection.js', import.meta.url), 'utf8');
@@ -70,10 +71,18 @@ test('location matcher consumes the canonical collection key list', async () => 
   assert.ok(LOCATION_LIST_KEYS.includes('mahallas'));
   assert.ok(LOCATION_LIST_KEYS.includes('localAreas'));
   assert.ok(LOCATION_LIST_KEYS.includes('suburbs'));
+  assert.ok(LOCATION_LIST_KEYS.includes('developmentAreas'));
 
   assert.deepEqual(matchDictionaryLocation('Обихаёт', 'UZ', 'Namangan')?.type, 'mahallas');
   assert.deepEqual(matchDictionaryLocation('Киргули', 'UZ', 'Fergana')?.type, 'localAreas');
   assert.deepEqual(matchDictionaryLocation('Бесагаш', 'KZ', 'Almaty')?.type, 'suburbs');
+  assert.deepEqual(matchDictionaryLocation('Tashkent City', 'UZ', 'Tashkent')?.type, 'developmentAreas');
+});
+
+test('Tashkent City has one canonical semantic owner in the runtime registry', () => {
+  const tashkent = LOCATION_DICTIONARIES.UZ.Tashkent;
+  assert.ok(tashkent.developmentAreas.some(({ name }) => name === 'Tashkent City'));
+  assert.equal(tashkent.residentialComplexes.some(({ name }) => name === 'Tashkent City'), false);
 });
 
 test('Ukraine runtime locations no longer use the legacy UA seed', async () => {
@@ -103,4 +112,15 @@ test('display derives labels from canonical entities and supports regions', () =
   assert.equal(geographyDisplayName('Tokyo', 'ru', 'city'), 'Токио');
   assert.equal(geographyDisplayName('Odesa Oblast', 'ru', 'region'), 'Одесская область');
   assert.equal(geographyDisplayName('DE', 'ru', 'country'), 'Германия');
+});
+
+test('every canonical Tashkent district has a Russian display label', () => {
+  for (const district of TASHKENT_DISTRICTS) {
+    const label = GEOGRAPHY_DISPLAY_NAMES.ru.district[district.canonical];
+    assert.ok(label, `missing Russian district display label: ${district.canonical}`);
+    assert.equal(geographyDisplayName(district.canonical, 'ru', 'district'), label);
+  }
+
+  assert.equal(geographyDisplayName('Almazar', 'ru', 'district'), 'Алмазар');
+  assert.equal(geographyDisplayName('Yangihayot', 'ru', 'district'), 'Янгихаёт');
 });
