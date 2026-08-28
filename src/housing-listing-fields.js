@@ -45,7 +45,12 @@ function parseMinRentTerm(text) {
 
 function parseAvailableFrom(text) {
   const match = text.match(/(?:доступн\p{L}*\s+с|свободн\p{L}*\s+с|заселени\p{L}*\s+с|заезд\s+с|available\s+from|move[- ]?in\s+from)\s*[:\-]?\s*((?:\d{1,2}[./-]\d{1,2}(?:[./-]\d{2,4})?)|(?:\d{1,2}\s+[\p{L}]{3,12}(?:\s+\d{4})?))/iu);
-  return match?.[1]?.trim() || null;
+  if (match?.[1]) return match[1].trim();
+
+  // Uzbek listings commonly attach the ablative suffix directly to the month:
+  // "1-sentyabrdan beriladi" / "1-сентябрдан берилади".
+  const uzbek = text.match(/(\d{1,2}\s*[-./]?\s*[\p{L}]{3,12})(?:dan|дан)(?=$|[^\p{L}\p{N}_])[^.\r\n]{0,32}(?:beriladi|берилади|bo['’]?sh|бўш)/iu);
+  return uzbek?.[1]?.replace(/\s*-\s*/g, '-').trim() || null;
 }
 
 function parseUtilitiesAmount(text) {
@@ -87,7 +92,8 @@ export function parseHousingListingFields(value, { country = '' } = {}) {
     /без\s+газа|нет\s+газа|no\s+gas|gaz\s*yo['’]?q/iu,
   );
   const elevator = bool(text, /лифт|elevator|\blift\b/iu, /без\s*лифт|no\s*elevator|lift\s*yo['’]?q/iu);
-  const furnished = context.furniture === 'none' ? false : context.furniture ? true : null;
+  const bareFurniture = /(?:^|[^\p{L}\p{N}_])(?:мебель|мебел|mebel)(?=$|[^\p{L}\p{N}_])/iu.test(text);
+  const furnished = context.furniture === 'none' ? false : context.furniture ? true : bareFurniture ? true : null;
   const childrenAllowed = context.tenantPolicies.children === 'allowed' ? true
     : context.tenantPolicies.children === 'notAllowed' ? false : null;
   const smokingAllowed = context.tenantPolicies.smoking === 'allowed' ? true

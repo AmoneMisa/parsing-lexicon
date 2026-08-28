@@ -21,6 +21,17 @@ test('housing context preserves negated policies and legal state', () => {
   assert.ok(result.priceModifiers.includes('fixed'));
 });
 
+test('housing context recognizes Uzbek ready documents and contract wording', () => {
+  const result = parseHousingContext('Hujjatlari joyida shartnoma ham qilib beriladi.');
+  assert.ok(result.documents.includes('documentsReady'));
+  assert.ok(result.documents.includes('contractAvailable'));
+});
+
+test('housing context recognizes the short Uzbek near relation', () => {
+  const result = parseHousingContext('boxcha, supermarket, korzinka yaqin.');
+  assert.ok(result.locationRelations.includes('near'));
+});
+
 test('closed housing status outranks generic active wording', () => {
   const result = parseHousingContext('Объявление было актуально, но уже сдано.');
   assert.equal(result.listingStatus, 'rented');

@@ -3,5 +3,24 @@ export declare function parseHousingResidentialComplex(value: unknown): string |
 export declare function parseHousingAreaFromText(value: unknown): number | null;
 export declare function parseHousingFloorFromText(value: unknown): { floor: number | null; totalFloors: number | null };
 export declare function parseHousingAudience(value: unknown): 'family' | 'women' | 'men' | null;
-export declare function parseHousingAmenities(value: unknown): readonly ('dishwasher' | 'separateRooms' | 'washingMachine' | 'television' | 'bedLinen' | 'towels')[];
+export declare function parseHousingAmenities(value: unknown): readonly (
+  | 'dishwasher'
+  | 'separateRooms'
+  | 'bed'
+  | 'washingMachine'
+  | 'refrigerator'
+  | 'television'
+  | 'airConditioner'
+  | 'internet'
+  | 'stove'
+  | 'wardrobe'
+  | 'furniture'
+  | 'kitchenEquipment'
+  | 'plasticWindows'
+  | 'heatedFloor'
+  | 'freeParking'
+  | 'moveInReady'
+  | 'bedLinen'
+  | 'towels'
+)[];
 

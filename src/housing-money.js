@@ -74,6 +74,18 @@ export function parseHousingPrice(value, fallbackCurrency = '') {
     price = tagged;
   }
 
+  // Uzbek classifieds often split a round million and the trailing thousands:
+  // "2 млн 500" means 2,500,000, not 2,000,000 + an unrelated 500.
+  if (price == null) {
+    const splitMillion = text.match(/(?:^|[^\p{L}\p{N}_])(\d{1,3})\s*(?:млн|million|mln)\s+(\d{1,3})(?=$|[^\p{L}\p{N}_])/iu);
+    if (splitMillion) {
+      const millions = Number(splitMillion[1]);
+      const thousands = Number(splitMillion[2]);
+      const amount = millions * 1_000_000 + thousands * 1_000;
+      if (amount >= 1_000_000 && amount <= 5_000_000_000) price = amount;
+    }
+  }
+
   if (price == null) {
     const scalePattern = [...new Set(NUMBER_MULTIPLIERS.flatMap((entry) => aliasesOf(entry)).filter(Boolean))]
       .sort((a, b) => String(b).length - String(a).length)

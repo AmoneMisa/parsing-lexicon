@@ -7,10 +7,10 @@ import { LOCATION_RELATIONS, parseHousingContext } from './housing-context.js';
 import { resolveHousingIntent } from './housing-intent.js';
 
 const NUMBER_WORDS = Object.freeze([
-  [/(?<![\p{L}\p{N}_])(?:однушк\p{L}*|однокомнатн\p{L}*|1\s*[- ]?к(?:омн\p{L}*)?|1\s*xona(?:li)?|1\s*бөлмелі|one[- ]bedroom|one[- ]room)(?![\p{L}\p{N}_])/iu, 1],
-  [/(?<![\p{L}\p{N}_])(?:двушк\p{L}*|двухкомнатн\p{L}*|2\s*[- ]?к(?:омн\p{L}*)?|2\s*xona(?:li)?|2\s*бөлмелі|two[- ]bedroom|two[- ]room)(?![\p{L}\p{N}_])/iu, 2],
-  [/(?<![\p{L}\p{N}_])(?:тр[её]шк\p{L}*|трехкомнатн\p{L}*|трёхкомнатн\p{L}*|3\s*[- ]?к(?:омн\p{L}*)?|3\s*xona(?:li)?|3\s*бөлмелі|three[- ]bedroom|three[- ]room)(?![\p{L}\p{N}_])/iu, 3],
-  [/(?<![\p{L}\p{N}_])(?:четыр[её]хкомнатн\p{L}*|четыр[её]шк\p{L}*|4\s*[- ]?к(?:омн\p{L}*)?|4\s*xona(?:li)?|4\s*бөлмелі|four[- ]bedroom|four[- ]room)(?![\p{L}\p{N}_])/iu, 4],
+  [/(?<![\p{L}\p{N}_])(?:однушк\p{L}*|однокомнатн\p{L}*|1\s*(?:-\s*)?к(?:омн\p{L}*)?|1\s*(?:-\s*)?xona(?:li)?|1\s*(?:-\s*)?хона(?:лик|ли)?|1\s*бөлмелі|one[- ]bedroom|one[- ]room)(?![\p{L}\p{N}_])/iu, 1],
+  [/(?<![\p{L}\p{N}_])(?:двушк\p{L}*|двухкомнатн\p{L}*|2\s*(?:-\s*)?к(?:омн\p{L}*)?|2\s*(?:-\s*)?xona(?:li)?|2\s*(?:-\s*)?хона(?:лик|ли)?|2\s*бөлмелі|two[- ]bedroom|two[- ]room)(?![\p{L}\p{N}_])/iu, 2],
+  [/(?<![\p{L}\p{N}_])(?:тр[её]шк\p{L}*|трехкомнатн\p{L}*|трёхкомнатн\p{L}*|3\s*(?:-\s*)?к(?:омн\p{L}*)?|3\s*(?:-\s*)?xona(?:li)?|3\s*(?:-\s*)?хона(?:лик|ли)?|3\s*бөлмелі|three[- ]bedroom|three[- ]room)(?![\p{L}\p{N}_])/iu, 3],
+  [/(?<![\p{L}\p{N}_])(?:четыр[её]хкомнатн\p{L}*|четыр[её]шк\p{L}*|4\s*(?:-\s*)?к(?:омн\p{L}*)?|4\s*(?:-\s*)?xona(?:li)?|4\s*(?:-\s*)?хона(?:лик|ли)?|4\s*бөлмелі|four[- ]bedroom|four[- ]room)(?![\p{L}\p{N}_])/iu, 4],
 ]);
 
 function toNumber(value) {
@@ -28,7 +28,7 @@ export function parseHousingRoomCount(value) {
   const text = normalizeUnicode(value ?? '');
   if (!text) return null;
   for (const [re, rooms] of NUMBER_WORDS) if (re.test(text)) return rooms;
-  const numeric = text.match(/(?:^|[^\p{L}\p{N}])(\d{1,2})\s*(?:[- ]?комнат\p{L}*|[- ]?к(?:\.|\b)|xona(?:li)?|бөлмелі|rooms?)(?=$|[^\p{L}\p{N}])/iu);
+  const numeric = text.match(/(?:^|[^\p{L}\p{N}])(\d{1,2})\s*(?:(?:-\s*)?комнат\p{L}*|(?:-\s*)?к(?:\.|\b)|(?:-\s*)?xona(?:li)?|(?:-\s*)?хона(?:лик|ли)?|бөлмелі|rooms?)(?=$|[^\p{L}\p{N}])/iu);
   const rooms = toNumber(numeric?.[1]);
   return rooms != null && rooms >= 1 && rooms <= 20 ? rooms : null;
 }
@@ -46,12 +46,28 @@ export function parseHousingFloor(value) {
     }
   }
 
-  const explicit = text.match(/(?:этаж|поверх|floor|etaj|qavat|қабат)\s*[:№#-]?\s*(\d{1,3})\s*(?:[,;/]|из|of|din|dan)?\s*(?:дом\s*)?(?:из\s*)?(\d{1,3})?\s*(?:этаж\p{L}*|поверх\p{L}*|floors?|etaje|qavatli|қабатты)?/iu);
+  const reversePair = text.match(/(?:^|[^\d])(\d{1,3})\s*-?\s*(?:этаж|поверх|floor|etaj|qavat|қабат|кават|қават)\s*(?:\/|из|of|iz)\s*(\d{1,3})(?=$|[^\d])/iu);
+  if (reversePair) {
+    const floor = toNumber(reversePair[1]);
+    const totalFloors = toNumber(reversePair[2]);
+    if (floor != null && totalFloors != null && floor <= totalFloors && totalFloors <= 200) {
+      return deepFreeze({ floor, totalFloors });
+    }
+  }
+
+  // Keep marker-before-number forms on one physical line. Otherwise a line like
+  // "13-этаж\n2 хона" can be misread as "этаж 2".
+  const explicit = text.match(/(?:этаж|поверх|floor|etaj|qavat|қабат|кават|қават)[^\S\r\n]*[:№#-]?[^\S\r\n]*(\d{1,3})[^\S\r\n]*(?:[,;/]|из|of|din|dan)?[^\S\r\n]*(?:дом[^\S\r\n]*)?(?:из[^\S\r\n]*)?(\d{1,3})?[^\S\r\n]*(?:этаж\p{L}*|поверх\p{L}*|floors?|etaje|qavatli|қабатты|каватли|қаватли)?/iu);
   let floor = toNumber(explicit?.[1]);
   let totalFloors = toNumber(explicit?.[2]);
 
+  if (floor == null) {
+    const beforeMarker = text.match(/(?:^|[^\d])(\d{1,3})\s*-?\s*(?:этаж(?:да)?|поверх|floor|etaj|qavat(?:da)?|қабат(?:та)?|кават(?:да)?|қават(?:да)?)(?=$|[^\p{L}\p{N}_])/iu);
+    floor = toNumber(beforeMarker?.[1]);
+  }
+
   if (totalFloors == null) {
-    const total = text.match(/(?:дом\s*)?(\d{1,3})\s*(?:[- ]?этажн\p{L}*|поверхов\p{L}*|storey|story|floors?\s+total|qavatli|қабатты)/iu);
+    const total = text.match(/(?:дом\s*)?(\d{1,3})\s*(?:[- ]?этаж(?:н\p{L}*|лик)|поверхов\p{L}*|storey|story|floors?\s+total|qavatli|қабатты|каватли|қаватли)/iu);
     totalFloors = toNumber(total?.[1]);
   }
 
@@ -116,6 +132,7 @@ export function parseHousingPayments(value) {
   const depositPriority = ['noDeposit', 'firstAndLastMonth', 'advance', 'refundableDeposit', 'deposit'];
   const depositKind = depositPriority.find((item) => depositMatches.includes(item)) || null;
   const depositAmount = amountAroundKeyword(text, /(?:депозит|залог|deposit|depozit|garanție|garantie|кепіл)/iu);
+  const depositIsDuration = /(?:депозит|залог|deposit|depozit|garanție|garantie|кепіл)\D{0,18}\d{1,2}\s*(?:месяц\p{L}*|months?|oy|ай)(?=$|[^\p{L}\p{N}_])/iu.test(text);
 
   let prepaymentMonths = toNumber(text.match(/(?:предоплат\p{L}*|оплат\p{L}*\s+впер[её]д|prepay(?:ment)?|advance\s+payment|oldindan\s+to['’]?lov|алдын\s+ала\s+төлем)\D{0,18}(\d{1,2})\s*(?:месяц\p{L}*|months?|oy|ай)/iu)?.[1]);
   if (depositKind === 'firstAndLastMonth' && prepaymentMonths == null) prepaymentMonths = 2;
@@ -128,15 +145,17 @@ export function parseHousingPayments(value) {
 
   const noCommission = SELLER_TERMS.noCommission && findCanonical(text, [SELLER_TERMS.noCommission], { partial: true });
   const shorthandCommission = text.match(/(?:^|[^\p{L}\p{N}_])[mм]\s*[:.\-]?\s*(\d{1,3})\s*%/iu);
-  const commissionPercent = toNumber(shorthandCommission?.[1] ?? text.match(/(?:комисси\p{L}*|commission|comision|komissiya|маклер|makler|rieltor|vositachi)[^\d%]{0,16}(\d{1,3}(?:[.,]\d+)?)\s*%/iu)?.[1]);
+  const commissionAfterKeyword = text.match(/(?:комисси\p{L}*|commission|comision|komissiya|маклер|makler|rieltor|vositachi)[^\d%]{0,16}(\d{1,3}(?:[.,]\d+)?)\s*%/iu);
+  const commissionBeforeKeyword = text.match(/(\d{1,3}(?:[.,]\d+)?)\s*%\s*(?:комисси\p{L}*|commission|comision|komissiya|маклер|makler|rieltor|vositachi)/iu);
+  const commissionPercent = toNumber(shorthandCommission?.[1] ?? commissionAfterKeyword?.[1] ?? commissionBeforeKeyword?.[1]);
   const commissionMentioned = Boolean(shorthandCommission) || (SELLER_TERMS.commission && findCanonical(text, [SELLER_TERMS.commission], { partial: true }));
 
   return deepFreeze({
     deposit: {
       required: depositKind === 'noDeposit' ? false : depositKind ? true : null,
       kind: depositKind,
-      amount: depositAmount.amount,
-      currency: depositAmount.currency,
+      amount: depositIsDuration ? null : depositAmount.amount,
+      currency: depositIsDuration ? null : depositAmount.currency,
     },
     prepaymentMonths,
     utilities,
@@ -151,7 +170,12 @@ export function parseHousingSeller(value) {
   const text = normalizeUnicode(value ?? '');
   if (!text) return deepFreeze({ type: null, confidence: 0 });
   const owner = SELLER_TERMS.owner && findCanonical(text, [SELLER_TERMS.owner], { partial: true });
-  const agency = (SELLER_TERMS.agency && findCanonical(text, [SELLER_TERMS.agency], { partial: true })) || /(?:^|[^\p{L}\p{N}_])[mм]\s*\d{1,3}\s*%/iu.test(text);
+  const agencyTerm = SELLER_TERMS.agency && findCanonical(text, [SELLER_TERMS.agency], { partial: true });
+  const commissionTerm = SELLER_TERMS.commission && findCanonical(text, [SELLER_TERMS.commission], { partial: true });
+  const agencyTypo = /(?:^|[^\p{L}\p{N}_])агенств[аоы](?=$|[^\p{L}\p{N}_])/iu.test(text);
+  const brokerageProse = /(?:профессиональн\p{L}*\s+)?подбор[^.\r\n]{0,80}(?:вариант\p{L}*|недвижим\p{L}*)/iu.test(text);
+  const shorthandCommission = /(?:^|[^\p{L}\p{N}_])[mм]\s*\d{1,3}\s*%/iu.test(text);
+  const agency = agencyTerm || commissionTerm || agencyTypo || brokerageProse || shorthandCommission;
   if (owner && !agency) return deepFreeze({ type: 'owner', confidence: 1 });
   if (agency && !owner) return deepFreeze({ type: 'agency', confidence: 1 });
   if (owner && agency) return deepFreeze({ type: null, confidence: 0.45 });

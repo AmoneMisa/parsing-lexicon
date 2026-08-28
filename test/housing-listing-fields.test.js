@@ -39,3 +39,26 @@ test('centralized housing field parser covers listing table semantics', () => {
   assert.equal(result.availableFrom, '15.09.2026');
   assert.deepEqual(result.utilitiesAmount, { amount: 2500, currency: 'UAH', approximate: true });
 });
+
+test('extracts Uzbek move-in date attached to the ablative suffix', () => {
+  const result = parseHousingListingFields('Горгaзда 1- хоналик 4- каватда квартира ижарага 1-сентябрдан берилади');
+  assert.equal(result.availableFrom, '1-сентябр');
+});
+
+test('recognizes bare furniture and mixed Uzbek equipment wording', () => {
+  const result = parseHousingListingFields('mebel va oshxona jihozlari, konditsioner, wefi');
+  assert.equal(result.furnished, true);
+  assert.equal(result.airConditioner, true);
+  assert.equal(result.internet, true);
+});
+
+test('keeps common Dream House listing booleans in the listing field parser', () => {
+  const result = parseHousingListingFields(`
+    ЖК Dream House. 2 санузла. Депозит за 1 месяц.
+    Свое бесплатное парковочное место! Мебель + техника.
+  `);
+  assert.equal(result.bathrooms, 2);
+  assert.equal(result.depositRequired, true);
+  assert.equal(result.parking, true);
+  assert.equal(result.furnished, true);
+});

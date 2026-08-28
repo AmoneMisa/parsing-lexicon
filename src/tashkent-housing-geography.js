@@ -123,7 +123,7 @@ const DISTRICT_CONTEXT_ALIASES = Object.freeze({
 });
 
 const NUMBERED_CONTEXT = '(?:tumani|тумани|district|район|massiv|массив)';
-const NUMBERED_SUFFIX_CONTEXT = '(?:chi|чи|й|квартал|kvartal|hudud(?:da)?|худуд(?:да)?)';
+const NUMBERED_SUFFIX_CONTEXT = '(?:chi|чи|й|квартал|kvartal|hudud(?:da)?|худуд(?:да)?|massiv(?:i)?|массив(?:и)?)';
 // The open \p{L}* suffix used to swallow any trailing letters, so
 // "туманность" (an unrelated word) satisfied this as if "туман" (district)
 // had been mentioned. {0,4} covers real case endings (туманда, туманидан)
@@ -184,12 +184,18 @@ const EXTRA_METRO_ALIASES = Object.freeze({
   Sergeli: Object.freeze(['Sergile', 'Sergele']),
 });
 
+const QOYLIQ_MASSIF_RE = /(?:куйлюк|куйлик|kuylyuk|kuyliq|qoyliq|qo[‘’ʻ']?yliq|қўйлиқ)(?:\s+\d{1,2})?\s+(?:массив(?:и)?|massiv(?:i)?)/iu;
+
 /** Resolve listing typos/transliterations to an existing canonical metro entry. */
 export function matchTashkentHousingMetro(value) {
   const text = String(value ?? '');
   if (!text) return null;
   for (const station of TASHKENT_METRO) {
-    if (station.re.test(text)) return station;
+    if (!station.re.test(text)) continue;
+    // Qoyliq is also a large housing massif. In housing text an explicit
+    // "массив/massiv" marker wins over the homonymous metro station.
+    if (station.name === 'Qoyliq' && QOYLIQ_MASSIF_RE.test(text)) continue;
+    return station;
   }
   for (const [canonical, aliases] of Object.entries(EXTRA_METRO_ALIASES)) {
     if (!aliasesToRegex(aliases).test(text)) continue;

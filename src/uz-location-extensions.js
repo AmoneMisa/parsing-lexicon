@@ -56,6 +56,12 @@ const nukusMahallas = NUKUS_MFY_NAMES.map((name) => ({
 }));
 
 export const UZ_LOCATION_EXTENSIONS = Object.freeze({
+  Tashkent: city({
+    microdistricts: [
+      ['Qorasuv', 'Qorasuv massivi', 'Korasuv massivi', 'Корасув Массиви', 'Корасув массиви', 'Карасу массив', 'Карасу массиви', 'Қорасув массиви'],
+    ],
+  }),
+
   Samarkand: city({
     mahallas: [
       { name: "Navro'z", aliases: ['Navroz','Navruz','Навруз','Наврўз'], confidence: 'official' },
