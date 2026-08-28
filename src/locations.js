@@ -25,6 +25,19 @@ export const UA_EXTRA_LOCATION_DICTIONARIES = Object.freeze({
   }),
 });
 
+// The UZ seed is compatibility storage. In 0.3 Tashkent City is owned by the
+// Uzbekistan extension as a development area, not by the legacy RC collection.
+const UZ_BASE_LOCATION_DICTIONARIES = Object.freeze({
+  ...(BASE_LOCATION_DICTIONARIES.UZ || {}),
+  Tashkent: Object.freeze({
+    ...(BASE_LOCATION_DICTIONARIES.UZ?.Tashkent || {}),
+    residentialComplexes: Object.freeze(
+      (BASE_LOCATION_DICTIONARIES.UZ?.Tashkent?.residentialComplexes || [])
+        .filter(({ name }) => name !== 'Tashkent City'),
+    ),
+  }),
+});
+
 const COUNTRY_LOCATION_DICTIONARIES = Object.freeze({
   ...BASE_LOCATION_DICTIONARIES,
   KZ: mergeLocationCountries(
@@ -32,7 +45,7 @@ const COUNTRY_LOCATION_DICTIONARIES = Object.freeze({
     KZ_LOCATION_EXTENSIONS,
   ),
   UZ: mergeLocationCountries(
-    BASE_LOCATION_DICTIONARIES.UZ || {},
+    UZ_BASE_LOCATION_DICTIONARIES,
     UZ_LOCATION_EXTENSIONS,
   ),
   UA: mergeLocationCountries(
