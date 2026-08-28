@@ -25,7 +25,7 @@ export const GEOGRAPHY_DISPLAY_NAMES = Object.freeze({
       Kamianske: 'Каменское', Vyshneve: 'Вишневое', Boryspil: 'Борисполь', Vyshhorod: 'Вышгород',
       Oleksandriia: 'Александрия', Pavlohrad: 'Павлоград', Nikopol: 'Никополь', Drohobych: 'Дрогобыч',
       Stryi: 'Стрый', Kolomyia: 'Коломыя', Kalush: 'Калуш', 'Kamianets-Podilskyi': 'Каменец-Подольский',
-      Izmail: 'Измаил',
+      Izmail: 'Измаил', Dubno: 'Дубно',
       Bucharest: 'Бухарест', 'Cluj-Napoca': 'Клуж-Напока', Timisoara: 'Тимишоара', Iasi: 'Яссы',
       Brasov: 'Брашов', Constanta: 'Констанца', Oradea: 'Орадя', Sibiu: 'Сибиу',
     }),
@@ -39,11 +39,17 @@ export const GEOGRAPHY_DISPLAY_NAMES = Object.freeze({
       Shevchenkivskyi: 'Шевченковский', Solomianskyi: 'Соломенский', Darnytskyi: 'Дарницкий',
       Holosiivskyi: 'Голосеевский', Dniprovskyi: 'Днепровский', Sviatoshynskyi: 'Святошинский',
       Desnianskyi: 'Деснянский', Prymorskyi: 'Приморский', Frankivskyi: 'Франковский',
+      Kyivskyi: 'Киевский', Saltivskyi: 'Салтовский', Nemyshlianskyi: 'Немышлянский',
+      Industrialnyi: 'Индустриальный', Slobidskyi: 'Слободской', Osnovianskyi: 'Основянский',
+      Novobavarskyi: 'Новобаварский', Kholodnohirskyi: 'Холодногорский',
       Tsentralnyi: 'Центральный', 'Tsentralno-Miskyi': 'Центрально-Городской', Tsentr: 'Центр',
       Prospekt: 'Проспект', Ruska: 'Русская', Hraviton: 'Гравитон', Komarova: 'Комарова', Roscha: 'Роща',
       Sadgora: 'Садгора', Avtovokzal: 'Автовокзал', Pipera: 'Пипера', Militari: 'Милитари',
       'Drumul Taberei': 'Друмул Таберей', Titan: 'Титан', Berceni: 'Берчень', Floreasca: 'Флоряска',
       Dorobanti: 'Доробанць', Cotroceni: 'Котрочень',
+    }),
+    microdistrict: Object.freeze({
+      Tsukrovyi: 'Сахарный',
     }),
     metro: Object.freeze({
       'Buyuk Ipak Yoli': 'Буюк Ипак Йули', Pushkin: 'Пушкин', 'Hamid Olimjon': 'Хамид Алимджан',
@@ -99,8 +105,9 @@ export function geographyDisplayName(value, locale = 'en', kind = 'any') {
   if (kind === 'city') return tables?.city?.[text] || canonicalEntityLabel(CITIES, text, locale) || text;
   if (kind === 'region') return tables?.region?.[text] || canonicalEntityLabel(REGIONS, text, locale) || text;
   if (kind === 'district') return tables?.district?.[text] || text;
+  if (kind === 'microdistrict') return tables?.microdistrict?.[text] || text;
   if (kind === 'metro') return tables?.metro?.[text] || text;
-  return tables?.country?.[text.toUpperCase()] || tables?.city?.[text] || tables?.region?.[text] || tables?.district?.[text] || tables?.metro?.[text] || canonicalEntityLabel(CITIES, text, locale) || canonicalEntityLabel(REGIONS, text, locale) || preferredEntityLabel(COUNTRIES.find((item) => item.code === text.toUpperCase() || item.canonical === text), locale) || text;
+  return tables?.country?.[text.toUpperCase()] || tables?.city?.[text] || tables?.region?.[text] || tables?.district?.[text] || tables?.microdistrict?.[text] || tables?.metro?.[text] || canonicalEntityLabel(CITIES, text, locale) || canonicalEntityLabel(REGIONS, text, locale) || preferredEntityLabel(COUNTRIES.find((item) => item.code === text.toUpperCase() || item.canonical === text), locale) || text;
 }
 
 export function geographyMetroLabelWithAlias(value, locale = 'en') {

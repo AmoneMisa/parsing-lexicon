@@ -33,6 +33,88 @@ test('major Ukraine city data belongs to the canonical registry', () => {
   assert.equal(match('Kryvyi Rih', 'microdistricts', '95-й квартал'), '95 Kvartal');
 });
 
+test('Kyiv legacy non-metro coverage belongs to the canonical major owner', () => {
+  assert.equal(match('Kyiv', 'districts', 'Подольский район'), 'Podilskyi');
+  assert.equal(match('Kyiv', 'residentialComplexes', 'Тетрис Холл'), 'Tetris Hall');
+  assert.equal(match('Kyiv', 'residentialComplexes', 'Юнит Хоум'), 'UNIT.Home');
+  assert.equal(match('Kyiv', 'residentialComplexes', 'Креатор Сіті'), 'Creator City');
+  assert.equal(match('Kyiv', 'streets', 'улица Крещатик'), 'Khreshchatyk Street');
+  assert.equal(match('Kyiv', 'streets', 'проспект Победы'), 'Beresteiskyi Avenue');
+  assert.equal(match('Kyiv', 'streets', 'улица Глубочицкая'), 'Hlybochytska Street');
+  assert.equal(match('Kyiv', 'landmarks', 'Киевский вокзал'), 'Kyiv Central Railway Station');
+});
+
+test('Kharkiv legacy non-metro coverage belongs to the canonical major owner', () => {
+  assert.equal(match('Kharkiv', 'districts', 'Шевченковский район'), 'Shevchenkivskyi');
+  assert.equal(match('Kharkiv', 'microdistricts', 'Жихор'), 'Zhykhar');
+  assert.equal(match('Kharkiv', 'residentialComplexes', 'ЖК Манхеттен'), 'Manhattan');
+  assert.equal(match('Kharkiv', 'residentialComplexes', 'Ривер Таун'), 'River Town');
+  assert.equal(match('Kharkiv', 'residentialComplexes', 'ЖК Мира'), 'Mira');
+  assert.equal(match('Kharkiv', 'streets', 'проспект Науки'), 'Nauky Avenue');
+  assert.equal(match('Kharkiv', 'streets', 'Московский проспект'), 'Heroiv Kharkova Avenue');
+  assert.equal(match('Kharkiv', 'streets', 'Салтовское шоссе'), 'Saltivske Highway');
+  assert.equal(match('Kharkiv', 'streets', 'Полтавский Шлях'), 'Poltavskyi Shliakh Street');
+  assert.equal(match('Kharkiv', 'streets', 'улица Клочковская'), 'Klochkivska Street');
+  assert.equal(match('Kharkiv', 'landmarks', 'Харьков-Пассажирский'), 'Kharkiv-Pasazhyrskyi Station');
+});
+
+test('Odesa legacy coverage belongs to the canonical major owner', () => {
+  assert.equal(match('Odesa', 'microdistricts', 'Фонтан'), 'Velykyi Fontan');
+  assert.equal(match('Odesa', 'microdistricts', 'поселок Котовского'), 'Kotivskoho');
+  assert.equal(match('Odesa', 'residentialComplexes', 'Кадорр Сити'), 'Kadorr City');
+  assert.equal(match('Odesa', 'residentialComplexes', 'Си Вью'), 'Sea View');
+  assert.equal(match('Odesa', 'residentialComplexes', 'Юнити Тауэрс'), 'Unity Towers');
+  assert.equal(match('Odesa', 'residentialComplexes', 'Отрада Скай'), 'Otrada Sky');
+  assert.equal(match('Odesa', 'streets', 'улица Дерибасовская'), 'Derybasivska Street');
+  assert.equal(match('Odesa', 'streets', 'улица Греческая'), 'Hretska Street');
+  assert.equal(match('Odesa', 'streets', 'улица Канатная'), 'Kanatna Street');
+  assert.equal(match('Odesa', 'streets', 'Французский бульвар'), 'Frantsuzky Boulevard');
+  assert.equal(match('Odesa', 'streets', 'Большая Арнаутская'), 'Velyka Arnautska Street');
+  assert.equal(match('Odesa', 'streets', 'Пантелеймоновская'), 'Panteleimonivska Street');
+  assert.equal(match('Odesa', 'streets', 'Фонтанская дорога'), 'Fontanska Road');
+  assert.equal(match('Odesa', 'streets', 'Люстдорфская дорога'), 'Liustdorfska Road');
+  assert.equal(match('Odesa', 'landmarks', 'рынок Привоз'), 'Pryvoz Market');
+  assert.equal(match('Odesa', 'landmarks', 'Одесский вокзал'), 'Odesa Railway Station');
+  assert.equal(match('Odesa', 'landmarks', 'Аркадия'), 'Arcadia');
+});
+
+test('Dnipro legacy coverage belongs to the canonical major owner', () => {
+  assert.equal(match('Dnipro', 'microdistricts', 'Калиновский'), 'Kalinovskyi');
+  assert.equal(match('Dnipro', 'residentialComplexes', 'Феличита'), 'Felicita');
+  assert.equal(match('Dnipro', 'residentialComplexes', 'Женева ЖК'), 'Geneva');
+  assert.equal(match('Dnipro', 'residentialComplexes', 'ЖК Маяк'), 'Mayak');
+  assert.equal(match('Dnipro', 'residentialComplexes', 'Манхеттен Днепр'), 'Manhattan');
+  assert.equal(match('Dnipro', 'residentialComplexes', 'ЖК Салют'), 'Salyut');
+  assert.equal(match('Dnipro', 'streets', 'проспект Карла Маркса'), 'Dmytra Yavornytskoho Avenue');
+  assert.equal(match('Dnipro', 'streets', 'Набережная Победы'), 'Naberezhna Peremohy');
+  assert.equal(match('Dnipro', 'streets', 'проспект Александра Поля'), 'Oleksandra Polia Avenue');
+  assert.equal(match('Dnipro', 'streets', 'Правди проспект'), 'Slobozhanskyi Avenue');
+  assert.equal(match('Dnipro', 'landmarks', 'Днепр-Главный'), 'Dnipro Railway Station');
+});
+
+test('Lviv legacy coverage belongs to the canonical major owner', () => {
+  assert.equal(match('Lviv', 'microdistricts', 'Пасечная'), 'Pasichna');
+  assert.equal(match('Lviv', 'microdistricts', 'Знесенье'), 'Znesinnia');
+  assert.equal(match('Lviv', 'microdistricts', 'Клепаров'), 'Klepariv');
+  assert.equal(match('Lviv', 'residentialComplexes', 'ЖК Велика Британія'), 'Great Britain');
+  assert.equal(match('Lviv', 'residentialComplexes', 'Авалон Ярд'), 'Avalon Yard');
+  assert.equal(match('Lviv', 'residentialComplexes', 'Авалон Флекс'), 'Avalon Flex');
+  assert.equal(match('Lviv', 'residentialComplexes', 'Парус Сити'), 'Parus City');
+  assert.equal(match('Lviv', 'residentialComplexes', 'Викинг Парк'), 'Viking Park');
+  assert.equal(match('Lviv', 'residentialComplexes', 'Місто Трав'), 'Misto Trav');
+  assert.equal(match('Lviv', 'residentialComplexes', 'Вашингтон Сіті'), 'Washington City');
+  assert.equal(match('Lviv', 'streets', 'проспект Свободы'), 'Svobody Avenue');
+  assert.equal(match('Lviv', 'streets', 'улица Городоцкая'), 'Horodotska Street');
+  assert.equal(match('Lviv', 'streets', 'улица Шевченко'), 'Shevchenka Street');
+  assert.equal(match('Lviv', 'streets', 'улица Стрыйская'), 'Stryiska Street');
+  assert.equal(match('Lviv', 'streets', 'улица Лычаковская'), 'Lychakivska Street');
+  assert.equal(match('Lviv', 'streets', 'улица Зеленая'), 'Zelena Street');
+  assert.equal(match('Lviv', 'streets', 'улица Кульпарковская'), 'Kulparkivska Street');
+  assert.equal(match('Lviv', 'landmarks', 'Бернардинський монастир'), 'Bernardine Monastery');
+  assert.equal(match('Lviv', 'landmarks', 'Головний залізничний вокзал Львів'), 'Lviv Railway Station');
+  assert.equal(match('Lviv', 'landmarks', 'Львовский вокзал'), 'Lviv Railway Station');
+});
+
 test('regional Ukraine data belongs to the canonical registry', () => {
   assert.equal(match('Rivne', 'microdistricts', 'Льнокомбинат'), 'Lonokombinat');
   assert.equal(match('Kherson', 'districts', 'Суворовский район'), 'Tsentralnyi');
@@ -54,6 +136,11 @@ test('regional Ukraine data belongs to the canonical registry', () => {
   assert.equal(match('Bila Tserkva', 'landmarks', 'дендропарк Олександрія'), 'Oleksandriia Arboretum');
 });
 
+test('secondary Ukraine cities keep Dubno Tsukrovyi aliases in the canonical registry', () => {
+  assert.equal(match('Dubno', 'microdistricts', 'район Цукровий'), 'Tsukrovyi');
+  assert.equal(match('Dubno', 'microdistricts', 'Сахарный район'), 'Tsukrovyi');
+});
+
 test('historical district aliases resolve to one current canonical district', () => {
   assert.equal(match('Zaporizhzhia', 'districts', 'Комунарський район'), 'Kosmichnyi');
   assert.deepEqual(
@@ -64,6 +151,22 @@ test('historical district aliases resolve to one current canonical district', ()
   );
 });
 
-test('Kharkiv metro extension is already part of the canonical registry', () => {
+test('Kyiv legacy metro coverage belongs to the canonical metro owner', () => {
+  assert.equal(match('Kyiv', 'metro', 'Крещатик'), 'Khreshchatyk');
+  assert.equal(match('Kyiv', 'metro', 'Площадь Независимости'), 'Maidan Nezalezhnosti');
+  assert.equal(match('Kyiv', 'metro', 'Золотые ворота'), 'Zoloti Vorota');
+  assert.equal(match('Kyiv', 'metro', 'Левобережная'), 'Livoberezhna');
+  assert.equal(match('Kyiv', 'metro', 'Лукьяновская'), 'Lukianivska');
+});
+
+test('Kharkiv metro uses current canonicals and keeps historical aliases', () => {
   assert.equal(match('Kharkiv', 'metro', 'Ак. Павлова'), 'Akademika Pavlova');
+  assert.equal(match('Kharkiv', 'metro', 'Завод имени Малышева'), 'Zavodska');
+  assert.equal(match('Kharkiv', 'metro', 'Zavod imeni Malysheva'), 'Zavodska');
+  assert.equal(match('Kharkiv', 'metro', 'Заводська'), 'Zavodska');
+  assert.equal(match('Kharkiv', 'metro', 'Героев Труда'), 'Saltivska');
+  assert.equal(match('Kharkiv', 'metro', 'Heroiv Pratsi'), 'Saltivska');
+  assert.equal(match('Kharkiv', 'metro', 'Салтівська'), 'Saltivska');
+  assert.ok(!ua.Kharkiv.metro.some(({ name }) => name === 'Zavod imeni Malysheva'));
+  assert.ok(!ua.Kharkiv.metro.some(({ name }) => name === 'Heroiv Pratsi'));
 });

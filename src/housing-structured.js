@@ -13,6 +13,8 @@ const NUMBER_WORDS = Object.freeze([
   [/(?<![\p{L}\p{N}_])(?:четыр[её]хкомнатн\p{L}*|четыр[её]шк\p{L}*|4\s*(?:-\s*)?к(?:омн\p{L}*)?|4\s*(?:-\s*)?xona(?:li)?|4\s*(?:-\s*)?хона(?:лик|ли)?|4\s*бөлмелі|four[- ]bedroom|four[- ]room)(?![\p{L}\p{N}_])/iu, 4],
 ]);
 
+const FIRST_FLOOR_WORD_RE = /(?<![\p{L}\p{N}_])(?:перш(?:ий\s+поверх|ому\s+поверс(?:і|у))|(?:на\s+)?першому\s+поверсі|перв(?:ый\s+этаж|ом\s+этаже)|(?:на\s+)?первом\s+этаже)(?![\p{L}\p{N}_])/iu;
+
 function toNumber(value) {
   if (value == null) return null;
   const normalized = String(value).replace(/\s+/g, '').replace(',', '.');
@@ -65,6 +67,8 @@ export function parseHousingFloor(value) {
     const beforeMarker = text.match(/(?:^|[^\d])(\d{1,3})\s*-?\s*(?:этаж(?:да)?|поверх|floor|etaj|qavat(?:da)?|қабат(?:та)?|кават(?:да)?|қават(?:да)?)(?=$|[^\p{L}\p{N}_])/iu);
     floor = toNumber(beforeMarker?.[1]);
   }
+
+  if (floor == null && FIRST_FLOOR_WORD_RE.test(text)) floor = 1;
 
   if (totalFloors == null) {
     const total = text.match(/(?:дом\s*)?(\d{1,3})\s*(?:[- ]?этаж(?:н\p{L}*|лик)|поверхов\p{L}*|storey|story|floors?\s+total|qavatli|қабатты|каватли|қаватли)/iu);

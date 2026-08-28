@@ -20,6 +20,8 @@ test('normalizes multilingual room counts and floor fractions', () => {
   assert.deepEqual(parseHousingFloor('Этаж 3/9'), { floor: 3, totalFloors: 9 });
   assert.deepEqual(parseHousingFloor('4- каватда квартира'), { floor: 4, totalFloors: null });
   assert.deepEqual(parseHousingFloor('16 этажлик дом, 13-этаж'), { floor: 13, totalFloors: 16 });
+  assert.deepEqual(parseHousingFloor('Перший поверх'), { floor: 1, totalFloors: null });
+  assert.deepEqual(parseHousingFloor('Квартира на першому поверсі'), { floor: 1, totalFloors: null });
 });
 
 test('extracts typed area details without collapsing labels', () => {

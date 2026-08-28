@@ -25,6 +25,16 @@ test('parses Ukrainian postfix street type and ignores preceding listing prose',
   assert.equal(fromDescription.address, 'Лабораторний провулок 7');
 });
 
+test('parses abbreviated Ukrainian avenue before trailing ЖК context', () => {
+  const parsed = parseHousingAddress(
+    'Продам 1 кімн. квартиру на пр. Олександрівський, 69Д, ЖК Олександрівський, від забудовника Авантаж.',
+  );
+  assert.equal(parsed.street, 'Олександрівський');
+  assert.equal(parsed.houseNumber, '69Д');
+  assert.equal(parsed.address, 'Олександрівський 69Д');
+  assert.equal(parsed.confidence, 1);
+});
+
 test('stops prefixed street address before following listing prose', () => {
   const parsed = parseHousingAddress('Сдам 1 комнатную квартиру улица львовская 1 /2х этажного дома ( дом переделан под квартиры, двор общий для квартирантов )');
   assert.equal(parsed.street, 'львовская');
@@ -46,6 +56,23 @@ test('parses labelled bare address without treating arbitrary prose as address',
     building: null,
     confidence: 0,
   });
+});
+
+test('source address guard rejects floors districts stops and residential complexes', () => {
+  for (const value of [
+    'Перший поверх',
+    'Район Цукровий',
+    'Біля зупинки',
+    'ЖК Олександрівський',
+  ]) {
+    assert.deepEqual(parseHousingAddress(value, { allowBare: true }), {
+      address: null,
+      street: null,
+      houseNumber: null,
+      building: null,
+      confidence: 0,
+    }, value);
+  }
 });
 
 test('parses Uzbek and Romanian explicit address markers', () => {
@@ -79,6 +106,16 @@ test('allowBare is reserved for source-provided address fields', () => {
   assert.equal(parsed.street, 'Воробкевича');
   assert.equal(parsed.houseNumber, '12');
   assert.equal(parsed.confidence, 0.85);
+});
+
+test('allowDelimitedBare extracts street and house from city-scoped comma prose', () => {
+  const parsed = parseHousingAddress(
+    'Харьков, Киевский р-н, Метростроителей, 3, Северная Салтовка',
+    { allowDelimitedBare: true },
+  );
+  assert.equal(parsed.street, 'Метростроителей');
+  assert.equal(parsed.houseNumber, '3');
+  assert.equal(parsed.address, 'Метростроителей 3');
 });
 
 test('composeHousingAddress produces a stable canonical query string', () => {

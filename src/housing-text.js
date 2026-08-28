@@ -22,7 +22,7 @@ export function parseHousingRoomsFromText(value) {
   }
   const after = text.match(/(?:количество\s+комнат\w*|комнат(?:ы|а)?(?![а-яё])|кімнат(?:и|а)?(?![а-яіїґ])|xonalar\s*soni|xona\s*soni|хоналар\s*сони|хона\s*сони|number\s+of\s+rooms)[^\S\r\n]*[:\-–—]?[^\S\r\n]*(\d+)/i);
   if (after) return ok10(Number(after[1]));
-  const before = text.match(/(\d+)\s*[-хx]?\s*(?:camer|комнатн|комн|ком\.|кімнатн|кімн|кім\.|room|bedroom|xonali|xona|хонали|хона|бөлмел|бөлме)|(\d+)\s*-\s*к(?:омн|\.?\s*кв)/i);
+  const before = text.match(/(\d+)\s*(?:-\s*[хx]?|[хx])?\s*(?:camer|комнатн|комн|ком\.|кімнатн|кімн|кім\.|room|bedroom|xonali|xona|хонали|хона|бөлмел|бөлме)|(\d+)\s*-\s*к(?:омн|\.?\s*кв)/i);
   if (before) return ok10(Number(before[1] ?? before[2]));
   const word = text.toLowerCase().match(/(одно|одн|двух|двох|тр[еёи]х|трьох|четыр[её]х|чотир(?:ьох|ох)|пяти)\s*-?\s*(?:комнат|кімнат)/);
   return word ? ok10(WORD_ROOMS[word[1]] ?? null) : null;
@@ -78,7 +78,7 @@ export function parseHousingAreaFromText(value) {
   const text = String(value || '');
   if (!text) return null;
 
-  const unit = String.raw`(?:m2|m²|мкв|м2|м²|sq\s?m|кв\.?\s*м|квадрат(?:н(?:ый|ая|ое|ые|ых))?\s*м(?:етр(?:а|ов)?)?)`;
+  const unit = String.raw`(?:m2|m²|мкв|м2|м²|sq\s?m|кв\.?\s*м|квадрат[а-яёіїґ]*(?:\s*м(?:етр(?:а|ов)?)?)?)`;
   const toArea = (raw) => {
     const number = Number(String(raw || '').replace(/\s+/g, '').replace(',', '.'));
     return Number.isFinite(number) && number > 0 && number <= 100000 ? number : null;
