@@ -69,6 +69,22 @@ test('historical district aliases resolve to one current canonical district', ()
   );
 });
 
-test('Kharkiv metro extension is already part of the canonical registry', () => {
+test('Kyiv legacy metro coverage belongs to the canonical metro owner', () => {
+  assert.equal(match('Kyiv', 'metro', 'Крещатик'), 'Khreshchatyk');
+  assert.equal(match('Kyiv', 'metro', 'Площадь Независимости'), 'Maidan Nezalezhnosti');
+  assert.equal(match('Kyiv', 'metro', 'Золотые ворота'), 'Zoloti Vorota');
+  assert.equal(match('Kyiv', 'metro', 'Левобережная'), 'Livoberezhna');
+  assert.equal(match('Kyiv', 'metro', 'Лукьяновская'), 'Lukianivska');
+});
+
+test('Kharkiv metro uses current canonicals and keeps historical aliases', () => {
   assert.equal(match('Kharkiv', 'metro', 'Ак. Павлова'), 'Akademika Pavlova');
+  assert.equal(match('Kharkiv', 'metro', 'Завод имени Малышева'), 'Zavodska');
+  assert.equal(match('Kharkiv', 'metro', 'Zavod imeni Malysheva'), 'Zavodska');
+  assert.equal(match('Kharkiv', 'metro', 'Заводська'), 'Zavodska');
+  assert.equal(match('Kharkiv', 'metro', 'Героев Труда'), 'Saltivska');
+  assert.equal(match('Kharkiv', 'metro', 'Heroiv Pratsi'), 'Saltivska');
+  assert.equal(match('Kharkiv', 'metro', 'Салтівська'), 'Saltivska');
+  assert.ok(!ua.Kharkiv.metro.some(({ name }) => name === 'Zavod imeni Malysheva'));
+  assert.ok(!ua.Kharkiv.metro.some(({ name }) => name === 'Heroiv Pratsi'));
 });

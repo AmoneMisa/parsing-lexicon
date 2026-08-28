@@ -25,6 +25,18 @@ export const UA_EXTRA_LOCATION_DICTIONARIES = Object.freeze({
   }),
 });
 
+function withoutMetro(dictionary = {}) {
+  return Object.freeze(Object.fromEntries(
+    Object.entries(dictionary).filter(([key]) => key !== 'metro'),
+  ));
+}
+
+const UA_BASE_LOCATION_DICTIONARIES = Object.freeze({
+  ...(BASE_LOCATION_DICTIONARIES.UA || {}),
+  Kyiv: withoutMetro(BASE_LOCATION_DICTIONARIES.UA?.Kyiv),
+  Kharkiv: withoutMetro(BASE_LOCATION_DICTIONARIES.UA?.Kharkiv),
+});
+
 const COUNTRY_LOCATION_DICTIONARIES = Object.freeze({
   ...BASE_LOCATION_DICTIONARIES,
   KZ: mergeLocationCountries(
@@ -36,7 +48,7 @@ const COUNTRY_LOCATION_DICTIONARIES = Object.freeze({
     UZ_LOCATION_EXTENSIONS,
   ),
   UA: mergeLocationCountries(
-    BASE_LOCATION_DICTIONARIES.UA || {},
+    UA_BASE_LOCATION_DICTIONARIES,
     UA_EXTRA_LOCATION_DICTIONARIES,
     UA_MAJOR_LOCATION_EXTENSIONS,
     UA_REGIONAL_LOCATION_EXTENSIONS,
