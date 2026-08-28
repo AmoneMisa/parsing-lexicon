@@ -88,6 +88,10 @@ export const UZ_LOCATION_EXTENSIONS = Object.freeze({
       { name: "Chamanbog'", aliases: ['Chamanbog‘','Chamanbogʻ','Chamanbog mahallasi','Чаманбоғ','Чаманбог'], parent: 'Almazar', confidence: 'official' },
       { name: 'Asalobod', aliases: ['Asalobod mahallasi','Asalabad','Асалобод','Асалабад'], parent: 'Yashnobod', confidence: 'official' },
       { name: "Sug'diyona", aliases: ['Sug‘diyona','Sugʻdiyona','Sugdiyona','Суғдиёна','Согдиана'], parent: 'Sergeli', confidence: 'official' },
+      { name: 'Olimpiya', aliases: ['Olimpiya mahallasi','Olympia','Олимпия','Олимпия махалла'], parent: 'Almazar', confidence: 'official' },
+      { name: 'Sebzor', aliases: ['Sebzor mahallasi','Sebzar','Себзор','Себзар'], parent: 'Almazar', confidence: 'official' },
+      { name: 'Yangi Choshtepa', aliases: ['Yangi Choshtepa mahallasi','Янги Чоштепа','Янги Чоштепа махалла'], parent: 'Yangihayot', confidence: 'official' },
+      { name: 'Taxtapul', aliases: ['Taxtapul mahallasi','Takhtapul','Тахтапул','Тахтапуль'], parent: 'Shaykhantahur', confidence: 'official' },
     ],
     microdistricts: [
       ['Qorasuv', 'Qorasuv massivi', 'Korasuv massivi', 'Корасув Массиви', 'Корасув массиви', 'Карасу массив', 'Карасу массиви', 'Қорасув массиви'],
@@ -185,6 +189,11 @@ export const UZ_LOCATION_EXTENSIONS = Object.freeze({
       { name: 'Tuzel-2', aliases: ['Tuzel 2','Тузель-2','Тузель 2'], parent: 'Yashnobod', confidence: 'verified' },
       { name: 'Tuzel-3', aliases: ['Tuzel 3','Тузель-3','Тузель 3'], parent: 'Yashnobod', confidence: 'verified' },
       { name: 'Tuzel-4', aliases: ['Tuzel 4','Тузель-4','Тузель 4'], parent: 'Yashnobod', confidence: 'verified' },
+      { name: 'Olimpiya', aliases: ['Olimpiya mavzesi','Olympia','Олимпия','Олимпия массив'], parent: 'Almazar', confidence: 'official' },
+      { name: 'Sebzor', aliases: ['Sebzor mavzesi','Sebzar','Себзор','Себзар','Ц-17','Ц-18','C-17','C-18'], parent: 'Almazar', confidence: 'official' },
+      { name: 'Tashselmash', aliases: ['Toshselmash','Toshselmash mavzesi','Ташсельмаш','Тошсельмаш'], parent: 'Yashnobod', confidence: 'official' },
+      { name: 'Yangi Choshtepa', aliases: ['Yangi Choshtepa mavzesi','Янги Чоштепа','Янги Чоштепа массив'], parent: 'Yangihayot', confidence: 'official' },
+      { name: 'Taxtapul', aliases: ['Taxtapul mavzesi','Takhtapul','Тахтапул','Тахтапуль','Тахтапул массив'], parent: 'Almazar', confidence: 'official' },
     ],
     developmentAreas: [
       ['Tashkent City', 'Ташкент Сити', 'Toshkent City', 'Tashkent City IBC'],
