@@ -1,7 +1,7 @@
 export const HOUSING_DEAL_TYPE_EXTENSIONS: readonly unknown[];
 export const HOUSING_ROOM_ONLY_EXTENSIONS: readonly unknown[];
 
-export type HousingSource = 'threads' | null;
+export type HousingSource = 'Threads' | null;
 export type HousingSourcePost = Readonly<{
   source: HousingSource;
   contact: string | null;
@@ -9,8 +9,8 @@ export type HousingSourcePost = Readonly<{
 }>;
 
 export function detectHousingSource(value: unknown): HousingSource;
-export function cleanHousingSourceText(value: unknown, options?: { source?: HousingSource }): string;
-export function parseHousingSourcePost(value: unknown, options?: { source?: HousingSource }): HousingSourcePost;
+export function cleanHousingSourceText(value: unknown, options?: { source?: HousingSource | 'threads' }): string;
+export function parseHousingSourcePost(value: unknown, options?: { source?: HousingSource | 'threads' }): HousingSourcePost;
 
 export function resolveExtendedHousingIntent(value: unknown): Readonly<{
   action: string | null;
