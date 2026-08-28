@@ -28,6 +28,9 @@ export const UA_EXTRA_LOCATION_DICTIONARIES = Object.freeze({
 
 const TASHKENT_UNSUPPORTED_SEED_MICRODISTRICTS = new Set([
   'Sergeli',
+  'Sebzar',
+  'Tashselmash',
+  'Yangi Choshtepa',
   'Yunusabad-20',
   'Yunusabad-21',
   'Yunusabad-22',
