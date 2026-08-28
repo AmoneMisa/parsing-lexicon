@@ -100,7 +100,7 @@ export function parseHousingListingFields(value, { country = '' } = {}) {
     : context.tenantPolicies.smoking === 'notAllowed' ? false : null;
 
   const firstRent = bool(text,
-    /первая\s+(?:сдача|аренда)|впервые\s+(?:сда[её]тся|сдается|в\s+аренду)|first\s+(?:rental|letting)|never\s+rented/iu,
+    /первая\s+(?:сдача|аренда)|впервые\s+(?:сда[её]тся|сдается|в\s+аренду)|(?:ранее|раньше|до\s+этого)\s+никто\s+не\s+жил|никто\s+(?:ранее|раньше)\s+не\s+жил|first\s+(?:rental|letting)|never\s+(?:rented|lived\s+in|occupied)/iu,
   );
 
   return deepFreeze({
