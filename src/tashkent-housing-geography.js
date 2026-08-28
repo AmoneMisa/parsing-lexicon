@@ -1,4 +1,4 @@
-import { aliasesToRegex, escapeRegex, normalizeForMatch } from './normalization.js';
+import { aliasesOf, aliasesToRegex, escapeRegex, normalizeForMatch } from './normalization.js';
 import { TASHKENT_DISTRICTS, TASHKENT_METRO } from './geo.js';
 
 function locationEntry(name, category, aliases = [], options = {}) {
@@ -15,6 +15,19 @@ function locationEntry(name, category, aliases = [], options = {}) {
     contextRe: options.context ? new RegExp(options.context, 'iu') : null,
   });
 }
+
+const TASHKENT_HOUSING_DISTRICTS = Object.freeze(TASHKENT_DISTRICTS.map((district) => {
+  const aliases = [...new Set([district.canonical, ...aliasesOf(district)].filter(Boolean))];
+  return Object.freeze({
+    canonical: district.canonical,
+    name: district.canonical,
+    type: 'district',
+    country: 'UZ',
+    city: 'Tashkent',
+    aliases: Object.freeze(aliases),
+    re: aliasesToRegex(aliases),
+  });
+}));
 
 /**
  * Housing-oriented Tashkent names that occur in listings as landmarks even when
@@ -228,7 +241,7 @@ export function hasExplicitTashkentDistrict(value, canonical) {
 export function matchTashkentHousingDistrict(value) {
   const text = String(value ?? '');
   if (!text) return null;
-  for (const district of TASHKENT_DISTRICTS) {
+  for (const district of TASHKENT_HOUSING_DISTRICTS) {
     const match = text.match(district.re);
     if (!match) continue;
     if (hasExplicitDistrictContext(text, match)) return district;
