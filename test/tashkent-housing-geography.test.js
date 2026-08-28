@@ -145,9 +145,10 @@ test('longer POI phrase suppresses a shorter homonymous geography token', () => 
   assert.equal(market.matches.some((entry) => entry.type === 'district' && entry.name === 'Sergeli'), false);
 });
 
-test('matches Qorasuv massif through the canonical Tashkent location registry', () => {
+test('matches Qorasuv umbrella area through the canonical Tashkent location registry', () => {
   const result = matchCentralAsiaLocationEntities('Корасув Массиви, 81-мактаб атрофида', 'UZ', 'Tashkent');
-  assert.ok(result.matches.some((entry) => entry.type === 'microdistrict' && entry.name === 'Qorasuv'));
+  assert.ok(result.matches.some((entry) => entry.type === 'local_area' && entry.name === 'Qorasuv'));
+  assert.equal(result.matches.some((entry) => entry.type === 'microdistrict' && entry.name === 'Qorasuv'), false);
 });
 
 test('Tashkent City is a development area, not a residential complex', () => {
