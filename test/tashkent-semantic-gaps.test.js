@@ -23,13 +23,13 @@ test('Tashkent canonical dictionary does not expose unsupported generic massif s
   assert.equal(microdistricts.has('Qorasuv'), false);
 });
 
-test('Tashkent matcher preserves umbrella-area vs numbered-microdistrict semantics', () => {
+test('Tashkent matcher preserves umbrella-area vs numbered-block semantics', () => {
   const qorasuv = matchCentralAsiaLocationEntities('Qorasuv dahasi, Toshkent', 'UZ', 'Tashkent');
   assert.ok(names(qorasuv, 'local_area').includes('Qorasuv'));
   assert.equal(names(qorasuv, 'microdistrict').includes('Qorasuv'), false);
 
-  const karasu6 = matchCentralAsiaLocationEntities('Qorasuv-6, Toshkent', 'UZ', 'Tashkent');
-  assert.ok(names(karasu6, 'microdistrict').includes('Karasu-6'));
+  const numbered = matchCentralAsiaLocationEntities('Qorasuv-6, Toshkent', 'UZ', 'Tashkent');
+  assert.equal(names(numbered, 'local_area').includes('Qorasuv'), false);
 
   const sputnik = matchCentralAsiaLocationEntities('Sputnik massivi, Toshkent', 'UZ', 'Tashkent');
   assert.ok(names(sputnik, 'microdistrict').includes('Sputnik'));
