@@ -66,7 +66,7 @@ export const EMPLOYMENT_TYPES = Object.freeze([
     uzLatn: ["to'liq bandlik", 'to‘liq bandlik', "to'liq kun", 'toliq ish kuni'], uzCyrl: ['тўлиқ бандлик', 'тўлиқ кун', 'тўлиқ иш куни'], kk: ['толық жұмыс күні', 'толық жұмыспен қамту'],
   }),
   group('partTime', {
-    ru: ['частичная занятость', 'неполная занятость', 'неполный день', 'неполный рабочий день', 'подработка'], en: ['part time', 'part-time', 'part time employment'], uk: ['часткова зайнятість', 'неповний день', 'підробіток'], ro: ['part-time', 'jumătate de normă', 'jumatate de norma', 'program parțial', 'program partial'],
+    ru: ['частичная занятость', 'неполная занятость', 'неполный день', 'неполный рабочий день', 'подработка'], en: ['part time', 'part-time', 'part time employment'], uk: ['часткова зайнятість', 'неповна зайнятість', 'неповний день', 'підробіток'], ro: ['part-time', 'jumătate de normă', 'jumatate de norma', 'program parțial', 'program partial'],
     uzLatn: ['yarim stavka', 'qisman bandlik', "qo'shimcha ish"], uzCyrl: ['ярим ставка', 'қисман бандлик', 'қўшимча иш'], kk: ['жартылай жұмыс', 'толық емес жұмыс күні', 'қосымша жұмыс'],
   }),
   group('contract', {
@@ -95,7 +95,7 @@ export const EMPLOYMENT_TYPES = Object.freeze([
 ]);
 
 export const WORK_MODES = Object.freeze([
-  group('remote', { ru: ['удалённо', 'удаленно', 'удалённая работа', 'дистанционно'], en: ['remote', 'work from home', 'wfh'], uk: ['віддалено', 'дистанційно', 'віддалена робота'], ro: ['remote', 'de acasă', 'de acasa', 'muncă la distanță', 'munca la distanta'], uzLatn: ['masofadan', 'masofaviy', 'uydan ishlash'], uzCyrl: ['масофадан', 'масофавий', 'уйдан ишлаш'], kk: ['қашықтан', 'қашықтан жұмыс', 'үйден жұмыс'] }),
+  group('remote', { ru: ['удалённо', 'удаленно', 'удалённая работа', 'дистанционно'], en: ['remote', 'work from home', 'wfh'], uk: ['віддалено', 'дистанційно', 'віддалена робота', 'дистанційна робота', 'дистанційний формат'], ro: ['remote', 'de acasă', 'de acasa', 'muncă la distanță', 'munca la distanta'], uzLatn: ['masofadan', 'masofaviy', 'uydan ishlash'], uzCyrl: ['масофадан', 'масофавий', 'уйдан ишлаш'], kk: ['қашықтан', 'қашықтан жұмыс', 'үйден жұмыс'] }),
   group('hybrid', { ru: ['гибрид', 'гибридный формат'], en: ['hybrid', 'hybrid work'], uk: ['гібрид', 'гібридний формат'], ro: ['hibrid', 'mod hibrid'], uzLatn: ['gibrid'], uzCyrl: ['гибрид'], kk: ['гибрид', 'аралас формат'] }),
   group('onsite', { ru: ['офис', 'в офисе', 'на месте', 'очно'], en: ['onsite', 'on-site', 'office', 'in person'], uk: ['офіс', 'в офісі', 'на місці'], ro: ['la birou', 'on-site', 'la sediu', 'fizic'], uzLatn: ['ofisda', 'joyida'], uzCyrl: ['офисда', 'жойида'], kk: ['кеңседе', 'офисте', 'орнында'] }),
 ]);
