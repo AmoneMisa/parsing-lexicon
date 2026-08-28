@@ -61,7 +61,7 @@ export const TASHKENT_METRO = Object.freeze([
   station('Yangihayot', 'Янгихаёт', 'Yangihayot', 'chilonzor', ['Янгиҳаёт', 'Янгихаят']),
   station('Chinor', 'Чинар', 'Chinor', 'chilonzor', ['Чинор']),
   station('Beruniy', 'Беруни', 'Beruniy', 'ozbekiston', ['Beruni']),
-  station('Tinchlik', 'Тинчлик', 'ozbekiston', 'ozbekiston'),
+  station('Tinchlik', 'Тинчлик', 'Tinchlik', 'ozbekiston'),
   station('Chorsu', 'Чорсу', 'Chorsu', 'ozbekiston'),
   station('Gafur Gulom', 'Гафур Гулям', 'Gafur Gulom', 'ozbekiston', ["G'afur G'ulom", 'G‘afur G‘ulom', 'Gʻafur Gʻulom', 'Ғафур Ғулом']),
   station('Alisher Navoi', 'Алишер Навои', 'Alisher Navoi', 'ozbekiston', ['Alisher Navoiy', 'Алишер Навоий']),
