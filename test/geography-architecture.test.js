@@ -14,6 +14,12 @@ test('canonical CITIES is the only city catalog used by free-text detection', as
   assert.doesNotMatch(source, /CITY_CATALOG|HIRING_GLOBAL_CITIES|KZ_CITY_CATALOG|UZ_CITY_CATALOG|UA_CITY_CATALOG/u);
 });
 
+test('Central Asia location matching consumes canonical geography city ownership', async () => {
+  const source = await readFile(new URL('../src/central-asia-locations.js', import.meta.url), 'utf8');
+  assert.match(source, /CITIES_BY_COUNTRY, canonicalCity/u);
+  assert.doesNotMatch(source, /KZ_CITY_CATALOG|UZ_CITY_CATALOG|canonicalKazakhstanCity|canonicalUzbekistanCity/u);
+});
+
 test('global cities belong to canonical geography', () => {
   assert.ok(GLOBAL_CITIES.length > 20);
   assert.equal(canonicalCity('NYC'), 'New York');
@@ -22,6 +28,20 @@ test('global cities belong to canonical geography', () => {
   assert.equal(detectCityFromText('Role based in München')?.canonical, 'Munich');
   assert.equal(detectCountryCodeFromText('Remote role in 서울'), 'KR');
   assert.ok(CITIES_BY_COUNTRY.US.some(({ canonical }) => canonical === 'New York'));
+});
+
+test('expanded Central Asia cities belong to canonical geography', () => {
+  assert.equal(canonicalCity('Целиноград', 'KZ'), 'Astana');
+  assert.equal(canonicalCity('Темиртау', 'KZ'), 'Temirtau');
+  assert.equal(canonicalCity("Qo'qon", 'UZ'), 'Kokand');
+  assert.equal(canonicalCity('Нөкис', 'UZ'), 'Nukus');
+  assert.ok(CITIES_BY_COUNTRY.KZ.some(({ canonical }) => canonical === 'Konaev'));
+  assert.ok(CITIES_BY_COUNTRY.UZ.some(({ canonical }) => canonical === 'Margilan'));
+});
+
+test('context-required cities stay guarded in free text', () => {
+  assert.equal(detectCityFromText('Xonobod', 'UZ'), null);
+  assert.equal(detectCityFromText('Xonobod shahri', 'UZ')?.canonical, 'Xonobod');
 });
 
 test('country scopes accept codes and aliases', () => {

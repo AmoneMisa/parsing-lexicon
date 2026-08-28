@@ -1,12 +1,7 @@
 import { LOCATION_DICTIONARIES } from './locations.js';
 import { LOCATION_LIST_KEYS } from './location-merge.js';
+import { CITIES_BY_COUNTRY, canonicalCity } from './geography.js';
 import { aliasesOf, aliasesToRegex, normalizeForMatch } from './normalization.js';
-import {
-  KZ_CITY_CATALOG,
-  UZ_CITY_CATALOG,
-  canonicalKazakhstanCity,
-  canonicalUzbekistanCity,
-} from './central-asia.js';
 import { KZ_AMBIGUOUS_LOCAL_NAMES, KZ_SEARCH_CLUSTERS } from './kz-location-extensions.js';
 import { UZ_AMBIGUOUS_LOCAL_NAMES } from './uz-location-extensions.js';
 
@@ -44,19 +39,11 @@ const KZ_AMBIGUOUS = new Set(KZ_AMBIGUOUS_LOCAL_NAMES.map(normalizeForMatch));
 const UZ_AMBIGUOUS = new Set(UZ_AMBIGUOUS_LOCAL_NAMES.map(normalizeForMatch));
 
 function cityCatalog(countryCode) {
-  return countryCode === 'KZ' ? KZ_CITY_CATALOG : countryCode === 'UZ' ? UZ_CITY_CATALOG : [];
+  return CITIES_BY_COUNTRY[countryCode] || [];
 }
 
 function dictionaries(countryCode) {
   return CENTRAL_ASIA_LOCATION_DICTIONARIES[countryCode] || {};
-}
-
-function canonicalCity(value, countryCode) {
-  return countryCode === 'KZ'
-    ? canonicalKazakhstanCity(value)
-    : countryCode === 'UZ'
-      ? canonicalUzbekistanCity(value)
-      : null;
 }
 
 const cityRegexCache = new Map();
