@@ -12,3 +12,4 @@ export const HIRING_GLOBAL_CITIES: readonly Readonly<{
 
 export function detectCountryCodeFromText(value: unknown): string | null;
 export function detectCityFromText(value: unknown, country?: string | null): DetectedCity | null;
+export function detectCitiesFromText(value: unknown, country?: string | null): readonly DetectedCity[];
