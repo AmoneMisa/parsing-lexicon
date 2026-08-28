@@ -73,31 +73,75 @@ function explicitCityFromText(text, countryCode) {
   return matches[0]?.item?.canonical || null;
 }
 
-function isExplicitMetroContext(value, match) {
-  const start = match.index ?? 0;
-  const end = start + match[0].length;
-  const before = value.slice(Math.max(0, start - 36), start);
-  const after = value.slice(end, end + 36);
-  return /(?:метро|metro|станц(?:ия|ии)?|station|ст\.?\s*м\.?|м\.)\s*[:\-–—]?\s*$/iu.test(before)
-    || /^\s*(?:метро|metro|station|станц(?:ия|ии)?)(?=$|[^\p{L}\p{N}_])/iu.test(after);
+const CONTEXT_PATTERNS = Object.freeze({
+  metro: Object.freeze({
+    before: /(?:метро|metro|станц(?:ия|ии)?|station|ст\.?\s*м\.?)\s*[:\-–—]?\s*$/iu,
+    after: /^\s*[:\-–—]?\s*(?:метро|metro|станц(?:ия|ии)?|station)(?=$|[^\p{L}\p{N}_])/iu,
+    inside: /(?:метро|metro|станц(?:ия|ии)?|station)/iu,
+  }),
+  district: Object.freeze({
+    before: /(?:район|р-н|рн|туман\p{L}{0,4}|tumani|district)\s*[:\-–—]?\s*$/iu,
+    after: /^\s*[:\-–—]?\s*(?:район|р-н|рн|туман\p{L}{0,4}|tumani|district)(?=$|[^\p{L}\p{N}_])/iu,
+  }),
+  mahalla: Object.freeze({
+    before: /(?:махалл(?:а|я)|маҳалла(?:си)?|mahalla(?:si)?|mfy|мфй)\s*[:\-–—]?\s*$/iu,
+    after: /^\s*[:\-–—]?\s*(?:махалл(?:а|я)|маҳалла(?:си)?|mahalla(?:si)?|mfy|мфй)(?=$|[^\p{L}\p{N}_])/iu,
+  }),
+  microdistrict: Object.freeze({
+    before: /(?:массив(?:и)?|massiv(?:i)?|жилмассив|ж\/м|микрорайон|мкр\.?|mavze(?:si)?|мавзе(?:си)?|квартал|kvartal|daha|даха|даҳа)\s*[:\-–—]?\s*$/iu,
+    after: /^\s*(?:\d{1,2}[aа]?\s*)?[:\-–—]?\s*(?:массив(?:и)?|massiv(?:i)?|жилмассив|ж\/м|микрорайон|мкр\.?|mavze(?:si)?|мавзе(?:си)?|квартал|kvartal|daha|даха|даҳа)(?=$|[^\p{L}\p{N}_])/iu,
+  }),
+  local_area: Object.freeze({
+    before: /(?:массив(?:и)?|massiv(?:i)?|жилмассив|ж\/м|микрорайон|мкр\.?|mavze(?:si)?|мавзе(?:си)?|квартал|kvartal|daha|даха|даҳа|зона|area)\s*[:\-–—]?\s*$/iu,
+    after: /^\s*(?:\d{1,2}[aа]?\s*)?[:\-–—]?\s*(?:массив(?:и)?|massiv(?:i)?|жилмассив|ж\/м|микрорайон|мкр\.?|mavze(?:si)?|мавзе(?:си)?|квартал|kvartal|daha|даха|даҳа|зона|area)(?=$|[^\p{L}\p{N}_])/iu,
+  }),
+  residential_complex: Object.freeze({
+    before: /(?:жк|жилой\s+комплекс|residential\s+complex|residence|turar\s+joy\s+majmuasi|tjm)\s*[:\-–—]?\s*$/iu,
+    after: /^\s*[:\-–—]?\s*(?:жк|жилой\s+комплекс|residential\s+complex|residence|turar\s+joy\s+majmuasi|tjm)(?=$|[^\p{L}\p{N}_])/iu,
+  }),
+  street: Object.freeze({
+    before: /(?:улица|ул\.?|street|st\.?|ko['’ʻ]?cha(?:si)?|кўча(?:си)?)\s*[:\-–—]?\s*$/iu,
+    after: /^\s*[:\-–—]?\s*(?:улица|ул\.?|street|st\.?|ko['’ʻ]?cha(?:si)?|кўча(?:си)?)(?=$|[^\p{L}\p{N}_])/iu,
+  }),
+  poi: Object.freeze({
+    before: /(?:базар|рынок|bozor(?:i)?|мечет\p{L}*|масжид|masjid|mosque|парк|park|mall|молл|трц|тц|вокзал|аэропорт|airport|университет|university)\s*[:\-–—]?\s*$/iu,
+    after: /^\s*[:\-–—]?\s*(?:базар|рынок|bozor(?:i)?|мечет\p{L}*|масжид|masjid|mosque|парк|park|mall|молл|трц|тц|вокзал|аэропорт|airport|университет|university)(?=$|[^\p{L}\p{N}_])/iu,
+  }),
+});
+
+function hasExplicitContext(value, candidate) {
+  const pattern = CONTEXT_PATTERNS[candidate.type];
+  if (!pattern) return false;
+  const start = candidate.start;
+  const end = candidate.end;
+  const before = value.slice(Math.max(0, start - 40), start);
+  const after = value.slice(end, Math.min(value.length, end + 40));
+  return pattern.before.test(before) || pattern.after.test(after) || Boolean(pattern.inside?.test(candidate.matchedText));
 }
 
-function metroOverlapsArea(item, data) {
-  const itemKeys = new Set([item.name, ...(item.aliases || [])].map(normalizeForMatch).filter(Boolean));
-  return ['microdistricts', 'localAreas'].some((key) => (data?.[key] || []).some((area) =>
-    [area.name, ...(area.aliases || [])].map(normalizeForMatch).some((value) => itemKeys.has(value)),
-  ));
+function overlaps(a, b) {
+  return a.start < b.end && b.start < a.end;
+}
+
+function containsSpan(outer, inner) {
+  return outer.start <= inner.start && outer.end >= inner.end;
+}
+
+function publicMatch(candidate) {
+  const { start, end, matchedText, explicitContext, ...result } = candidate;
+  return Object.freeze(result);
 }
 
 function findEntryMatches(text, cityName, data) {
   const value = String(text || '');
-  const matches = [];
+  const raw = [];
   for (const key of LOCATION_LIST_KEYS) {
     for (const item of data?.[key] || []) {
       const match = value.match(item?.re);
       if (!match) continue;
-      if (key === 'metro' && metroOverlapsArea(item, data) && !isExplicitMetroContext(value, match)) continue;
-      matches.push(Object.freeze({
+      const start = match.index ?? 0;
+      const end = start + match[0].length;
+      const candidate = {
         country: item.country || null,
         city: cityName,
         type: item.entityType || TYPE_BY_KEY[key] || key,
@@ -108,10 +152,39 @@ function findEntryMatches(text, cityName, data) {
         parent: item.parent || item.district || null,
         confidence: item.confidence || null,
         language: item.language || null,
-      }));
+        start,
+        end,
+        matchedText: match[0],
+        explicitContext: false,
+      };
+      candidate.explicitContext = hasExplicitContext(value, candidate);
+      raw.push(candidate);
     }
   }
-  return matches;
+
+  const filtered = raw.filter((candidate) => {
+    const peers = raw.filter((other) => other !== candidate && overlaps(candidate, other));
+    if (candidate.explicitContext) return true;
+
+    // An explicit type marker is stronger than a same-surface alias of another type:
+    // "метро Минор" is a station, while "Минор махалла" is the mahalla.
+    if (peers.some((peer) => peer.explicitContext && peer.type !== candidate.type)) return false;
+
+    // Prefer the semantically longer phrase when one alias contains another, e.g.
+    // "Сергели машинный базар" over the bare district/metro token "Сергели".
+    const length = candidate.end - candidate.start;
+    if (peers.some((peer) => containsSpan(peer, candidate) && (peer.end - peer.start) > length)) return false;
+
+    // Bare station names that are also real neighborhoods/mahallas/districts are
+    // not enough to assert metro semantics. Explicit metro context restores them.
+    if (candidate.type === 'metro' && peers.some((peer) =>
+      ['district', 'microdistrict', 'mahalla', 'local_area'].includes(peer.type)
+    )) return false;
+
+    return true;
+  });
+
+  return filtered.map(publicMatch);
 }
 
 function isAmbiguousMatch(match, countryCode) {
