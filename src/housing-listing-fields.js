@@ -89,9 +89,13 @@ export function parseHousingListingFields(value, { country = '' } = {}) {
 
   const gas = bool(text,
     /(?:^|[^\p{L}\p{N}_])(?:газ|gaz|gas)(?=$|[^\p{L}\p{N}_])|метан|aragaz|gaz\s+ta['’]?min/iu,
-    /без\s+газа|нет\s+газа|no\s+gas|gaz\s*yo['’]?q/iu,
+    /без\s+газа|нет\s+газа|газа\s+нет|no\s+gas|gaz\s*yo['’]?q|газ\s+йўқ/iu,
   );
-  const elevator = bool(text, /лифт|elevator|\blift\b/iu, /без\s*лифт|no\s*elevator|lift\s*yo['’]?q/iu);
+  const elevator = bool(
+    text,
+    /лифт|elevator|\blift\b/iu,
+    /без\s*лифт\p{L}*|нет\s+лифт\p{L}*|лифт\p{L}*\s+нет|no\s*elevator|lift\s*yo['’]?q|лифт\s+йўқ/iu,
+  );
   const bareFurniture = /(?:^|[^\p{L}\p{N}_])(?:мебель|мебел|mebel)(?=$|[^\p{L}\p{N}_])/iu.test(text);
   const furnished = context.furniture === 'none' ? false : context.furniture ? true : bareFurniture ? true : null;
   const childrenAllowed = context.tenantPolicies.children === 'allowed' ? true
@@ -107,20 +111,48 @@ export function parseHousingListingFields(value, { country = '' } = {}) {
     bedrooms: parseBedrooms(text),
     bathrooms: parseBathrooms(text),
     buildingYear: parseBuildingYear(text),
-    balcony: bool(text, /балкон|лоджи|balkon|ayvon|balcon|loggia|balcony/iu),
-    terrace: bool(text, /террас|terrace|teras[ăa]?/iu),
-    privateYard: bool(text, /личн\p{L}*\s+двор|сво[йеё]\s+(?:закрыт\p{L}*\s+)?двор|собственн\p{L}*\s+двор|приватн\p{L}*\s+двір|власн\p{L}*\s+двір|private\s+(?:courtyard|yard)|curte\s+(?:proprie|privat[ăa])|shaxsiy\s+hovli/iu),
+    balcony: bool(
+      text,
+      /балкон|лоджи|balkon|ayvon|balcon|loggia|balcony/iu,
+      /без\s+(?:балкон\p{L}*|лоджи\p{L}*)|нет\s+(?:балкон\p{L}*|лоджи\p{L}*)|(?:балкон\p{L}*|лоджи\p{L}*)\s+нет|no\s+(?:balcony|loggia)|balkon\s+yo['’]?q/iu,
+    ),
+    terrace: bool(text, /террас|terrace|teras[ăa]?/iu, /без\s+террас\p{L}*|нет\s+террас\p{L}*|террас\p{L}*\s+нет|no\s+terrace/iu),
+    privateYard: bool(
+      text,
+      /личн\p{L}*\s+двор|сво[йеё]\s+(?:закрыт\p{L}*\s+)?двор|собственн\p{L}*\s+двор|приватн\p{L}*\s+двір|власн\p{L}*\s+двір|private\s+(?:courtyard|yard)|curte\s+(?:proprie|privat[ăa])|shaxsiy\s+hovli/iu,
+      /без\s+(?:своего\s+|личного\s+)?двора|нет\s+(?:своего\s+|личного\s+)?двора|(?:своего\s+|личного\s+)?двора\s+нет|no\s+private\s+(?:courtyard|yard)|shaxsiy\s+hovli\s+yo['’]?q/iu,
+    ),
     courtyard: features.courtyard,
     gazebo: features.gazebo,
-    dishwasher: bool(text, /посудомоечн\p{L}*|посудомойк\p{L}*|dishwasher|mașin[ăa]\s+de\s+spălat\s+vase/iu),
-    airConditioner: bool(text, /кондицион|сплит[- ]?систем|konditsioner|kansaner|klimat|air\s*con|aer\s+condi[țt]ionat/iu),
+    dishwasher: bool(
+      text,
+      /посудомоечн\p{L}*|посудомойк\p{L}*|dishwasher|mașin[ăa]\s+de\s+spălat\s+vase/iu,
+      /без\s+посудомоечн\p{L}*(?:\s+машин\p{L}*)?|нет\s+посудомоечн\p{L}*(?:\s+машин\p{L}*)?|посудомоечн\p{L}*(?:\s+машин\p{L}*)?\s+нет|no\s+dishwasher/iu,
+    ),
+    airConditioner: bool(
+      text,
+      /кондицион|сплит[- ]?систем|konditsioner|kansaner|klimat|air\s*con|aer\s+condi[țt]ionat/iu,
+      /без\s+(?:кондицион\p{L}*|сплит[- ]?систем\p{L}*)|нет\s+(?:кондицион\p{L}*|сплит[- ]?систем\p{L}*)|(?:кондицион\p{L}*|сплит[- ]?систем\p{L}*)\s+нет|no\s+air\s*con(?:ditioner)?|konditsioner\s+yo['’]?q|кондиционер\s+йўқ/iu,
+    ),
     gas,
     newBuilding: bool(text, /новостро|новобуд|новый\s+дом|novast(?:royka|iroyka)|navast(?:royka|iroyka)|new\s*build|newly\s*built|yangi\s+(?:bino|qurilgan|uy)|bloc\s+nou/iu),
     communalSeparated: parseCommunalSeparated(text, country),
-    parking: bool(text, /паркинг|парков|машино[- ]?мест|parking|avtoturargoh|mashina\s*joyi/iu),
+    parking: bool(
+      text,
+      /паркинг|парков|машино[- ]?мест|parking|avtoturargoh|mashina\s*joyi/iu,
+      /без\s+(?:паркинг\p{L}*|парковк\p{L}*|машино[- ]?мест\p{L}*)|нет\s+(?:паркинг\p{L}*|парковк\p{L}*|машино[- ]?мест\p{L}*)|(?:паркинг\p{L}*|парковк\p{L}*|машино[- ]?мест\p{L}*)\s+нет|no\s+parking|(?:parking|avtoturargoh|mashina\s*joyi)\s+yo['’]?q/iu,
+    ),
     elevator,
-    heating: bool(text, /отоплени|heating|otoplenie|isitish|markaziy\s*issiq/iu),
-    hotWater: bool(text, /горяч\p{L}*\s*вод|hot\s*water|issiq\s*suv/iu),
+    heating: bool(
+      text,
+      /отоплени|heating|otoplenie|isitish|markaziy\s*issiq/iu,
+      /без\s+отоплени\p{L}*|нет\s+отоплени\p{L}*|отоплени\p{L}*\s+нет|no\s+heating|isitish\s+yo['’]?q/iu,
+    ),
+    hotWater: bool(
+      text,
+      /горяч\p{L}*\s*вод|hot\s*water|issiq\s*suv/iu,
+      /без\s+горяч\p{L}*\s+вод\p{L}*|нет\s+горяч\p{L}*\s+вод\p{L}*|горяч\p{L}*\s+вод\p{L}*\s+нет|no\s+hot\s*water|issiq\s+suv\s+yo['’]?q/iu,
+    ),
     internet: features.internet,
     petsAllowed: features.petsAllowed,
     childrenAllowed,

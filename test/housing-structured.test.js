@@ -7,9 +7,18 @@ import {
   parseHousingPayments,
   parseHousingRoomCount,
   parseHousingSeller,
+  parseHousingStructured,
 } from '../src/housing-structured.js';
 import { parseHousingPrice } from '../src/housing-money.js';
-import { parseHousingAreaFromText, parseHousingResidentialComplex } from '../src/housing-text.js';
+import { parseHousingAddress } from '../src/housing-address.js';
+import {
+  parseHousingAmenities,
+  parseHousingAreaFromText,
+  parseHousingResidentialComplex,
+} from '../src/housing-text.js';
+import { parseHousingListingFields } from '../src/housing-listing-fields.js';
+import { parseHousingContext } from '../src/housing-context.js';
+import { resolveHousingIntent } from '../src/housing-intent.js';
 
 test('normalizes multilingual room counts and floor fractions', () => {
   assert.equal(parseHousingRoomCount('Сдам 2-к квартиру'), 2);
@@ -22,6 +31,13 @@ test('normalizes multilingual room counts and floor fractions', () => {
   assert.deepEqual(parseHousingFloor('16 этажлик дом, 13-этаж'), { floor: 13, totalFloors: 16 });
   assert.deepEqual(parseHousingFloor('Перший поверх'), { floor: 1, totalFloors: null });
   assert.deepEqual(parseHousingFloor('Квартира на першому поверсі'), { floor: 1, totalFloors: null });
+});
+
+test('parses written room counts across Russian and Uzbek scripts', () => {
+  assert.equal(parseHousingRoomCount('ikki xonali kvartira'), 2);
+  assert.equal(parseHousingRoomCount('уч хонали квартира'), 3);
+  assert.equal(parseHousingRoomCount('пятикомнатная квартира'), 5);
+  assert.equal(parseHousingRoomCount("o'n xonali uy"), 10);
 });
 
 test('extracts typed area details without collapsing labels', () => {
@@ -49,6 +65,17 @@ test('does not confuse a deposit duration with a money amount', () => {
   assert.equal(result.deposit.required, true);
   assert.equal(result.deposit.amount, null);
   assert.equal(result.deposit.currency, null);
+});
+
+test('structured parser keeps deposit duration and fixed commission amount', () => {
+  const result = parseHousingStructured('Депозит за 2 месяца. Комиссия 300 USD.');
+  assert.equal(result.payments.deposit.required, true);
+  assert.equal(result.payments.depositMonths, 2);
+  assert.equal(result.payments.deposit.amount, null);
+  assert.equal(result.payments.commission.required, true);
+  assert.equal(result.payments.commission.percent, null);
+  assert.equal(result.payments.commissionAmount.amount, 300);
+  assert.equal(result.payments.commissionAmount.currency, 'USD');
 });
 
 test('parses percent placed before the commission keyword', () => {
@@ -101,6 +128,29 @@ test('covers the supplied Dream House listing across shared housing parsers', ()
   assert.ok(parseHousingInfrastructure(text).some(({ poi }) => poi === 'Maternity hospital'));
 });
 
+test('unified structured parser composes the supplied Dream House listing', () => {
+  const text = `
+    ЖК Dream House Яккасарайский район 8 этаж из 10
+    2 комнаты полноценные + кухня, гардеробная отдельной комнатой
+    2 санузла 80 квадратов Депозит за 1 месяц
+    Свое бесплатное парковочное место!
+    Ор-р 8 роддом, улица Абдулла Каххара Цена 1200 у.е. + 50% комиссия агенства от первого месяца
+  `;
+  const result = parseHousingStructured(text);
+
+  assert.equal(result.residentialComplex, 'Dream House');
+  assert.equal(result.rooms, 2);
+  assert.deepEqual(result.floor, { floor: 8, totalFloors: 10 });
+  assert.equal(result.area.total, 80);
+  assert.deepEqual(result.price, { price: 1200, currency: 'USD' });
+  assert.equal(result.address.street, 'Абдулла Каххара');
+  assert.equal(result.address.houseNumber, null);
+  assert.equal(result.listingFields.bathrooms, 2);
+  assert.equal(result.listingFields.parking, true);
+  assert.equal(result.payments.depositMonths, 1);
+  assert.equal(result.payments.commission.percent, 50);
+});
+
 test('covers the supplied Qorasuv Cyrillic Uzbek listing semantics', () => {
   const text = `
     ЗУДЛИК БИЛАН УЙ ИЖАРАГА БЕРИЛАДИ!!!
@@ -117,4 +167,150 @@ test('covers the supplied Qorasuv Cyrillic Uzbek listing semantics', () => {
   assert.deepEqual(parseHousingPrice(text, 'UZS'), { price: 2_500_000, currency: 'UZS' });
   assert.deepEqual(parseHousingSeller(text), { type: 'agency', confidence: 1 });
   assert.ok(parseHousingInfrastructure(text).some(({ poi }) => poi === 'School'));
+});
+
+test('structured contacts bind a same-line contact person to the phone', () => {
+  const result = parseHousingStructured(`
+    Корасув Массиви
+    2 хона
+    2 млн 500 + агентство хизмати
+    +998997990183 Сохиба
+  `, { country: 'UZ' });
+
+  assert.deepEqual(result.price, { price: 2_500_000, currency: 'UZS' });
+  assert.equal(result.contacts.phones.length, 1);
+  assert.equal(result.contacts.phones[0].number, '+998997990183');
+  assert.equal(result.contacts.phones[0].name, 'Сохиба');
+});
+
+test('covers the supplied Uzbek Latin equipment and infrastructure listing end to end', () => {
+  const text = `
+    Shahar hokimiyat orqasida "Yulduzcha" boxcha hududi.
+
+    Mavjud jihozlari
+    - splani, shkaf, mebel va oshxona jihozlari
+    - televizor, muzlatgich, konditsioner, wefi
+    - kir yuvish mashinasi (Samsung aftomat)
+
+    yashash uchun barcha jihozlari bor. Qulayliklar
+    - katta yulga yaqin, yulovchi transport qatnovi bor,
+    - boxcha, supermarket, korzinka yaqin.
+    - tinch hudud
+
+    Hujjatlari joyida shartnoma ham qilib beriladi.
+    Narxi 250$
+  `;
+
+  assert.deepEqual(parseHousingPrice(text, 'UZS'), { price: 250, currency: 'USD' });
+
+  const pois = new Set(parseHousingInfrastructure(text).map(({ poi }) => poi));
+  for (const poi of ['Main road', 'Public transport', 'Kindergarten', 'Supermarket', 'Korzinka']) {
+    assert.equal(pois.has(poi), true, `missing POI: ${poi}`);
+  }
+
+  const amenities = new Set(parseHousingAmenities(text));
+  for (const amenity of [
+    'bed',
+    'washingMachine',
+    'refrigerator',
+    'television',
+    'airConditioner',
+    'internet',
+    'wardrobe',
+    'furniture',
+    'kitchenEquipment',
+    'moveInReady',
+  ]) {
+    assert.equal(amenities.has(amenity), true, `missing amenity: ${amenity}`);
+  }
+
+  const context = parseHousingContext(text);
+  assert.ok(context.documents.includes('documentsReady'));
+  assert.ok(context.documents.includes('contractAvailable'));
+  assert.ok(context.locationRelations.includes('near'));
+});
+
+test('covers the supplied Russian infrastructure and brokerage prose listing', () => {
+  const text = 'Отличное расположение дома - всё рядом - много магазинов, Центральный рынок, метро, детские учреждения, кафе, парковая зона!! Звоните! Оперативный, профессиональный подбор лучших вариантов на рынке Недвижимости по Вашим пожеланиям!';
+
+  const pois = new Set(parseHousingInfrastructure(text).map(({ poi }) => poi));
+  for (const poi of ['Shop', 'Market', 'Metro', 'Childcare', 'Cafe', 'Park']) {
+    assert.equal(pois.has(poi), true, `missing POI: ${poi}`);
+  }
+  assert.deepEqual(parseHousingSeller(text), { type: 'agency', confidence: 1 });
+});
+
+test('covers the supplied delayed Uzbek rent-out phrase with move-in date', () => {
+  const text = 'Горгaзда 1- хоналик 4- каватда квартира ижарага 1-сентябрдан берилади';
+
+  assert.deepEqual(resolveHousingIntent(text), {
+    action: 'rentOut',
+    listingKind: 'propertyOffer',
+    dealType: 'longRent',
+  });
+  assert.equal(parseHousingRoomCount(text), 1);
+  assert.deepEqual(parseHousingFloor(text), { floor: 4, totalFloors: null });
+  assert.equal(parseHousingListingFields(text).availableFrom, '1-сентябр');
+});
+
+test('does not parse a following price as the house number of a named street', () => {
+  const parsed = parseHousingAddress('Ор-р 8 роддом, улица Абдулла Каххара Цена 1200 у.е. + 50% комиссия');
+  assert.equal(parsed.street, 'Абдулла Каххара');
+  assert.equal(parsed.houseNumber, null);
+});
+
+test('negative amenity wording wins over bare amenity mentions', () => {
+  const result = parseHousingListingFields(`
+    Без кондиционера. Парковки нет. Нет горячей воды. Лифта нет.
+    Без интернета. Отопления нет. Балкона нет. Посудомоечной машины нет.
+    Двора нет. Беседки нет.
+  `);
+
+  assert.equal(result.airConditioner, false);
+  assert.equal(result.parking, false);
+  assert.equal(result.hotWater, false);
+  assert.equal(result.elevator, false);
+  assert.equal(result.internet, false);
+  assert.equal(result.heating, false);
+  assert.equal(result.balcony, false);
+  assert.equal(result.dishwasher, false);
+  assert.equal(result.courtyard, false);
+  assert.equal(result.gazebo, false);
+});
+
+test('parses split millions written with the full million word', () => {
+  assert.deepEqual(parseHousingPrice('Narxi 2 миллион 500', 'UZS'), { price: 2_500_000, currency: 'UZS' });
+  assert.deepEqual(parseHousingPrice('2 млн. 500', 'UZS'), { price: 2_500_000, currency: 'UZS' });
+});
+
+test('preserves numbered and named landmark identity around canonical POIs', () => {
+  const matches = parseHousingInfrastructure('81-мактаб атрофида, Ор-р 8 роддом, "Yulduzcha" boxcha hududi');
+  const school = matches.find(({ poi }) => poi === 'School');
+  const maternity = matches.find(({ poi }) => poi === 'Maternity hospital');
+  const kindergarten = matches.find(({ poi }) => poi === 'Kindergarten');
+
+  assert.equal(school?.number, 81);
+  assert.equal(school?.raw, '81-мактаб');
+  assert.equal(maternity?.number, 8);
+  assert.equal(maternity?.raw, '8 роддом');
+  assert.equal(kindergarten?.name, 'Yulduzcha');
+  assert.equal(kindergarten?.raw, '"Yulduzcha" boxcha');
+});
+
+test('structured parser strips Threads chrome and preserves the account as source contact', () => {
+  const result = parseHousingStructured(`
+    nika_imgrund
+    3d
+    Сдам 2 комнатную квартиру. Цена 1200$. Wi-Fi.
+    Translate
+  `);
+
+  assert.equal(result.source.platform, 'Threads');
+  assert.equal(result.source.contact, 'nika_imgrund');
+  assert.deepEqual(result.contacts.source, { source: 'Threads', value: 'nika_imgrund' });
+  assert.equal(result.text.includes('nika_imgrund'), false);
+  assert.equal(result.text.includes('Translate'), false);
+  assert.equal(result.rooms, 2);
+  assert.deepEqual(result.price, { price: 1200, currency: 'USD' });
+  assert.equal(result.listingFields.internet, true);
 });

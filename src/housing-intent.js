@@ -4,6 +4,7 @@ import { lexiconEntity } from './lexicon-core.js';
 const group = (canonical, aliases, extra = {}) => lexiconEntity(canonical, aliases, extra);
 const KK_RENT_OUT_ALIASES = Object.freeze(['жалға беремін', 'жалға беріледі']);
 const RO_SALE_OFFER_ALIASES = Object.freeze(['de vânzare', 'de vanzare']);
+const UZ_CONTEXTUAL_RENT_OUT_RE = /(?:^|[^\p{L}\p{N}_])(?:ijaraga|ижарага)(?=$|[^\p{L}\p{N}_])[^.!?\r\n]{0,48}(?:beraman|beriladi|topshiraman|бераман|берилади|топшираман)(?=$|[^\p{L}\p{N}_])/iu;
 
 export const HOUSING_ACTIONS = Object.freeze([
   group('sell', {
@@ -107,17 +108,18 @@ export function resolveHousingIntent(value) {
   const text = String(value || '');
   if (!text.trim()) return null;
 
-  const action = findCanonical(text, HOUSING_ACTIONS, { partial: true });
+  const actionMatch = findCanonical(text, HOUSING_ACTIONS, { partial: true });
+  const action = actionMatch?.canonical || (UZ_CONTEXTUAL_RENT_OUT_RE.test(text) ? 'rentOut' : null);
   const durationDeal = findCanonical(text, HOUSING_DEAL_TYPES, { partial: true });
 
   if (action) {
-    const base = HOUSING_ACTION_MAP[action.canonical];
+    const base = HOUSING_ACTION_MAP[action];
     let dealType = base.dealType;
-    if (durationDeal?.canonical === 'shortRent' && (action.canonical === 'rentOut' || action.canonical === 'rentIn')) {
+    if (durationDeal?.canonical === 'shortRent' && (action === 'rentOut' || action === 'rentIn')) {
       dealType = 'shortRent';
     }
     return Object.freeze({
-      action: action.canonical,
+      action,
       listingKind: base.listingKind,
       dealType,
     });
