@@ -78,7 +78,10 @@ export function parseHousingPrice(value, fallbackCurrency = '') {
     // 'u' is required for the \p{L}/\p{N} boundary escapes to work as
     // Unicode property classes — without it they silently match nothing,
     // which had made the boundary guard a no-op.
-    const reNumSym = new RegExp(`(${MONEY_NUMBER_PATTERN})\\s*${PRICE_CURRENCY_AFTER_NUMBER}`, 'igu');
+    // Source ads sometimes insert a stray period before the currency symbol:
+    // "500.$". Treat that punctuation as a separator, not as part of the
+    // numeric amount.
+    const reNumSym = new RegExp(`(${MONEY_NUMBER_PATTERN})\\s*[.]?\\s*${PRICE_CURRENCY_AFTER_NUMBER}`, 'igu');
     const reSymNum = new RegExp(`${PRICE_CURRENCY_BEFORE_NUMBER}\\s*(${MONEY_NUMBER_PATTERN})`, 'igu');
     for (const regex of [reNumSym, reSymNum]) {
       let match;
