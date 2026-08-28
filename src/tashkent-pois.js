@@ -52,6 +52,7 @@ export const TASHKENT_MARKETS = Object.freeze([
   poi('Eski Juva Bazaar', 'market', ['Эски Жува', 'Eski Juva']),
   poi('Alay Bazaar', 'market', ['Алайский рынок', 'Алайский базар', 'Oloy bozori', 'Олой бозори']),
   poi('Qoyliq Bazaar', 'market', ['Куйлюк базар', 'Куйлик базар', "Qo'yliq bozori", 'Qo‘yliq bozori', 'Qoʻyliq bozori']),
+  poi('Kuyluk Bazaar', 'market', ['Куйлюкский рынок', 'Куйлыкский базар', 'Kuyluk bazar']),
   poi('Yunusobod Bazaar', 'market', ['Юнусабадский рынок', 'Yunusobod bozori']),
   poi('Farhod Bazaar', 'market', ['Фархадский рынок', 'Фархадский базар', 'Farhod bozori']),
   poi('Uch Qahramon Bazaar', 'market', ['Уч Кахрамон', 'Уч Кахрамон базар']),
@@ -85,6 +86,8 @@ export const TASHKENT_MALLS = Object.freeze([
   poi('HT Mall', 'mall', ['HT Молл', 'HT savdo markazi']),
   poi('Seoul Mun Mall', 'mall', ['Seoul Mun', 'Сеул Мун Молл', 'Seoul Mun savdo markazi'], { contextRequired: true, context: MALL_CONTEXT }),
   poi('Ecobozor', 'mall', ['Eco Bozor', 'Ekobozor', 'Эко Бозор', 'Экобозор']),
+  poi('Magnum Samarkand Darvoza', 'mall', ['Magnum super', 'Magnum Supermarket', 'Магнум Самарканд Дарвоза']),
+  poi('Baraka Market', 'mall', ['Baraka market', 'Baraka Supermarket', 'Baraka Savdo', 'Барака маркет', 'Барака Савдо']),
 ]);
 
 export const TASHKENT_ATTRACTIONS = Object.freeze([
@@ -150,6 +153,14 @@ export const TASHKENT_UNIVERSITIES = Object.freeze([
   poi('New Uzbekistan University', 'university', ['Новый университет Узбекистана']),
 ]);
 
+export const TASHKENT_SCHOOLS = Object.freeze([
+  poi('Tashkent International School', 'school', ['TIS', 'American School Tashkent', 'Международная школа Ташкента', 'Ташкентская международная школа']),
+  poi('Academic Lyceum under WIUT', 'school', ['ALWIUT', 'Westminster Academic Lyceum', 'Академический лицей при Вестминстерском университете', 'Лицей Вестминстер']),
+  poi('Academic Lyceum under TMA', 'school', ['TMA Academic Lyceum', 'Академический лицей при ТМА', 'Лицей Ташкентской медицинской академии']),
+  poi('Tashkent Ulugbek International School', 'school', ['Ulugbek International School', 'Улугбекская международная школа', 'Международная школа Улугбека']),
+  poi('Uzbek International School Invento', 'school', ['Invento International School', 'Invento School', 'Международная школа Invento', 'Школа Invento']),
+]);
+
 export const TASHKENT_MEDICAL_POIS = Object.freeze([
   TASHKENT_MEDICAL_ACADEMY,
   poi('Tashkent City Hospital No. 1', 'medical', ['1-я городская больница']),
@@ -160,6 +171,13 @@ export const TASHKENT_MEDICAL_POIS = Object.freeze([
   poi('Republican Oncology Center', 'medical', ['Республиканский онкоцентр', 'Онкология']),
   poi('Republican Cardiology Center', 'medical', ['Республиканский кардиоцентр', 'Кардиоцентр']),
   poi('Republican Emergency Medical Center', 'medical', ['Республиканский центр экстренной медицинской помощи']),
+  poi('Republican Research Centre of Emergency Medicine', 'medical', ['Tashkent Emergency Medicine Center', 'Республиканский научный центр экстренной медицинской помощи', 'Республиканский центр экстренной медицины', '16-я городская больница']),
+  poi('Republican Ophthalmology Hospital', 'medical', ['Republican Eye Hospital', 'Республиканская офтальмологическая больница', 'Республиканская глазная больница']),
+  poi('Republican Hematology Center', 'medical', ['Tashkent Hematology Center', 'Республиканский гематологический центр', 'Центр гематологии']),
+  poi('Republican Thoracic Surgery Center Vakhidov', 'medical', ['Vakhidov Thoracic Surgery Center', 'Республиканский центр грудной хирургии им. Вахидова', 'Центр грудной хирургии Вахидова']),
+  poi('Tashkent International Clinic', 'medical', ['TIMC', 'Tashkent International Medical Clinic', 'Ташкентская международная клиника']),
+  poi('Republican Pathological Anatomy Center', 'medical', ['Republican Pathology Center', 'Республиканский патологоанатомический центр', 'Центр патологической анатомии']),
+  poi('Republic Specialized Nephrology and Transplantation Centre', 'medical', ['Republican Nephrology Center', 'Республиканский нефрологический центр', 'Центр нефрологии и трансплантации']),
   poi('Republican Perinatal Center', 'medical', ['Республиканский перинатальный центр', 'Перинатальный центр']),
   poi('Institute of Obstetrics and Gynecology', 'medical', ['Институт акушерства и гинекологии']),
 ]);
@@ -177,6 +195,7 @@ export const TASHKENT_POI_GROUPS = Object.freeze({
   malls: TASHKENT_MALLS,
   attractions: TASHKENT_ATTRACTIONS,
   culture: TASHKENT_CULTURAL_POIS,
+  schools: TASHKENT_SCHOOLS,
   transport: TASHKENT_TRANSPORT_POIS,
   universities: TASHKENT_UNIVERSITIES,
   medical: TASHKENT_MEDICAL_POIS,
