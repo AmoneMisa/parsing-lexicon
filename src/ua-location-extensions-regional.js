@@ -177,10 +177,10 @@ export const UA_REGIONAL_LOCATION_EXTENSIONS = Object.freeze({
 
   Chernivtsi: city({
     microdistricts: [
-      ['Tsentr','Центр'],['Prospekt','Проспект'],['Komarova','Комарова'],['Pivdenno-Kiltseva','Південно-Кільцева','Южно-Кольцевая'],['Hraviton','Гравітон','Гравитон'],['Kalichanka','Калічанка','Каличанка'],['Sadgora','Садгора','Садгірський','Садгірський район'],['Roscha','Роша'],['Klokuchka','Клокучка'],['Roscha-Stynka','Роша-Стинка'],['Tsetsyno','Цецино'],['Lenkivtsi','Ленківці','Ленковцы'],['Ruska','Руська'],['Fastivska','Фастівська'],
+      ['Tsentr','Центр'],['Prospekt','Проспект'],['Komarova','Комарова'],['Pivdenno-Kiltseva','Південно-Кільцева','Южно-Кольцевая'],['Hraviton','Гравітон','Гравитон'],['Kalichanka','Калічанка','Каличанка'],['Sadgora','Садгора','Садгірський','Садгірський район'],['Roscha','Роша'],['Klokuchka','Клокучка'],['Roscha-Stynka','Роша-Стинка'],['Tsetsyno','Цецино'],['Lenkivtsi','Ленківці','Ленковцы'],['Fastivska','Фастівська'],
     ],
     residentialComplexes: [
-      ['Vodohrai','ЖК Водограй'],['Compass','ЖК Compass','ЖК Компас'],['Grand Royal','ЖК Grand Royal'],['Family House','ЖК Family House'],['Comfort Hall','ЖК Comfort Hall'],['Kyivskyi','ЖК Київський','ЖК Киевский'],['Rodynnyi','ЖК Родинний','ЖК Родинный'],['Panorama','ЖК Panorama'],['Park Avenue','ЖК Park Avenue'],['Central','ЖК Central'],
+      ['Vodohrai','ЖК Водограй'],['Compass','ЖК Compass','ЖК Компас'],['Comfort Hall','ЖК Comfort Hall'],['Kyivskyi','ЖК Київський','ЖК Киевский'],['Rodynnyi','ЖК Родинний','ЖК Родинный'],['Panorama','ЖК Panorama'],['Park Avenue','ЖК Park Avenue'],['Central','ЖК Central'],
     ],
     landmarks: [
       ['Metropolitan Residence','Резиденція митрополитів','Резиденция митрополитов'],['Chernivtsi University','ЧНУ','університет Федьковича'],['Teatralna Square','Театральна площа'],['Central Square','Центральна площа'],['Turkish Square','Турецька площа','Турецька криниця'],['Kobylianska Street','Ольги Кобилянської','вулиця Кобилянської'],['Shevchenko Park','парк Шевченка'],['Botanical Garden','Ботанічний сад'],['City Hall','Ратуша'],
