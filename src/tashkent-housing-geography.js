@@ -1,5 +1,5 @@
 import { aliasesToRegex, escapeRegex, normalizeForMatch } from './normalization.js';
-import { TASHKENT_METRO } from './geo.js';
+import { TASHKENT_DISTRICTS, TASHKENT_METRO } from './geo.js';
 
 function locationEntry(name, category, aliases = [], options = {}) {
   const all = [...new Set([name, ...aliases].filter(Boolean))];
@@ -30,7 +30,7 @@ export const TASHKENT_HOUSING_LANDMARKS = Object.freeze([
   locationEntry('Novomoskovskaya', 'residential_complex', [
     'Новомосковская', 'Новомосковской', 'Novomoskovskaya',
   ]),
-  locationEntry('Yangi Choshtepa', 'local_area', [
+  locationEntry('Yangi Choshtepa', 'microdistrict', [
     'Янги Чоштепа', 'Янги чоштепа', 'Yangi Choshtepa',
   ]),
   locationEntry('Glinka', 'landmark', [
@@ -87,6 +87,46 @@ function hasRequiredContext(entry, text, start, end) {
   if (!entry.contextRequired) return true;
   const around = text.slice(Math.max(0, start - 48), Math.min(text.length, end + 48));
   return entry.contextRe?.test(around) ?? false;
+}
+
+function matchContext(text, match, beforeRe, afterRe, insideRe = null) {
+  const start = match.index ?? 0;
+  const end = start + match[0].length;
+  const before = text.slice(Math.max(0, start - 36), start);
+  const after = text.slice(end, Math.min(text.length, end + 36));
+  return beforeRe.test(before) || afterRe.test(after) || Boolean(insideRe?.test(match[0]));
+}
+
+const METRO_BEFORE_RE = /(?:метро|metro|станц(?:ия|ии)?|station|ст\.?\s*м\.?)\s*[:\-–—]?\s*$/iu;
+const METRO_AFTER_RE = /^\s*[:\-–—]?\s*(?:метро|metro|станц(?:ия|ии)?|station)(?=$|[^\p{L}\p{N}_])/iu;
+const METRO_INSIDE_RE = /(?:метро|metro|станц(?:ия|ии)?|station)/iu;
+const DISTRICT_BEFORE_RE = /(?:район|р-н|рн|туман\p{L}{0,4}|tumani|district)\s*[:\-–—]?\s*$/iu;
+const DISTRICT_AFTER_RE = /^\s*[:\-–—]?\s*(?:район|р-н|рн|туман\p{L}{0,4}|tumani|district)(?=$|[^\p{L}\p{N}_])/iu;
+const AREA_BEFORE_RE = /(?:массив(?:и)?|massiv(?:i)?|жилмассив|ж\/м|микрорайон|мкр\.?|mavze(?:si)?|мавзе(?:си)?|квартал|kvartal|daha|даха|даҳа)\s*[:\-–—]?\s*$/iu;
+const AREA_AFTER_RE = /^\s*(?:\d{1,2}[aа]?\s*)?[:\-–—]?\s*(?:массив(?:и)?|massiv(?:i)?|жилмассив|ж\/м|микрорайон|мкр\.?|mavze(?:si)?|мавзе(?:си)?|квартал|kvartal|daha|даха|даҳа)(?=$|[^\p{L}\p{N}_])/iu;
+const MAHALLA_BEFORE_RE = /(?:махалл(?:а|я)|маҳалла(?:си)?|mahalla(?:si)?|mfy|мфй)\s*[:\-–—]?\s*$/iu;
+const MAHALLA_AFTER_RE = /^\s*[:\-–—]?\s*(?:махалл(?:а|я)|маҳалла(?:си)?|mahalla(?:si)?|mfy|мфй)(?=$|[^\p{L}\p{N}_])/iu;
+const LANDMARK_AFTER_RE = /^\s*[:\-–—]?\s*(?:базар|рынок|bozor(?:i)?|мечет\p{L}*|масжид|masjid|mosque|парк|park|mall|молл|вокзал|аэропорт|airport)(?=$|[^\p{L}\p{N}_])/iu;
+const LANDMARK_BEFORE_RE = /(?:базар|рынок|bozor(?:i)?|мечет\p{L}*|масжид|masjid|mosque|парк|park|mall|молл|вокзал|аэропорт|airport)\s*[:\-–—]?\s*$/iu;
+
+function hasExplicitMetroContext(text, match) {
+  return matchContext(text, match, METRO_BEFORE_RE, METRO_AFTER_RE, METRO_INSIDE_RE);
+}
+
+function hasExplicitDistrictContext(text, match) {
+  return matchContext(text, match, DISTRICT_BEFORE_RE, DISTRICT_AFTER_RE);
+}
+
+function hasExplicitAreaContext(text, match) {
+  return matchContext(text, match, AREA_BEFORE_RE, AREA_AFTER_RE);
+}
+
+function hasExplicitMahallaContext(text, match) {
+  return matchContext(text, match, MAHALLA_BEFORE_RE, MAHALLA_AFTER_RE);
+}
+
+function hasExplicitLandmarkContext(text, match) {
+  return matchContext(text, match, LANDMARK_BEFORE_RE, LANDMARK_AFTER_RE);
 }
 
 /** Return all housing landmarks in stable catalogue-priority order. */
@@ -180,25 +220,51 @@ export function hasExplicitTashkentDistrict(value, canonical) {
   return new RegExp(`(?:^|\\s)(?:${alternatives})\\s+${DISTRICT_MARKER}(?:\\s|$)`, 'iu').test(text);
 }
 
+/** Resolve administrative districts only when the surrounding housing context agrees. */
+export function matchTashkentHousingDistrict(value) {
+  const text = String(value ?? '');
+  if (!text) return null;
+  for (const district of TASHKENT_DISTRICTS) {
+    const match = text.match(district.re);
+    if (!match) continue;
+    if (hasExplicitDistrictContext(text, match)) return district;
+    if (hasExplicitMetroContext(text, match) || hasExplicitAreaContext(text, match) || hasExplicitMahallaContext(text, match)) continue;
+    if (matchTashkentNumberedArea(text, district.name)) continue;
+    return district;
+  }
+  return null;
+}
+
 const EXTRA_METRO_ALIASES = Object.freeze({
   Sergeli: Object.freeze(['Sergile', 'Sergele']),
 });
 
 const QOYLIQ_MASSIF_RE = /(?:куйлюк|куйлик|kuylyuk|kuyliq|qoyliq|qo[‘’ʻ']?yliq|қўйлиқ)(?:\s+\d{1,2})?\s+(?:массив(?:и)?|massiv(?:i)?)/iu;
+const METRO_NUMBERED_AREA = Object.freeze({
+  Chilonzor: 'Chilanzar',
+  Sergeli: 'Sergeli',
+  Yunusobod: 'Yunusabad',
+  Yangihayot: 'Yangihayot',
+});
 
-/** Resolve listing typos/transliterations to an existing canonical metro entry. */
+/** Resolve listing typos/transliterations while respecting explicit non-metro geography. */
 export function matchTashkentHousingMetro(value) {
   const text = String(value ?? '');
   if (!text) return null;
   for (const station of TASHKENT_METRO) {
-    if (!station.re.test(text)) continue;
-    // Qoyliq is also a large housing massif. In housing text an explicit
-    // "массив/massiv" marker wins over the homonymous metro station.
+    const match = text.match(station.re);
+    if (!match) continue;
+    if (hasExplicitMetroContext(text, match)) return station;
     if (station.name === 'Qoyliq' && QOYLIQ_MASSIF_RE.test(text)) continue;
+    const areaCanonical = METRO_NUMBERED_AREA[station.name];
+    if (areaCanonical && matchTashkentNumberedArea(text, areaCanonical)) continue;
+    if (hasExplicitDistrictContext(text, match) || hasExplicitAreaContext(text, match) || hasExplicitMahallaContext(text, match) || hasExplicitLandmarkContext(text, match)) continue;
     return station;
   }
   for (const [canonical, aliases] of Object.entries(EXTRA_METRO_ALIASES)) {
-    if (!aliasesToRegex(aliases).test(text)) continue;
+    const match = text.match(aliasesToRegex(aliases));
+    if (!match) continue;
+    if (hasExplicitDistrictContext(text, match) || hasExplicitAreaContext(text, match) || hasExplicitMahallaContext(text, match)) continue;
     return TASHKENT_METRO.find((station) => station.name === canonical) || null;
   }
   return null;
