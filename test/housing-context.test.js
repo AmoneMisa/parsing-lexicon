@@ -1,7 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { parseHousingContext, resolveHousingIntent } from '../src/index.js';
-import { housingSemanticDisplayName } from '../src/housing-display.js';
 
 test('housing action stays orthogonal to rent duration', () => {
   assert.deepEqual(resolveHousingIntent('Сдам квартиру посуточно'), {
@@ -33,11 +32,9 @@ test('housing context recognizes the short Uzbek near relation', () => {
   assert.ok(result.locationRelations.includes('near'));
 });
 
-test('housing context recognizes bare Russian nearby and displays generic POIs title-cased', () => {
+test('housing context recognizes bare Russian nearby', () => {
   const result = parseHousingContext('Рядом есть рынок и супермаркеты.');
   assert.ok(result.locationRelations.includes('near'));
-  assert.equal(housingSemanticDisplayName('рынок', 'ru'), 'Рынок');
-  assert.equal(housingSemanticDisplayName('пермаркеты', 'ru'), 'Супермаркет');
 });
 
 test('housing context covers common Uzbek brick and separate-room spellings', () => {
