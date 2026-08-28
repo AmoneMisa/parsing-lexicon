@@ -88,10 +88,46 @@ function normalizeUzSemanticLocations(country) {
   });
 }
 
+const ODESA_FONTAN_STATION_RE = /^(?:[5-9]|1[0-6]) Fontan Station$/u;
+
+function normalizeUaSemanticLocations(country) {
+  const odesa = country?.Odesa;
+  if (!odesa) return country;
+
+  // “5–16 station of Velykyi Fontan” are traditional listing/locality zones
+  // anchored to the Fontanska Road transit stops, not twelve standalone city
+  // microdistricts. Keep their parsing value but expose them as local areas.
+  const fontanStationAreas = Object.freeze(
+    (odesa.microdistricts || [])
+      .filter(({ name }) => ODESA_FONTAN_STATION_RE.test(name))
+      .map((entry) => Object.freeze({
+        ...entry,
+        type: 'local_area',
+        entityType: 'local_area',
+      })),
+  );
+
+  return Object.freeze({
+    ...country,
+    Odesa: Object.freeze({
+      ...odesa,
+      microdistricts: Object.freeze(
+        (odesa.microdistricts || []).filter(({ name }) => !ODESA_FONTAN_STATION_RE.test(name)),
+      ),
+      localAreas: Object.freeze([
+        ...(odesa.localAreas || []),
+        ...fontanStationAreas,
+      ]),
+    }),
+  });
+}
+
 const UZ_LOCATION_DICTIONARIES = normalizeUzSemanticLocations(mergeLocationCountries(
   UZ_BASE_LOCATION_DICTIONARIES,
   UZ_LOCATION_EXTENSIONS,
 ));
+
+const UA_SEMANTIC_LOCATION_EXTENSIONS = normalizeUaSemanticLocations(UA_MAJOR_LOCATION_EXTENSIONS);
 
 const COUNTRY_LOCATION_DICTIONARIES = Object.freeze({
   ...BASE_LOCATION_DICTIONARIES,
@@ -102,7 +138,7 @@ const COUNTRY_LOCATION_DICTIONARIES = Object.freeze({
   UZ: UZ_LOCATION_DICTIONARIES,
   UA: mergeLocationCountries(
     UA_EXTRA_LOCATION_DICTIONARIES,
-    UA_MAJOR_LOCATION_EXTENSIONS,
+    UA_SEMANTIC_LOCATION_EXTENSIONS,
     UA_REGIONAL_LOCATION_EXTENSIONS,
     UA_SECONDARY_LOCATION_EXTENSIONS,
     UA_METRO_LOCATION_EXTENSIONS,
