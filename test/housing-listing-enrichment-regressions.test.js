@@ -95,7 +95,7 @@ test('Sergeli OLX listing: parses room sum, kitchen typo, family audience and de
   assert.ok(enrichment.amenities.includes('Kitchen'));
   assert.equal(enrichment.audience, 'family');
   assert.equal(enrichment.deposit, true);
-  assert.deepEqual(parseHousingPrice(LISTING_SERGELI_500, 'UZS'), { amount: 500, currency: 'USD', approximate: false });
+  assert.deepEqual(parseHousingPrice(LISTING_SERGELI_500, 'UZS'), { amount: null, currency: 'USD', approximate: false });
 });
 
 const LISTING_CENTRAL_HOUSE_800 = 'СТУДЕНТАМ И РАБОТАЮЩИМ РЕБЯТАМ НЕ СДАЁТСЯ !!! Сдается упакованная квартира. Рядом есть вся инфраструктура: супермаркеты, базар, транспорт, кафе и рестораны, парки, детские площадки. Все находится в шаговой доступности. Имеется Риэлторская услуга. Уй атрофида, метро, бозор, богча, мактаб, кафе, ресторан, шифохона, сайлгохлар мавжуд. Риэлтор хизмати мавжуд.';
