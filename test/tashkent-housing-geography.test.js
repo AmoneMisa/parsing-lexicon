@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import { TASHKENT_AREAS } from '../src/geo.js';
+import { TASHKENT_AREA_ADDITIONS, FULL_TASHKENT_AREAS } from '../src/tashkent-colloquial.js';
 import { matchCentralAsiaLocationEntities } from '../src/central-asia-locations.js';
 import {
   hasExplicitTashkentDistrict,
@@ -31,11 +32,12 @@ test('covers Sergeli car bazaar transliteration typos', () => {
   assert.deepEqual(names('Sergile moshena bozor yonida'), ['Sergeli Car Bazaar']);
 });
 
-test('keeps Glinka as a street-scale landmark instead of inventing a microdistrict', () => {
+test('keeps Glinka as a street-scale landmark instead of inventing an area', () => {
   const entry = matchTashkentHousingLandmarks('Ориентир Глинка ГАИ')[0];
   assert.equal(entry?.name, 'Glinka');
   assert.equal(entry?.category, 'landmark');
   assert.equal(Object.values(TASHKENT_AREAS).flat().some((item) => item.name === 'Glinka'), false);
+  assert.equal(Object.values(FULL_TASHKENT_AREAS).flat().some((item) => item.name === 'Glinka'), false);
 });
 
 test('classifies verified residential massifs as microdistrict semantics', () => {
@@ -44,10 +46,29 @@ test('classifies verified residential massifs as microdistrict semantics', () =>
   assert.equal(yangiChoshtepa?.category, 'microdistrict');
 
   const areas = Object.values(TASHKENT_AREAS).flat();
-  for (const name of ['Sebzar', 'Yangi Choshtepa', 'Sputnik', 'Tashselmash']) {
+  for (const name of [
+    'Sebzar', 'Olympia',
+    'Karasu-1', 'Karasu-2', 'Karasu-3', 'Karasu-4',
+    'TTZ-1', 'TTZ-2', 'TTZ-3', 'TTZ-4',
+    'Dustlik-1', 'Dustlik-2', 'Yangi Choshtepa', 'Sputnik', 'Tashselmash',
+  ]) {
     assert.equal(areas.find((item) => item.name === name)?.type, 'microdistrict', name);
   }
+  assert.equal(areas.find((item) => item.name === 'Karasu-6')?.type, 'local_area');
   assert.equal(areas.some((item) => item.name === 'Sergeli Car Bazaar'), false);
+});
+
+test('colloquial additions do not create second canonical owners', () => {
+  for (const [district, additions] of Object.entries(TASHKENT_AREA_ADDITIONS)) {
+    const coreNames = new Set((TASHKENT_AREAS[district] || []).map((item) => item.name));
+    for (const item of additions) {
+      assert.equal(item.canonical, item.name);
+      assert.equal(item.country, 'UZ');
+      assert.equal(item.city, 'Tashkent');
+      assert.ok(['local_area', 'microdistrict'].includes(item.type));
+      assert.equal(coreNames.has(item.name), false, `${district}: duplicate ${item.name}`);
+    }
+  }
 });
 
 test('covers Nizami and World Languages university shorthand with context', () => {
@@ -128,6 +149,12 @@ test('longer POI phrase suppresses a shorter homonymous geography token', () => 
 test('matches Qorasuv massif through the canonical Tashkent location registry', () => {
   const result = matchCentralAsiaLocationEntities('Корасув Массиви, 81-мактаб атрофида', 'UZ', 'Tashkent');
   assert.ok(result.matches.some((entry) => entry.type === 'microdistrict' && entry.name === 'Qorasuv'));
+});
+
+test('Tashkent City is a development area, not a residential complex', () => {
+  const result = matchCentralAsiaLocationEntities('Tashkent City international business center', 'UZ', 'Tashkent');
+  assert.ok(result.matches.some((entry) => entry.type === 'development_area' && entry.name === 'Tashkent City'));
+  assert.equal(result.matches.some((entry) => entry.type === 'residential_complex' && entry.name === 'Tashkent City'), false);
 });
 
 test('centralizes the historical housing label for Tashkent north railway station', () => {
