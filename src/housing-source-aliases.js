@@ -45,9 +45,15 @@ function sourceLines(value) {
     .filter(Boolean);
 }
 
+function threadsHeader(lines) {
+  const offset = /^threads$/iu.test(lines[0] || '') ? 1 : 0;
+  const username = lines[offset]?.match(THREADS_USERNAME_RE)?.[1] || null;
+  const hasAge = Boolean(lines[offset + 1] && THREADS_AGE_RE.test(lines[offset + 1]));
+  return { offset, username, hasAge };
+}
+
 function threadsUsernameFromFirstLine(value) {
-  const first = sourceLines(value)[0] || '';
-  return first.match(THREADS_USERNAME_RE)?.[1] || null;
+  return threadsHeader(sourceLines(value)).username;
 }
 
 /**
@@ -63,10 +69,9 @@ export function detectHousingSource(value) {
   if (THREADS_EXPLICIT_RE.test(text)) return 'threads';
 
   const lines = sourceLines(text);
-  const username = lines[0]?.match(THREADS_USERNAME_RE)?.[1];
-  const age = lines[1] && THREADS_AGE_RE.test(lines[1]);
+  const { username, hasAge } = threadsHeader(lines);
   const hasThreadsUi = lines.some((line) => THREADS_UI_NOISE_RE.test(line));
-  return username && age && hasThreadsUi ? 'threads' : null;
+  return username && hasAge && hasThreadsUi ? 'threads' : null;
 }
 
 /** Remove source UI chrome while preserving the actual listing description. */
@@ -80,10 +85,13 @@ export function cleanHousingSourceText(value, options = {}) {
   const nonEmpty = rawLines
     .map((line, index) => ({ line: line.trim(), index }))
     .filter(({ line }) => Boolean(line));
+  const compactLines = nonEmpty.map(({ line }) => line);
+  const { offset, username, hasAge } = threadsHeader(compactLines);
 
   const drop = new Set();
-  if (nonEmpty[0]?.line.match(THREADS_USERNAME_RE)) drop.add(nonEmpty[0].index);
-  if (nonEmpty[1] && THREADS_AGE_RE.test(nonEmpty[1].line)) drop.add(nonEmpty[1].index);
+  if (/^threads$/iu.test(compactLines[0] || '')) drop.add(nonEmpty[0].index);
+  if (username && nonEmpty[offset]) drop.add(nonEmpty[offset].index);
+  if (hasAge && nonEmpty[offset + 1]) drop.add(nonEmpty[offset + 1].index);
 
   for (const { line, index } of nonEmpty) {
     if (THREADS_UI_NOISE_RE.test(line) || /^threads$/iu.test(line)) drop.add(index);
@@ -100,7 +108,7 @@ export function cleanHousingSourceText(value, options = {}) {
 
 /**
  * Parse source metadata from a copied housing post. For Threads, the account
- * name from the first physical content line becomes the contact.
+ * name from the first post header line becomes the contact.
  */
 export function parseHousingSourcePost(value, options = {}) {
   const text = String(value || '');
