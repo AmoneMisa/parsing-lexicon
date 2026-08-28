@@ -4,7 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { COUNTRIES } from '../src/countries.js';
 import { CITIES, CITIES_BY_COUNTRY, GLOBAL_CITIES, REGIONS_BY_COUNTRY, canonicalCity, canonicalRegion } from '../src/geography.js';
 import { detectCityFromText, detectCountryCodeFromText } from '../src/geography-detection.js';
-import { geographyDisplayName } from '../src/geography-display.js';
+import { GEOGRAPHY_DISPLAY_NAMES, geographyDisplayName } from '../src/geography-display.js';
 import { LOCATION_LIST_KEYS } from '../src/location-merge.js';
 import { matchDictionaryLocation } from '../src/locations.js';
 
@@ -81,6 +81,21 @@ test('Ukraine runtime locations no longer use the legacy UA seed', async () => {
   assert.doesNotMatch(source, /BASE_LOCATION_DICTIONARIES\.UA/u);
   assert.doesNotMatch(source, /UA_BASE_LOCATION_DICTIONARIES/u);
   assert.match(source, /UA:\s*mergeLocationCountries\(\s*UA_EXTRA_LOCATION_DICTIONARIES/u);
+});
+
+test('country presentation normalizes every catalog entry to English and Russian', () => {
+  for (const item of COUNTRIES) {
+    const en = item.aliases.en?.[0] || item.canonical;
+    const ru = item.aliases.ru?.[0] || en;
+    assert.equal(GEOGRAPHY_DISPLAY_NAMES.en.country[item.code], en);
+    assert.equal(GEOGRAPHY_DISPLAY_NAMES.ru.country[item.code], ru);
+    assert.equal(geographyDisplayName(ru, 'en', 'country'), en);
+    assert.equal(geographyDisplayName(en, 'ru', 'country'), ru);
+  }
+
+  assert.equal(geographyDisplayName('Республика Узбекистан', 'en', 'country'), 'Uzbekistan');
+  assert.equal(geographyDisplayName('United States', 'ru', 'country'), 'США');
+  assert.equal(geographyDisplayName('DE', 'ru', 'country'), 'Германия');
 });
 
 test('display derives labels from canonical entities and supports regions', () => {
