@@ -10,7 +10,7 @@ export const PROPERTY_CONDITION_TERMS = Object.freeze([
   group('cosmeticRenovation', { ru: ['косметический ремонт'], en: ['cosmetic renovation'], uk: ['косметичний ремонт'], ro: ['renovare cosmetică'], uzLatn: ['kosmetik remont'], uzCyrl: ['косметик ремонт'], kk: ['косметикалық жөндеу'] }),
   group('euroRenovation', { ru: ['евроремонт'], en: ['euro renovation', 'euro-renovated'], uk: ['євроремонт'], ro: ['renovare euro'], uzLatn: ['evroremont'], uzCyrl: ['евроремонт'], kk: ['евроремонт'] }),
   group('designerRenovation', { ru: ['дизайнерский ремонт'], en: ['designer renovation', 'designer interior'], uk: ['дизайнерський ремонт'], ro: ['renovare de designer'], uzLatn: ['dizaynerlik remont'], uzCyrl: ['дизайнерлик ремонт'], kk: ['дизайнерлік жөндеу'] }),
-  group('good', { ru: ['хорошее состояние', 'отличное состояние'], en: ['good condition', 'excellent condition'], uk: ['хороший стан', 'відмінний стан'], ro: ['stare bună', 'stare excelentă'], uzLatn: ['yaxshi holat'], uzCyrl: ['яхши ҳолат'], kk: ['жақсы жағдай'] }),
+  group('good', { ru: ['хорошее состояние', 'отличное состояние'], en: ['good condition', 'excellent condition'], uk: ['хороший стан', 'відмінний стан'], ro: ['stare bună', 'stare excelentă'], uzLatn: ['yaxshi holat', 'yaxshi xolat', 'juda yaxshi xolatda'], uzCyrl: ['яхши ҳолат'], kk: ['жақсы жағдай'] }),
   group('livable', { ru: ['жилое состояние'], en: ['livable condition', 'habitable'], uk: ['житловий стан'], ro: ['locuibil'], uzLatn: ['yashashga tayyor'], uzCyrl: ['яшашга тайёр'], kk: ['тұруға жарамды'] }),
   group('needsRenovation', { ru: ['требует ремонта', 'под ремонт', 'нужен ремонт'], en: ['needs renovation', 'requires renovation'], uk: ['потребує ремонту', 'під ремонт'], ro: ['necesită renovare'], uzLatn: ['remont kerak'], uzCyrl: ['ремонт керак'], kk: ['жөндеу қажет'] }),
   group('shell', { ru: ['черновая отделка', 'черновая', 'без отделки'], en: ['shell condition', 'shell and core', 'unfinished shell'], uk: ['чорнова обробка', 'без оздоблення'], ro: ['la roșu', 'fără finisaje'], uzLatn: ['qora suvoq', 'qora suvoq holati'], uzCyrl: ['қора сувоқ'], kk: ['қара әрлеу'] }),
@@ -65,7 +65,7 @@ export const RENT_DURATION_TERMS = Object.freeze([
   group('monthly', { ru: ['помесячно'], en: ['monthly'], uk: ['помісячно'], ro: ['lunar'], uzLatn: ['oylik'], uzCyrl: ['ойлик'], kk: ['ай сайын'] }),
   group('shortTerm', { ru: ['краткосрочно', 'на несколько месяцев'], en: ['short term'], uk: ['короткостроково'], ro: ['pe termen scurt'], uzLatn: ['qisqa muddatga'], uzCyrl: ['қисқа муддатга'], kk: ['қысқа мерзімге'] }),
   group('longTerm', { ru: ['долгосрочно', 'на длительный срок', 'минимум на год'], en: ['long term', 'long-term'], uk: ['довгостроково'], ro: ['pe termen lung'], uzLatn: ['uzoq muddatga'], uzCyrl: ['узоқ муддатга'], kk: ['ұзақ мерзімге'] }),
-  group('fixedTerm', { ru: ['до конца года', 'до сентября'], en: ['until the end of the year', 'until september'], uk: ['до кінця року'], ro: ['până la sfârșitul anului'], uzLatn: ['yil oxirigacha'], uzCyrl: ['йил охиригача'], kk: ['жыл соңына дейін'] }),
+  group('fixedTerm', { ru: ['до конца года', 'до сентября'], en: ['until the end of the year', 'until september'], uk: ['до кінця року'], ro: ['până la sfârșitul anului'], uzLatn: ['yil oxirigacha', 'yilning oxirigacha', 'yilning oxiri dekabrgacha'], uzCyrl: ['йил охиригача'], kk: ['жыл соңына дейін'] }),
 ]);
 
 export const FLOOR_CONSTRAINT_TERMS = Object.freeze([

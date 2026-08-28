@@ -42,6 +42,11 @@ function currencyNear(text) {
 export function parseHousingRoomCount(value) {
   const text = normalizeUnicode(value ?? '');
   if (!text) return null;
+  const describedRooms = [...text.matchAll(/(?:^|[^\p{L}\p{N}_])(\d{1,2})\s*ta\s+(?:katta|kichkina)\s+xona(?=$|[^\p{L}\p{N}_])/giu)];
+  if (describedRooms.length > 1) {
+    const total = describedRooms.reduce((sum, match) => sum + Number(match[1]), 0);
+    if (total >= 1 && total <= 20) return total;
+  }
   for (const [re, rooms] of NUMBER_WORDS) if (re.test(text)) return rooms;
   const numeric = text.match(/(?:^|[^\p{L}\p{N}])(\d{1,2})\s*(?:(?:-\s*)?комнат\p{L}*|(?:-\s*)?к(?:\.|\b)|(?:-\s*)?xona(?:li)?|(?:-\s*)?хона(?:лик|ли)?|бөлмелі|rooms?)(?=$|[^\p{L}\p{N}])/iu);
   const rooms = toNumber(numeric?.[1]);
@@ -125,7 +130,7 @@ export function parseHousingAreas(value) {
 }
 
 function amountAroundKeyword(text, keywordRe) {
-  const after = text.match(new RegExp(`${keywordRe.source}[^\\d$€₴₸]{0,24}([$€₴₸])?\\s*(\\d{1,9}(?:[.,]\\d{1,2})?)\\s*([\\p{L}.']{0,12})`, 'iu'));
+  const after = text.match(new RegExp(`${keywordRe.source}[^\\d$€₴₸]{0,24}([$€₴₸])?\\s*(\\d{1,9}(?:[.,]\\d{1,2})?)\\s*([\\p{L}.'$€₴₸]{0,12})`, 'iu'));
   const before = text.match(new RegExp(`([$€₴₸])?\\s*(\\d{1,9}(?:[.,]\\d{1,2})?)\\s*([\\p{L}.']{0,12})[^\\d]{0,16}${keywordRe.source}`, 'iu'));
   const match = after || before;
   if (!match) return { amount: null, currency: null };
@@ -134,7 +139,7 @@ function amountAroundKeyword(text, keywordRe) {
   return { amount, currency: currencyNear(context) };
 }
 
-const DEPOSIT_KEYWORD_RE = /(?:депозит|залог|deposit|depozit|garanție|garantie|кепіл)/iu;
+const DEPOSIT_KEYWORD_RE = /(?:депозит|залог|deposit|depozit|depazit(?:i)?|garanție|garantie|кепіл)/iu;
 const COMMISSION_KEYWORD_RE = /(?:комисси\p{L}*|commission|comision|komissiya|маклер|makler|rieltor|vositachi)/iu;
 
 export function parseHousingPayments(value) {

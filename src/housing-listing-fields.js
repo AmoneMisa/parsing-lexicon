@@ -77,7 +77,7 @@ function parseCommunalSeparated(text, country) {
 
 function parseDepositRequired(text) {
   if (/(?:без\s+(?:залога|депозита)|залог\s+не\s+нужен|депозит\s+не\s+нужен|no\s+deposit)/iu.test(text)) return false;
-  if (/(?:^|[^\p{L}\p{N}_])(?:залог|депозит|deposit|depozit|garantie|garanție|кепіл)(?=$|[^\p{L}\p{N}_])/iu.test(text)) return true;
+  if (/(?:^|[^\p{L}\p{N}_])(?:залог|депозит|deposit|depozit|depazit(?:i)?|garantie|garanție|кепіл)(?=$|[^\p{L}\p{N}_])/iu.test(text)) return true;
   return null;
 }
 

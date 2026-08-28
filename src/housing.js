@@ -138,7 +138,7 @@ export const SELLER_TERMS = Object.freeze({
 export const DEPOSIT_TERMS = Object.freeze({
   deposit: group('deposit', {
     ru: ['депозит', 'залог', 'страховой депозит', 'обеспечительный платеж'], en: ['deposit', 'security deposit', 'damage deposit'], uk: ['депозит', 'застава', 'страховий депозит', 'гарантійний платіж'], ro: ['garanție', 'garantie', 'depozit', 'garanție chirie', 'garantie chirie'],
-    uzLatn: ['depozit', 'zalog', 'garov puli'], uzCyrl: ['депозит', 'залог', 'гаров пули'], kk: ['депозит', 'кепіл', 'кепілақы'],
+    uzLatn: ['depozit', 'depazit', 'depaziti', 'zalog', 'garov puli'], uzCyrl: ['депозит', 'залог', 'гаров пули'], kk: ['депозит', 'кепіл', 'кепілақы'],
   }),
   noDeposit: group('noDeposit', {
     ru: ['без депозита', 'без залога'], en: ['no deposit', 'deposit free'], uk: ['без депозиту', 'без застави'], ro: ['fără garanție', 'fara garantie', 'fără depozit'], uzLatn: ['depozitsiz', 'zalogsiz', 'garovsiz'], uzCyrl: ['депозитсиз', 'залогсиз', 'гаровсиз'], kk: ['депозитсіз', 'кепілсіз'],

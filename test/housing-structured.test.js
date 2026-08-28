@@ -14,6 +14,7 @@ import { parseHousingAddress } from '../src/housing-address.js';
 import {
   parseHousingAmenities,
   parseHousingAreaFromText,
+  parseHousingAudience,
   parseHousingResidentialComplex,
 } from '../src/housing-text.js';
 import { parseHousingListingFields } from '../src/housing-listing-fields.js';
@@ -38,6 +39,24 @@ test('parses written room counts across Russian and Uzbek scripts', () => {
   assert.equal(parseHousingRoomCount('уч хонали квартира'), 3);
   assert.equal(parseHousingRoomCount('пятикомнатная квартира'), 5);
   assert.equal(parseHousingRoomCount("o'n xonali uy"), 10);
+});
+
+test('parses the supplied Uzbek family rental description without dropping structured details', () => {
+  const text = 'Assalomu Alaykoʻm kvartira juda yaxshi xolatda 2 ta katta xona 1 ta kichkina xona kuxnisi aloxida dush tualet aloxida bitta oila bemalol yashasa boʻladi yashashga tayyor zaks qogʻozi yuqlar bezota qilmasin. Yilning oxiri dekabrgacha yashasa buladi. Uyning depaziti xam bor 500.$ &#x20;';
+  const result = parseHousingStructured(text, { country: 'UZ', fallbackCurrency: 'USD' });
+
+  assert.equal(result.rooms, 3);
+  assert.equal(result.context.condition, 'good');
+  assert.equal(result.context.rentDuration, 'fixedTerm');
+  assert.equal(parseHousingAudience(text), 'family');
+  assert.equal(result.listingFields.depositRequired, true);
+  assert.deepEqual(result.payments.deposit, {
+    required: true,
+    kind: 'deposit',
+    amount: 500,
+    currency: 'USD',
+  });
+  assert.deepEqual(result.price, { price: null, currency: 'USD' });
 });
 
 test('extracts typed area details without collapsing labels', () => {
