@@ -43,7 +43,7 @@ export const TASHKENT_HOUSING_LANDMARKS = Object.freeze([
   locationEntry('Novomoskovskaya', 'residential_complex', [
     'Новомосковская', 'Новомосковской', 'Novomoskovskaya',
   ]),
-  locationEntry('Yangi Choshtepa', 'microdistrict', [
+  locationEntry('Yangi Choshtepa', 'local_area', [
     'Янги Чоштепа', 'Янги чоштепа', 'Yangi Choshtepa',
   ]),
   locationEntry('Glinka', 'landmark', [
