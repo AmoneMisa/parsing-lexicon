@@ -7,6 +7,7 @@ const HOUSE_MARKER = String.raw`(?:дом|д\.|будинок|буд\.|house|h\.
 const BUILDING_MARKER = String.raw`(?:корп(?:ус)?\.?|к\.|строен(?:ие)?|стр\.|будова|секц(?:ия|ія)?|bloc|corp|building|bldg\.?|korpus)`;
 const NUMBER_TOKEN = String.raw`\d{1,5}(?:[-\/]?[\p{L}])?(?:[\/-]\d{1,4}(?:[-\/]?[\p{L}])?)?`;
 const STREET_WORD = String.raw`[\p{L}'’.-]{2,48}`;
+const PROPERTY_AREA_LINE_RE = /(?:^|[^\p{L}\p{N}_])(?:(?:общая|жилая|полезная|кухонная)\s+площадь|площадь\s+(?:квартиры|дома|комнаты))(?=$|[^\p{L}\p{N}_])/iu;
 
 function clean(value) {
   return String(value ?? '')
@@ -112,6 +113,10 @@ function explicitStreetAddress(text) {
     .slice(0, 12);
 
   for (const line of lines) {
+    // Property measurements such as "Общая площадь 51,7 кв.м" used to be
+    // mistaken for a named square followed by house number 51.
+    if (PROPERTY_AREA_LINE_RE.test(line)) continue;
+
     const postfixTyped = postfixTypedStreetAddress(line);
     if (postfixTyped) return postfixTyped;
 
@@ -170,6 +175,7 @@ function labelledAddress(text) {
 }
 
 function bareAddress(text) {
+  if (PROPERTY_AREA_LINE_RE.test(text)) return null;
   const tail = splitAddressTail(text);
   if (!tail) return null;
   if (/^(?:центр|centre|center)$/iu.test(compactStreet(tail.street) || '')) return null;
