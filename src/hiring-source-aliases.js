@@ -76,7 +76,6 @@ export const SOURCE_ROLE_NORMALIZATION_RULES = Object.freeze([
   sourceRoleNormalization('finance_banking_specialist', 'Finance / Banking Specialist', /^kredit\s+bo['’ʻʼ‘`]?yicha\s+mutaxa(?:s|ss)is$/iu),
   sourceRoleNormalization('finance_banking_specialist', 'Finance / Banking Specialist', /^(?:финансы?\s*[,/&+]\s*банки?|банки?\s*[,/&+]\s*финансы?|finance\s*[,/&+]\s*banking)$/iu),
   sourceRoleNormalization('welder', 'Welder', /^(?:svarchik|svarshik)$/iu),
-  sourceRoleNormalization('factory_worker', 'Factory Worker', /^(?:jizzax\s+)?kia\s+zavodidan\s+ish\s+kerak$|^zavod\s+ishlari(?:\s+.*)?$/iu),
   sourceRoleNormalization('it_specialist', 'IT Specialist', /^(?:kompyuter\s+(?:sohasida|xizmatlari\s+bo['’ʻʼ‘`]?yicha\s+ish\s+kerak)|it\s+kompyuter)$/iu),
   sourceRoleNormalization('restaurant_manager', 'Restaurant Manager', /^(?:restoran|restaurant)[^\n]*(?:boshqaruv|manager|menejer)/iu),
   sourceRoleNormalization('administrator', 'Administrator', /^virtual\s+asistent$/iu),
@@ -108,6 +107,7 @@ export const SOURCE_ROLE_NORMALIZATION_RULES = Object.freeze([
   sourceRoleNormalization('healthcare_specialist', 'Healthcare Specialist', /^mededsina$|^meditsina$|^медицина$/iu),
   sourceRoleNormalization('tourism_hospitality_specialist', 'Tourism / Hospitality Specialist', /^mehmonxona[^\n]*turfirma|^turfirma[^\n]*mehmonxona/iu),
   sourceRoleNormalization('confectioner', 'Confectioner', /qandolat|qandolatchi/iu),
+  sourceRoleNormalization('factory_worker', 'Factory Worker', /^(?:jizzax\s+)?kia\s+zavodidan\s+ish\s+kerak$|^zavod\s+ishlari(?:\s+.*)?$/iu),
 ]);
 
 export function normalizeSourceRole(value) {
