@@ -23,6 +23,7 @@ test('Uzbek housing spelling variants canonicalize as generic nearby landmarks',
   assert.equal(matcher('Supermarket').test('Супермаркет рядом'), true);
   assert.equal(matcher('Public transport').test('yulovchi transport qatnovi bor'), true);
   assert.equal(matcher('Main road').test('katta yulga yaqin'), true);
+  assert.equal(matcher('Market').test('Ориентир 5 массив Базарчик'), true);
 });
 
 test('preserves Korzinka and supermarket as separate infrastructure matches', () => {

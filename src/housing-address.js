@@ -7,6 +7,7 @@ const HOUSE_MARKER = String.raw`(?:дом|д\.|будинок|буд\.|house|h\.
 const BUILDING_MARKER = String.raw`(?:корп(?:ус)?\.?|к\.|строен(?:ие)?|стр\.|будова|секц(?:ия|ія)?|bloc|corp|building|bldg\.?|korpus)`;
 const NUMBER_TOKEN = String.raw`\d{1,5}(?:[-\/]?[\p{L}])?(?:[\/-]\d{1,4}(?:[-\/]?[\p{L}])?)?`;
 const STREET_WORD = String.raw`[\p{L}'’.-]{2,48}`;
+const ADDRESS_FIELD_STOP_RE = /\s+(?:цена|ціна|нарх(?:и)?|narx|price|стоимост[ьи]|этаж(?:ность)?|поверх|qavat|қабат|кават|қават|комнат(?:ы|а)?|кімнат(?:и|а)?|xona|хона|площадь|площа|maydon|тел(?:ефон)?|phone|комисси\p{L}*|депозит|deposit)(?=$|[\s:№#-])/iu;
 const PROPERTY_AREA_LINE_RE = /(?:^|[^\p{L}\p{N}_])(?:(?:общая|жилая|полезная|кухонная)\s+площадь|площадь\s+(?:квартиры|дома|комнаты))(?=$|[^\p{L}\p{N}_])/iu;
 const NON_ADDRESS_BARE_RE = /^(?:(?:(?:перш(?:ий|ому)|перв(?:ый|ом)|друг(?:ий|ому)|втор(?:ой|ом)|трет(?:ій|ьем|ий)|\d{1,3}(?:-?й)?)\s+(?:поверх|этаж|floor|qavat|қабат))|(?:поверх|этаж|floor|qavat|қабат)(?:\s|$)|(?:район|р-н|рн|мікрорайон|микрорайон|мкр\.?|жк|ж\.к\.|жилой\s+комплекс|житловий\s+комплекс|residential\s+complex)(?:\s|$)|(?:недалеко|поруч|рядом|біля|около|возле)(?=$|[^\p{L}\p{N}_])|(?:зупинка|остановка|станція|станция)(?:\s|$))/iu;
 const DELIMITED_STREET_REJECT_RE = /(?:^|\s)(?:город|місто|city|район|р-н|рн|мікрорайон|микрорайон|мкр|жк|метро|поверх|этаж|floor|qavat|кімнат\p{L}*|комнат\p{L}*|квартира|квартири|квартиры|оренда|аренда|продаж\p{L}*|цена|ціна|площад\p{L}*|площа|зупинка|остановка)(?:\s|$)/iu;
@@ -107,15 +108,26 @@ function prefixTypedStreetAddress(line) {
   return result(address, street, houseNumber, building, 1);
 }
 
+function addressCandidateLine(line) {
+  const text = String(line);
+  const markerIndex = text.search(new RegExp(`${PREFIX_STREET_MARKER}|${POSTFIX_STREET_MARKER}`, 'iu'));
+  const searchStart = markerIndex >= 0 ? markerIndex : 0;
+  const tail = text.slice(searchStart);
+  const match = tail.match(ADDRESS_FIELD_STOP_RE);
+  return match ? clean(text.slice(0, searchStart + (match.index ?? 0))) : line;
+}
+
 function explicitStreetAddress(text) {
   const lines = text
     .split(/[\r\n|]/u)
-    .map((part) => clean(part).slice(0, 160))
+    .map((part) => clean(part).slice(0, 1200))
     .filter(Boolean)
     .slice(0, 12);
 
-  for (const line of lines) {
-    if (PROPERTY_AREA_LINE_RE.test(line)) continue;
+  for (const rawLine of lines) {
+    if (PROPERTY_AREA_LINE_RE.test(rawLine)) continue;
+    const line = addressCandidateLine(rawLine);
+    if (!line) continue;
 
     const postfixTyped = postfixTypedStreetAddress(line);
     if (postfixTyped) return postfixTyped;
