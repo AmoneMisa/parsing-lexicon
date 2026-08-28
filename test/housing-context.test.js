@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { parseHousingContext, resolveHousingIntent } from '../src/index.js';
+import { housingSemanticDisplayName } from '../src/housing-display.js';
 
 test('housing action stays orthogonal to rent duration', () => {
   assert.deepEqual(resolveHousingIntent('Сдам квартиру посуточно'), {
@@ -30,6 +31,21 @@ test('housing context recognizes Uzbek ready documents and contract wording', ()
 test('housing context recognizes the short Uzbek near relation', () => {
   const result = parseHousingContext('boxcha, supermarket, korzinka yaqin.');
   assert.ok(result.locationRelations.includes('near'));
+});
+
+test('housing context recognizes bare Russian nearby and displays generic POIs title-cased', () => {
+  const result = parseHousingContext('Рядом есть рынок и супермаркеты.');
+  assert.ok(result.locationRelations.includes('near'));
+  assert.equal(housingSemanticDisplayName('рынок', 'ru'), 'Рынок');
+  assert.equal(housingSemanticDisplayName('пермаркеты', 'ru'), 'Супермаркет');
+});
+
+test('housing context covers common Uzbek brick and separate-room spellings', () => {
+  const brick = parseHousingContext('янги гиштли лифтли дом');
+  assert.equal(brick.buildingType, 'brick');
+
+  const layout = parseHousingContext('aloxida xonalar');
+  assert.ok(layout.layouts.includes('separateRooms'));
 });
 
 test('closed housing status outranks generic active wording', () => {
