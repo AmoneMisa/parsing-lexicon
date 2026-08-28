@@ -208,11 +208,22 @@ function knownStreetAddress(text, knownStreet) {
   return result(address, street, houseNumber, building, houseNumber ? 0.98 : 0.9);
 }
 
-function labelledAddress(text) {
+function labelledAddress(text, rawValue) {
   const label = text.match(ADDRESS_LABEL_RE);
   if (!label) return null;
-  const start = (label.index ?? 0) + label[0].length;
-  const line = clean(text.slice(start).split(/[\r\n|]/u, 1)[0]).slice(0, 140);
+
+  // Find the same label in the original, un-cleaned text so the label's own
+  // line can be bounded correctly. If a masked phone number sits right after
+  // the label (e.g. "Адрес: +998...\nТелефон для связи"), clean() at the top
+  // of parseHousingAddress already collapsed that masked run together with
+  // the following line's newline into one space, which would otherwise let
+  // the NEXT line's unrelated content bleed into this label's value.
+  const rawLabelMatch = String(rawValue ?? '').match(ADDRESS_LABEL_RE);
+  const rawLine = rawLabelMatch
+    ? String(rawValue).slice(rawLabelMatch.index + rawLabelMatch[0].length).split(/[\r\n|]/u, 1)[0]
+    : text.slice((label.index ?? 0) + label[0].length).split(/[\r\n|]/u, 1)[0];
+
+  const line = clean(rawLine).slice(0, 140);
   if (!line) return null;
   return parseHousingAddress(line, { allowBare: true });
 }
@@ -279,7 +290,7 @@ export function parseHousingAddress(value, options = {}) {
   const tashkentMassifHouse = tashkentMassifHouseAddress(text);
   if (tashkentMassifHouse) return tashkentMassifHouse;
 
-  const labelled = labelledAddress(text);
+  const labelled = labelledAddress(text, value);
   if (labelled) return labelled;
 
   if (options.knownStreet) {
