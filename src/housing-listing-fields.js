@@ -131,7 +131,7 @@ export function parseHousingListingFields(value, { country = '' } = {}) {
     ),
     airConditioner: bool(
       text,
-      /кондицион|сплит[- ]?систем|konditsioner|kansaner|klimat|air\s*con|aer\s+condi[țt]ionat/iu,
+      /кондицион|сплит[- ]?систем|konditsioner|kansaner|kandisaner|klimat|air\s*con|aer\s+condi[țt]ionat/iu,
       /без\s+(?:кондицион\p{L}*|сплит[- ]?систем\p{L}*)|нет\s+(?:кондицион\p{L}*|сплит[- ]?систем\p{L}*)|(?:кондицион\p{L}*|сплит[- ]?систем\p{L}*)\s+нет|no\s+air\s*con(?:ditioner)?|konditsioner\s+yo['’]?q|кондиционер\s+йўқ/iu,
     ),
     gas,

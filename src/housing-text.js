@@ -182,8 +182,8 @@ export function parseHousingAmenities(value) {
   if (/(?:кроват|\bbed\b|\bspalni\b|\bsplani\b|yotoq\s+karavot|ётоқ\s+каравот)/iu.test(text)) amenities.push('bed');
   if (/(?:стиральн\p{L}*\s+машин|washing\s+machine|kir\s*yuvish\s*mashin|kirmoshina|кир\s+ювиш\s+машина)/iu.test(text)) amenities.push('washingMachine');
   if (/(?:холодильник|refrigerator|fridge|muzlatgich|музлатгич|xolodilnik)/iu.test(text)) amenities.push('refrigerator');
-  if (/(?:телевизор|телевизион|televizor|television|\btv\b)/iu.test(text)) amenities.push('television');
-  if (/(?:кондицион|konditsioner|kansaner|air\s*con|aer\s+condi[țt]ionat)/iu.test(text)) amenities.push('airConditioner');
+  if (/(?:телевизор|телевизион|televizor|telivizor|television|\btv\b)/iu.test(text)) amenities.push('television');
+  if (/(?:кондицион|konditsioner|kansaner|kandisaner|air\s*con|aer\s+condi[țt]ionat)/iu.test(text)) amenities.push('airConditioner');
   if (/(?:интернет|internet|wi[ -]?fi|we[ -]?fi|вай\s*фай|vayfay|router|роутер)/iu.test(text)) amenities.push('internet');
   if (/(?:электроплит|электр\s*плит|electric\s+(?:stove|hob)|gaz\s*plita|варочн\p{L}*\s+панел)/iu.test(text)) amenities.push('stove');
   if (/(?:шкаф|гардероб|shkaf|шкафлар)/iu.test(text)) amenities.push('wardrobe');
@@ -192,7 +192,7 @@ export function parseHousingAmenities(value) {
   if (/(?:пластиков\p{L}*\s+окн|plastic\s+windows?|pvc\s+windows?)/iu.test(text)) amenities.push('plasticWindows');
   if (/(?:т[её]пл\p{L}*\s+пол|heated\s+floor|underfloor\s+heating|issiq\s+pol)/iu.test(text)) amenities.push('heatedFloor');
   if (/(?:бесплатн\p{L}*\s+парков|free\s+parking|bepul\s+(?:parking|avtoturargoh))/iu.test(text)) amenities.push('freeParking');
-  if (/(?:вс[её]\s+необходим\p{L}*|для\s+проживани\p{L}*\s+вс[её]\s+есть|yashash\s+uchun\s+barcha\s+jihoz|яшаш\s+учун\s+барча\s+жиҳоз)/iu.test(text)) amenities.push('moveInReady');
+  if (/(?:вс[её]\s+необходим\p{L}*|для\s+проживани\p{L}*\s+вс[её]\s+есть|yashash\s+uchun\s+barcha\s+jihoz|hamma\s+sharoitlari\s+(?:bor|bir)|яшаш\s+учун\s+барча\s+жиҳоз)/iu.test(text)) amenities.push('moveInReady');
   if (/(?:постельн\p{L}*\s+бель|bed\s*linen|toza\s+choyshab|yostiq\s+jild)/iu.test(text)) amenities.push('bedLinen');
   if (/(?:полотенц|towels?|sochiq)/iu.test(text)) amenities.push('towels');
   return Object.freeze(amenities);

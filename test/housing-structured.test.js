@@ -20,6 +20,7 @@ import {
 import { parseHousingListingFields } from '../src/housing-listing-fields.js';
 import { parseHousingContext } from '../src/housing-context.js';
 import { resolveHousingIntent } from '../src/housing-intent.js';
+import { resolveHousingOccupancy } from '../src/housing.js';
 
 test('normalizes multilingual room counts and floor fractions', () => {
   assert.equal(parseHousingRoomCount('Сдам 2-к квартиру'), 2);
@@ -57,6 +58,22 @@ test('parses the supplied Uzbek family rental description without dropping struc
     currency: 'USD',
   });
   assert.deepEqual(result.price, { price: null, currency: 'USD' });
+});
+
+test('parses the supplied Uzbek women-only flat-share description', () => {
+  const text = 'Yaxshi tartibli ozoda qiz bosa sherik olaman 2 ta bob yashimiz uy yevro remont telivizor kirmoshina kandisaner hamma sharoitlari bir';
+  const result = parseHousingStructured(text, { country: 'UZ', fallbackCurrency: 'USD' });
+
+  assert.equal(resolveHousingOccupancy(text), 'sharedRoom');
+  assert.equal(parseHousingAudience(text), 'women');
+  assert.equal(result.context.condition, 'euroRenovation');
+  assert.equal(result.listingFields.airConditioner, true);
+  assert.deepEqual(result.amenities, [
+    'washingMachine',
+    'television',
+    'airConditioner',
+    'moveInReady',
+  ]);
 });
 
 test('extracts typed area details without collapsing labels', () => {
