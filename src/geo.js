@@ -134,7 +134,7 @@ export const TASHKENT_AREAS = Object.freeze({
     area('Buyuk Ipak Yuli', ['буюк ипак йули', 'буюк ипак йўли', 'buyuk ipak yuli', "buyuk ipak yo'li", 'ц 1', 'c 1']),
     area('Alay', ['олой', 'алайский', 'алайск', 'alay', 'ц 2', 'c 2']),
     ...[1, 2, 3, 4].map((n) => area(`Karasu-${n}`, [`карасу ${n}`, `қорасув ${n}`, `qorasuv ${n}`, `karasu ${n}`], 'microdistrict')),
-    area('Karasu-6', ['карасу 6', 'қорасув 6', 'qorasuv 6', 'karasu 6']),
+    area('Karasu-6', ['карасу 6', 'қорасув 6', 'qorasuv 6', 'karasu 6'], 'microdistrict'),
     ...[1, 2, 3, 4].map((n) => area(`TTZ-${n}`, [`ттз ${n}`, `ttz ${n}`], 'microdistrict')),
     area('Yalangach', ['ялангач', 'yalangach', "yalang'och"]), area('Feruza', ['феруза', 'feruza']), area('Geofizika', ['геофизика', 'поселок геофизиков', 'geofizika']),
   ]),
