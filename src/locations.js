@@ -67,6 +67,7 @@ function normalizeUzSemanticLocations(country) {
   const qorasuvArea = Object.freeze({
     ...qorasuv,
     type: 'local_area',
+    entityType: 'local_area',
     parent: 'Mirzo Ulugbek',
     aliases: qorasuvAliases,
     re: aliasesToRegex(qorasuvAliases),
