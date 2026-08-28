@@ -50,6 +50,7 @@ test('centralizes numbered massif aliases and typo variants', () => {
   assert.deepEqual(matchTashkentNumberedArea('Sergele 5A kvartal', 'Sergeli'), { number: 5, suffix: 'a' });
   assert.deepEqual(matchTashkentNumberedArea('12 квартал Чиланзара', 'Chilanzar'), { number: 12, suffix: '' });
   assert.deepEqual(matchTashkentNumberedArea('Yunusobod 2 kvartal', 'Yunusabad'), { number: 2, suffix: '' });
+  assert.deepEqual(matchTashkentNumberedArea('Chilonzor 10 mavze', 'Chilanzar'), { number: 10, suffix: '' });
   assert.deepEqual(matchTashkentNumberedArea('Куйлюк 5 массив', 'Kuylyuk'), { number: 5, suffix: '' });
   assert.equal(hasTashkentAreaAlias('квартира Сергели рядом с рынком', 'Sergeli'), true);
   assert.equal(hasExplicitTashkentDistrict('Sergele tumani, kvartira ijaraga', 'Sergeli'), true);

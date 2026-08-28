@@ -4,6 +4,11 @@ export type HousingAddressParts = Readonly<{
   houseNumber: string | null;
   building: string | null;
   confidence: number;
+  district?: string;
+  quarter?: Readonly<{
+    number: number;
+    suffix: string;
+  }>;
 }>;
 
 export function parseHousingAddress(

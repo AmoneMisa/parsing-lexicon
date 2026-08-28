@@ -1,3 +1,8 @@
+import {
+  TASHKENT_NUMBERED_AREA_ALIASES,
+  matchTashkentNumberedArea,
+} from './tashkent-housing-geography.js';
+
 const PHONE_RUN_RE = /\+?\d[\d\s().-]{7,}\d/gu;
 const ADDRESS_LABEL_RE = /(?:адрес|адреса|адресація|адресация|manzil|address|adresă|adresa)\s*[:=\-–—]\s*/iu;
 const PREFIX_STREET_MARKER = String.raw`(?:(?:ул(?:ица)?|вул(?:иця)?|пр|просп(?:ект)?|пр-т|переул(?:ок)?|пров(?:улок)?|проезд|наб(?:ережная)?|шоссе|str(?:ada)?|street|st|avenue|ave|road|rd|көше)\.?)`;
@@ -46,6 +51,32 @@ function result(address, street = null, houseNumber = null, building = null, con
     houseNumber: normalizeNumber(houseNumber),
     building: normalizeNumber(building),
     confidence,
+  });
+}
+
+function tashkentMassifHouseAddress(value) {
+  const text = String(value ?? '');
+  const match = text.match(
+    /(?:^|[^\p{L}\p{N}_])(\d{1,2})\s+(?:mavze(?:si)?|мавзе(?:си)?)\s+(\d{1,5})\s*([\p{L}])?\s*(?:dom|дом|uy|уй)(?=$|[^\p{L}\p{N}_])/iu,
+  );
+  if (!match) return null;
+
+  const quarterNumber = Number(match[1]);
+  const district = Object.keys(TASHKENT_NUMBERED_AREA_ALIASES).find((canonical) => {
+    const numbered = matchTashkentNumberedArea(text, canonical);
+    return numbered?.number === quarterNumber;
+  });
+  if (!district) return null;
+
+  const quarterMatch = matchTashkentNumberedArea(text, district);
+  const suffix = match[3] ? String(match[3]).toUpperCase() : '';
+  return Object.freeze({
+    ...result(null, null, `${Number(match[2])}${suffix}`, null, 1),
+    district,
+    quarter: Object.freeze({
+      number: quarterNumber,
+      suffix: quarterMatch?.suffix || '',
+    }),
   });
 }
 
@@ -244,6 +275,9 @@ function bareAddress(text) {
 export function parseHousingAddress(value, options = {}) {
   const text = clean(value);
   if (!text) return result(null);
+
+  const tashkentMassifHouse = tashkentMassifHouseAddress(text);
+  if (tashkentMassifHouse) return tashkentMassifHouse;
 
   const labelled = labelledAddress(text);
   if (labelled) return labelled;

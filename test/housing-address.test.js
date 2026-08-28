@@ -86,6 +86,21 @@ test('parses Uzbek and Romanian explicit address markers', () => {
   assert.equal(ro.building, '3');
 });
 
+test('parses a Tashkent mavze address into district, quarter and house fields', () => {
+  assert.deepEqual(
+    parseHousingAddress('Chilonzor 10 mavze 11 a dom 9 etashka 4 etajda 2 honali'),
+    {
+      address: null,
+      street: null,
+      houseNumber: '11A',
+      building: null,
+      confidence: 1,
+      district: 'Chilanzar',
+      quarter: { number: 10, suffix: '' },
+    },
+  );
+});
+
 test('known canonical street extracts only an adjacent house number from prose', () => {
   const ua = parseHousingAddress('Світла квартира, Воробкевича 12, поруч парк', { knownStreet: 'Воробкевича' });
   assert.equal(ua.street, 'Воробкевича');
