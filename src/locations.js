@@ -55,16 +55,37 @@ const UZ_BASE_LOCATION_DICTIONARIES = Object.freeze({
   }),
 });
 
+function normalizeUzSemanticLocations(country) {
+  const tashkent = country?.Tashkent;
+  if (!tashkent) return country;
+  const qorasuv = (tashkent.microdistricts || []).find(({ name }) => name === 'Qorasuv');
+  if (!qorasuv) return country;
+
+  return Object.freeze({
+    ...country,
+    Tashkent: Object.freeze({
+      ...tashkent,
+      microdistricts: Object.freeze((tashkent.microdistricts || []).filter(({ name }) => name !== 'Qorasuv')),
+      localAreas: Object.freeze([
+        ...(tashkent.localAreas || []),
+        Object.freeze({ ...qorasuv, type: 'local_area', parent: 'Mirzo Ulugbek' }),
+      ]),
+    }),
+  });
+}
+
+const UZ_LOCATION_DICTIONARIES = normalizeUzSemanticLocations(mergeLocationCountries(
+  UZ_BASE_LOCATION_DICTIONARIES,
+  UZ_LOCATION_EXTENSIONS,
+));
+
 const COUNTRY_LOCATION_DICTIONARIES = Object.freeze({
   ...BASE_LOCATION_DICTIONARIES,
   KZ: mergeLocationCountries(
     BASE_LOCATION_DICTIONARIES.KZ || {},
     KZ_LOCATION_EXTENSIONS,
   ),
-  UZ: mergeLocationCountries(
-    UZ_BASE_LOCATION_DICTIONARIES,
-    UZ_LOCATION_EXTENSIONS,
-  ),
+  UZ: UZ_LOCATION_DICTIONARIES,
   UA: mergeLocationCountries(
     UA_EXTRA_LOCATION_DICTIONARIES,
     UA_MAJOR_LOCATION_EXTENSIONS,
