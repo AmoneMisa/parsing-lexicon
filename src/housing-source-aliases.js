@@ -56,6 +56,10 @@ function threadsUsernameFromFirstLine(value) {
   return threadsHeader(sourceLines(value)).username;
 }
 
+function isThreadsSource(value) {
+  return String(value || '').toLocaleLowerCase() === 'threads';
+}
+
 /**
  * Detect the social/feed source from copied listing text.
  *
@@ -66,12 +70,12 @@ function threadsUsernameFromFirstLine(value) {
 export function detectHousingSource(value) {
   const text = String(value || '').replace(/\r\n?/g, '\n');
   if (!text.trim()) return null;
-  if (THREADS_EXPLICIT_RE.test(text)) return 'threads';
+  if (THREADS_EXPLICIT_RE.test(text)) return 'Threads';
 
   const lines = sourceLines(text);
   const { username, hasAge } = threadsHeader(lines);
   const hasThreadsUi = lines.some((line) => THREADS_UI_NOISE_RE.test(line));
-  return username && hasAge && hasThreadsUi ? 'threads' : null;
+  return username && hasAge && hasThreadsUi ? 'Threads' : null;
 }
 
 /** Remove source UI chrome while preserving the actual listing description. */
@@ -79,7 +83,7 @@ export function cleanHousingSourceText(value, options = {}) {
   const text = String(value || '').replace(/\r\n?/g, '\n');
   if (!text.trim()) return '';
   const source = options.source || detectHousingSource(text);
-  if (source !== 'threads') return text.trim();
+  if (!isThreadsSource(source)) return text.trim();
 
   const rawLines = text.split('\n');
   const nonEmpty = rawLines
@@ -112,8 +116,9 @@ export function cleanHousingSourceText(value, options = {}) {
  */
 export function parseHousingSourcePost(value, options = {}) {
   const text = String(value || '');
-  const source = options.source || detectHousingSource(text);
-  const username = source === 'threads' ? threadsUsernameFromFirstLine(text) : null;
+  const detected = options.source || detectHousingSource(text);
+  const source = isThreadsSource(detected) ? 'Threads' : detected;
+  const username = isThreadsSource(source) ? threadsUsernameFromFirstLine(text) : null;
   return Object.freeze({
     source,
     contact: username,
