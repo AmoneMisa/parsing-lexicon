@@ -21,12 +21,14 @@ export interface SourceRoleNormalization {
   canonical: string;
   label: string;
   re: RegExp;
+  labels: readonly string[];
 }
 
 export const SOURCE_PROFESSION_ALIASES: readonly SourceProfessionAlias[];
 export const SOURCE_ROLE_NORMALIZATION_RULES: readonly SourceRoleNormalization[];
 export const SOURCE_CANDIDATE_INTENT_ALIASES: readonly string[];
 export function normalizeSourceRole(value: unknown): Readonly<{ canonical: string; label: string }> | null;
+export function normalizeSourceRoleKeys(value: unknown): readonly string[] | null;
 export function matchesSourceCandidateIntent(value: unknown): boolean;
 export function professionDisplayLabel(canonical: string): string;
 export function matchExtendedProfessions(value: unknown, options?: { limit?: number; allowWeak?: boolean }): readonly ExtendedProfessionMatch[];

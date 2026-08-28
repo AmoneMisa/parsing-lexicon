@@ -48,7 +48,9 @@ export const SOURCE_PROFESSION_ALIASES = Object.freeze([
   sourceRole('welder', 'Welder', ['сварщиком', 'сварщица', 'зварювальником'], 'construction'),
 ]);
 
-const sourceRoleNormalization = (canonical, label, re) => Object.freeze({ canonical, label, re });
+const sourceRoleNormalization = (canonical, label, re, labels) => Object.freeze({
+  canonical, label, re, labels: Object.freeze(labels || [label]),
+});
 
 /**
  * Anchored or strongly contextualized raw-role repairs. These rules are kept
@@ -65,7 +67,25 @@ export const SOURCE_ROLE_NORMALIZATION_RULES = Object.freeze([
   sourceRoleNormalization('sales_manager', 'Sales Manager', /^(?:sales\s+executive(?:\s+ind)?|роп(?:,?\s*sales\s+executive)?)$/iu),
   sourceRoleNormalization('operative_officer', 'Operative Officer', /^(?:оперативник|оперуполномоченн\p{L}*|оперативный\s+уполномоченн\p{L}*)$/iu),
   sourceRoleNormalization('water_supply_specialist', 'Water Supply Specialist', /^(?:suv\s+ta['’ʻʼ‘`]?minoti|водоснабжение)$/iu),
-  sourceRoleNormalization('any_role', 'Any Role', /^(?:onlayn(?:\s+ish(?:chi)?)?|online(?:\s+ish(?:chi)?)?|онлайн|удал[её]нно|remote(?:\s+work)?|boshqa\s+ishlar?|farqi\s+(?:yo['’ʻʼ‘`]?q|yuq)|tungi|bilmaym\p{L}*)$/iu),
+  sourceRoleNormalization('any_role', 'Any Role', /^(?:ищу\s+(?:работу|подработку)(?:\s+(?:онлайн|удал[её]нно))?|удал[её]нн\p{L}*\s+подработк\p{L}*(?:\s+за\s+компьютером)?(?:\s+для\s+студентов)?|работа\s+студентам|подработка|работа|работу|любая\s+работа|любая\s+занятость|не\s*важно|без\s+разницы|нет\s+разницы|farqi\s+yo['’ʻʼ‘`]?q|farqi\s+yuq|boshqa\s+ishlar?|ish|ish\s+kerak|ish\s+qidir(?:yapman|aman)|ish\s+izlayapman|onlayn(?:\s+ish(?:chi)?)?|online(?:\s+ish(?:chi)?)?|онлайн|удал[её]нно|remote(?:\s+work)?|tungi|uyda|ofisda|bilmaym\p{L}*|noma['’ʻʼ‘`]?lum(?:\s+\p{L}+)?|ba|va)$/iu),
+  sourceRoleNormalization('lawyer_teacher', 'Lawyer', /huquqshunos[^\n,;]*(?:,|\/|\s)+(?:pedagog|o['’ʻʼ‘`]?qituvchi)|pedagog[^\n,;]*(?:,|\/|\s)+huquqshunos/iu, ['Lawyer', 'Teacher']),
+  sourceRoleNormalization('erp_administrator_analyst', 'ERP Administrator', /^erp\s+administrator\p{L}*\s*(?:&|,|\/|va)\s*data\s+tahlilchi$/iu, ['ERP Administrator', 'Analyst']),
+  sourceRoleNormalization('translator_operator', 'Translator', /tarjimon\p{L}*[^\n]*(?:operator|data\s+otish)|operator\p{L}*[^\n]*tarjimon/iu, ['Translator', 'Operator']),
+  sourceRoleNormalization('lawyer', 'Lawyer', /^(?:yurisprudensiya\s+)?huquq(?:shunos)?[^\n]*|^yur(?:isprudensiya|ist)[^\n]*$/iu),
+  sourceRoleNormalization('teacher', 'Teacher', /^(?:matematika\s+)?o['’ʻʼ‘`]?qituvchi(?:lik)?$/iu),
+  sourceRoleNormalization('finance_banking_specialist', 'Finance / Banking Specialist', /^kredit\s+bo['’ʻʼ‘`]?yicha\s+mutaxa(?:s|ss)is$/iu),
+  sourceRoleNormalization('finance_banking_specialist', 'Finance / Banking Specialist', /^(?:финансы?\s*[,/&+]\s*банки?|банки?\s*[,/&+]\s*финансы?|finance\s*[,/&+]\s*banking)$/iu),
+  sourceRoleNormalization('welder', 'Welder', /^(?:svarchik|svarshik)$/iu),
+  sourceRoleNormalization('factory_worker', 'Factory Worker', /^(?:jizzax\s+)?kia\s+zavodidan\s+ish\s+kerak$|^zavod\s+ishlari(?:\s+.*)?$/iu),
+  sourceRoleNormalization('it_specialist', 'IT Specialist', /^(?:kompyuter\s+(?:sohasida|xizmatlari\s+bo['’ʻʼ‘`]?yicha\s+ish\s+kerak)|it\s+kompyuter)$/iu),
+  sourceRoleNormalization('restaurant_manager', 'Restaurant Manager', /^(?:restoran|restaurant)[^\n]*(?:boshqaruv|manager|menejer)/iu),
+  sourceRoleNormalization('administrator', 'Administrator', /^virtual\s+asistent$/iu),
+  sourceRoleNormalization('engineer', 'Engineer', /^(?:texnolog|technolog)\s+(?:injener|инженер)|^(?:injener|инженер)\s+(?:texnolog|technolog)/iu),
+  sourceRoleNormalization('electrician', 'Electrician', /^elektrik$/iu),
+  sourceRoleNormalization('construction_worker', 'Construction Worker', /^(?:yo['’ʻʼ‘`]?l|йул|йўл)\s+qurilish|^(?:yo['’ʻʼ‘`]?l|йул|йўл)\s+курилиш/iu),
+  sourceRoleNormalization('barista', 'Barista', /^(?:koffe|coffee)\s+ledy$/iu),
+  sourceRoleNormalization('chief_accountant', 'Chief Accountant', /^bosh\s+b(?:u(?:x|h)?|o)?galter$/iu),
+  sourceRoleNormalization('accountant', 'Accountant', /word[^\n]*excel[^\n]*hisob\s+kitob|^помо(?:ш|щ)ник\s+бухгалт/iu),
   sourceRoleNormalization('restaurant_cafe_worker', 'Restaurant / Cafe Worker', /^ищу\s+работу\s+(?:в\s+)?(?:кафе|ресторанах?|кафе\s+или\s+ресторанах)$/iu),
   sourceRoleNormalization('driver', 'Driver', /^(?:xaydovchilik|haydovchilik|shafyorlik|shofyorlik)/iu),
   sourceRoleNormalization('retail_worker', 'Retail Worker', /^do['’ʻʼ‘`]?kon$/iu),
@@ -79,7 +99,7 @@ export const SOURCE_ROLE_NORMALIZATION_RULES = Object.freeze([
   sourceRoleNormalization('hvac_technician', 'HVAC Technician', /^(?:konditsaner|kanditsaner|konditsioner)/iu),
   sourceRoleNormalization('mobile_content_creator', 'Mobile Content Creator', /^mobilografiya(?:\s+bo['’ʻʼ‘`]?yicha)?$/iu),
   sourceRoleNormalization('cctv_intercom_technician', 'CCTV / Intercom Technician', /kamera\s+(?:dama?fon|domofon)|domofon\s+xizmat/iu),
-  sourceRoleNormalization('internal_control_specialist', 'Internal Control Specialist', /^ichki\s+nazoratchi$/iu),
+  sourceRoleNormalization('internal_control_specialist', 'Internal Control Specialist', /^(?:ichki\s+nazoratchi|внутренний\s+аудит)$/iu),
   sourceRoleNormalization('brand_ambassador', 'Brand Ambassador', /^(?:бренд\s+фейс|brand\s+face)$/iu),
   sourceRoleNormalization('insurance_specialist', 'Insurance Specialist', /^sug['’ʻʼ‘`]?urta$/iu),
   sourceRoleNormalization('bank_operations_specialist', 'Bank Operations Specialist', /^стаж[её]р\s+операционист|^операционист$/iu),
@@ -95,6 +115,15 @@ export function normalizeSourceRole(value) {
   if (!text) return null;
   const match = SOURCE_ROLE_NORMALIZATION_RULES.find((entry) => entry.re.test(text));
   return match ? Object.freeze({ canonical: match.canonical, label: match.label }) : null;
+}
+
+/** Like normalizeSourceRole, but returns every display label a rule maps to
+ * (some raw values name two simultaneous roles, e.g. "Lawyer, Teacher"). */
+export function normalizeSourceRoleKeys(value) {
+  const text = String(value || '').trim();
+  if (!text) return null;
+  const match = SOURCE_ROLE_NORMALIZATION_RULES.find((entry) => entry.re.test(text));
+  return match ? [...match.labels] : null;
 }
 
 export const SOURCE_CANDIDATE_INTENT_ALIASES = Object.freeze([
