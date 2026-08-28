@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
+import { TASHKENT_AREAS } from '../src/geo.js';
 import { locationCities } from '../src/locations.js';
 import { matchCentralAsiaLocationEntities } from '../src/central-asia-locations.js';
 
@@ -28,8 +29,12 @@ test('Tashkent matcher preserves umbrella-area vs numbered-block semantics', () 
   assert.ok(names(qorasuv, 'local_area').includes('Qorasuv'));
   assert.equal(names(qorasuv, 'microdistrict').includes('Qorasuv'), false);
 
+  // Karasu-6 belongs to the typed legacy-area compatibility registry, not the
+  // expanded city dictionary. The umbrella matcher must not swallow its token.
   const numbered = matchCentralAsiaLocationEntities('Qorasuv-6, Toshkent', 'UZ', 'Tashkent');
   assert.equal(names(numbered, 'local_area').includes('Qorasuv'), false);
+  const karasu6 = TASHKENT_AREAS['Mirzo Ulugbek'].find((entry) => entry.name === 'Karasu-6');
+  assert.equal(karasu6?.type, 'microdistrict');
 
   const sputnik = matchCentralAsiaLocationEntities('Sputnik massivi, Toshkent', 'UZ', 'Tashkent');
   assert.ok(names(sputnik, 'microdistrict').includes('Sputnik'));
