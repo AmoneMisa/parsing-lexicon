@@ -31,12 +31,12 @@ const THREADS_POST = `nika_imgrund
 Translate`;
 
 test('detects a copied Threads housing post from its wrapper shape', () => {
-  assert.equal(detectHousingSource(THREADS_POST), 'threads');
+  assert.equal(detectHousingSource(THREADS_POST), 'Threads');
 });
 
 test('uses the first Threads line as contact and removes source UI garbage', () => {
   const parsed = parseHousingSourcePost(THREADS_POST);
-  assert.equal(parsed.source, 'threads');
+  assert.equal(parsed.source, 'Threads');
   assert.equal(parsed.contact, 'nika_imgrund');
   assert.match(parsed.text, /^А вы бы сняли квартиру/);
   assert.doesNotMatch(parsed.text, /nika_imgrund|^3d$|Translate/m);
@@ -70,9 +70,15 @@ test('parses decimal area, first rental and does not invent an address from area
 });
 
 test('cleans explicit Threads markers without changing meaningful description lines', () => {
-  const copied = `threads\n@nika_imgrund\n3d\nСдаю квартиру.\nTranslate`;
-  assert.equal(detectHousingSource(copied), 'threads');
+  const copied = `Threads\n@nika_imgrund\n3d\nСдаю квартиру.\nTranslate`;
+  assert.equal(detectHousingSource(copied), 'Threads');
   assert.equal(cleanHousingSourceText(copied), 'Сдаю квартиру.');
+});
+
+test('accepts lowercase source input but normalizes output to Threads', () => {
+  const parsed = parseHousingSourcePost(THREADS_POST, { source: 'threads' });
+  assert.equal(parsed.source, 'Threads');
+  assert.equal(parsed.contact, 'nika_imgrund');
 });
 
 test('does not classify ordinary listing text as Threads', () => {
