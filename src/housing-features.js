@@ -21,7 +21,7 @@ export function parseHousingFeatures(value) {
 
   const internet = bool(
     text,
-    tokenRe(String.raw`интернет|wi[ -]?fi|we[ -]?fi|вай[ -]?фай|vayfay|роутер|router|інтернет`),
+    tokenRe(String.raw`интернет|wi[ -]?fi|we[ -]?fi|wf|вай[ -]?фай|vayfay|роутер|router|інтернет`),
     /(?:без\s+(?:интернет|wi[ -]?fi|вай[ -]?фай)|нет\s+(?:интернет\p{L}*|wi[ -]?fi)|(?:интернет|wi[ -]?fi)\s+нет|internet\s+(?:yo['’]?q|mavjud\s+emas)|интернет\s+йўқ)/iu,
   );
   const courtyard = bool(
