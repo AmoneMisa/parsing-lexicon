@@ -20,6 +20,15 @@ test('#3419 Vosiq School listing: price parses separately as 800 USD', () => {
   assert.deepEqual(parseHousingPrice(LISTING_3419, 'UZS'), { amount: 800, currency: 'USD', approximate: false });
 });
 
+test('#3419 Vosiq School listing: nearby typo variants canonicalize without duplicates', () => {
+  const enrichment = parseHousingListingEnrichment(LISTING_3419, { country: 'UZ' });
+  assert.ok(enrichment.nearby.includes('Vosiq School'));
+  assert.ok(enrichment.nearby.includes('Supermarket'));
+  assert.ok(enrichment.nearby.includes('Kindergarten'));
+  assert.ok(enrichment.nearby.includes('Bus stop'));
+  assert.equal(new Set(enrichment.nearby).size, enrichment.nearby.length);
+});
+
 // Assalom Jomiy — floor 12/15, ЖК Assalom Jomiy, family audience, 600 USD
 // rent + 300 USD realtor commission, utilities separate (amount unstated),
 // and a structured "общая площадь 35" that must win over a wrong "20 м²"
@@ -63,6 +72,43 @@ test('housing enrichment keeps Kuylyuk massif distinct from Qoyliq metro', () =>
 
   const metro = parseHousingListingEnrichment('Сдам квартиру рядом с метро Куйлюк', { country: 'UZ' });
   assert.equal(metro.metro, 'Qoyliq');
+});
+
+const LISTING_BUKHARA_450 = '8 каватли янги гиштли лифтли домнинг 4 Чи каватидаги 2 хонали люкс квартира ижарага берилади. Ориентир Крытий рынок Давр банк. 2 та смарт ТВ 2 та кондиционер холодильник WF бор. Нархи:450 $';
+
+test('Bukhara OLX listing: parses Cyrillic Uzbek floor prose, Wi-Fi typo and core fields', () => {
+  const enrichment = parseHousingListingEnrichment(LISTING_BUKHARA_450, { country: 'UZ' });
+  assert.equal(enrichment.rooms, 2);
+  assert.equal(enrichment.floor, 4);
+  assert.equal(enrichment.totalFloors, 8);
+  assert.equal(enrichment.elevator, true);
+  assert.equal(enrichment.internet, true);
+  assert.equal(enrichment.airConditioner, true);
+  assert.deepEqual(parseHousingPrice(LISTING_BUKHARA_450, 'UZS'), { amount: 450, currency: 'USD', approximate: false });
+});
+
+const LISTING_SERGELI_500 = 'Assalomu Alaykoʻm kvartira juda yaxshi xolatda 2 ta katta xona 1 ta kichkina xona kuxnisi aloxida dush tualet aloxida bitta oila bemalol yashasa boʻladi yashashga tayyor zaks qogʻozi yuqlar bezota qilmasin. Yilning oxiri dekabrgacha yashasa buladi. Uyning depaziti xam bor 500.$';
+
+test('Sergeli OLX listing: parses room sum, kitchen typo, family audience and deposit typo', () => {
+  const enrichment = parseHousingListingEnrichment(LISTING_SERGELI_500, { country: 'UZ' });
+  assert.equal(enrichment.rooms, 3);
+  assert.ok(enrichment.amenities.includes('Kitchen'));
+  assert.equal(enrichment.audience, 'family');
+  assert.equal(enrichment.deposit, true);
+  assert.deepEqual(parseHousingPrice(LISTING_SERGELI_500, 'UZS'), { amount: 500, currency: 'USD', approximate: false });
+});
+
+const LISTING_CENTRAL_HOUSE_800 = 'СТУДЕНТАМ И РАБОТАЮЩИМ РЕБЯТАМ НЕ СДАЁТСЯ !!! Сдается упакованная квартира. Рядом есть вся инфраструктура: супермаркеты, базар, транспорт, кафе и рестораны, парки, детские площадки. Все находится в шаговой доступности. Имеется Риэлторская услуга. Уй атрофида, метро, бозор, богча, мактаб, кафе, ресторан, шифохона, сайлгохлар мавжуд. Риэлтор хизмати мавжуд.';
+
+test('Central House OLX listing: nearby categories are canonical and negated student wording is not positive targeting', () => {
+  const enrichment = parseHousingListingEnrichment(LISTING_CENTRAL_HOUSE_800, { country: 'UZ' });
+  for (const poi of ['Supermarket', 'Market', 'Cafe', 'Restaurant', 'Park', 'Playground', 'Metro', 'Kindergarten', 'School', 'Hospital']) {
+    assert.ok(enrichment.nearby.includes(poi), `expected nearby to include ${poi}`);
+  }
+  assert.equal(new Set(enrichment.nearby).size, enrichment.nearby.length);
+  assert.equal(enrichment.studentTarget, false);
+  assert.equal(enrichment.audience, null);
+  assert.equal(enrichment.commission, true);
 });
 
 // TODO(follow-up): add exact-text regressions for #3428, #8398667, #8390002,
