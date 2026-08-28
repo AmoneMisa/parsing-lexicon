@@ -49,6 +49,18 @@ function currencyNear(text) {
 export function parseHousingRoomCount(value) {
   const text = normalizeUnicode(value ?? '');
   if (!text) return null;
+
+  // Uzbek market shorthand: a unit formally registered as N rooms that was
+  // physically converted into a different count ("1 xonali ... 2 xona
+  // qilingan" — nominally 1-room, made into 2). The converted count is the
+  // one that matters and must win over the nominal count mentioned earlier
+  // in the same text.
+  const converted = text.match(/(\d{1,2})\s*(?:ta\s*)?xona(?:ga)?\s+(?:qilingan|aylantirilgan|bo['’ʻʼ‘`]?lingan)(?=$|[^\p{L}\p{N}_])/iu);
+  if (converted) {
+    const rooms = toNumber(converted[1]);
+    if (rooms != null && rooms >= 1 && rooms <= 20) return rooms;
+  }
+
   const describedRooms = [...text.matchAll(/(?:^|[^\p{L}\p{N}_])(\d{1,2})\s*ta\s+(?:katta|kichkina)\s+xona(?=$|[^\p{L}\p{N}_])/giu)];
   if (describedRooms.length > 1) {
     const total = describedRooms.reduce((sum, match) => sum + Number(match[1]), 0);
