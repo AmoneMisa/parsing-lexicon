@@ -61,7 +61,7 @@ export const TASHKENT_METRO = Object.freeze([
   station('Yangihayot', 'Янгихаёт', 'Yangihayot', 'chilonzor', ['Янгиҳаёт', 'Янгихаят']),
   station('Chinor', 'Чинар', 'Chinor', 'chilonzor', ['Чинор']),
   station('Beruniy', 'Беруни', 'Beruniy', 'ozbekiston', ['Beruni']),
-  station('Tinchlik', 'Тинчлик', 'Tinchlik', 'ozbekiston'),
+  station('Tinchlik', 'Тинчлик', 'ozbekiston', 'ozbekiston'),
   station('Chorsu', 'Чорсу', 'Chorsu', 'ozbekiston'),
   station('Gafur Gulom', 'Гафур Гулям', 'Gafur Gulom', 'ozbekiston', ["G'afur G'ulom", 'G‘afur G‘ulom', 'Gʻafur Gʻulom', 'Ғафур Ғулом']),
   station('Alisher Navoi', 'Алишер Навои', 'Alisher Navoi', 'ozbekiston', ['Alisher Navoiy', 'Алишер Навоий']),
@@ -112,11 +112,12 @@ export function tashkentMetroLabels() {
   return Object.fromEntries(TASHKENT_METRO.map((item) => [item.name, { ru: item.labels.ru, en: item.labels.en, line: item.line }]));
 }
 
-const area = (name, aliases) => deepFreeze({ canonical: name, name, type: 'local_area', country: 'UZ', city: 'Tashkent', aliases });
+// Historical consumer name retained, but entries now carry their actual semantic type.
+const area = (name, aliases, type = 'local_area') => deepFreeze({ canonical: name, name, type, country: 'UZ', city: 'Tashkent', aliases });
 
 export const TASHKENT_AREAS = Object.freeze({
   Almazar: Object.freeze([
-    area('Sebzar', ['себзар', 'sebzar', 'ц 17', 'ц 18', 'c 17', 'c 18']),
+    area('Sebzar', ['себзар', 'sebzar', 'ц 17', 'ц 18', 'c 17', 'c 18'], 'microdistrict'),
     area('Karakamysh-1/2', ['каракамыш 1 2', 'қорақамиш 1 2', 'qoraqamish 1 2', 'karakamish 1 2']),
     area('Karakamysh-2/3', ['каракамыш 2 3', 'қорақамиш 2 3', 'qoraqamish 2 3', 'karakamish 2 3']),
     area('Karakamysh-2/4', ['каракамыш 2 4', 'қорақамиш 2 4', 'qoraqamish 2 4', 'karakamish 2 4']),
@@ -137,7 +138,6 @@ export const TASHKENT_AREAS = Object.freeze({
     area('Yalangach', ['ялангач', 'yalangach', "yalang'och"]), area('Feruza', ['феруза', 'feruza']), area('Geofizika', ['геофизика', 'поселок геофизиков', 'geofizika']),
   ]),
   Sergeli: Object.freeze([
-    area('Sergeli Car Bazaar', ['сергели машинный базар', 'сергели машина бозор', 'sergeli moshina bozor', 'sergile moshena bozor', 'sergele moshina bozor']),
     area('Yangi Sergeli', ['янги сергели', 'yangi sergeli']), area('Stroygorod', ['стройгород', 'stroygorod']),
   ]),
   Chilanzar: Object.freeze([
@@ -158,12 +158,12 @@ export const TASHKENT_AREAS = Object.freeze({
   ]),
   Yangihayot: Object.freeze([
     area('Uzgarish', ['узгарыш', 'ўзгариш', "o'zgarish", 'uzgarish']), area('Dustlik-1', ['дустлик 1', 'дўстлик 1', "do'stlik 1", 'dustlik 1']),
-    area('Dustlik-2', ['дустлик 2', 'дўстлик 2', "do'stlik 2", 'dustlik 2']), area('Yangi Choshtepa', ['янги чоштепа', 'yangi choshtepa']), area('Sputnik', ['спутник', 'йўлдош', "yo'ldosh", 'yoldosh']),
+    area('Dustlik-2', ['дустлик 2', 'дўстлик 2', "do'stlik 2", 'dustlik 2']), area('Yangi Choshtepa', ['янги чоштепа', 'yangi choshtepa'], 'microdistrict'), area('Sputnik', ['спутник', 'йўлдош', "yo'ldosh", 'yoldosh'], 'microdistrict'),
   ]),
   Yashnobod: Object.freeze([
     area('Kuylyuk Center', ['куйлюк центр', 'куйлик центр', "qo'yliq markaz", 'kuylyuk center']),
     ...[1, 2, 3, 4].map((n) => area(`Aviasozlar-${n}`, [`авиасозлар ${n}`, `городок авиастроителей ${n}`, `aviasozlar ${n}`])),
     ...[1, 2, 3, 4].map((n) => area(`Tuzel-${n}`, [`тузель ${n}`, `tuzel ${n}`])),
-    area('Tashselmash', ['ташсельмаш', 'tashselmash']), area('Alimkent', ['алимкент', 'olimkent', 'alimkent']), area('Shohimardon', ['шохимардон', 'shohimardon']),
+    area('Tashselmash', ['ташсельмаш', 'tashselmash'], 'microdistrict'), area('Alimkent', ['алимкент', 'olimkent', 'alimkent']), area('Shohimardon', ['шохимардон', 'shohimardon']),
   ]),
 });
