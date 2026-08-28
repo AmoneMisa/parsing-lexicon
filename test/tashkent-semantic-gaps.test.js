@@ -179,6 +179,19 @@ test('Taxtapul mahalla and mavze resolve to their different current districts', 
   assert.equal(names(mavze, 'mahalla').includes('Taxtapul'), false);
 });
 
+test('legacy Tashkent area view preserves current local-area semantics', () => {
+  for (const [legacyName, parent] of [
+    ['Sebzar', 'Almazar'],
+    ['Olympia', 'Almazar'],
+    ['Takhtapul', 'Almazar'],
+    ['Yangi Choshtepa', 'Yangihayot'],
+    ['Tashselmash', 'Yashnobod'],
+  ]) {
+    const entry = TASHKENT_AREAS[parent].find((item) => item.name === legacyName);
+    assert.equal(entry?.type, 'local_area', legacyName);
+  }
+});
+
 test('Riyoziy compatibility area follows its current Yashnobod parent', () => {
   assert.equal(TASHKENT_AREA_ADDITIONS['Mirzo Ulugbek'].some((entry) => entry.name === 'Riyoziy'), false);
   assert.equal(TASHKENT_AREA_ADDITIONS.Yashnobod.some((entry) => entry.name === 'Riyoziy'), true);
