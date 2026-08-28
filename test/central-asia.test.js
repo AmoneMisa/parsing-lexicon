@@ -111,6 +111,43 @@ test('Uzbek mahallas are parent-aware across repeated names', () => {
   assert.ok(bare.candidates.length >= 2);
 });
 
+test('Tashkent extensions cover geo-catalog mahalla and local-area gaps', () => {
+  const mahallas = new Map(UZ_LOCATION_EXTENSIONS.Tashkent.mahallas.map((entry) => [entry.name, entry]));
+  const localAreas = new Map(UZ_LOCATION_EXTENSIONS.Tashkent.localAreas.map((entry) => [entry.name, entry]));
+
+  for (const [name, parent] of [
+    ['Khastimam', 'Almazar'], ['Yangi Tashkent', 'Almazar'], ['Umid', 'Almazar'],
+    ['Kashgar', 'Yunusabad'], ['Buyuk Turan', 'Yunusabad'], ['Minor', 'Yunusabad'],
+    ['Labzak', 'Shaykhantahur'], ['Rakat', 'Yakkasaray'], ['Belaryk', 'Yakkasaray'],
+    ['Shahjahan', 'Yakkasaray'], ['Mukimiy', 'Yakkasaray'], ['Birlashgan', 'Yashnobod'],
+    ['Nadyra', 'Yashnobod'], ['Makhmur', 'Yashnobod'], ['Munavvarqori', 'Mirzo Ulugbek'],
+    ['Beshkapa', 'Mirzo Ulugbek'], ['Chashtepa', 'Yangihayot'], ['Yangi Darhan', 'Yangihayot'],
+  ]) {
+    assert.equal(mahallas.get(name)?.parent, parent, `missing/scoped Tashkent mahalla: ${name}`);
+  }
+
+  for (const [name, parent] of [
+    ['Sergeli-3A', 'Sergeli'], ['Sergeli-5A', 'Sergeli'], ['Sergeli-7A', 'Sergeli'],
+    ['Yangidarhan-1', 'Yangihayot'], ['Yangidarhan-2', 'Yangihayot'],
+  ]) {
+    assert.equal(localAreas.get(name)?.parent, parent, `missing/scoped Tashkent local area: ${name}`);
+  }
+});
+
+test('Tashkent gap aliases resolve without hiding the Minor metro type', () => {
+  const mahalla = matchCentralAsiaLocationEntities('Янги Дархон MFY, Ташкент', 'UZ', 'Tashkent');
+  assert.ok(names(mahalla, 'mahalla').includes('Yangi Darhan'));
+
+  const sergeli = matchCentralAsiaLocationEntities('Сергели 5А массив, Ташкент', 'UZ', 'Tashkent');
+  assert.ok(names(sergeli, 'local_area').includes('Sergeli-5A'));
+
+  const minorMahalla = matchCentralAsiaLocationEntities('Минор махалла, Ташкент', 'UZ', 'Tashkent');
+  assert.ok(names(minorMahalla, 'mahalla').includes('Minor'));
+
+  const minorMetro = matchCentralAsiaLocationEntities('метро Минор, Ташкент', 'UZ', 'Tashkent');
+  assert.ok(names(minorMetro, 'metro').includes('Minor'));
+});
+
 test('Xonobod remains ambiguous without city/region context', () => {
   const bare = matchCentralAsiaLocationEntities('Xonobod', 'UZ');
   assert.equal(bare.city, null);
