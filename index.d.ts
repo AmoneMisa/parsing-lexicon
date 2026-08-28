@@ -80,7 +80,7 @@ export type SearchCluster = Readonly<{
 export type AreaEntry = Readonly<{
   canonical: string;
   name: string;
-  type: 'local_area';
+  type: 'local_area' | 'microdistrict';
   country: 'UZ';
   city: 'Tashkent';
   aliases: readonly string[];
@@ -92,6 +92,7 @@ export type LocationCityDictionary = Readonly<{
   localAreas?: readonly LocationEntry[];
   suburbs?: readonly LocationEntry[];
   settlements?: readonly LocationEntry[];
+  developmentAreas?: readonly LocationEntry[];
   metro?: readonly LocationEntry[] | readonly MetroStation[];
   residentialComplexes?: readonly LocationEntry[];
   streets?: readonly LocationEntry[];
