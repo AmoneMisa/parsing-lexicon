@@ -58,6 +58,26 @@ test('Kharkiv legacy non-metro coverage belongs to the canonical major owner', (
   assert.equal(match('Kharkiv', 'landmarks', 'Харьков-Пассажирский'), 'Kharkiv-Pasazhyrskyi Station');
 });
 
+test('Odesa legacy coverage belongs to the canonical major owner', () => {
+  assert.equal(match('Odesa', 'microdistricts', 'Фонтан'), 'Velykyi Fontan');
+  assert.equal(match('Odesa', 'microdistricts', 'поселок Котовского'), 'Kotivskoho');
+  assert.equal(match('Odesa', 'residentialComplexes', 'Кадорр Сити'), 'Kadorr City');
+  assert.equal(match('Odesa', 'residentialComplexes', 'Си Вью'), 'Sea View');
+  assert.equal(match('Odesa', 'residentialComplexes', 'Юнити Тауэрс'), 'Unity Towers');
+  assert.equal(match('Odesa', 'residentialComplexes', 'Отрада Скай'), 'Otrada Sky');
+  assert.equal(match('Odesa', 'streets', 'улица Дерибасовская'), 'Derybasivska Street');
+  assert.equal(match('Odesa', 'streets', 'улица Греческая'), 'Hretska Street');
+  assert.equal(match('Odesa', 'streets', 'улица Канатная'), 'Kanatna Street');
+  assert.equal(match('Odesa', 'streets', 'Французский бульвар'), 'Frantsuzky Boulevard');
+  assert.equal(match('Odesa', 'streets', 'Большая Арнаутская'), 'Velyka Arnautska Street');
+  assert.equal(match('Odesa', 'streets', 'Пантелеймоновская'), 'Panteleimonivska Street');
+  assert.equal(match('Odesa', 'streets', 'Фонтанская дорога'), 'Fontanska Road');
+  assert.equal(match('Odesa', 'streets', 'Люстдорфская дорога'), 'Liustdorfska Road');
+  assert.equal(match('Odesa', 'landmarks', 'рынок Привоз'), 'Pryvoz Market');
+  assert.equal(match('Odesa', 'landmarks', 'Одесский вокзал'), 'Odesa Railway Station');
+  assert.equal(match('Odesa', 'landmarks', 'Аркадия'), 'Arcadia');
+});
+
 test('regional Ukraine data belongs to the canonical registry', () => {
   assert.equal(match('Rivne', 'microdistricts', 'Льнокомбинат'), 'Lonokombinat');
   assert.equal(match('Kherson', 'districts', 'Суворовский район'), 'Tsentralnyi');

@@ -58,7 +58,7 @@ test('location matcher consumes the canonical collection key list', async () => 
 
 test('migrated major-city locations no longer use the legacy runtime owner', async () => {
   const source = await readFile(new URL('../src/locations.js', import.meta.url), 'utf8');
-  assert.match(source, /city !== 'Kyiv' && city !== 'Kharkiv'/u);
+  assert.match(source, /city !== 'Kyiv' && city !== 'Kharkiv' && city !== 'Odesa'/u);
   assert.doesNotMatch(source, /Kharkiv:\s*withoutMetro/u);
 });
 

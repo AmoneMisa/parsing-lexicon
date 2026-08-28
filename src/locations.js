@@ -28,7 +28,7 @@ export const UA_EXTRA_LOCATION_DICTIONARIES = Object.freeze({
 const UA_BASE_LOCATION_DICTIONARIES = Object.freeze(
   Object.fromEntries(
     Object.entries(BASE_LOCATION_DICTIONARIES.UA || {})
-      .filter(([city]) => city !== 'Kyiv' && city !== 'Kharkiv'),
+      .filter(([city]) => city !== 'Kyiv' && city !== 'Kharkiv' && city !== 'Odesa'),
   ),
 );
 
