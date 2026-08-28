@@ -112,6 +112,8 @@ Do not conflate city catalogs with city-local location data.
 - `CITIES`, `CITIES_BY_COUNTRY`, `canonicalCity()` and related geography catalogs identify cities/countries/regions.
 - `LOCATION_DICTIONARIES[country][city]` contains districts, microdistricts, mahallas, metro, streets, landmarks, residential complexes, etc.
 
+For Kazakhstan and Uzbekistan, `src/geography-central-asia.js` owns the complete canonical `KZ_CITIES` and `UZ_CITIES` datasets, including secondary cities and historical/current aliases. Public consumers should resolve them through `CITIES_BY_COUNTRY` / `canonicalCity()`. `KZ_CITY_CATALOG`, `UZ_CITY_CATALOG`, `canonicalKazakhstanCity()`, and `canonicalUzbekistanCity()` are compatibility APIs only and must delegate to that canonical geography path rather than rebuilding catalogs.
+
 A new city alias belongs in the geography catalog. A district/microdistrict/metro/POI belonging to that city belongs in the location dictionary.
 
 Neither layer owns coordinates.

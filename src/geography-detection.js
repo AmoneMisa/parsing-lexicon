@@ -33,6 +33,21 @@ const COUNTRY_MATCHERS = COUNTRIES.map((item) => {
 });
 
 const US_STATE_RE = /\b[A-Z][A-Za-z.'-]+(?:\s+[A-Z][A-Za-z.'-]+){0,3}\s*,?\s+(?:AL|AK|AZ|AR|CA|CO|CT|DE|FL|GA|HI|ID|IL|IN|IA|KS|KY|LA|ME|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VT|VA|WA|WV|WI|WY|DC)\b/;
+const CITY_CONTEXT_RE = /(?:shahr(?:i)?|город(?:а|е|у|ом)?|city|viloyat(?:i)?|област\p{L}{0,4})/iu;
+
+function cityTextMatch(text, matcher) {
+  const exact = text.match(matcher.exact);
+  const inflected = exact || !matcher.inflected ? null : text.match(matcher.inflected);
+  const match = exact || inflected;
+  if (!match) return null;
+  if (!matcher.item.contextRequired) return match;
+
+  const start = match.index ?? 0;
+  const end = start + match[0].length;
+  const before = text.slice(Math.max(0, start - 40), start);
+  const after = text.slice(end, end + 48);
+  return CITY_CONTEXT_RE.test(`${before} ${match[0]} ${after}`) ? match : null;
+}
 
 /** Detect an ISO-2 country from a country alias, known city alias, or US city/state location. */
 export function detectCountryCodeFromText(value) {
@@ -57,8 +72,8 @@ export function detectCityFromText(value, country = null) {
   const text = String(value || '');
   if (!text) return null;
   const code = country ? canonicalCountryCode(country) : null;
-  const match = CITY_MATCHERS.find(({ item, exact, inflected }) =>
-    (!code || item.country === code) && (exact.test(text) || Boolean(inflected?.test(text))));
+  const match = CITY_MATCHERS.find((matcher) =>
+    (!code || matcher.item.country === code) && Boolean(cityTextMatch(text, matcher)));
   if (!match) return null;
   return Object.freeze({ canonical: match.item.canonical, country: match.item.country || null });
 }
