@@ -22,6 +22,7 @@ const TYPE_BY_KEY = Object.freeze({
   localAreas: 'local_area',
   suburbs: 'suburb',
   settlements: 'settlement',
+  developmentAreas: 'development_area',
   metro: 'metro',
   residentialComplexes: 'residential_complex',
   streets: 'street',
@@ -94,6 +95,10 @@ const CONTEXT_PATTERNS = Object.freeze({
   local_area: Object.freeze({
     before: /(?:массив(?:и)?|massiv(?:i)?|жилмассив|ж\/м|микрорайон|мкр\.?|mavze(?:si)?|мавзе(?:си)?|квартал|kvartal|daha|даха|даҳа|зона|area)\s*[:\-–—]?\s*$/iu,
     after: /^\s*(?:\d{1,2}[aа]?\s*)?[:\-–—]?\s*(?:массив(?:и)?|massiv(?:i)?|жилмассив|ж\/м|микрорайон|мкр\.?|mavze(?:si)?|мавзе(?:си)?|квартал|kvartal|daha|даха|даҳа|зона|area)(?=$|[^\p{L}\p{N}_])/iu,
+  }),
+  development_area: Object.freeze({
+    before: /(?:(?:международн\p{L}*|international)\s+)?(?:бизнес[-\s]?центр|делов\p{L}*\s+центр|business\s+cent(?:er|re)|development\s+area|mixed[-\s]?use\s+(?:district|development))\s*[:\-–—]?\s*$/iu,
+    after: /^\s*[:\-–—]?\s*(?:(?:международн\p{L}*|international)\s+)?(?:бизнес[-\s]?центр|делов\p{L}*\s+центр|business\s+cent(?:er|re)|development\s+area|mixed[-\s]?use\s+(?:district|development))(?=$|[^\p{L}\p{N}_])/iu,
   }),
   residential_complex: Object.freeze({
     before: /(?:жк|жилой\s+комплекс|residential\s+complex|residence|turar\s+joy\s+majmuasi|tjm)\s*[:\-–—]?\s*$/iu,
