@@ -164,6 +164,17 @@ test('Tashkent POIs are categorized and protect ambiguous metro and mall names',
   assert.equal(matchTashkentPoi('Riviera Mall')?.name, 'Riviera Mall');
 });
 
+test('Tashkent POIs parse translated Russian and Uzbek names and titles', () => {
+  assert.equal(matchTashkentPoi('рядом ТРЦ Compass')?.name, 'Compass Mall');
+  assert.equal(matchTashkentPoi('Mega Planet savdo markazi yonida')?.name, 'Mega Planet');
+  assert.equal(matchTashkentPoi('Yunusobod Galereya yaqinida')?.name, 'Yunusabad Gallery');
+  assert.equal(matchTashkentPoi('Ташкентский международный университет Кимё')?.name, 'Kimyo International University');
+  assert.equal(matchTashkentPoi('Toshkent Kimyo xalqaro universiteti')?.name, 'Kimyo International University');
+  assert.equal(matchTashkentPoi('Сингапурский институт развития менеджмента в Ташкенте')?.name, 'MDIS Tashkent');
+  assert.equal(matchTashkentPoi('Toshkent shahridagi Adju Universiteti')?.name, 'Ajou University in Tashkent');
+  assert.ok(TASHKENT_LANDMARKS.every(({ aliases }) => aliases.some((alias) => /\p{Script=Cyrillic}/u.test(alias))));
+});
+
 test('location dictionaries expose street, metro, residential complex and landmark entities once', () => {
   assert.equal(matchDictionaryLocation('Calea Victoriei', 'RO', 'Bucharest')?.type, 'streets');
   assert.equal(matchDictionaryLocation('вул. Сумська, біля майдану Свободи', 'UA', 'Kharkiv')?.name, 'Sumska Street');

@@ -1,1 +1,16 @@
 node_modules/
+coverage/
+
+# Local editor settings
+.idea/
+.vscode/
+
+# Logs and local environment overrides
+*.log
+.env
+.env.*
+!.env.example
+
+# OS metadata
+.DS_Store
+Thumbs.db

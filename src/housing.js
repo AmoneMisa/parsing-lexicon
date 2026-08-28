@@ -156,7 +156,7 @@ export const DEPOSIT_TERMS = Object.freeze({
 
 export const UTILITY_TERMS = Object.freeze({
   included: group('utilitiesIncluded', { ru: ['коммунальные включены', 'коммуналка включена'], en: ['utilities included', 'bills included'], uk: ['комунальні включені', 'комуналка включена'], ro: ['utilități incluse', 'utilitati incluse', 'întreținere inclusă', 'intretinere inclusa'], uzLatn: ['kommunal ichida', 'kommunal tolovlar ichida'], uzCyrl: ['коммунал ичида', 'коммунал тўловлар ичида'], kk: ['коммуналдық төлемдер кіреді'] }),
-  separate: group('utilitiesSeparate', { ru: ['коммунальные отдельно', 'плюс коммунальные'], en: ['utilities separate', 'plus utilities', 'bills extra'], uk: ['комунальні окремо', 'плюс комунальні'], ro: ['utilități separat', 'utilitati separat', 'plus utilități', 'plus utilitati'], uzLatn: ['kommunal alohida'], uzCyrl: ['коммунал алоҳида'], kk: ['коммуналдық төлем бөлек'] }),
+  separate: group('utilitiesSeparate', { ru: ['коммунальные отдельно', 'плюс коммунальные'], en: ['utilities separate', 'plus utilities', 'bills extra'], uk: ['комунальні окремо', 'плюс комунальні'], ro: ['utilități separat', 'utilitati separat', 'plus utilități', 'plus utilitati'], uzLatn: ['kommunal alohida'], uzCyrl: ['коммунал алоҳида', 'коммунал тўловлари алоҳида', 'камунал туловлари алохида'], kk: ['коммуналдық төлем бөлек'] }),
 });
 
 export const APPLIANCE_TERMS = Object.freeze({
