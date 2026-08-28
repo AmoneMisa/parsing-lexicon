@@ -25,3 +25,7 @@ export function parseHiringSalaryWithContext(
   value: unknown,
   options?: HiringSalaryContextOptions,
 ): ParsedHiringSalaryWithContext | null;
+export function parseHiringVacancySalary(
+  value: unknown,
+  options?: HiringSalaryContextOptions,
+): ParsedHiringSalaryWithContext | null;

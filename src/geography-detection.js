@@ -77,3 +77,28 @@ export function detectCityFromText(value, country = null) {
   if (!match) return null;
   return Object.freeze({ canonical: match.item.canonical, country: match.item.country || null });
 }
+
+/** Detect every known city in free text, ordered by first mention and deduplicated by canonical name. */
+export function detectCitiesFromText(value, country = null) {
+  const text = String(value || '');
+  if (!text) return Object.freeze([]);
+  const code = country ? canonicalCountryCode(country) : null;
+  const found = [];
+  for (const matcher of CITY_MATCHERS) {
+    if (code && matcher.item.country !== code) continue;
+    const match = cityTextMatch(text, matcher);
+    if (!match) continue;
+    found.push({
+      canonical: matcher.item.canonical,
+      country: matcher.item.country || null,
+      start: match.index ?? 0,
+    });
+  }
+  found.sort((a, b) => a.start - b.start || a.canonical.localeCompare(b.canonical));
+  const seen = new Set();
+  return Object.freeze(found.filter((item) => {
+    if (seen.has(item.canonical)) return false;
+    seen.add(item.canonical);
+    return true;
+  }).map(({ canonical, country: cityCountry }) => Object.freeze({ canonical, country: cityCountry })));
+}
