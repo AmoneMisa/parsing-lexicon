@@ -23,7 +23,7 @@ export const HOUSING_LANDMARK_EXTENSIONS = Object.freeze([
     ru: ['детские сады', 'детские садики', 'детский садик', 'детский садики'],
     en: ['kindergartens', 'nurseries'],
     uzLatn: ["bog'chalar", 'bog‘chalar', 'bogʻchalar'],
-    uzCyrl: ['боғчалар'],
+    uzCyrl: ['боғчалар', 'богча', 'богчалар'],
   }, { category: 'kindergarten' }),
   group('Bus stop', {
     ru: ['автобусной остановке', 'автобусная остановка рядом', 'остановка рядом'],
@@ -59,7 +59,7 @@ export const HOUSING_LANDMARK_EXTENSIONS = Object.freeze([
     ru: ['парки', 'рядом парки'],
     en: ['parks'],
     uzLatn: ["bog'lar", 'bog‘lar', 'bogʻlar'],
-    uzCyrl: ['боғлар'],
+    uzCyrl: ['боғлар', 'сайлгоҳлар', 'сайлгох', 'сайлгохлар'],
   }, { category: 'park' }),
   group('Playground', {
     ru: ['детская площадка', 'детские площадки'],

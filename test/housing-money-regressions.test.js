@@ -60,6 +60,19 @@ test('a currency symbol directly touching its number (no space) still parses', (
   assert.deepEqual(parseHousingPrice('rent $100 monthly'), { amount: 100, currency: 'USD', approximate: false });
 });
 
+test('dotted currency suffix parses as money but payment amounts stay out of listing price', () => {
+  assert.deepEqual(parseHousingPrice('Аренда 800$, депозит 500.$', 'USD'), {
+    amount: 800,
+    currency: 'USD',
+    approximate: false,
+  });
+  assert.deepEqual(parseHousingPrice('Uyning depaziti xam bor 500.$', 'USD'), {
+    amount: null,
+    currency: 'USD',
+    approximate: false,
+  });
+});
+
 test('marks an approximate price when the text hedges the amount', () => {
   assert.deepEqual(parseHousingPrice('Цена около 800$'), { amount: 800, currency: 'USD', approximate: true });
 });

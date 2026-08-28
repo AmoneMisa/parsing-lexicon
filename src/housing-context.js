@@ -18,7 +18,7 @@ export const PROPERTY_CONDITION_TERMS = Object.freeze([
 ]);
 
 export const LAYOUT_TERMS = Object.freeze([
-  group('separateRooms', { ru: ['раздельные комнаты', 'изолированные комнаты'], en: ['separate rooms', 'isolated rooms'], uk: ['роздільні кімнати', 'ізольовані кімнати'], ro: ['camere separate'], uzLatn: ['alohida xonalar'], uzCyrl: ['алоҳида хоналар'], kk: ['бөлек бөлмелер'] }),
+  group('separateRooms', { ru: ['раздельные комнаты', 'изолированные комнаты'], en: ['separate rooms', 'isolated rooms'], uk: ['роздільні кімнати', 'ізольовані кімнати'], ro: ['camere separate'], uzLatn: ['alohida xonalar', 'aloxida xonalar'], uzCyrl: ['алоҳида хоналар', 'алохида хоналар'], kk: ['бөлек бөлмелер'] }),
   group('adjacentRooms', { ru: ['смежные комнаты', 'проходные комнаты', 'проходная комната'], en: ['adjacent rooms', 'walk-through room'], uk: ['суміжні кімнати', 'прохідна кімната'], ro: ['camere decomandate parțial', 'cameră de trecere'], uzLatn: ['o‘tish xonasi'], uzCyrl: ['ўтиш хонаси'], kk: ['өтпелі бөлме'] }),
   group('kitchenStudio', { ru: ['кухня-студия', 'кухня студия'], en: ['kitchen studio', 'open kitchen living room'], uk: ['кухня-студія'], ro: ['bucătărie open space'], uzLatn: ['oshxona studiya'], uzCyrl: ['ошхона студия'], kk: ['асүй-студия'] }),
   group('euroTwoRoom', { ru: ['евродвушка', 'евро двушка'], en: ['euro two-room', 'euro one bedroom'], uk: ['євродвушка'], ro: ['apartament euro două camere'], uzLatn: ['evro ikki xonali'], uzCyrl: ['евро икки хонали'], kk: ['еуро екі бөлмелі'] }),
@@ -29,7 +29,7 @@ export const LAYOUT_TERMS = Object.freeze([
 ]);
 
 export const BUILDING_TYPE_TERMS = Object.freeze([
-  group('brick', { ru: ['кирпичный дом', 'кирпич'], en: ['brick building', 'brick house'], uk: ['цегляний будинок'], ro: ['clădire din cărămidă'], uzLatn: ['g‘ishtli uy', "g'ishtli uy"], uzCyrl: ['ғиштли уй'], kk: ['кірпіш үй'] }),
+  group('brick', { ru: ['кирпичный дом', 'кирпич'], en: ['brick building', 'brick house'], uk: ['цегляний будинок'], ro: ['clădire din cărămidă'], uzLatn: ['g‘ishtli uy', "g'ishtli uy", 'gishtli uy', 'g‘ishtli', "g'ishtli", 'gishtli'], uzCyrl: ['ғиштли уй', 'гиштли уй', 'ғиштли', 'гиштли'], kk: ['кірпіш үй'] }),
   group('panel', { ru: ['панельный дом', 'панелька'], en: ['panel building', 'prefab panel'], uk: ['панельний будинок'], ro: ['bloc din panouri'], uzLatn: ['panelli uy'], uzCyrl: ['панелли уй'], kk: ['панельді үй'] }),
   group('monolithic', { ru: ['монолитный дом', 'монолит'], en: ['monolithic building', 'monolith'], uk: ['монолітний будинок'], ro: ['clădire monolit'], uzLatn: ['monolit uy'], uzCyrl: ['монолит уй'], kk: ['монолитті үй'] }),
   group('monolithicBrick', { ru: ['монолитно-кирпичный', 'монолит кирпич'], en: ['monolithic brick'], uk: ['монолітно-цегляний'], ro: ['monolit-cărămidă'], uzLatn: ['monolit g‘isht'], uzCyrl: ['монолит ғишт'], kk: ['монолит кірпіш'] }),
@@ -116,7 +116,7 @@ export const FINANCING_TERMS = Object.freeze([
 ]);
 
 export const LOCATION_RELATIONS = Object.freeze([
-  group('near', { ru: ['рядом с', 'возле', 'около'], en: ['near', 'next to', 'close to'], uk: ['поруч', 'біля'], ro: ['lângă', 'aproape de'], uzLatn: ['yaqinida', 'yonida', 'yaqin'], uzCyrl: ['яқинида', 'ёнида', 'яқин'], kk: ['жанында', 'маңында'] }),
+  group('near', { ru: ['рядом', 'рядом с', 'возле', 'около'], en: ['near', 'next to', 'close to'], uk: ['поруч', 'біля'], ro: ['lângă', 'aproape de'], uzLatn: ['yaqinida', 'yonida', 'yaqin'], uzCyrl: ['яқинида', 'ёнида', 'яқин'], kk: ['жанында', 'маңында'] }),
   group('opposite', { ru: ['напротив', 'через дорогу'], en: ['opposite', 'across the road'], uk: ['навпроти', 'через дорогу'], ro: ['vizavi', 'peste drum'], uzLatn: ['ro‘parasida'], uzCyrl: ['рўпарасида'], kk: ['қарсысында'] }),
   group('behind', { ru: ['за парком', 'за рынком', 'за базаром'], en: ['behind'], uk: ['за парком'], ro: ['în spatele'], uzLatn: ['orqasida'], uzCyrl: ['орқасида'], kk: ['артында'] }),
   group('intersection', { ru: ['на пересечении', 'на перекрёстке', 'перекрёсток'], en: ['at the intersection', 'crossroads'], uk: ['на перехресті'], ro: ['la intersecție'], uzLatn: ['chorrahada'], uzCyrl: ['чорраҳада'], kk: ['қиылыста'] }),
