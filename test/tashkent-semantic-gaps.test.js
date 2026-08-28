@@ -32,7 +32,7 @@ test('Tashkent matcher preserves umbrella-area vs numbered-microdistrict semanti
   const karasu6 = matchCentralAsiaLocationEntities('Qorasuv-6, Toshkent', 'UZ', 'Tashkent');
   assert.ok(names(karasu6, 'microdistrict').includes('Karasu-6'));
 
-  const sputnik = matchCentralAsiaLocationEntities('Yo‘ldosh dahasi, Toshkent', 'UZ', 'Tashkent');
+  const sputnik = matchCentralAsiaLocationEntities('Sputnik massivi, Toshkent', 'UZ', 'Tashkent');
   assert.ok(names(sputnik, 'local_area').includes('Sputnik'));
   assert.equal(names(sputnik, 'microdistrict').includes('Sputnik'), false);
 });
