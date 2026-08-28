@@ -32,6 +32,19 @@ test('housing context recognizes the short Uzbek near relation', () => {
   assert.ok(result.locationRelations.includes('near'));
 });
 
+test('housing context recognizes bare Russian nearby', () => {
+  const result = parseHousingContext('Рядом есть рынок и супермаркеты.');
+  assert.ok(result.locationRelations.includes('near'));
+});
+
+test('housing context covers common Uzbek brick and separate-room spellings', () => {
+  const brick = parseHousingContext('янги гиштли лифтли дом');
+  assert.equal(brick.buildingType, 'brick');
+
+  const layout = parseHousingContext('aloxida xonalar');
+  assert.ok(layout.layouts.includes('separateRooms'));
+});
+
 test('closed housing status outranks generic active wording', () => {
   const result = parseHousingContext('Объявление было актуально, но уже сдано.');
   assert.equal(result.listingStatus, 'rented');

@@ -95,7 +95,7 @@ export function parseHousingFloor(value) {
   let totalFloors = toNumber(explicit?.[2]);
 
   if (floor == null) {
-    const beforeMarker = text.match(/(?:^|[^\d])(\d{1,3})\s*-?\s*(?:этаж(?:да)?|поверх|floor|etaj|qavat(?:da)?|қабат(?:та)?|кават(?:да)?|қават(?:да)?)(?=$|[^\p{L}\p{N}_])/iu);
+    const beforeMarker = text.match(/(?:^|[^\d])(\d{1,3})\s*-?\s*(?:(?:chi|чи)\s*)?(?:этаж(?:да)?|поверх|floor|etaj|qavat(?:i(?:da(?:gi)?)?|da)?|қабат(?:ы(?:нда(?:ғы)?)?|та)?|кават(?:и(?:да(?:ги)?)?|да)?|қават(?:и(?:да(?:ги)?)?|да)?)(?=$|[^\p{L}\p{N}_])/iu);
     floor = toNumber(beforeMarker?.[1]);
   }
 
