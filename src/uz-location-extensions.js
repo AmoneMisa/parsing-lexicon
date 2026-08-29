@@ -344,7 +344,10 @@ export const UZ_LOCATION_EXTENSIONS = Object.freeze({
 
   Navoiy: city({
     mahallas: [{ name: 'Guliston', aliases: ['Гулистон'], confidence: 'official' }],
-    microdistricts: numberedMicrodistricts([1,2,3,4,5,6,7,8,9,10,11,12]),
+    microdistricts: [
+      ...numberedMicrodistricts([1,2,3,4,5,6,7,8,9,10,11,12]),
+      ['17 microdistrict','17-kichik nohiya','17 kichik nohiya','17-й микрорайон','17 микрорайон','17-mikrorayon','17 mikrorayon','17 мкр'],
+    ],
     localAreas: [['Uzbekiston Massiv',"O'zbekiston massivi",'Узбекистон массив','Ўзбекистон массиви'],['Yangi Navoiy','Янги Навои','Янги Навоий'],['Center','Markaz','Центр'],['Sputnik','Спутник'],['Railway Station area','Вокзал']],
     landmarks: [['Alisher Navoiy Park',"Alisher Navoiy bog'i",'парк Алишера Навои'],['Farhod Palace of Culture','Farhod madaniyat saroyi','Дворец культуры Фархад'],['Navoiy Mining and Metallurgical Company','Navoiy kon-metallurgiya kombinati','НГМК','NGMK','Навоийский ГМК'],['Navoi International Airport','Navoiy aeroporti','NVI']],
   }),
