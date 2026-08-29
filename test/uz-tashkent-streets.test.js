@@ -4,23 +4,32 @@ import { LOCATION_DICTIONARIES, matchDictionaryLocation } from '../src/locations
 
 const EXPECTED_STREETS = Object.freeze([
   ['Amir Temur shoh ko‘chasi', 'Amir Temur Avenue'],
-  ['Амира Тимура проспект', 'Amir Temur Avenue'],
-  ['Шота Руставели улица', 'Shota Rustaveli Street'],
-  ['Нукусская улица', 'Nukus Street'],
-  ['Buyuk Ipak Yuli Street', 'Buyuk Ipak Yoli Street'],
-  ['Буюк Ипак Йули улица', 'Buyuk Ipak Yoli Street'],
-  ['Afrasiyab Street', 'Afrosiyob Street'],
-  ['Афросиаб улица', 'Afrosiyob Street'],
+  ['проспект Амира Темура', 'Amir Temur Avenue'],
+  ['Shota Rustaveli ko‘chasi', 'Shota Rustaveli Street'],
+  ['улица Шота Руставели', 'Shota Rustaveli Street'],
+  ['Nukus ko‘chasi', 'Nukus Street'],
+  ['Нукус кўчаси', 'Nukus Street'],
+  ["Buyuk Ipak Yo'li ko'chasi", 'Buyuk Ipak Yoli Street'],
+  ['Буюк Ипак Йўли кўчаси', 'Buyuk Ipak Yoli Street'],
+  ['Afrosiyob ko‘chasi', 'Afrosiyob Street'],
+  ['Афросиёб кўчаси', 'Afrosiyob Street'],
   ["Mirzo Ulug'bek shoh ko'chasi", 'Mirzo Ulugbek Avenue'],
-  ['Bunyudkor Avenue', 'Bunyodkor Avenue'],
-  ['Мукими улица', 'Muqimiy Street'],
-  ['Furkat Street', 'Furqat Street'],
-  ['Беруни проспект', 'Beruniy Avenue'],
-  ['Тараса Шевченко улица', 'Taras Shevchenko Street'],
-  ['Ислама Каримова улица', 'Islam Karimov Street'],
+  ['Мирзо Улуғбек шоҳ кўчаси', 'Mirzo Ulugbek Avenue'],
+  ['Bunyodkor shoh ko‘chasi', 'Bunyodkor Avenue'],
+  ['Бунёдкор шоҳ кўчаси', 'Bunyodkor Avenue'],
+  ['Muqimiy ko‘chasi', 'Muqimiy Street'],
+  ['Муқимий кўчаси', 'Muqimiy Street'],
+  ['Furqat ko‘chasi', 'Furqat Street'],
+  ['Фурқат кўчаси', 'Furqat Street'],
+  ['Beruniy shoh ko‘chasi', 'Beruniy Avenue'],
+  ['Беруний шоҳ кўчаси', 'Beruniy Avenue'],
+  ['Taras Shevchenko ko‘chasi', 'Taras Shevchenko Street'],
+  ['улица Тараса Шевченко', 'Taras Shevchenko Street'],
+  ['Islom Karimov ko‘chasi', 'Islam Karimov Street'],
+  ['Ислом Каримов кўчаси', 'Islam Karimov Street'],
 ]);
 
-test('verified Tashkent arterial aliases merge into the canonical street registry', () => {
+test('Tashkent arterial streets stay in the canonical UZ registry', () => {
   const streets = LOCATION_DICTIONARIES.UZ.Tashkent.streets;
   const canonicals = new Set(streets.map(({ name }) => name));
 
@@ -42,7 +51,7 @@ test('verified Tashkent arterial aliases merge into the canonical street registr
   }
 });
 
-test('verified Uzbek, Russian and OSM spelling variants resolve to stable canonicals', () => {
+test('existing Russian and Uzbek street translations resolve to stable canonicals', () => {
   for (const [input, canonical] of EXPECTED_STREETS) {
     const match = matchDictionaryLocation(input, 'UZ', 'Tashkent');
     assert.equal(match?.type, 'streets', input);
