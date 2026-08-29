@@ -348,7 +348,7 @@ export const UZ_LOCATION_EXTENSIONS = Object.freeze({
     mahallas: [{ name: 'Sayqal', aliases: ['Сайкал','Сайқал'], confidence: 'official' }],
     microdistricts: numberedMicrodistricts([1,2,3,4]),
     localAreas: [['Center','Markaz','Центр'],['Dehqon Bazaar','Dehqon bozori','Дехканский рынок'],['University area','Университетский'],['Railway Station area','Вокзал']],
-    landmarks: [['Gulistan State University','Guliston davlat pedagogika universiteti','Гулистанский государственный университет'],['Central Stadium','Markaziy stadion','Центральный стадион'],['Gulistan Railway Station','Guliston vokzali']],
+    landmarks: [['Gulistan State University','Guliston davlat universiteti','Гулистанский государственный университет'],['Central Stadium','Markaziy stadion','Центральный стадион'],['Gulistan Railway Station','Guliston vokzali']],
   }),
 
   Chirchiq: city({
