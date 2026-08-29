@@ -373,7 +373,13 @@ export const UZ_LOCATION_EXTENSIONS = Object.freeze({
 
   Almalyk: city({
     mahallas: [{ name: 'Kamalak', aliases: ['Камалак','Радуга'], confidence: 'official' }],
-    microdistricts: numberedMicrodistricts([1,2,3,4,5]),
+    microdistricts: [
+      ...numberedMicrodistricts([1,2,3,4,5]),
+      ['5/1 microdistrict','5/1-kichik nohiya','5/1 kichik nohiya','5/1 микрорайон'],
+      ['5/2 microdistrict','5/2-kichik nohiya','5/2 kichik nohiya','5/2 микрорайон'],
+      ['5/3 microdistrict','5/3-kichik nohiya','5/3 kichik nohiya','5/3 микрорайон'],
+      ['Yubileyny microdistrict','Yubileyny','Yubiley kichi- nohiya','Yubiley kichik nohiya','Юбилейный микрорайон','Юбилейный'],
+    ],
     localAreas: [['Center','Markaz','Центр'],['Old City','Eski shahar','Старый город'],['New City','Yangi shahar','Новый город'],['Metallurg','Металлург'],['Sports Palace area','Дворец спорта'],['Railway Station area','Вокзал']],
     landmarks: [['Almalyk MMC','АГМК','AGMK','ОКМК','OKMK','Олмалиқ КМК','Almalyk Mining and Metallurgical Complex'],['Metallurg Stadium','Metallurg stadioni','стадион Металлург']],
   }),
