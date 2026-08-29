@@ -10,6 +10,7 @@ import { LOCATION_LIST_KEYS, mergeLocationCountries } from './location-merge.js'
 import { aliasesToRegex } from './normalization.js';
 import { KZ_LOCATION_EXTENSIONS } from './kz-location-extensions.js';
 import { UZ_LOCATION_EXTENSIONS } from './uz-location-extensions.js';
+import { UZ_TASHKENT_STREET_EXTENSIONS } from './uz-tashkent-street-extensions.js';
 import { UA_MAJOR_LOCATION_EXTENSIONS } from './ua-location-extensions-major.js';
 import { UA_REGIONAL_LOCATION_EXTENSIONS } from './ua-location-extensions-regional.js';
 import { UA_SECONDARY_LOCATION_EXTENSIONS } from './ua-secondary-cities.js';
@@ -128,6 +129,7 @@ function normalizeUaSemanticLocations(country) {
 const UZ_LOCATION_DICTIONARIES = normalizeUzSemanticLocations(mergeLocationCountries(
   UZ_BASE_LOCATION_DICTIONARIES,
   UZ_LOCATION_EXTENSIONS,
+  UZ_TASHKENT_STREET_EXTENSIONS,
 ));
 
 const UA_SEMANTIC_LOCATION_EXTENSIONS = normalizeUaSemanticLocations(UA_MAJOR_LOCATION_EXTENSIONS);
