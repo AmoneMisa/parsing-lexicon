@@ -60,7 +60,7 @@ export const HOUSING_LANDMARK_EXTENSIONS = Object.freeze([
     en: ['park', 'parks'],
     uzLatn: ["bog'", 'bog‘', 'bogʻ', "bog'i", 'bog‘i', 'bogʻi', "bog'lar", 'bog‘lar', 'bogʻlar'],
     uzCyrl: ['боғ', 'боғи', 'боғлар', 'сайлгоҳлар', 'сайлгох', 'сайлгохлар'],
-  }, { category: 'park' }),
+  }, { category: 'park', display: { ru: 'Парк', en: 'Park' } }),
   group('Playground', {
     ru: ['детская площадка', 'детские площадки'],
     en: ['playground', 'playgrounds', 'children playground'],
