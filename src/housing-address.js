@@ -33,7 +33,11 @@ function escapeRegExp(value) {
 
 function compactStreet(value) {
   return clean(value)
-    .replace(new RegExp(`^${PREFIX_STREET_MARKER}\\s*`, 'iu'), '')
+    // The bare abbreviations in PREFIX_STREET_MARKER (e.g. "пр" for "пр-т")
+    // must not be followed by a letter, or this would strip a false-positive
+    // prefix off an unrelated word that merely starts the same way (e.g.
+    // "проживания" -> "оживания").
+    .replace(new RegExp(`^${PREFIX_STREET_MARKER}(?!\\p{L})\\s*`, 'iu'), '')
     .replace(new RegExp(`\\s+${POSTFIX_STREET_MARKER}$`, 'iu'), '')
     .replace(/[\s,;:.\-–—]+$/gu, '')
     .trim() || null;
@@ -167,7 +171,7 @@ function explicitStreetAddress(text) {
     if (prefixTyped) return prefixTyped;
 
     const boundedPrefix = line.match(new RegExp(
-      `(?:^|[\\s,;])${PREFIX_STREET_MARKER}\\s*((?:${STREET_WORD}\\s+){0,3}${STREET_WORD})(?=$|[,;])`,
+      `(?:^|[\\s,;])${PREFIX_STREET_MARKER}(?!\\p{L})\\s*((?:${STREET_WORD}\\s+){0,3}${STREET_WORD})(?=$|[,;])`,
       'iu',
     ));
     if (boundedPrefix) return result(boundedPrefix[0], boundedPrefix[1], null, null, 0.9);
