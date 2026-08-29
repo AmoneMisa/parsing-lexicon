@@ -172,11 +172,21 @@ export function matchDictionaryLocation(text, countryCode, city = null) {
   const country = locationCities(countryCode);
   const cities = city && country[city] ? [[city, country[city]]] : Object.entries(country);
   const value = String(text || '');
+  let best = null;
   for (const [cityName, data] of cities) {
     for (const type of LOCATION_LIST_KEYS) {
-      const match = (data[type] || []).find((entry) => entry?.re?.test(value));
-      if (match) return { city: cityName, type, name: match.name, aliases: match.aliases };
+      for (const entry of data[type] || []) {
+        const match = entry?.re?.exec(value);
+        if (!match) continue;
+        const start = match.index;
+        const end = start + match[0].length;
+        const containsBest = best && start <= best.start && end >= best.end && end - start > best.end - best.start;
+        if (best && !containsBest) continue;
+        best = { city: cityName, type, name: entry.name, aliases: entry.aliases, start, end };
+      }
     }
   }
-  return null;
+  if (!best) return null;
+  const { start: _start, end: _end, ...result } = best;
+  return result;
 }

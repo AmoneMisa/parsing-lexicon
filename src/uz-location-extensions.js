@@ -210,6 +210,8 @@ export const UZ_LOCATION_EXTENSIONS = Object.freeze({
       ['Tashkent City', 'Ташкент Сити', 'Toshkent City', 'Tashkent City IBC'],
     ],
     streets: [
+      { name: 'Gulobod Street', aliases: ['Gulobod ko‘chasi', "Gulobod ko'chasi", 'улица Гулобод', 'ул. Гулобод'], parent: 'Shaykhantahur' },
+      { name: 'Sebzor Street', aliases: ['Sebzor ko‘chasi', "Sebzor ko'chasi", 'улица Себзор', 'ул. Себзор'], parent: 'Almazar' },
       { name: 'Lolazor Street', aliases: ['Lolazor ko‘chasi', "Lolazor ko'chasi", 'улица Лолазор', 'ул. Лолазор'], parent: 'Uchtepa' },
       { name: 'Shohimardon Street', aliases: ['Shohimardon ko‘chasi', "Shohimardon ko'chasi", 'улица Шохимардон', 'ул. Шохимардон'], parent: 'Yashnobod' },
       { name: 'Shohimardon Passage 1', aliases: ['Shohimardon 1-tor ko‘chasi', "Shohimardon 1-tor ko'chasi", '1-й проезд Шохимардон', '1 проезд Шохимардон'], parent: 'Yashnobod' },
