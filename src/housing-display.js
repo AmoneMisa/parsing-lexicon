@@ -12,6 +12,7 @@ const DISPLAY = Object.freeze({
     Market: 'Market', Cafe: 'Cafe', Restaurant: 'Restaurant', Playground: 'Playground', Pharmacy: 'Pharmacy',
     Mosque: 'Mosque', Church: 'Church', 'Railway station': 'Railway station', Airport: 'Airport',
     'Bobur Park': 'Bobur Park', 'Independence Square': 'Independence Square', 'Mega Planet': 'Mega Planet',
+    'Bek Baraka': 'Bek Baraka',
   }),
   ru: Object.freeze({
     Park: 'Парк', Metro: 'Метро', 'Bus stop': 'Автобусная остановка', 'Public transport': 'Общественный транспорт',
@@ -21,6 +22,7 @@ const DISPLAY = Object.freeze({
     Market: 'Рынок', Cafe: 'Кафе', Restaurant: 'Ресторан', Playground: 'Детская площадка', Pharmacy: 'Аптека',
     Mosque: 'Мечеть', Church: 'Церковь', 'Railway station': 'Железнодорожный вокзал', Airport: 'Аэропорт',
     'Bobur Park': 'Парк Бобура', 'Independence Square': 'Площадь Независимости', 'Mega Planet': 'Mega Planet',
+    'Bek Baraka': 'Бек-Барака',
   }),
 });
 

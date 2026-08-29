@@ -67,6 +67,8 @@ export const GEOGRAPHY_DISPLAY_NAMES = Object.freeze({
     }),
     microdistrict: Object.freeze({
       Tsukrovyi: 'Сахарный',
+      Karakamysh: 'Каракамыш', Sebzar: 'Себзар', Tashselmash: 'Ташсельмаш', Aviasozlar: 'Авиасозлар',
+      Kuylyuk: 'Куйлюк', Sergeli: 'Сергели массив', Sputnik: 'Спутник', 'Yangi Choshtepa': 'Янги Чоштепа',
     }),
     metro: Object.freeze({
       'Buyuk Ipak Yoli': 'Буюк Ипак Йули', Pushkin: 'Пушкин', 'Hamid Olimjon': 'Хамид Алимджан',
