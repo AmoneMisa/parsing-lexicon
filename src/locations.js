@@ -53,39 +53,127 @@ const UZ_BASE_LOCATION_DICTIONARIES = Object.freeze({
   }),
 });
 
-function normalizeUzSemanticLocations(country) {
-  const tashkent = country?.Tashkent;
-  if (!tashkent) return country;
-  const qorasuv = (tashkent.microdistricts || []).find(({ name }) => name === 'Qorasuv');
-  if (!qorasuv) return country;
-
-  // Bare Qorasuv is ambiguous with numbered Qorasuv/Karasu blocks. The
-  // umbrella area therefore requires an area/massif/daha form in free text.
-  const qorasuvAliases = Object.freeze([...new Set([
-    ...(qorasuv.aliases || []).filter((alias) => !/^(?:qorasuv|korasuv|корасув|карасу)$/iu.test(String(alias).trim())),
-    'Qorasuv dahasi',
-    'Qorasuv daha',
-    'Қорасув даҳаси',
-    'Корасув дахаси',
-    'Карасу даха',
-  ])]);
-  const qorasuvArea = Object.freeze({
-    ...qorasuv,
-    type: 'local_area',
-    entityType: 'local_area',
-    parent: 'Mirzo Ulugbek',
-    aliases: qorasuvAliases,
-    re: aliasesToRegex(qorasuvAliases),
+function semanticEntry(entry, name, aliases, entityType) {
+  const all = Object.freeze([...new Set([name, ...aliases].filter(Boolean))]);
+  return Object.freeze({
+    ...entry,
+    canonical: name,
+    name,
+    type: entityType,
+    entityType,
+    aliases: all,
+    re: aliasesToRegex(all),
   });
+}
+
+function normalizeUzSemanticLocations(country) {
+  let normalized = country;
+  const tashkent = normalized?.Tashkent;
+  const qorasuv = (tashkent?.microdistricts || []).find(({ name }) => name === 'Qorasuv');
+
+  if (tashkent && qorasuv) {
+    // Bare Qorasuv is ambiguous with numbered Qorasuv/Karasu blocks. The
+    // umbrella area therefore requires an area/massif/daha form in free text.
+    const qorasuvAliases = Object.freeze([...new Set([
+      ...(qorasuv.aliases || []).filter((alias) => !/^(?:qorasuv|korasuv|корасув|карасу)$/iu.test(String(alias).trim())),
+      'Qorasuv dahasi',
+      'Qorasuv daha',
+      'Қорасув даҳаси',
+      'Корасув дахаси',
+      'Карасу даха',
+    ])]);
+    const qorasuvArea = Object.freeze({
+      ...qorasuv,
+      type: 'local_area',
+      entityType: 'local_area',
+      parent: 'Mirzo Ulugbek',
+      aliases: qorasuvAliases,
+      re: aliasesToRegex(qorasuvAliases),
+    });
+
+    normalized = Object.freeze({
+      ...normalized,
+      Tashkent: Object.freeze({
+        ...tashkent,
+        microdistricts: Object.freeze((tashkent.microdistricts || []).filter(({ name }) => name !== 'Qorasuv')),
+        localAreas: Object.freeze([
+          ...(tashkent.localAreas || []),
+          qorasuvArea,
+        ]),
+      }),
+    });
+  }
+
+  const samarkand = normalized?.Samarkand;
+  if (!samarkand) return normalized;
+
+  const landmarks = samarkand.landmarks || [];
+  const localAreas = samarkand.localAreas || [];
+  const streets = samarkand.streets || [];
+
+  // Legacy UZ seeds contain a few Samarkand listing labels as separate
+  // canonicals or under the wrong semantic collection. Normalize them to the
+  // single physical subjects already represented by geo-catalog.
+  const centralPark = landmarks.find(({ name }) => name === 'Central Park');
+  const alisherPark = landmarks.find(({ name }) => name === 'Alisher Navoiy Park');
+  const canonicalPark = centralPark || alisherPark;
+  const parkAliases = [
+    ...(centralPark?.aliases || []),
+    ...(alisherPark?.aliases || []),
+    'Central Park',
+    'Alisher Navoiy Park',
+  ];
+  const normalizedPark = canonicalPark
+    ? semanticEntry(canonicalPark, 'Central Park', parkAliases, 'poi')
+    : null;
+
+  const siyobBazaar = landmarks.find(({ name }) => name === 'Siyob Bazaar');
+  const siabBazaar = landmarks.find(({ name }) => name === 'Siab Bazaar');
+  const canonicalBazaar = siyobBazaar || siabBazaar;
+  const bazaarAliases = [
+    ...(siyobBazaar?.aliases || []),
+    ...(siabBazaar?.aliases || []),
+    'Siyob Bazaar',
+    'Siab Bazaar',
+  ];
+  const normalizedBazaar = canonicalBazaar
+    ? semanticEntry(canonicalBazaar, 'Siyob Bazaar', bazaarAliases, 'poi')
+    : null;
+
+  const universityLocalArea = localAreas.find(({ name }) => name === 'University Boulevard');
+  const universityLandmark = landmarks.find(({ name }) => name === 'University Boulevard');
+  const universityStreet = streets.find(({ name }) => name === 'University Boulevard');
+  const canonicalUniversity = universityStreet || universityLandmark || universityLocalArea;
+  const universityAliases = [
+    ...(universityStreet?.aliases || []),
+    ...(universityLandmark?.aliases || []),
+    ...(universityLocalArea?.aliases || []),
+    'University Boulevard',
+  ];
+  const normalizedUniversity = canonicalUniversity
+    ? semanticEntry(canonicalUniversity, 'University Boulevard', universityAliases, 'street')
+    : null;
 
   return Object.freeze({
-    ...country,
-    Tashkent: Object.freeze({
-      ...tashkent,
-      microdistricts: Object.freeze((tashkent.microdistricts || []).filter(({ name }) => name !== 'Qorasuv')),
-      localAreas: Object.freeze([
-        ...(tashkent.localAreas || []),
-        qorasuvArea,
+    ...normalized,
+    Samarkand: Object.freeze({
+      ...samarkand,
+      localAreas: Object.freeze(localAreas.filter(({ name }) => name !== 'University Boulevard')),
+      streets: Object.freeze([
+        ...streets.filter(({ name }) => name !== 'University Boulevard'),
+        ...(normalizedUniversity ? [normalizedUniversity] : []),
+      ]),
+      landmarks: Object.freeze([
+        ...landmarks.filter(({ name }) => ![
+          'Central Park',
+          'Alisher Navoiy Park',
+          'Siyob Bazaar',
+          'Siab Bazaar',
+          'University Boulevard',
+          'Samarkand City',
+        ].includes(name)),
+        ...(normalizedPark ? [normalizedPark] : []),
+        ...(normalizedBazaar ? [normalizedBazaar] : []),
       ]),
     }),
   });
