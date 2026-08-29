@@ -43,7 +43,7 @@ function station(name, ru, en, line, aliases = []) {
 }
 
 export const TASHKENT_METRO = Object.freeze([
-  station('Buyuk Ipak Yoli', 'Буюк Ипак Йули', 'Buyuk Ipak Yoli', 'chilonzor', ['Buyuk Ipak Yuli', "Buyuk Ipak Yo'li", 'Buyuk Ipak Yo‘Li', 'Buyuk Ipak Yoʻli', 'Буюк Ипак Йўли', 'БИЙ', 'Максим Горький', 'Максима Горького', 'Горького', 'Maxim Gorky', 'Maksim Gorkiy']),
+  station('Buyuk Ipak Yoli', 'Буюк Ипак Йули', 'Buyuk Ipak Yoli', 'chilonzor', ['Buyuk Ipak Yuli', "Buyuk Ipak Yo'li", 'Buyuk Ipak Yo‘li', 'Buyuk Ipak Yoʻli', 'Буюк Ипак Йўли', 'БИЙ', 'Максим Горький', 'Максима Горького', 'Горького', 'Maxim Gorky', 'Maksim Gorkiy']),
   station('Pushkin', 'Пушкин', 'Pushkin', 'chilonzor'),
   station('Hamid Olimjon', 'Хамид Алимджан', 'Hamid Olimjon', 'chilonzor', ['Хамид Олимжон', 'Hamid Alimjan', 'Hamid Alimjon']),
   station('Amir Temur Xiyoboni', 'Амир Темур Хиёбони', 'Amir Temur Xiyoboni', 'chilonzor', ['Сквер', 'Amir Timur Square', 'Amir Temur']),
