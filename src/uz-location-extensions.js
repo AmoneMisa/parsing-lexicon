@@ -13,7 +13,7 @@ function entries(rows = [], defaults = {}) {
   }));
 }
 
-function city({ districts = [], mahallas = [], microdistricts = [], localAreas = [], developmentAreas = [], residentialComplexes = [], landmarks = [], suburbs = [] }) {
+function city({ districts = [], mahallas = [], microdistricts = [], localAreas = [], developmentAreas = [], residentialComplexes = [], streets = [], landmarks = [], suburbs = [] }) {
   return Object.freeze({
     ...(districts.length ? { districts: entries(districts, { entityType: 'district', country: 'UZ' }) } : {}),
     ...(mahallas.length ? { mahallas: entries(mahallas, { entityType: 'mahalla', country: 'UZ' }) } : {}),
@@ -21,6 +21,7 @@ function city({ districts = [], mahallas = [], microdistricts = [], localAreas =
     ...(localAreas.length ? { localAreas: entries(localAreas, { entityType: 'local_area', country: 'UZ' }) } : {}),
     ...(developmentAreas.length ? { developmentAreas: entries(developmentAreas, { entityType: 'development_area', country: 'UZ' }) } : {}),
     ...(residentialComplexes.length ? { residentialComplexes: entries(residentialComplexes, { entityType: 'residential_complex', country: 'UZ' }) } : {}),
+    ...(streets.length ? { streets: entries(streets, { entityType: 'street', country: 'UZ' }) } : {}),
     ...(landmarks.length ? { landmarks: entries(landmarks, { entityType: 'poi', country: 'UZ' }) } : {}),
     ...(suburbs.length ? { suburbs: entries(suburbs, { entityType: 'suburb', country: 'UZ' }) } : {}),
   });
@@ -207,6 +208,14 @@ export const UZ_LOCATION_EXTENSIONS = Object.freeze({
     ],
     developmentAreas: [
       ['Tashkent City', 'Ташкент Сити', 'Toshkent City', 'Tashkent City IBC'],
+    ],
+    streets: [
+      { name: 'Lolazor Street', aliases: ['Lolazor ko‘chasi', "Lolazor ko'chasi", 'улица Лолазор', 'ул. Лолазор'], parent: 'Uchtepa' },
+      { name: 'Shohimardon Street', aliases: ['Shohimardon ko‘chasi', "Shohimardon ko'chasi", 'улица Шохимардон', 'ул. Шохимардон'], parent: 'Yashnobod' },
+      { name: 'Shohimardon Passage 1', aliases: ['Shohimardon 1-tor ko‘chasi', "Shohimardon 1-tor ko'chasi", '1-й проезд Шохимардон', '1 проезд Шохимардон'], parent: 'Yashnobod' },
+      { name: "Oltinko'l Street", aliases: ['Oltinko‘l ko‘chasi', "Oltinko'l ko'chasi", 'Oltinkol kochasi', 'улица Олтинкуль', 'ул. Олтинкуль'], parent: 'Mirobod' },
+      { name: "Oltinko'l Passage 1", aliases: ['Oltinko‘l 1-tor ko‘chasi', "Oltinko'l 1-tor ko'chasi", '1-й проезд Олтинкуль', '1 проезд Олтинкуль'], parent: 'Mirobod' },
+      { name: 'Rakatboshi Street', aliases: ['Rakatboshi ko‘chasi', "Rakatboshi ko'chasi", 'улица Ракатбоши', 'ул. Ракатбоши'], parent: 'Yakkasaray' },
     ],
   }),
 

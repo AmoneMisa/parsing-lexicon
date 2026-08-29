@@ -85,6 +85,23 @@ test('Tashkent City has one canonical semantic owner in the runtime registry', (
   assert.equal(tashkent.residentialComplexes.some(({ name }) => name === 'Tashkent City'), false);
 });
 
+test('verified Tashkent streets resolve through the canonical UZ registry', () => {
+  const expected = new Map([
+    ['улица Лолазор', 'Lolazor Street'],
+    ['Shohimardon ko\'chasi', 'Shohimardon Street'],
+    ['1-й проезд Шохимардон', 'Shohimardon Passage 1'],
+    ["Oltinko'l ko'chasi", "Oltinko'l Street"],
+    ['1-й проезд Олтинкуль', "Oltinko'l Passage 1"],
+    ['улица Ракатбоши', 'Rakatboshi Street'],
+  ]);
+
+  for (const [input, canonical] of expected) {
+    const match = matchDictionaryLocation(input, 'UZ', 'Tashkent');
+    assert.equal(match?.type, 'streets', input);
+    assert.equal(match?.name, canonical, input);
+  }
+});
+
 test('Ukraine runtime locations no longer use the legacy UA seed', async () => {
   const source = await readFile(new URL('../src/locations.js', import.meta.url), 'utf8');
   assert.doesNotMatch(source, /BASE_LOCATION_DICTIONARIES\.UA/u);
