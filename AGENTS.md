@@ -14,6 +14,10 @@ Do not merge any pull request into `master` without explicit user approval in th
 
 When a PR is approved for merge, use **squash merge only**. Do not use merge commits or rebase-merge for repository changes.
 
+## Publishing
+
+Publishing to npm is automatic on push to `master` (CI publishes the version currently in `package.json`). Never run `npm publish` manually. To ship a fix: bump `version` in `package.json`, commit, and push to `master` — do not stop short of the push expecting a manual publish step, and do not attempt `npm publish`/`npm login` locally, since this environment isn't authenticated to the registry anyway.
+
 Do not add temporary technical artifacts to the repository: scratch files, migration notes, generated reports, debug scripts, one-off helper files, duplicate documentation, or staging files. Only commit files that belong to the intended architecture or were explicitly requested.
 
 `AUDIT.md` is an intentional repository document and an explicit exception to the generated-report rule above. Preserve it and update it when audit findings materially change; do not delete it as cleanup unless explicitly requested.
