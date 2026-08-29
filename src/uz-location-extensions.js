@@ -92,6 +92,8 @@ export const UZ_LOCATION_EXTENSIONS = Object.freeze({
       { name: 'Sebzor', aliases: ['Sebzor mahallasi','Sebzar','Себзор','Себзар'], parent: 'Almazar', confidence: 'official' },
       { name: 'Yangi Choshtepa', aliases: ['Yangi Choshtepa mahallasi','Янги Чоштепа','Янги Чоштепа махалла'], parent: 'Yangihayot', confidence: 'official' },
       { name: 'Taxtapul', aliases: ['Taxtapul mahallasi','Takhtapul','Тахтапул','Тахтапуль'], parent: 'Shaykhantahur', confidence: 'official' },
+      { name: 'Ibn Sino', aliases: ['Ibn Sino mahallasi','Ибн Сино','Ибн Сино махалла'], parent: 'Shaykhantahur', confidence: 'official' },
+      { name: 'Traktorsozlar', aliases: ['Traktorsozlar mahallasi','Тракторсозлар','Тракторсозлар махалла'], parent: 'Mirzo Ulugbek', confidence: 'official' },
     ],
     microdistricts: [
       ['Qorasuv', 'Qorasuv massivi', 'Korasuv massivi', 'Корасув Массиви', 'Корасув массиви', 'Карасу массив', 'Карасу массиви', 'Қорасув массиви'],
@@ -194,6 +196,14 @@ export const UZ_LOCATION_EXTENSIONS = Object.freeze({
       { name: 'Tashselmash', aliases: ['Toshselmash','Toshselmash mavzesi','Ташсельмаш','Тошсельмаш'], parent: 'Yashnobod', confidence: 'official' },
       { name: 'Yangi Choshtepa', aliases: ['Yangi Choshtepa mavzesi','Янги Чоштепа','Янги Чоштепа массив'], parent: 'Yangihayot', confidence: 'official' },
       { name: 'Taxtapul', aliases: ['Taxtapul mavzesi','Takhtapul','Тахтапул','Тахтапуль','Тахтапул массив'], parent: 'Almazar', confidence: 'official' },
+      { name: 'Manzara', aliases: ['Manzara mavzesi','Манзара','Манзара массив'], parent: 'Yunusabad', confidence: 'official' },
+      { name: 'Qiyot', aliases: ['Qiyot mavzesi','Kiyot','Киёт','Кият','Қиёт','Markaz-5','Markaz 5','S-5','S 5'], parent: 'Yunusabad', confidence: 'official' },
+      { name: 'Ibn Sino-1', aliases: ['Ibn Sino 1','Ibn Sino-1 mavzesi','Ибн Сино-1','Ибн Сино 1'], parent: 'Shaykhantahur', confidence: 'official' },
+      { name: 'Ibn Sino-2', aliases: ['Ibn Sino 2','Ibn Sino-2 mavzesi','Ибн Сино-2','Ибн Сино 2'], parent: 'Shaykhantahur', confidence: 'official' },
+      { name: 'Traktorsozlar-1', aliases: ['Traktorsozlar 1','Traktorsozlar-1 dahasi','Тракторсозлар-1','Тракторсозлар 1','TTZ-1','TTZ 1','ТТЗ-1','ТТЗ 1'], parent: 'Mirzo Ulugbek', confidence: 'official' },
+      { name: 'Traktorsozlar-2', aliases: ['Traktorsozlar 2','Traktorsozlar-2 dahasi','Тракторсозлар-2','Тракторсозлар 2','TTZ-2','TTZ 2','ТТЗ-2','ТТЗ 2'], parent: 'Mirzo Ulugbek', confidence: 'official' },
+      { name: 'TTZ-3', aliases: ['TTZ 3','ТТЗ-3','ТТЗ 3'], parent: 'Mirzo Ulugbek', confidence: 'colloquial' },
+      { name: 'Traktorsozlar-4', aliases: ['Traktorsozlar 4','Traktorsozlar-4 dahasi','Тракторсозлар-4','Тракторсозлар 4','TTZ-4','TTZ 4','ТТЗ-4','ТТЗ 4'], parent: 'Mirzo Ulugbek', confidence: 'official' },
     ],
     developmentAreas: [
       ['Tashkent City', 'Ташкент Сити', 'Toshkent City', 'Tashkent City IBC'],
@@ -338,7 +348,7 @@ export const UZ_LOCATION_EXTENSIONS = Object.freeze({
     mahallas: [{ name: 'Sayqal', aliases: ['Сайкал','Сайқал'], confidence: 'official' }],
     microdistricts: numberedMicrodistricts([1,2,3,4]),
     localAreas: [['Center','Markaz','Центр'],['Dehqon Bazaar','Dehqon bozori','Дехканский рынок'],['University area','Университетский'],['Railway Station area','Вокзал']],
-    landmarks: [['Gulistan State University','Guliston davlat universiteti','Гулистанский государственный университет'],['Central Stadium','Markaziy stadion','Центральный стадион'],['Gulistan Railway Station','Guliston vokzali']],
+    landmarks: [['Gulistan State University','Guliston davlat pedagogika universiteti','Гулистанский государственный университет'],['Central Stadium','Markaziy stadion','Центральный стадион'],['Gulistan Railway Station','Guliston vokzali']],
   }),
 
   Chirchiq: city({
