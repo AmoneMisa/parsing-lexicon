@@ -109,10 +109,20 @@ test('Tashkent current mavze and daha names are canonical local areas', () => {
     ['Tashselmash', 'Yashnobod'],
     ['Yangi Choshtepa', 'Yangihayot'],
     ['Taxtapul', 'Almazar'],
+    ['Manzara', 'Yunusabad'],
+    ['Qiyot', 'Yunusabad'],
+    ['Ibn Sino-1', 'Shaykhantahur'],
+    ['Ibn Sino-2', 'Shaykhantahur'],
+    ['Traktorsozlar-1', 'Mirzo Ulugbek'],
+    ['Traktorsozlar-2', 'Mirzo Ulugbek'],
+    ['TTZ-3', 'Mirzo Ulugbek'],
+    ['Traktorsozlar-4', 'Mirzo Ulugbek'],
   ]) {
     assert.equal(localAreas.get(name)?.parent, parent, name);
     assert.equal(localAreas.get(name)?.type, 'local_area', name);
   }
+
+  assert.equal(localAreas.has('Traktorsozlar-3'), false);
 });
 
 test('Tashkent matcher resolves historical and housing locality aliases', () => {
@@ -147,6 +157,12 @@ test('Tashkent matcher resolves historical and housing locality aliases', () => 
     ['Ташсельмаш, Ташкент', 'Tashselmash'],
     ['Янги Чоштепа массив, Ташкент', 'Yangi Choshtepa'],
     ['Тахтапул массив, Ташкент', 'Taxtapul'],
+    ['Манзара массив, Ташкент', 'Manzara'],
+    ['Markaz-5 mavzesi, Toshkent', 'Qiyot'],
+    ['Ибн Сино-2 массив, Ташкент', 'Ibn Sino-2'],
+    ['TTZ-1, Tashkent', 'Traktorsozlar-1'],
+    ['ТТЗ 4 массив, Ташкент', 'Traktorsozlar-4'],
+    ['ТТЗ-3, Ташкент', 'TTZ-3'],
   ];
 
   for (const [text, expected] of cases) {
@@ -165,6 +181,31 @@ test('same-name mahalla and mavze stay distinct under explicit context', () => {
     assert.ok(names(mavze, 'local_area').includes(canonical), canonical);
     assert.equal(names(mavze, 'mahalla').includes(canonical), false, canonical);
   }
+});
+
+test('Qiyot area and metro station require their explicit semantic contexts', () => {
+  const area = matchCentralAsiaLocationEntities('Qiyot mavzesi, Toshkent', 'UZ', 'Tashkent');
+  assert.ok(names(area, 'local_area').includes('Qiyot'));
+  assert.equal(names(area, 'metro').includes('Qiyot'), false);
+
+  const metro = matchCentralAsiaLocationEntities('metro Qiyot, Toshkent', 'UZ', 'Tashkent');
+  assert.ok(names(metro, 'metro').includes('Qiyot'));
+  assert.equal(names(metro, 'local_area').includes('Qiyot'), false);
+});
+
+test('Ibn Sino and Traktorsozlar keep current mahalla and numbered-area ownership', () => {
+  const tashkent = locationCities('UZ').Tashkent;
+  const mahallas = new Map((tashkent.mahallas || []).map((entry) => [entry.name, entry]));
+  assert.equal(mahallas.get('Ibn Sino')?.parent, 'Shaykhantahur');
+  assert.equal(mahallas.get('Traktorsozlar')?.parent, 'Mirzo Ulugbek');
+
+  const ibnSino = matchCentralAsiaLocationEntities('Ibn Sino mahallasi, Toshkent', 'UZ', 'Tashkent');
+  assert.ok(names(ibnSino, 'mahalla').includes('Ibn Sino'));
+  assert.equal(names(ibnSino, 'local_area').includes('Ibn Sino-1'), false);
+
+  const ttZ = matchCentralAsiaLocationEntities('TTZ-2, Toshkent', 'UZ', 'Tashkent');
+  assert.ok(names(ttZ, 'local_area').includes('Traktorsozlar-2'));
+  assert.equal(names(ttZ, 'microdistrict').includes('TTZ-2'), false);
 });
 
 test('Taxtapul mahalla and mavze resolve to their different current districts', () => {
@@ -186,6 +227,12 @@ test('legacy Tashkent area view preserves current local-area semantics', () => {
     ['Takhtapul', 'Almazar'],
     ['Yangi Choshtepa', 'Yangihayot'],
     ['Tashselmash', 'Yashnobod'],
+    ['Qiyot', 'Yunusabad'],
+    ['Manzara', 'Yunusabad'],
+    ['Traktorsozlar-1', 'Mirzo Ulugbek'],
+    ['Traktorsozlar-2', 'Mirzo Ulugbek'],
+    ['TTZ-3', 'Mirzo Ulugbek'],
+    ['Traktorsozlar-4', 'Mirzo Ulugbek'],
   ]) {
     const entry = TASHKENT_AREAS[parent].find((item) => item.name === legacyName);
     assert.equal(entry?.type, 'local_area', legacyName);
