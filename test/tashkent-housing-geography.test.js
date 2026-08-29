@@ -40,19 +40,23 @@ test('keeps Glinka as a street-scale landmark instead of inventing an area', () 
   assert.equal(Object.values(FULL_TASHKENT_AREAS).flat().some((item) => item.name === 'Glinka'), false);
 });
 
-test('classifies verified residential massifs as microdistrict semantics', () => {
+test('classifies verified residential areas with current semantics', () => {
   const yangiChoshtepa = matchTashkentHousingLandmarks('Сергели, ЯНГИ ЧОШТЕПА, квартира бор')[0];
   assert.equal(yangiChoshtepa?.name, 'Yangi Choshtepa');
-  assert.equal(yangiChoshtepa?.category, 'microdistrict');
+  assert.equal(yangiChoshtepa?.category, 'local_area');
 
   const areas = Object.values(TASHKENT_AREAS).flat();
   for (const name of [
-    'Sebzar', 'Olympia',
     'Karasu-1', 'Karasu-2', 'Karasu-3', 'Karasu-4', 'Karasu-6',
-    'TTZ-1', 'TTZ-2', 'TTZ-3', 'TTZ-4',
-    'Dustlik-1', 'Dustlik-2', 'Yangi Choshtepa', 'Sputnik', 'Tashselmash',
+    'Dustlik-1', 'Dustlik-2', 'Sputnik',
   ]) {
     assert.equal(areas.find((item) => item.name === name)?.type, 'microdistrict', name);
+  }
+  for (const name of [
+    'Sebzar', 'Olympia', 'Yangi Choshtepa', 'Tashselmash',
+    'Traktorsozlar-1', 'Traktorsozlar-2', 'TTZ-3', 'Traktorsozlar-4',
+  ]) {
+    assert.equal(areas.find((item) => item.name === name)?.type, 'local_area', name);
   }
   assert.equal(areas.some((item) => item.name === 'Sergeli Car Bazaar'), false);
 });
@@ -129,7 +133,7 @@ test('keeps canonical Kuylyuk massif separate from the Qoyliq metro station', ()
 
 test('current Tashkent administrative parents own moved neighborhood canonicals', () => {
   for (const [canonical, expectedDistrict] of [
-    ['Takhtapul', 'Shaykhantahur'],
+    ['Takhtapul', 'Almazar'],
     ['Beshagach', 'Chilanzar'],
     ['Uzgarish', 'Sergeli'],
   ]) {
