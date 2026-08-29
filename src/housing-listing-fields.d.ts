@@ -20,6 +20,14 @@ export type HousingListingFields = Readonly<{
   gazebo: boolean | null;
   dishwasher: boolean | null;
   airConditioner: boolean | null;
+  tv: boolean | null;
+  microwave: boolean | null;
+  oven: boolean | null;
+  bidet: boolean | null;
+  walkInCloset: boolean | null;
+  bathtub: boolean | null;
+  shower: boolean | null;
+  euroLayout: boolean | null;
   gas: boolean | null;
   newBuilding: boolean | null;
   communalSeparated: boolean | null;

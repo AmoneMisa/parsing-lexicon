@@ -137,6 +137,59 @@ export function parseHousingListingFields(value, { country = '' } = {}) {
       /кондицион|сплит[- ]?систем|konditsioner|kansaner|kandisaner|klimat|air\s*con|aer\s+condi[țt]ionat/iu,
       /без\s+(?:кондицион\p{L}*|сплит[- ]?систем\p{L}*)|нет\s+(?:кондицион\p{L}*|сплит[- ]?систем\p{L}*)|(?:кондицион\p{L}*|сплит[- ]?систем\p{L}*)\s+нет|no\s+air\s*con(?:ditioner)?|konditsioner\s+yo['’]?q|кондиционер\s+йўқ/iu,
     ),
+    // "тв"/"tv" are bare 2-letter abbreviations that collide with real words
+    // (e.g. "твой" = "your") unless bounded on both sides by a non-letter --
+    // the same class of bug as the "пр" abbreviation fixed earlier in
+    // compactStreet(); do not relax these boundaries to a bare \b.
+    tv: bool(
+      text,
+      /телевизор|(?:^|[^\p{L}\p{N}_])(?:тв|tv)(?=$|[^\p{L}\p{N}_])|television|televizor/iu,
+      /без\s+телевизор\p{L}*|нет\s+телевизор\p{L}*|телевизор\p{L}*\s+нет|no\s+tv|no\s+television/iu,
+    ),
+    microwave: bool(
+      text,
+      /микроволнов\p{L}*|(?:^|[^\p{L}\p{N}_])свч(?=$|[^\p{L}\p{N}_])|microwave|mikro(?:to['’]?lqinli|talqinli)\s*pech/iu,
+      /без\s+микроволнов\p{L}*|нет\s+микроволнов\p{L}*|микроволнов\p{L}*\s+нет|no\s+microwave/iu,
+    ),
+    oven: bool(
+      text,
+      /духовк\p{L}*|духов\p{L}*\s+шкаф\p{L}*|oven|(?:^|[^\p{L}\p{N}_])pech(?=$|[^\p{L}\p{N}_])/iu,
+      /без\s+духовк\p{L}*|нет\s+духовк\p{L}*|духовк\p{L}*\s+нет|no\s+oven/iu,
+    ),
+    bidet: bool(
+      text,
+      /биде|bidet/iu,
+      /без\s+биде|нет\s+биде|биде\s+нет|no\s+bidet/iu,
+    ),
+    walkInCloset: bool(
+      text,
+      /гардеробн\p{L}*|walk[- ]?in\s+closet|dressing\s+room|garderob(?:naya)?/iu,
+      /без\s+гардеробн\p{L}*|нет\s+гардеробн\p{L}*|гардеробн\p{L}*\s+нет|no\s+walk[- ]?in\s+closet/iu,
+    ),
+    // "ванна" (the tub fixture) and "ванная" (the bathroom-as-a-room) share a
+    // stem, so this only matches the shorter nominative/accusative tub forms
+    // with a hard boundary -- it will miss instrumental/genitive tub mentions
+    // ("с ванной") since those are spelled identically to the room noun and
+    // aren't safely disambiguable by regex alone.
+    bathtub: bool(
+      text,
+      /(?:^|[^\p{L}\p{N}_])(?:ванна|ванну|vanna(?:si)?)(?=$|[^\p{L}\p{N}_])|bathtub/iu,
+      /без\s+ванн\p{L}*|нет\s+ванн\p{L}*|ванн\p{L}*\s+нет|no\s+bathtub/iu,
+    ),
+    shower: bool(
+      text,
+      /(?:^|[^\p{L}\p{N}_])душ(?=$|[^\p{L}\p{N}_])|душев\p{L}*\s+кабин\p{L}*|shower|dush(?:kabina)?/iu,
+      /без\s+душ\p{L}*|нет\s+душ\p{L}*|душ\p{L}*\s+нет|no\s+shower/iu,
+    ),
+    // "Euro-layout" (евродвушка/евротрёшка/евро-N/европланировка) is a CIS
+    // real-estate term for an open-plan flat with the kitchen merged into the
+    // living room, as opposed to a conventional flat of the same room count
+    // with a separate closed kitchen. Positive-only: there's no common way
+    // listings state the absence of this, only its presence.
+    euroLayout: bool(
+      text,
+      /евро[- ]?(?:студи\p{L}*|двушк\p{L}*|трёшк\p{L}*|трешк\p{L}*|четырёшк\p{L}*|четрешк\p{L}*|планировк\p{L}*|[1-9](?!\p{N}))|европланировк\p{L}*|euro[- ]?layout/iu,
+    ),
     gas,
     newBuilding: bool(text, /новостро|новобуд|новый\s+дом|novast(?:royka|iroyka)|navast(?:royka|iroyka)|new\s*build|newly\s*built|yangi\s+(?:bino|qurilgan|uy)|bloc\s+nou/iu),
     communalSeparated: parseCommunalSeparated(text, country),
