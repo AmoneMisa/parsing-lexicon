@@ -48,12 +48,14 @@ test('classifies verified residential areas with current semantics', () => {
   const areas = Object.values(TASHKENT_AREAS).flat();
   for (const name of [
     'Karasu-1', 'Karasu-2', 'Karasu-3', 'Karasu-4', 'Karasu-6',
-    'TTZ-1', 'TTZ-2', 'TTZ-3', 'TTZ-4',
     'Dustlik-1', 'Dustlik-2', 'Sputnik',
   ]) {
     assert.equal(areas.find((item) => item.name === name)?.type, 'microdistrict', name);
   }
-  for (const name of ['Sebzar', 'Olympia', 'Yangi Choshtepa', 'Tashselmash']) {
+  for (const name of [
+    'Sebzar', 'Olympia', 'Yangi Choshtepa', 'Tashselmash',
+    'Traktorsozlar-1', 'Traktorsozlar-2', 'TTZ-3', 'Traktorsozlar-4',
+  ]) {
     assert.equal(areas.find((item) => item.name === name)?.type, 'local_area', name);
   }
   assert.equal(areas.some((item) => item.name === 'Sergeli Car Bazaar'), false);
