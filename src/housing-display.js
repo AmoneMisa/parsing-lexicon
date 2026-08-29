@@ -12,7 +12,7 @@ const DISPLAY = Object.freeze({
     Market: 'Market', Cafe: 'Cafe', Restaurant: 'Restaurant', Playground: 'Playground', Pharmacy: 'Pharmacy',
     Mosque: 'Mosque', Church: 'Church', 'Railway station': 'Railway station', Airport: 'Airport',
     'Bobur Park': 'Bobur Park', 'Independence Square': 'Independence Square', 'Mega Planet': 'Mega Planet',
-    'Bek Baraka': 'Bek Baraka',
+    'Bek Baraka': 'Bek Baraka', Khadra: 'Khadra',
   }),
   ru: Object.freeze({
     Park: 'Парк', Metro: 'Метро', 'Bus stop': 'Автобусная остановка', 'Public transport': 'Общественный транспорт',
@@ -22,7 +22,7 @@ const DISPLAY = Object.freeze({
     Market: 'Рынок', Cafe: 'Кафе', Restaurant: 'Ресторан', Playground: 'Детская площадка', Pharmacy: 'Аптека',
     Mosque: 'Мечеть', Church: 'Церковь', 'Railway station': 'Железнодорожный вокзал', Airport: 'Аэропорт',
     'Bobur Park': 'Парк Бобура', 'Independence Square': 'Площадь Независимости', 'Mega Planet': 'Mega Planet',
-    'Bek Baraka': 'Бек-Барака',
+    'Bek Baraka': 'Бек-Барака', Khadra: 'Хадра',
   }),
 });
 
@@ -53,15 +53,28 @@ export function housingSemanticCanonical(value) {
   return exactPoi(text)?.name || text;
 }
 
+function cyrillicPoiAlias(poiEntry) {
+  return (poiEntry?.aliases || []).find((alias) => /[а-яёіїґ]/iu.test(alias)) || null;
+}
+
 export function housingSemanticDisplayName(value, locale = 'en') {
   const text = String(value || '').trim();
   if (!text) return '';
   const language = languageKey(locale);
   const extension = extensionEntity(text);
   if (extension?.display?.[language]) return extension.display[language];
+  const poiEntry = exactPoi(text);
   const canonical = extension?.canonical
     || findCanonical(text, GENERIC_LANDMARK_TERMS)?.canonical
-    || exactPoi(text)?.name
+    || poiEntry?.name
     || text;
+  // Named landmarks (markets, squares, parks) are added one at a time in
+  // tashkent-pois.js and often only carry a Russian alias, no dedicated
+  // DISPLAY entry. Fall back to that alias for ru rather than leaking the
+  // Latin canonical name, instead of requiring every POI to be re-listed here.
+  if (language === 'ru' && !DISPLAY.ru[canonical]) {
+    const fallback = cyrillicPoiAlias(poiEntry);
+    if (fallback) return fallback;
+  }
   return DISPLAY[language]?.[canonical] || canonical;
 }
