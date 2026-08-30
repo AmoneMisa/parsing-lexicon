@@ -61,6 +61,14 @@ test('classifies verified residential areas with current semantics', () => {
   assert.equal(areas.some((item) => item.name === 'Sergeli Car Bazaar'), false);
 });
 
+test('Stroygorod resolves as a Uchtepa market instead of a residential area', () => {
+  const result = matchCentralAsiaLocationEntities('рынок Стройгород, Учтепа, Ташкент', 'UZ', 'Tashkent');
+  const market = result.matches.find((entry) => entry.type === 'poi' && entry.name === 'Stroygorod');
+  assert.equal(market?.parent, 'Uchtepa');
+  assert.equal(result.matches.some((entry) => entry.type === 'local_area' && entry.name === 'Stroygorod'), false);
+  assert.equal(Object.values(TASHKENT_AREAS).flat().some((item) => item.name === 'Stroygorod'), false);
+});
+
 test('colloquial additions do not create second canonical owners', () => {
   for (const [district, additions] of Object.entries(TASHKENT_AREA_ADDITIONS)) {
     const coreNames = new Set((TASHKENT_AREAS[district] || []).map((item) => item.name));
