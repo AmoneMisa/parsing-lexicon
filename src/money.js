@@ -32,9 +32,11 @@ export {
 // following phone-like number as a protected contact span.
 const CONTACT_MARKER_RE = /(?<![\p{L}\p{N}_])(?:телефон|тел\.?|phone|mobile|mob\.?|whatsapp|viber|telegram|контакт|contact|aloqa|murojaat|bog(?:['’ʻʼ‘`])?lanish)\s*[:：—-]?\s*$/iu;
 const JOBS_I18N_PERIOD_RE = /\bjobs\.per(hour|day|shift|week|month|year|project|piece)\b/iu;
+const TIME_RANGE_RE = /(?<!\d)(?:[01]?\d|2[0-3])[:.][0-5]\d\s*(?:[-–—]\s*(?:[01]?\d|2[0-3])[:.][0-5]\d)?(?!\d)/gu;
+const WORK_RATIO_RE = /(?<!\d)[1-7]\s*\/\s*[1-7](?!\d)/gu;
 
 function hasSalaryContext(text) {
-  return /(?:salary|зарплат|з\s*п\b|оплат|ставк|доход|оклад|компенсац|maosh|oylik|ish\s+haqi|жалақы|айлық|еңбекақы|salariu|оплата)/iu.test(text);
+  return /(?:salary|зарплат|заработ\p{L}*\s+плат|з\s*[\/\\.\-]?\s*п(?=$|[^\p{L}\p{N}_])|оплат|ставк|доход|оклад|компенсац|maosh|oylik|ish\s+haqi|жалақы|айлық|еңбекақы|salariu|💵|💰)/iu.test(text);
 }
 
 function periodFromText(text) {
@@ -57,7 +59,26 @@ function protectedPhoneSpans(text) {
   });
 }
 
-function overlapsProtectedPhone(start, end, spans) {
+function regexSpans(text, pattern) {
+  const spans = [];
+  pattern.lastIndex = 0;
+  for (const match of text.matchAll(pattern)) {
+    const start = match.index ?? 0;
+    spans.push({ start, end: start + match[0].length });
+  }
+  pattern.lastIndex = 0;
+  return spans;
+}
+
+function protectedNonMoneySpans(text) {
+  return [
+    ...protectedPhoneSpans(text),
+    ...regexSpans(text, TIME_RANGE_RE),
+    ...regexSpans(text, WORK_RATIO_RE),
+  ];
+}
+
+function overlapsProtectedSpan(start, end, spans) {
   return spans.some((span) => start < span.end && end > span.start);
 }
 
@@ -75,7 +96,7 @@ function rangeSearchText(text) {
   // MONEY_RANGE_RE intentionally parses numeric structure only. Currency symbols
   // may legally repeat around both endpoints ("$55 — $65"); blank them with
   // equal-length whitespace so the range parser can see the numbers while all
-  // original indices still line up with phone protection/context scoring.
+  // original indices still line up with contact/time protection and scoring.
   let normalized = text;
   for (const symbol of Object.keys(CURRENCY_SYMBOL_CANDIDATES)) {
     normalized = normalized.split(symbol).join(' '.repeat(symbol.length));
@@ -90,7 +111,7 @@ function bestRange(text, protectedSpans) {
   for (const match of searchable.matchAll(ranges)) {
     const start = match.index ?? 0;
     const end = start + match[0].length;
-    if (overlapsProtectedPhone(start, end, protectedSpans)) continue;
+    if (overlapsProtectedSpan(start, end, protectedSpans)) continue;
     const scaled = Boolean(match[2] || match[4]);
     const score = moneyContextScore(text, start, end, scaled);
     if (score <= 0) continue;
@@ -114,7 +135,7 @@ export function parseSalary(value) {
     || NUMBER_MULTIPLIERS.some((entry) => findCanonical(text, [entry], { partial: true }));
   if (!salaryContext && !negotiable) return null;
 
-  const protectedSpans = protectedPhoneSpans(text);
+  const protectedSpans = protectedNonMoneySpans(text);
   const range = bestRange(text, protectedSpans);
   let min = null;
   let max = null;
@@ -132,7 +153,7 @@ export function parseSalary(value) {
     for (const match of text.matchAll(MONEY_SINGLE_RE)) {
       const start = match.index ?? 0;
       const end = start + match[0].length;
-      if (overlapsProtectedPhone(start, end, protectedSpans)) continue;
+      if (overlapsProtectedSpan(start, end, protectedSpans)) continue;
       const window = text.slice(Math.max(0, start - 24), Math.min(text.length, end + 32));
       const scaled = Boolean(match[2]);
       const score = moneyContextScore(text, start, end, scaled);
