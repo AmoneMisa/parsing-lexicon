@@ -81,3 +81,21 @@ test('local display lookup remains city-scoped and never guesses without context
     'Chorsu Bazaar',
   );
 });
+
+
+test('Tashkent multilingual locality labels stay deterministic across semantic types', () => {
+  const tashkent = { country: 'UZ', city: 'Tashkent' };
+
+  assert.equal(geographyDisplayName("Qo'yliq-6", 'uz', 'local_area', tashkent), 'Qo‘yliq-6 mavzesi');
+  assert.equal(geographyDisplayName("Qo'yliq-6", 'ru', 'local_area', tashkent), 'Куйлюк-6');
+  assert.equal(geographyDisplayName('Qalqon', 'uz', 'mahalla', tashkent), 'Qalqon mahallasi');
+  assert.equal(geographyDisplayName('Qalqon', 'uz', 'local_area', tashkent), 'Qalqon mavzesi');
+  assert.equal(geographyDisplayName('Qalqon', 'ru', 'local_area', tashkent), 'массив Калкон');
+  assert.equal(geographyDisplayName("Bog'bon", 'ru', 'mahalla', tashkent), 'Богбон');
+  assert.equal(geographyDisplayName("Bog'bon", 'ru', 'local_area', tashkent), 'массив Богбон');
+  assert.equal(geographyDisplayName('Guruchariq', 'ru', 'local_area', tashkent), 'массив Гуручарик');
+  assert.equal(geographyDisplayName('Guruchariq', 'uz', 'local_area', tashkent), 'Guruchariq mavzesi');
+  assert.equal(geographyDisplayName('Beruniy-B1', 'uz', 'local_area', tashkent), 'Beruniy-B1 mavzesi');
+  assert.equal(geographyDisplayName('Parkent-Riyoziy', 'ru', 'local_area', tashkent), 'Паркент-Риёзий');
+  assert.equal(geographyDisplayName('Parkent-Siolkovskiy', 'ru', 'local_area', tashkent), 'Паркент-Сиолковский');
+});

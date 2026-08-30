@@ -165,3 +165,21 @@ test('Xonobod remains ambiguous without city/region context', () => {
   assert.equal(qarshi.city, 'Qarshi');
   assert.ok(names(qarshi, 'local_area').includes('Xonobod'));
 });
+
+
+test('Tashkent historical and Uzbek-script locality aliases resolve to current canonicals', () => {
+  const qalqon = matchCentralAsiaLocationEntities('Ҳарбийлар-58а шаҳарчаси', 'UZ', 'Tashkent');
+  assert.ok(names(qalqon, 'local_area').includes('Qalqon'));
+
+  const bogbon = matchCentralAsiaLocationEntities('Нормуҳаммедов мавзеси', 'UZ', 'Tashkent');
+  assert.ok(names(bogbon, 'local_area').includes("Bog'bon"));
+
+  const guruchariq = matchCentralAsiaLocationEntities('Марказ-22', 'UZ', 'Tashkent');
+  assert.ok(names(guruchariq, 'local_area').includes('Guruchariq'));
+
+  const qoyliq = matchCentralAsiaLocationEntities('Қўйлиқ-6 мавзеси', 'UZ', 'Tashkent');
+  assert.ok(names(qoyliq, 'local_area').includes("Qo'yliq-6"));
+
+  const siolkovskiy = matchCentralAsiaLocationEntities('Паркент-Сиолковский массив', 'UZ', 'Tashkent');
+  assert.ok(names(siolkovskiy, 'local_area').includes('Parkent-Siolkovskiy'));
+});
