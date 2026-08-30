@@ -52,6 +52,10 @@ test('Kharkiv residential aliases cover Ukrainian and Russian listing forms', ()
     ['ЖК Млечний шлях', 'Mlechnyi Shliakh'],
     ['Млечный путь', 'Mlechnyi Shliakh'],
     ['ЖК Млечный путь', 'Mlechnyi Shliakh'],
+    ['Макіївська', 'Makiivska'],
+    ['ЖК Макіївська', 'Makiivska'],
+    ['Макеевская', 'Makiivska'],
+    ['ЖК на Макеевской', 'Makiivska'],
   ]);
 
   for (const [alias, canonical] of cases) {
