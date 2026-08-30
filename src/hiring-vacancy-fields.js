@@ -3,6 +3,12 @@ import { normalizeUnicode } from './normalization.js';
 
 export function detectHiringEducation(value) {
   const text = String(value || '');
+  // Vacancy requirements often state "Bachelor's or Master's degree". That is
+  // an accepted-alternative list, not a Master's minimum; expose the least
+  // restrictive accepted level so filters do not hide valid Bachelor holders.
+  if (/(?:bachelor['’]?s?|бакалавр\p{L}*)[^.;\n]{0,40}(?:or|\/|или|або|sau|yoki)[^.;\n]{0,40}(?:master['’]?s?|магистр\p{L}*|магістр\p{L}*)/iu.test(text)
+    || /(?:master['’]?s?|магистр\p{L}*|магістр\p{L}*)[^.;\n]{0,40}(?:or|\/|или|або|sau|yoki)[^.;\n]{0,40}(?:bachelor['’]?s?|бакалавр\p{L}*)/iu.test(text)) return 'bachelor';
+
   const degree = detectDegreeLevel(text);
   if (degree) return degree;
   if (/higher education|высшее образование|вища освіта|олий маълумот/iu.test(text)) return 'higher';
