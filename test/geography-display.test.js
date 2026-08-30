@@ -11,6 +11,14 @@ test('Russian geography display names cover canonical Tashkent hierarchy', () =>
   assert.equal(geographyDisplayName('Novza', 'ru', 'metro'), 'Новза');
 });
 
+test('Uzbek geography display names cover Tashkent city and administrative districts', () => {
+  assert.equal(geographyDisplayName('Tashkent', 'uz', 'city'), 'Toshkent');
+  assert.equal(geographyDisplayName('Chilanzar', 'uz', 'district'), 'Chilonzor');
+  assert.equal(geographyDisplayName('Yunusabad', 'uz', 'district'), 'Yunusobod');
+  assert.equal(geographyDisplayName('Almazar', 'uz', 'district'), 'Olmazor');
+  assert.equal(geographyDisplayName('Shaykhantahur', 'uz', 'district'), 'Shayxontohur');
+});
+
 test('Russian display names cover geo-catalog named and numbered Tashkent microdistricts', () => {
   assert.equal(geographyDisplayName('Olympia', 'ru', 'microdistrict'), 'Олимпия');
   assert.equal(geographyDisplayName('Dustlik-2', 'ru', 'microdistrict'), 'Дустлик-2');
@@ -23,4 +31,53 @@ test('Russian display names cover geo-catalog named and numbered Tashkent microd
 test('numbered microdistrict formatter does not invent English labels', () => {
   assert.equal(geographyDisplayName('Yunusabad-19', 'en', 'microdistrict'), 'Yunusabad-19');
   assert.equal(geographyDisplayName('Karasu-3', 'en', 'microdistrict'), 'Karasu-3');
+});
+
+test('city-scoped Tashkent local entities reuse multilingual canonical aliases for display', () => {
+  const tashkent = { country: 'UZ', city: 'Tashkent' };
+
+  assert.equal(
+    geographyDisplayName('Amir Temur Avenue', 'ru', 'street', tashkent),
+    'проспект Амира Темура',
+  );
+  assert.equal(
+    geographyDisplayName('Amir Temur Avenue', 'uz', 'street', tashkent),
+    'Amir Temur shoh ko‘chasi',
+  );
+  assert.equal(
+    geographyDisplayName('Chorsu Bazaar', 'ru', 'poi', tashkent),
+    'базар Чорсу',
+  );
+  assert.equal(
+    geographyDisplayName('Chorsu Bazaar', 'uz', 'poi', tashkent),
+    'Chorsu bozori',
+  );
+  assert.equal(
+    geographyDisplayName('Suvsoz-1', 'ru', 'local_area', tashkent),
+    'Сувсоз-1',
+  );
+  assert.equal(
+    geographyDisplayName('Suvsoz-1', 'uz', 'local_area', tashkent),
+    'Suvsoz-1 mavzesi',
+  );
+  assert.equal(
+    geographyDisplayName('Ahmad Yugnakiy', 'ru', 'mahalla', tashkent),
+    'Ахмад Югнаки',
+  );
+  assert.equal(
+    geographyDisplayName('Ahmad Yugnakiy', 'uz', 'mahalla', tashkent),
+    'Ahmad Yugnakiy mahallasi',
+  );
+  assert.equal(
+    geographyDisplayName('Assalom Jomiy', 'ru', 'residential_complex', tashkent),
+    'Ассалом Жомий',
+  );
+});
+
+test('local display lookup remains city-scoped and never guesses without context', () => {
+  assert.equal(geographyDisplayName('Chorsu Bazaar', 'ru', 'poi'), 'Chorsu Bazaar');
+  assert.equal(
+    geographyDisplayName('Chorsu Bazaar', 'ru', 'poi', { country: 'KZ', city: 'Almaty' }),
+    'Chorsu Bazaar',
+  );
 });

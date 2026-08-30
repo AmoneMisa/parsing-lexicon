@@ -160,7 +160,7 @@ export const TASHKENT_AREAS = Object.freeze({
   ]),
   Yunusabad: Object.freeze([
     area('Kashgar', ['кашгар', 'қашқар', 'qashqar', 'kashgar', 'ц 4', 'c 4']), area('Qiyot', ['киёт', 'кият', 'қиёт', 'qiyot', 'kiyot', 'markaz 5', 's 5']),
-    area('Minor', ['минор', 'minor', 'ц 6', 'c 6']), area('TashGRES', ['ташгрэс', 'tashgres']), area('Manzara', ['манзара', 'manzara']),
+    area('Minor', ['минор', 'minor', 'ц 6', 'c 6']), area('ToshGRES', ['ташгрэс', 'tashgres', 'TashGRES', 'toshgres']), area('Manzara', ['манзара', 'manzara']),
   ]),
   Yakkasaray: Object.freeze([
     area('Bashlyk', ['башлык', 'бошлиқ', 'boshliq', 'bashlyk']), area('Kushbegi', ['кушбеги', 'қушбеги', 'qushbegi', 'kushbegi']),
