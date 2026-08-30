@@ -74,8 +74,6 @@ test('Kharkiv landmark aliases cover Ukrainian and Russian listing forms', () =>
     ['Карповский сад', 'Karpivskyi Garden'],
     ['Покровський сквер', 'Pokrovskyi Square'],
     ['Покровский сквер', 'Pokrovskyi Square'],
-    ['Держпром', 'Derzhprom'],
-    ['Госпром', 'Derzhprom'],
     ['Будинок державної промисловості', 'Derzhprom'],
     ['Дом государственной промышленности', 'Derzhprom'],
     ['Покровський монастир', 'Pokrovskyi Monastery'],
@@ -99,6 +97,13 @@ test('Kharkiv landmark aliases cover Ukrainian and Russian listing forms', () =>
   for (const [alias, canonical] of cases) {
     assert.equal(match('Kharkiv', 'landmarks', alias), canonical);
   }
+});
+
+test('Kharkiv Derzhprom bare name keeps metro precedence while explicit building names resolve the landmark', () => {
+  assert.equal(match('Kharkiv', 'metro', 'Держпром'), 'Derzhprom');
+  assert.equal(match('Kharkiv', 'metro', 'Госпром'), 'Derzhprom');
+  assert.equal(match('Kharkiv', 'landmarks', 'Будинок державної промисловості'), 'Derzhprom');
+  assert.equal(match('Kharkiv', 'landmarks', 'Дом государственной промышленности'), 'Derzhprom');
 });
 
 test('Kharkiv-only aliases do not leak into Kyiv', () => {
