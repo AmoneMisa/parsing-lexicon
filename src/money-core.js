@@ -8,7 +8,10 @@ import {
 // Monetary values in job descriptions commonly combine thousands grouping with
 // decimals (e.g. 137,000.00 or 137.000,00). Keep the grouped variants ahead of
 // the generic decimal form so a range parser consumes the complete endpoint.
-export const MONEY_NUMBER_PATTERN = '(?:\\d{1,3}(?:[ \\u00a0]\\d{3})+(?:[.,]\\d+)?|\\d{1,3}(?:,\\d{3})+(?:\\.\\d+)?|\\d{1,3}(?:\\.\\d{3})+(?:,\\d+)?|\\d+(?:[.,]\\d+)?)';
+// Local boards also occasionally split a salary with a mistyped first group
+// ("4 00 000" instead of "400 000"). Accept that only when there are at least
+// two spaced groups, which keeps ordinary two-number prose out of money parsing.
+export const MONEY_NUMBER_PATTERN = '(?:\\d{1,3}(?:[ \\u00a0]\\d{2,3}){2,}(?:[.,]\\d+)?|\\d{1,3}(?:[ \\u00a0]\\d{3})+(?:[.,]\\d+)?|\\d{1,3}(?:,\\d{3})+(?:\\.\\d+)?|\\d{1,3}(?:\\.\\d{3})+(?:,\\d+)?|\\d+(?:[.,]\\d+)?)';
 export const MONEY_SCALE_PATTERN = 'k|к|тыс\\.?|тысяч(?:а|и)?|тис\\.?|thousand|ming|мың|m|м|млн\\.?|mln|million|миллион(?:ов)?|мільйон(?:ів)?|bn|млрд|mlrd|billion';
 // Each scale group needs the token-boundary guard MONEY_SINGLE_RE already has
 // below: without it, "2 до 3 месяцев" reads "м" off "месяцев" as the million
