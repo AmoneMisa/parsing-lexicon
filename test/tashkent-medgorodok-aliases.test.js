@@ -3,13 +3,11 @@ import assert from 'node:assert/strict';
 
 import { TASHKENT_AREAS } from '../src/geo.js';
 import { TASHKENT_AREA_ADDITIONS } from '../src/tashkent-colloquial.js';
-import { matchTashkentHousingLandmarks } from '../src/tashkent-housing-geography.js';
-
-const names = (value) => matchTashkentHousingLandmarks(value).map((entry) => entry.name);
+import { findCanonical } from '../src/normalization.js';
 
 test('TashMI-2 and New TashMI spellings resolve to Medgorodok', () => {
   for (const value of ['TashMI-2', 'ToshMI 2', 'ТашМИ-2', 'ТошМИ 2', 'Новый ТашМИ', 'Янги ТашМИ']) {
-    assert.ok(names(`${value}, Ташкент`).includes('Medgorodok'), value);
+    assert.equal(findCanonical(value, TASHKENT_AREAS.Almazar)?.canonical, 'Medgorodok', value);
   }
 });
 
