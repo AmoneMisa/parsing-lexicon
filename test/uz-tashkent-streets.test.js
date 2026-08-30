@@ -3,6 +3,22 @@ import assert from 'node:assert/strict';
 import { LOCATION_DICTIONARIES, matchDictionaryLocation } from '../src/locations.js';
 
 const EXPECTED_STREETS = Object.freeze([
+  ["Gulobod ko'chasi", 'Gulobod Street'],
+  ['улица Гулобод', 'Gulobod Street'],
+  ["Sebzor ko'chasi", 'Sebzor Street'],
+  ['улица Себзор', 'Sebzor Street'],
+  ["Lolazor ko'chasi", 'Lolazor Street'],
+  ['улица Лолазор', 'Lolazor Street'],
+  ["Shohimardon ko'chasi", 'Shohimardon Street'],
+  ['улица Шохимардон', 'Shohimardon Street'],
+  ["Shohimardon 1-tor ko'chasi", 'Shohimardon Passage 1'],
+  ['1-й проезд Шохимардон', 'Shohimardon Passage 1'],
+  ["Oltinko'l ko'chasi", "Oltinko'l Street"],
+  ['улица Олтинкуль', "Oltinko'l Street"],
+  ["Oltinko'l 1-tor ko'chasi", "Oltinko'l Passage 1"],
+  ['1-й проезд Олтинкуль', "Oltinko'l Passage 1"],
+  ["Rakatboshi ko'chasi", 'Rakatboshi Street'],
+  ['улица Ракатбоши', 'Rakatboshi Street'],
   ['Amir Temur shoh ko‘chasi', 'Amir Temur Avenue'],
   ['проспект Амира Темура', 'Amir Temur Avenue'],
   ['Shota Rustaveli ko‘chasi', 'Shota Rustaveli Street'],
@@ -29,24 +45,34 @@ const EXPECTED_STREETS = Object.freeze([
   ['Ислом Каримов кўчаси', 'Islam Karimov Street'],
 ]);
 
-test('Tashkent arterial streets stay in the canonical UZ registry', () => {
+const EXPECTED_CANONICALS = Object.freeze([
+  'Gulobod Street',
+  'Sebzor Street',
+  'Lolazor Street',
+  'Shohimardon Street',
+  'Shohimardon Passage 1',
+  "Oltinko'l Street",
+  "Oltinko'l Passage 1",
+  'Rakatboshi Street',
+  'Amir Temur Avenue',
+  'Shota Rustaveli Street',
+  'Nukus Street',
+  'Buyuk Ipak Yoli Street',
+  'Afrosiyob Street',
+  'Mirzo Ulugbek Avenue',
+  'Bunyodkor Avenue',
+  'Muqimiy Street',
+  'Furqat Street',
+  'Beruniy Avenue',
+  'Taras Shevchenko Street',
+  'Islam Karimov Street',
+]);
+
+test('Tashkent streets stay in the canonical UZ registry', () => {
   const streets = LOCATION_DICTIONARIES.UZ.Tashkent.streets;
   const canonicals = new Set(streets.map(({ name }) => name));
 
-  for (const canonical of [
-    'Amir Temur Avenue',
-    'Shota Rustaveli Street',
-    'Nukus Street',
-    'Buyuk Ipak Yoli Street',
-    'Afrosiyob Street',
-    'Mirzo Ulugbek Avenue',
-    'Bunyodkor Avenue',
-    'Muqimiy Street',
-    'Furqat Street',
-    'Beruniy Avenue',
-    'Taras Shevchenko Street',
-    'Islam Karimov Street',
-  ]) {
+  for (const canonical of EXPECTED_CANONICALS) {
     assert.ok(canonicals.has(canonical), canonical);
   }
 });
