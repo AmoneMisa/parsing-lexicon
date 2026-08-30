@@ -38,11 +38,38 @@ test('Kharkiv lettered microdistrict aliases cover Latin and Cyrillic forms', ()
   }
 });
 
-test('Kharkiv-only microdistrict aliases do not leak into Kyiv', () => {
+test('Kharkiv landmark aliases cover Ukrainian and Russian listing forms', () => {
+  const cases = new Map([
+    ['Покровський сквер', 'Pokrovskyi Square'],
+    ['Покровский сквер', 'Pokrovskyi Square'],
+    ['Покровський монастир', 'Pokrovskyi Monastery'],
+    ['Покровский монастырь', 'Pokrovskyi Monastery'],
+    ['Харківський зоопарк', 'Kharkiv Zoo'],
+    ['Харьковский зоопарк', 'Kharkiv Zoo'],
+    ['ХАІ', 'KhAI'],
+    ['ХАИ', 'KhAI'],
+    ['Харківський авіаційний інститут', 'KhAI'],
+    ['Харьковский авиационный институт', 'KhAI'],
+    ['ХПІ', 'KhPI'],
+    ['ХПИ', 'KhPI'],
+    ['ХНУРЕ', 'KhNURE'],
+    ['ХНУРЭ', 'KhNURE'],
+    ['ринок Барабашово', 'Barabashovo Market'],
+    ['рынок Барабашово', 'Barabashovo Market'],
+  ]);
+
+  for (const [alias, canonical] of cases) {
+    assert.equal(match('Kharkiv', 'landmarks', alias), canonical);
+  }
+});
+
+test('Kharkiv-only aliases do not leak into Kyiv', () => {
   assert.equal(match('Kyiv', 'microdistricts', 'Кулиничі'), null);
   assert.equal(match('Kyiv', 'microdistricts', '524-й мікрорайон'), null);
   assert.equal(match('Kyiv', 'microdistricts', 'Північна Салтівка 3'), null);
   assert.equal(match('Kyiv', 'microdistricts', 'Северная Салтовка-5'), null);
   assert.equal(match('Kyiv', 'microdistricts', '624-й мікрорайон'), null);
   assert.equal(match('Kyiv', 'microdistricts', 'Микрорайон 606а'), null);
+  assert.equal(match('Kyiv', 'landmarks', 'ХАІ'), null);
+  assert.equal(match('Kyiv', 'landmarks', 'ринок Барабашово'), null);
 });
