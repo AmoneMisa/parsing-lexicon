@@ -24,7 +24,7 @@ export const UA_METRO_LOCATION_EXTENSIONS = Object.freeze({
     // Kharkiv quarter canonicals here so they cannot be shadowed by old seed
     // vocabulary while the broader Kharkiv location layer is being expanded.
     microdistricts: locationEntries([
-      ...['455','601','614','615','624'].map((n) => [
+      ...['455','519','601','614','615','624'].map((n) => [
         `${n} microdistrict`,
         `${n}-й мікрорайон`, `${n} мікрорайон`, `Мікрорайон ${n}`,
         `${n}-й микрорайон`, `${n} микрорайон`, `Микрорайон ${n}`,
