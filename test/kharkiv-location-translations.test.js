@@ -9,7 +9,7 @@ function match(city, type, text) {
 }
 
 test('Kharkiv numbered microdistricts accept Ukrainian and Russian listing forms', () => {
-  for (const number of ['455','520','521','522','524','531','533','601','602','603','604','605','606','607','608','614','615','616','624','625','626','627','656']) {
+  for (const number of ['455','519','520','521','522','524','531','533','601','602','603','604','605','606','607','608','614','615','616','624','625','626','627','656']) {
     assert.equal(match('Kharkiv', 'microdistricts', `${number}-й мікрорайон`), `${number} microdistrict`);
     assert.equal(match('Kharkiv', 'microdistricts', `${number} мікрорайон`), `${number} microdistrict`);
     assert.equal(match('Kharkiv', 'microdistricts', `${number}-й микрорайон`), `${number} microdistrict`);
@@ -108,6 +108,7 @@ test('Kharkiv Derzhprom bare name keeps metro precedence while explicit building
 
 test('Kharkiv-only aliases do not leak into Kyiv', () => {
   assert.equal(match('Kyiv', 'microdistricts', '455-й мікрорайон'), null);
+  assert.equal(match('Kyiv', 'microdistricts', '519-й мікрорайон'), null);
   assert.equal(match('Kyiv', 'microdistricts', 'Кулиничі'), null);
   assert.equal(match('Kyiv', 'microdistricts', '524-й мікрорайон'), null);
   assert.equal(match('Kyiv', 'microdistricts', 'Північна Салтівка 3'), null);
