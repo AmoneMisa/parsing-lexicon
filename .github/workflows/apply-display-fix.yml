@@ -1,0 +1,65 @@
+name: Apply Tashkent display label fix
+
+on:
+  push:
+    branches: [fix/tashkent-display-labels-20260830]
+    paths: [.github/workflows/apply-display-fix.yml]
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/tashkent-display-labels-20260830
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Apply source and test changes
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+
+          path = Path('src/geography-display.js')
+          text = path.read_text()
+          anchor = """function languageKey(locale) {\n  return String(locale || 'en').toLowerCase().split(/[-_]/)[0];\n}\n"""
+          insert = """function languageKey(locale) {\n  return String(locale || 'en').toLowerCase().split(/[-_]/)[0];\n}\n\nfunction numberedMicrodistrictDisplayName(value, locale) {\n  if (languageKey(locale) !== 'ru') return null;\n  const text = String(value || '').trim();\n  const match = text.match(/^(.+?)[\\s-]+(\\d{1,2}[A-Za-zА-Яа-я]?)$/u);\n  if (!match) return null;\n  const base = GEOGRAPHY_DISPLAY_NAMES.ru.microdistrict?.[match[1]]\n    || GEOGRAPHY_DISPLAY_NAMES.ru.district?.[match[1]];\n  return base ? `${base}-${match[2]}` : null;\n}\n"""
+          if anchor not in text:
+              raise SystemExit('languageKey anchor not found')
+          text = text.replace(anchor, insert, 1)
+          old = "  if (kind === 'microdistrict') return tables?.microdistrict?.[text] || text;"
+          new = "  if (kind === 'microdistrict') return tables?.microdistrict?.[text] || numberedMicrodistrictDisplayName(text, locale) || text;"
+          if old not in text:
+              raise SystemExit('microdistrict display line not found')
+          path.write_text(text.replace(old, new, 1))
+
+          package = Path('package.json')
+          data = json.loads(package.read_text())
+          data['version'] = '0.5.1'
+          package.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n')
+
+          lock = Path('package-lock.json')
+          data = json.loads(lock.read_text())
+          data['version'] = '0.5.1'
+          data['packages']['']['version'] = '0.5.1'
+          lock.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n')
+
+          test = Path('test/geography-display.test.js')
+          test.write_text("""import test from 'node:test';\nimport assert from 'node:assert/strict';\n\nimport { geographyDisplayName } from '../src/geography-display.js';\n\ntest('Russian geography display names cover canonical Tashkent hierarchy', () => {\n  assert.equal(geographyDisplayName('Tashkent', 'ru', 'city'), 'Ташкент');\n  assert.equal(geographyDisplayName('Yunusabad', 'ru', 'district'), 'Юнусабад');\n  assert.equal(geographyDisplayName('Yunusabad-19', 'ru', 'microdistrict'), 'Юнусабад-19');\n  assert.equal(geographyDisplayName('Chilanzar-10', 'ru', 'microdistrict'), 'Чиланзар-10');\n  assert.equal(geographyDisplayName('Novza', 'ru', 'metro'), 'Новза');\n});\n\ntest('numbered microdistrict formatter does not invent English labels', () => {\n  assert.equal(geographyDisplayName('Yunusabad-19', 'en', 'microdistrict'), 'Yunusabad-19');\n});\n""")
+          PY
+          npm install --ignore-scripts --no-audit --no-fund
+          npm test
+      - name: Commit validated changes
+        shell: bash
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add src/geography-display.js package.json package-lock.json test/geography-display.test.js
+          git commit -m "fix: localize numbered Tashkent microdistricts"
+          git push origin HEAD:fix/tashkent-display-labels-20260830
