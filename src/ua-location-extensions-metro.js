@@ -1,4 +1,5 @@
 import { locationEntries } from './location-merge.js';
+import { UA_KHARKIV_LOCATION_TRANSLATIONS } from './ua-kharkiv-location-translations.js';
 
 export const UA_METRO_LOCATION_EXTENSIONS = Object.freeze({
   Kyiv: Object.freeze({
@@ -18,6 +19,7 @@ export const UA_METRO_LOCATION_EXTENSIONS = Object.freeze({
     ]),
   }),
   Kharkiv: Object.freeze({
+    ...UA_KHARKIV_LOCATION_TRANSLATIONS,
     // This extension is merged after the legacy UA seeds. Keep late verified
     // Kharkiv quarter canonicals here so they cannot be shadowed by old seed
     // vocabulary while the broader Kharkiv location layer is being expanded.
