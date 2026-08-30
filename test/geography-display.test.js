@@ -99,3 +99,14 @@ test('Tashkent multilingual locality labels stay deterministic across semantic t
   assert.equal(geographyDisplayName('Parkent-Riyoziy', 'ru', 'local_area', tashkent), 'Паркент-Риёзий');
   assert.equal(geographyDisplayName('Parkent-Siolkovskiy', 'ru', 'local_area', tashkent), 'Паркент-Сиолковский');
 });
+
+
+test("Tashkent Suvsoz and Sug'diyona labels preserve locality semantics", () => {
+  const tashkent = { country: 'UZ', city: 'Tashkent' };
+  assert.equal(geographyDisplayName('Suvsoz-4', 'uz', 'local_area', tashkent), 'Suvsoz-4 mavzesi');
+  assert.equal(geographyDisplayName('Suvsoz-4', 'ru', 'local_area', tashkent), 'Сувсоз-4');
+  assert.equal(geographyDisplayName("Sug'diyona", 'uz', 'mahalla', tashkent), "Sug'diyona mahallasi");
+  assert.equal(geographyDisplayName("Sug'diyona", 'uz', 'local_area', tashkent), "Sug'diyona mavzesi");
+  assert.equal(geographyDisplayName("Sug'diyona", 'ru', 'mahalla', tashkent), 'махалля Согдиана');
+  assert.equal(geographyDisplayName("Sug'diyona", 'ru', 'local_area', tashkent), 'массив Согдиана');
+});

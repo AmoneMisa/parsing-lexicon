@@ -183,3 +183,12 @@ test('Tashkent historical and Uzbek-script locality aliases resolve to current c
   const siolkovskiy = matchCentralAsiaLocationEntities('Паркент-Сиолковский массив', 'UZ', 'Tashkent');
   assert.ok(names(siolkovskiy, 'local_area').includes('Parkent-Siolkovskiy'));
 });
+
+
+test('Tashkent Beruniy-3 and Suvsoz Cyrillic aliases resolve current canonicals', () => {
+  const beruniy = matchCentralAsiaLocationEntities('Беруни-3, Ташкент', 'UZ', 'Tashkent');
+  assert.ok(names(beruniy, 'local_area').includes('Beruniy-B3'));
+
+  const suvsoz = matchCentralAsiaLocationEntities('Сувсоз-4 мавзеси', 'UZ', 'Tashkent');
+  assert.ok(names(suvsoz, 'local_area').includes('Suvsoz-4'));
+});
