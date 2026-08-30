@@ -1,10 +1,33 @@
 import { COUNTRIES, canonicalCountryCode, countryByCode } from './countries.js';
 import { CITIES, REGIONS } from './geography.js';
+import { dictionaryFor } from './locations.js';
+import { aliasesOf } from './normalization.js';
 
 // Centralized presentation names for canonical geography values.
 // Consumers must not maintain their own country/city/district/metro display dictionaries.
 
 const EMPTY_DISPLAY_NAMES = Object.freeze({});
+
+const LOCATION_KIND_KEYS = Object.freeze({
+  district: Object.freeze(['districts']),
+  microdistrict: Object.freeze(['microdistricts']),
+  mahalla: Object.freeze(['mahallas']),
+  local_area: Object.freeze(['localAreas']),
+  suburb: Object.freeze(['suburbs']),
+  settlement: Object.freeze(['settlements']),
+  development_area: Object.freeze(['developmentAreas']),
+  residential_complex: Object.freeze(['residentialComplexes']),
+  metro: Object.freeze(['metro']),
+  street: Object.freeze(['streets']),
+  poi: Object.freeze(['landmarks', 'pois']),
+});
+
+const CYRILLIC_RE = /[А-ЯЁ]/iu;
+const UZBEK_CYRILLIC_RE = /[ЎҚҒҲўқғҳ]/u;
+const LATIN_RE = /[A-Z]/iu;
+const UZBEK_LATIN_MARKER_RE = /(?:[ʻ‘’ʼ']|\b(?:ko[ʻ‘’ʼ']?chasi|shoh\s+ko[ʻ‘’ʼ']?chasi|bozori|bog[ʻ‘’ʼ']?i|maydoni|masjidi|vokzali|mahallasi|mavzesi|dahasi|massivi|savdo\s+markazi|toshkent|yunusobod|chilonzor|olmazor|o[ʻ‘’ʼ']?zbekiston)\b)/iu;
+const ENGLISH_GENERIC_RE = /\b(?:street|avenue|square|park|bazaar|market|mall|mosque|railway|station|residence|city|garden|museum|theatre|theater|airport|university|hospital|school|district|microdistrict)\b/iu;
+const RUSSIAN_GENERIC_RE = /\b(?:улица|проспект|площадь|сквер|рынок|базар|парк|мечеть|вокзал|аэропорт|университет|больница|школа|район|массив|махалл|жилой|жк|центр)\b/iu;
 
 function countryDisplayNames(locale) {
   return Object.freeze(Object.fromEntries(COUNTRIES.map((item) => [
@@ -18,6 +41,20 @@ export const GEOGRAPHY_DISPLAY_NAMES = Object.freeze({
     country: countryDisplayNames('en'),
     city: EMPTY_DISPLAY_NAMES,
     district: EMPTY_DISPLAY_NAMES,
+    microdistrict: EMPTY_DISPLAY_NAMES,
+    metro: EMPTY_DISPLAY_NAMES,
+    metroAlias: EMPTY_DISPLAY_NAMES,
+  }),
+  uz: Object.freeze({
+    country: countryDisplayNames('uz'),
+    city: Object.freeze({
+      Tashkent: 'Toshkent',
+    }),
+    district: Object.freeze({
+      Chilanzar: 'Chilonzor', Yunusabad: 'Yunusobod', 'Mirzo Ulugbek': 'Mirzo Ulug‘bek',
+      Yakkasaray: 'Yakkasaroy', Shaykhantahur: 'Shayxontohur', Yashnobod: 'Yashnobod', Sergeli: 'Sergeli',
+      Uchtepa: 'Uchtepa', Mirobod: 'Mirobod', Bektemir: 'Bektemir', Almazar: 'Olmazor', Yangihayot: 'Yangihayot',
+    }),
     microdistrict: EMPTY_DISPLAY_NAMES,
     metro: EMPTY_DISPLAY_NAMES,
     metroAlias: EMPTY_DISPLAY_NAMES,
@@ -131,7 +168,70 @@ function countryEntity(value) {
   return code ? countryByCode(code) : null;
 }
 
-export function geographyDisplayName(value, locale = 'en', kind = 'any') {
+function locationEntryFor(value, kind, context) {
+  const keys = LOCATION_KIND_KEYS[kind];
+  const country = canonicalCountryCode(context?.country);
+  const city = String(context?.city || '').trim();
+  if (!keys || !country || !city) return null;
+  const dictionary = dictionaryFor(country, city);
+  if (!dictionary) return null;
+  for (const key of keys) {
+    const entry = (dictionary[key] || []).find((item) => (item.canonical || item.name) === value);
+    if (entry) return entry;
+  }
+  return null;
+}
+
+function bestAlias(aliases, score) {
+  let best = null;
+  let bestScore = -Infinity;
+  for (const alias of aliases) {
+    const value = String(alias || '').trim();
+    if (!value) continue;
+    const valueScore = score(value);
+    if (valueScore > bestScore || (valueScore === bestScore && best && value.length < best.length)) {
+      best = value;
+      bestScore = valueScore;
+    }
+  }
+  return bestScore > 0 ? best : null;
+}
+
+function locationAliasLabel(entry, locale) {
+  if (!entry) return null;
+  const language = languageKey(locale);
+  const explicit = entry.labels?.[language];
+  if (explicit) return explicit;
+  const canonical = entry.canonical || entry.name || null;
+  if (language === 'en') return entry.labels?.en || canonical;
+
+  const aliases = aliasesOf(entry);
+  if (language === 'ru') {
+    return bestAlias(aliases, (alias) => {
+      if (!CYRILLIC_RE.test(alias)) return -10;
+      let score = 5;
+      if (RUSSIAN_GENERIC_RE.test(alias)) score += 8;
+      if (UZBEK_CYRILLIC_RE.test(alias)) score -= 4;
+      return score;
+    }) || canonical;
+  }
+
+  if (language === 'uz') {
+    return bestAlias(aliases, (alias) => {
+      let score = 0;
+      if (LATIN_RE.test(alias)) score += 3;
+      if (UZBEK_LATIN_MARKER_RE.test(alias)) score += 10;
+      if (UZBEK_CYRILLIC_RE.test(alias)) score += 6;
+      if (CYRILLIC_RE.test(alias) && !UZBEK_CYRILLIC_RE.test(alias)) score -= 3;
+      if (ENGLISH_GENERIC_RE.test(alias)) score -= 8;
+      return score;
+    }) || canonical;
+  }
+
+  return canonical;
+}
+
+export function geographyDisplayName(value, locale = 'en', kind = 'any', context = null) {
   const text = String(value || '').trim();
   if (!text) return '';
   const language = languageKey(locale);
@@ -143,9 +243,17 @@ export function geographyDisplayName(value, locale = 'en', kind = 'any') {
   }
   if (kind === 'city') return tables?.city?.[text] || canonicalEntityLabel(CITIES, text, locale) || text;
   if (kind === 'region') return tables?.region?.[text] || canonicalEntityLabel(REGIONS, text, locale) || text;
+
+  const localEntry = locationEntryFor(text, kind, context);
+  if (localEntry) {
+    const localized = locationAliasLabel(localEntry, locale);
+    if (localized) return localized;
+  }
+
   if (kind === 'district') return tables?.district?.[text] || text;
   if (kind === 'microdistrict') return tables?.microdistrict?.[text] || numberedMicrodistrictDisplayName(text, locale) || text;
   if (kind === 'metro') return tables?.metro?.[text] || text;
+  if (LOCATION_KIND_KEYS[kind]) return text;
   return tables?.country?.[canonicalCountryCode(text)] || tables?.city?.[text] || tables?.region?.[text] || tables?.district?.[text] || tables?.microdistrict?.[text] || tables?.metro?.[text] || canonicalEntityLabel(CITIES, text, locale) || canonicalEntityLabel(REGIONS, text, locale) || preferredEntityLabel(countryEntity(text), locale) || text;
 }
 
