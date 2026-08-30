@@ -32,9 +32,11 @@ export {
 // following phone-like number as a protected contact span.
 const CONTACT_MARKER_RE = /(?<![\p{L}\p{N}_])(?:телефон|тел\.?|phone|mobile|mob\.?|whatsapp|viber|telegram|контакт|contact|aloqa|murojaat|bog(?:['’ʻʼ‘`])?lanish)\s*[:：—-]?\s*$/iu;
 const JOBS_I18N_PERIOD_RE = /\bjobs\.per(hour|day|shift|week|month|year|project|piece)\b/iu;
+const WORK_TIME_CONTEXT_RE = /(?:график|графік|режим\s+работы|рабоч(?:ее|ий)\s+время|часы\s+работы|work\s*(?:hours?|schedule)|ish\s+vaqti|ish\s+grafigi|график\s+работы|пн\s*[-–—]\s*(?:пт|сб)|mon(?:day)?\s*[-–—]\s*(?:fri|sat))/iu;
+const CLOCK_RANGE_RE = /^\s*(?:[01]?\d|2[0-3])[.:][0-5]\d\s*(?:-|–|—|до|to|dan\s+gacha)\s*(?:[01]?\d|2[0-3])[.:][0-5]\d\s*$/iu;
 
 function hasSalaryContext(text) {
-  return /(?:salary|зарплат|з\s*п\b|оплат|ставк|доход|оклад|компенсац|maosh|oylik|ish\s+haqi|жалақы|айлық|еңбекақы|salariu|оплата)/iu.test(text);
+  return /(?:💵|💰|salary|зарплат|з\s*[/\\.\-]?\s*п\b|оплат|ставк|доход|оклад|компенсац|maosh|oylik|ish\s+haqi|жалақы|айлық|еңбекақы|salariu|оплата)/iu.test(text);
 }
 
 function periodFromText(text) {
@@ -83,6 +85,21 @@ function rangeSearchText(text) {
   return normalized;
 }
 
+function isWorkTimeRange(text, match, start, end) {
+  if (CLOCK_RANGE_RE.test(match[0])) return true;
+
+  const first = Number(String(match[1] || '').replace(',', '.'));
+  const second = Number(String(match[3] || '').replace(',', '.'));
+  if (!Number.isFinite(first) || !Number.isFinite(second) || first > 24 || second > 24) return false;
+
+  // Bare 9-19 can be a schedule too. Reject it as money only when the nearby
+  // context explicitly talks about working hours/schedule; a real salary such
+  // as "$9-19/hour" still survives because it has pay/currency context and no
+  // schedule marker.
+  const window = text.slice(Math.max(0, start - 48), Math.min(text.length, end + 48));
+  return WORK_TIME_CONTEXT_RE.test(window);
+}
+
 function bestRange(text, protectedSpans) {
   const ranges = new RegExp(MONEY_RANGE_RE.source, 'giu');
   const candidates = [];
@@ -91,6 +108,7 @@ function bestRange(text, protectedSpans) {
     const start = match.index ?? 0;
     const end = start + match[0].length;
     if (overlapsProtectedPhone(start, end, protectedSpans)) continue;
+    if (isWorkTimeRange(text, match, start, end)) continue;
     const scaled = Boolean(match[2] || match[4]);
     const score = moneyContextScore(text, start, end, scaled);
     if (score <= 0) continue;
