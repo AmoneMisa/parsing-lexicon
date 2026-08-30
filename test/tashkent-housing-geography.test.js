@@ -133,7 +133,7 @@ test('keeps canonical Kuylyuk massif separate from the Qoyliq metro station', ()
 
 test('current Tashkent administrative parents own moved neighborhood canonicals', () => {
   for (const [canonical, expectedDistrict] of [
-    ['Takhtapul', 'Almazar'],
+    ['Taxtapul', 'Almazar'],
     ['Beshagach', 'Chilanzar'],
     ['Uzgarish', 'Sergeli'],
   ]) {
@@ -142,6 +142,8 @@ test('current Tashkent administrative parents own moved neighborhood canonicals'
       .map(([district]) => district);
     assert.deepEqual(owners, [expectedDistrict], canonical);
   }
+
+  assert.ok(TASHKENT_AREAS.Almazar.find((entry) => entry.canonical === 'Taxtapul')?.aliases.includes('Takhtapul'));
 });
 
 test('explicit Minor context chooses one semantic type', () => {
