@@ -99,9 +99,9 @@ test('Kharkiv landmark aliases cover Ukrainian and Russian listing forms', () =>
   }
 });
 
-test('Kharkiv Derzhprom bare name keeps metro precedence while explicit building names resolve the landmark', () => {
-  assert.equal(match('Kharkiv', 'metro', 'Держпром'), 'Derzhprom');
-  assert.equal(match('Kharkiv', 'metro', 'Госпром'), 'Derzhprom');
+test('Kharkiv Derzhprom bare name remains ambiguous while explicit building names resolve the landmark', () => {
+  assert.equal(matchDictionaryLocation('Держпром', 'UA', 'Kharkiv'), null);
+  assert.equal(matchDictionaryLocation('Госпром', 'UA', 'Kharkiv'), null);
   assert.equal(match('Kharkiv', 'landmarks', 'Будинок державної промисловості'), 'Derzhprom');
   assert.equal(match('Kharkiv', 'landmarks', 'Дом государственной промышленности'), 'Derzhprom');
 });
