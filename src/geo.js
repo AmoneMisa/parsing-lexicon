@@ -124,8 +124,8 @@ export const TASHKENT_AREAS = Object.freeze({
     area('Karakamysh-2/5', ['каракамыш 2 5', 'қорақамиш 2 5', 'qoraqamish 2 5', 'karakamish 2 5']),
     area('Olympia', ['олимпия', 'olimpiya', 'olympia']), area('Vuzgorodok', ['вузгородок', 'вуз городок', 'vuzgorodok']),
     area('Medgorodok', ['медгородок', 'мед городок', 'medgorodok']),
-    area('Chimbay', ['чимбай', 'chimboy', 'chimbay']),
-    area('Takhtapul', ['тахтапуль', 'тахтапул', 'taxtapul', 'takhtapul']),
+    area('Chimbay', ['чимбай', 'чимбой', 'chimboy', 'chimbay']),
+    area('Taxtapul', ['тахтапуль', 'тахтапул', 'taxtapul', 'takhtapul', 'Takhtapul']),
   ]),
   Mirobod: Object.freeze([
     area('Hospitalny', ['госпитальный', 'госпиталка', 'hospitalny']),
@@ -140,7 +140,7 @@ export const TASHKENT_AREAS = Object.freeze({
     area('Traktorsozlar-2', ['тракторсозлар 2', 'traktorsozlar 2', 'ттз 2', 'ttz 2']),
     area('TTZ-3', ['ттз 3', 'ttz 3']),
     area('Traktorsozlar-4', ['тракторсозлар 4', 'traktorsozlar 4', 'ттз 4', 'ttz 4']),
-    area('Yalangach', ['ялангач', 'yalangach', "yalang'och"]), area('Feruza', ['феруза', 'feruza']), area('Geofizika', ['геофизика', 'поселок геофизиков', 'geofizika']),
+    area('Yalangach', ['ялангач', 'ялангач массив', 'yalangach', "yalang'och", "yalang'och dahasi", 'высоковольтный', 'массив высоковольтный']), area('Feruza', ['феруза', 'feruza']), area('Geofizika', ['геофизика', 'поселок геофизиков', 'geofizika']),
   ]),
   Uchtepa: Object.freeze([
     area('Lolazor', ['лолазор', 'lolazor']),
