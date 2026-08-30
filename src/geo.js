@@ -123,7 +123,7 @@ export const TASHKENT_AREAS = Object.freeze({
     area('Karakamysh-2/4', ['каракамыш 2 4', 'қорақамиш 2 4', 'qoraqamish 2 4', 'karakamish 2 4']),
     area('Karakamysh-2/5', ['каракамыш 2 5', 'қорақамиш 2 5', 'qoraqamish 2 5', 'karakamish 2 5']),
     area('Olympia', ['олимпия', 'olimpiya', 'olympia']), area('Vuzgorodok', ['вузгородок', 'вуз городок', 'vuzgorodok']),
-    area('Medgorodok', ['медгородок', 'мед городок', 'medgorodok']),
+    area('Medgorodok', ['медгородок', 'мед городок', 'medgorodok', 'TashMI-2', 'TashMI 2', 'ToshMI-2', 'ToshMI 2', 'ТашМИ-2', 'ТашМИ 2', 'ТошМИ-2', 'ТошМИ 2', 'новый ташми', 'новый ташми-2', 'янги ташми', 'yangi tashmi']),
     area('Chimbay', ['чимбай', 'чимбой', 'chimboy', 'chimbay']),
     area('Taxtapul', ['тахтапуль', 'тахтапул', 'taxtapul', 'takhtapul', 'Takhtapul']),
   ]),
