@@ -198,6 +198,34 @@ function normalizeUzSemanticLocations(country) {
     });
   }
 
+  const khiva = normalized?.Khiva;
+  if (khiva) {
+    const localAreas = khiva.localAreas || [];
+    const ichanKala = localAreas.find(({ name }) => name === 'Ichan Kala');
+    const oldCity = localAreas.find(({ name }) => name === 'Old City');
+
+    if (ichanKala && oldCity) {
+      // UNESCO identifies Itchan Kala as the historic inner-city of Khiva.
+      // Keep listing-friendly Old City forms as aliases of that one place.
+      const normalizedIchanKala = semanticEntry(ichanKala, 'Ichan Kala', [
+        ...(ichanKala.aliases || []),
+        ...(oldCity.aliases || []),
+        'Old City',
+      ], 'local_area');
+
+      normalized = Object.freeze({
+        ...normalized,
+        Khiva: Object.freeze({
+          ...khiva,
+          localAreas: Object.freeze([
+            ...localAreas.filter(({ name }) => !['Ichan Kala', 'Old City'].includes(name)),
+            normalizedIchanKala,
+          ]),
+        }),
+      });
+    }
+  }
+
   const angren = normalized?.Angren;
   if (angren) {
     const microdistricts = angren.microdistricts || [];
