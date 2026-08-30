@@ -67,7 +67,27 @@ function semanticEntry(entry, name, aliases, entityType) {
 }
 
 function normalizeUzSemanticLocations(country) {
-  let normalized = country;
+  let normalized = Object.freeze(Object.fromEntries(
+    Object.entries(country || {}).map(([cityName, data]) => {
+      const localAreas = data?.localAreas || [];
+      if (!localAreas.some(({ name }) => name === 'University area')) return [cityName, data];
+
+      return [cityName, Object.freeze({
+        ...data,
+        localAreas: Object.freeze(localAreas.map((entry) => (
+          entry.name === 'University area'
+            ? semanticEntry(entry, 'University area', [
+              ...(entry.aliases || []),
+              'Universitet hududi',
+              'Universitet atrofi',
+              'Университет ҳудуди',
+              'Университет атрофи',
+            ], 'local_area')
+            : entry
+        ))),
+      })];
+    }),
+  ));
   const tashkent = normalized?.Tashkent;
   const qorasuv = (tashkent?.microdistricts || []).find(({ name }) => name === 'Qorasuv');
 
