@@ -13,7 +13,11 @@ const area = (name, aliases, type = 'local_area') => Object.freeze({
 export const TASHKENT_AREA_ADDITIONS = Object.freeze({
   Almazar: Object.freeze([
     area('Shifokorlar-1', ['шифокорлар 1', 'shifokorlar 1']),
-    area('Shifokorlar-2', ['шифокорлар 2', 'shifokorlar 2']),
+    area('Shifokorlar-2', [
+      'шифокорлар 2', 'shifokorlar 2',
+      'TashMI-2', 'TashMI 2', 'ToshMI-2', 'ToshMI 2',
+      'ТашМИ-2', 'ТашМИ 2', 'ТошМИ-2', 'ТошМИ 2',
+    ]),
     area('Beruni-3', ['беруни 3', 'beruniy 3', 'beruni 3']),
     area('Hislat', ['хислат', 'hislat', 'xislat']),
     ...[1, 2, 3, 4].map((n) => area(`Beshkurgan-${n}`, [`бешкурган ${n}`, `бешқўрғон ${n}`, `beshqo rg on ${n}`, `beshkurgan ${n}`])),
