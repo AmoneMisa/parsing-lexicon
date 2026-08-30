@@ -38,6 +38,27 @@ test('Kharkiv lettered microdistrict aliases cover Latin and Cyrillic forms', ()
   }
 });
 
+test('Kharkiv residential aliases cover Ukrainian and Russian listing forms', () => {
+  const cases = new Map([
+    ['Будинок на Сумській', 'Dim na Sumskii'],
+    ['Дім на Сумській', 'Dim na Sumskii'],
+    ['Дом на Сумской', 'Dim na Sumskii'],
+    ['ЖК Дом на Сумской', 'Dim na Sumskii'],
+    ['Мироносицька', 'Myronosytska'],
+    ['ЖК Мироносицька', 'Myronosytska'],
+    ['Мироносицкая', 'Myronosytska'],
+    ['ЖК Мироносицкая', 'Myronosytska'],
+    ['Млечний шлях', 'Mlechnyi Shliakh'],
+    ['ЖК Млечний шлях', 'Mlechnyi Shliakh'],
+    ['Млечный путь', 'Mlechnyi Shliakh'],
+    ['ЖК Млечный путь', 'Mlechnyi Shliakh'],
+  ]);
+
+  for (const [alias, canonical] of cases) {
+    assert.equal(match('Kharkiv', 'residentialComplexes', alias), canonical);
+  }
+});
+
 test('Kharkiv landmark aliases cover Ukrainian and Russian listing forms', () => {
   const cases = new Map([
     ['Саржин Яр', 'Sarzhyn Yar'],
