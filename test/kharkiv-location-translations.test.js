@@ -1,12 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { locationCities } from '../src/index.js';
-
-const ua = locationCities('UA');
+import { matchDictionaryLocation } from '../src/index.js';
 
 function match(city, type, text) {
-  return (ua[city]?.[type] || []).find((entry) => entry.re.test(text))?.name || null;
+  const result = matchDictionaryLocation(text, 'UA', city);
+  return result?.type === type ? result.name : null;
 }
 
 test('Kharkiv numbered microdistricts accept Ukrainian and Russian listing forms', () => {
