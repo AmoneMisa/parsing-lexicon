@@ -40,6 +40,13 @@ test('Kharkiv lettered microdistrict aliases cover Latin and Cyrillic forms', ()
 
 test('Kharkiv landmark aliases cover Ukrainian and Russian listing forms', () => {
   const cases = new Map([
+    ['Саржин Яр', 'Sarzhyn Yar'],
+    ['Парк Машинобудівників', 'Machine Builders Park'],
+    ['Парк Машиностроителей', 'Machine Builders Park'],
+    ['Зелений Гай', 'Zelenyi Hai'],
+    ['Зелёный Гай', 'Zelenyi Hai'],
+    ['Карпівський сад', 'Karpivskyi Garden'],
+    ['Карповский сад', 'Karpivskyi Garden'],
     ['Покровський сквер', 'Pokrovskyi Square'],
     ['Покровский сквер', 'Pokrovskyi Square'],
     ['Покровський монастир', 'Pokrovskyi Monastery'],
@@ -54,6 +61,8 @@ test('Kharkiv landmark aliases cover Ukrainian and Russian listing forms', () =>
     ['ХПИ', 'KhPI'],
     ['ХНУРЕ', 'KhNURE'],
     ['ХНУРЭ', 'KhNURE'],
+    ['ТРЦ Французький бульвар', 'French Boulevard'],
+    ['ТРЦ Французский бульвар', 'French Boulevard'],
     ['ринок Барабашово', 'Barabashovo Market'],
     ['рынок Барабашово', 'Barabashovo Market'],
   ]);
