@@ -99,6 +99,11 @@ test('Kharkiv landmark aliases cover Ukrainian and Russian listing forms', () =>
     ['ТРЦ Французский бульвар', 'French Boulevard'],
     ['ринок Барабашово', 'Barabashovo Market'],
     ['рынок Барабашово', 'Barabashovo Market'],
+    ['ринок Кінний', 'Horse Market'],
+    ['рынок Конный', 'Horse Market'],
+    ['Благбаз', 'Central Market'],
+    ['Благовіщенський базар', 'Central Market'],
+    ['Благовещенский базар', 'Central Market'],
     ['Сумський ринок', 'Sumskyi Market'],
     ['Сумской рынок', 'Sumskyi Market'],
     ['ТЦ Сумський ринок', 'Sumskyi Market'],
@@ -128,6 +133,7 @@ test('Kharkiv-only aliases do not leak into Kyiv', () => {
   assert.equal(match('Kyiv', 'microdistricts', 'Микрорайон 606а'), null);
   assert.equal(match('Kyiv', 'landmarks', 'ХАІ'), null);
   assert.equal(match('Kyiv', 'landmarks', 'ринок Барабашово'), null);
+  assert.equal(match('Kyiv', 'landmarks', 'Благбаз'), null);
   assert.equal(match('Kyiv', 'landmarks', 'ТЦ Сумський ринок'), null);
   assert.equal(match('Kyiv', 'residentialComplexes', 'ЖК Павловский квартал'), null);
 });
