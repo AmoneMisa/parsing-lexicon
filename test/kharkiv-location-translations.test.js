@@ -40,6 +40,10 @@ test('Kharkiv lettered microdistrict aliases cover Latin and Cyrillic forms', ()
 
 test('Kharkiv residential aliases cover Ukrainian and Russian listing forms', () => {
   const cases = new Map([
+    ['Павлівський квартал', 'Pavlovsky Kvartal'],
+    ['ЖК Павлівський квартал', 'Pavlovsky Kvartal'],
+    ['Павловский квартал', 'Pavlovsky Kvartal'],
+    ['ЖК Павловский квартал', 'Pavlovsky Kvartal'],
     ['Будинок на Сумській', 'Dim na Sumskii'],
     ['Дім на Сумській', 'Dim na Sumskii'],
     ['Дом на Сумской', 'Dim na Sumskii'],
@@ -56,6 +60,9 @@ test('Kharkiv residential aliases cover Ukrainian and Russian listing forms', ()
     ['ЖК Макіївська', 'Makiivska'],
     ['Макеевская', 'Makiivska'],
     ['ЖК на Макеевской', 'Makiivska'],
+    ['ЖК River Town', 'River Town'],
+    ['Ривер Таун', 'River Town'],
+    ['ЖК Ривер Таун', 'River Town'],
   ]);
 
   for (const [alias, canonical] of cases) {
@@ -92,6 +99,10 @@ test('Kharkiv landmark aliases cover Ukrainian and Russian listing forms', () =>
     ['ТРЦ Французский бульвар', 'French Boulevard'],
     ['ринок Барабашово', 'Barabashovo Market'],
     ['рынок Барабашово', 'Barabashovo Market'],
+    ['Сумський ринок', 'Sumskyi Market'],
+    ['Сумской рынок', 'Sumskyi Market'],
+    ['ТЦ Сумський ринок', 'Sumskyi Market'],
+    ['ТЦ Сумской рынок', 'Sumskyi Market'],
   ]);
 
   for (const [alias, canonical] of cases) {
@@ -117,4 +128,6 @@ test('Kharkiv-only aliases do not leak into Kyiv', () => {
   assert.equal(match('Kyiv', 'microdistricts', 'Микрорайон 606а'), null);
   assert.equal(match('Kyiv', 'landmarks', 'ХАІ'), null);
   assert.equal(match('Kyiv', 'landmarks', 'ринок Барабашово'), null);
+  assert.equal(match('Kyiv', 'landmarks', 'ТЦ Сумський ринок'), null);
+  assert.equal(match('Kyiv', 'residentialComplexes', 'ЖК Павловский квартал'), null);
 });
