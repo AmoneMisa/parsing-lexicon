@@ -224,7 +224,7 @@ test('legacy Tashkent area view preserves current local-area semantics', () => {
   for (const [legacyName, parent] of [
     ['Sebzar', 'Almazar'],
     ['Olympia', 'Almazar'],
-    ['Takhtapul', 'Almazar'],
+    ['Taxtapul', 'Almazar'],
     ['Yangi Choshtepa', 'Yangihayot'],
     ['Tashselmash', 'Yashnobod'],
     ['Qiyot', 'Yunusabad'],
@@ -237,6 +237,8 @@ test('legacy Tashkent area view preserves current local-area semantics', () => {
     const entry = TASHKENT_AREAS[parent].find((item) => item.name === legacyName);
     assert.equal(entry?.type, 'local_area', legacyName);
   }
+
+  assert.ok(TASHKENT_AREAS.Almazar.find((entry) => entry.name === 'Taxtapul')?.aliases.includes('Takhtapul'));
 });
 
 test('Riyoziy compatibility area follows its current Yashnobod parent', () => {
