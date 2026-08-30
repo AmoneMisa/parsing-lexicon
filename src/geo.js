@@ -48,7 +48,7 @@ export const TASHKENT_METRO = Object.freeze([
   station('Hamid Olimjon', 'Хамид Алимджан', 'Hamid Olimjon', 'chilonzor', ['Хамид Олимжон', 'Hamid Alimjan', 'Hamid Alimjon']),
   station('Amir Temur Xiyoboni', 'Амир Темур Хиёбони', 'Amir Temur Xiyoboni', 'chilonzor', ['Сквер', 'Amir Timur Square', 'Amir Temur']),
   station('Mustaqillik Maydoni', 'Мустакиллик майдони', 'Mustaqillik Maydoni', 'chilonzor', ['Мустақиллик майдони', 'Площадь Независимости', 'Independence Square']),
-  station('Paxtakor', 'Пахтакор', 'Paxtakor', 'chilonzor', ['Pakhtakor']),
+  station('Paxtakor', 'Пахтакор', 'Paxtakor', 'chilonzor'),
   station('Xalqlar Dostligi', 'Халклар Дустлиги', 'Xalqlar Dostligi', 'chilonzor', ["Xalqlar Do'stligi", 'Xalqlar Do‘stligi', 'Xalqlar Doʻstligi', 'Халклар Дўстлиги', 'Халқлар Дўстлиги', 'Дружба народов', 'Bunyodkor', 'Бунёдкор']),
   station('Milliy Bog', 'Миллий Бог', 'Milliy Bog', 'chilonzor', ["Milliy Bog'", 'Milliy Bog‘', 'Milliy Bogʻ', 'Миллий Боғ', 'Yoshlik', 'Ёшлик']),
   station('Novza', 'Новза', 'Novza', 'chilonzor', ['Хамза', 'Hamza', 'Hamza metro', 'метро Хамза']),
@@ -146,7 +146,7 @@ export const TASHKENT_AREAS = Object.freeze({
     area('Lolazor', ['лолазор', 'lolazor']),
   ]),
   Sergeli: Object.freeze([
-    area('Yangi Sergeli', ['янги сергели', 'yangi sergeli']), area('Stroygorod', ['стройгород', 'stroygorod']),
+    area('Yangi Sergeli', ['янги сергели', 'yangi sergeli']),
     area('Uzgarish', ['узгарыш', 'ўзгариш', "o'zgarish", 'uzgarish']),
   ]),
   Chilanzar: Object.freeze([
