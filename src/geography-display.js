@@ -102,6 +102,16 @@ function languageKey(locale) {
   return String(locale || 'en').toLowerCase().split(/[-_]/)[0];
 }
 
+function numberedMicrodistrictDisplayName(value, locale) {
+  if (languageKey(locale) !== 'ru') return null;
+  const text = String(value || '').trim();
+  const match = text.match(/^(.+?)[\s-]+(\d{1,2}[A-Za-zА-Яа-я]?)$/u);
+  if (!match) return null;
+  const base = GEOGRAPHY_DISPLAY_NAMES.ru.microdistrict?.[match[1]]
+    || GEOGRAPHY_DISPLAY_NAMES.ru.district?.[match[1]];
+  return base ? `${base}-${match[2]}` : null;
+}
+
 function preferredEntityLabel(entry, locale) {
   if (!entry) return null;
   const key = languageKey(locale);
@@ -132,7 +142,7 @@ export function geographyDisplayName(value, locale = 'en', kind = 'any') {
   if (kind === 'city') return tables?.city?.[text] || canonicalEntityLabel(CITIES, text, locale) || text;
   if (kind === 'region') return tables?.region?.[text] || canonicalEntityLabel(REGIONS, text, locale) || text;
   if (kind === 'district') return tables?.district?.[text] || text;
-  if (kind === 'microdistrict') return tables?.microdistrict?.[text] || text;
+  if (kind === 'microdistrict') return tables?.microdistrict?.[text] || numberedMicrodistrictDisplayName(text, locale) || text;
   if (kind === 'metro') return tables?.metro?.[text] || text;
   return tables?.country?.[canonicalCountryCode(text)] || tables?.city?.[text] || tables?.region?.[text] || tables?.district?.[text] || tables?.microdistrict?.[text] || tables?.metro?.[text] || canonicalEntityLabel(CITIES, text, locale) || canonicalEntityLabel(REGIONS, text, locale) || preferredEntityLabel(countryEntity(text), locale) || text;
 }
