@@ -5,6 +5,11 @@ import { locationEntries } from './location-merge.js';
 // major Ukraine location layer so mergeLocationEntries enriches one subject
 // instead of creating parallel parser entities.
 export const UA_KHARKIV_LOCATION_TRANSLATIONS = Object.freeze({
+  residentialComplexes: locationEntries([
+    ['Dim na Sumskii', 'Будинок на Сумській', 'Дім на Сумській', 'ЖК Будинок на Сумській', 'Дом на Сумской', 'ЖК Дом на Сумской'],
+    ['Myronosytska', 'Мироносицька', 'ЖК Мироносицька', 'Мироносицкая', 'ЖК Мироносицкая'],
+    ['Mlechnyi Shliakh', 'Млечний шлях', 'ЖК Млечний шлях', 'Млечный путь', 'ЖК Млечный путь'],
+  ]),
   landmarks: locationEntries([
     ['Sarzhyn Yar', 'Саржин Яр', 'Саржин яр'],
     ['Machine Builders Park', 'Парк Машинобудівників', 'Парк Машиностроителей', 'парк Артема', 'парк Артёма'],
