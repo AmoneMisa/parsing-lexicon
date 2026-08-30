@@ -52,6 +52,14 @@ test('Kharkiv residential aliases cover Ukrainian and Russian listing forms', ()
     ['ЖК Мироносицька', 'Myronosytska'],
     ['Мироносицкая', 'Myronosytska'],
     ['ЖК Мироносицкая', 'Myronosytska'],
+    ['Феліціта', 'Felicita'],
+    ['ЖК Феліціта', 'Felicita'],
+    ['Феличита', 'Felicita'],
+    ['ЖК Феличита', 'Felicita'],
+    ['Резиденція', 'Rezidentsiia'],
+    ['ЖК Резиденція', 'Rezidentsiia'],
+    ['Резиденция', 'Rezidentsiia'],
+    ['ЖК Резиденция', 'Rezidentsiia'],
     ['Млечний шлях', 'Mlechnyi Shliakh'],
     ['ЖК Млечний шлях', 'Mlechnyi Shliakh'],
     ['Млечный путь', 'Mlechnyi Shliakh'],
@@ -136,4 +144,6 @@ test('Kharkiv-only aliases do not leak into Kyiv', () => {
   assert.equal(match('Kyiv', 'landmarks', 'Благбаз'), null);
   assert.equal(match('Kyiv', 'landmarks', 'ТЦ Сумський ринок'), null);
   assert.equal(match('Kyiv', 'residentialComplexes', 'ЖК Павловский квартал'), null);
+  assert.equal(match('Kyiv', 'residentialComplexes', 'ЖК Феличита'), null);
+  assert.equal(match('Kyiv', 'residentialComplexes', 'ЖК Резиденція'), null);
 });
