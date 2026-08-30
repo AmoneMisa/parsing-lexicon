@@ -21,8 +21,15 @@ export function locationEntry(name, ...aliases) {
   return Object.freeze({ canonical: name, name, aliases: Object.freeze(all), re: aliasesToRegex(all) });
 }
 
+function rowSpecificity(row) {
+  return Math.max(0, ...row.flat().filter(Boolean).map((value) => normalizeForMatch(value).length));
+}
+
 export function locationEntries(rows = []) {
-  return Object.freeze(rows.map(([name, ...aliases]) => locationEntry(name, ...aliases)));
+  const prioritized = rows
+    .map((row, index) => ({ row, index, specificity: rowSpecificity(row) }))
+    .sort((a, b) => b.specificity - a.specificity || a.index - b.index);
+  return Object.freeze(prioritized.map(({ row: [name, ...aliases] }) => locationEntry(name, ...aliases)));
 }
 
 function mergeEntry(existing, incoming) {
