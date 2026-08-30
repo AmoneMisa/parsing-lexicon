@@ -18,6 +18,21 @@ export const UA_METRO_LOCATION_EXTENSIONS = Object.freeze({
     ]),
   }),
   Kharkiv: Object.freeze({
+    // This extension is merged after the legacy UA seeds. Keep late verified
+    // Kharkiv quarter canonicals here so they cannot be shadowed by old seed
+    // vocabulary while the broader Kharkiv location layer is being expanded.
+    microdistricts: locationEntries([
+      ...['601','614','615','624'].map((n) => [
+        `${n} microdistrict`,
+        `${n}-й мікрорайон`, `${n} мікрорайон`, `Мікрорайон ${n}`,
+        `${n}-й микрорайон`, `${n} микрорайон`, `Микрорайон ${n}`,
+      ]),
+      ['606A',
+        '606А', '606а', '606A microdistrict',
+        '606А мікрорайон', '606а мікрорайон', 'Мікрорайон 606А', 'Мікрорайон 606а',
+        '606А микрорайон', '606а микрорайон', 'Микрорайон 606А', 'Микрорайон 606а',
+      ],
+    ]),
     metro: locationEntries([
       ['Kholodna Hora', 'Холодна гора', 'Холодная гора'],
       ['Vokzalna', 'Вокзальна', 'Вокзальная', 'Південний вокзал', 'Южный вокзал'],
