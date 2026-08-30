@@ -38,6 +38,13 @@ test('legacy geography names and geo subpath delegate to canonical ownership', (
   assert.equal(geoCompat.canonicalCity('Самарканд'), 'Samarkand');
 });
 
+test('legacy TashGRES spelling resolves to the ToshGRES canonical', () => {
+  const area = geoCompat.TASHKENT_AREAS.Yunusabad.find(({ canonical }) => canonical === 'ToshGRES');
+  assert.ok(area);
+  assert.ok(area.aliases.includes('TashGRES'));
+  assert.equal(geoCompat.TASHKENT_AREAS.Yunusabad.some(({ canonical }) => canonical === 'TashGRES'), false);
+});
+
 test('presentation names localize Ukraine canonical keys without changing storage values', () => {
   assert.equal(api.geographyDisplayName('Dubno', 'ru', 'city'), 'Дубно');
   assert.equal(api.geographyDisplayName('Industrialnyi', 'ru', 'district'), 'Индустриальный');
