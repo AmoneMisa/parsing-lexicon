@@ -43,7 +43,7 @@ function station(name, ru, en, line, aliases = []) {
 }
 
 export const TASHKENT_METRO = Object.freeze([
-  station('Buyuk Ipak Yoli', 'Буюк Ипак Йули', 'Buyuk Ipak Yoli', 'chilonzor', ['Buyuk Ipak Yuli', "Buyuk Ipak Yo'li", 'Buyuk Ipak Yo‘li', 'Buyuk Ipak Yoʻli', 'Буюк Ипак Йўли', 'БИЙ', 'Максим Горький', 'Максима Горького', 'Горького', 'Maxim Gorky', 'Maksim Gorkiy']),
+  station('Buyuk Ipak Yoli', 'Буюк Ипак Йули', 'Buyuk Ipak Yoli', 'chilonzor', ['Buyuk Ipak Yuli', "Buyuk Ipak Yo'li", 'Buyuk Ipak Yo‘li', 'Buyuk Ipak YoʻLi', 'Буюк Ипак Йўли', 'БИЙ', 'Максим Горький', 'Максима Горького', 'Горького', 'Maxim Gorky', 'Maksim Gorkiy']),
   station('Pushkin', 'Пушкин', 'Pushkin', 'chilonzor'),
   station('Hamid Olimjon', 'Хамид Алимджан', 'Hamid Olimjon', 'chilonzor', ['Хамид Олимжон', 'Hamid Alimjan', 'Hamid Alimjon']),
   station('Amir Temur Xiyoboni', 'Амир Темур Хиёбони', 'Amir Temur Xiyoboni', 'chilonzor', ['Сквер', 'Amir Timur Square', 'Amir Temur']),
@@ -160,7 +160,7 @@ export const TASHKENT_AREAS = Object.freeze({
   ]),
   Yunusabad: Object.freeze([
     area('Kashgar', ['кашгар', 'қашқар', 'qashqar', 'kashgar', 'ц 4', 'c 4']), area('Qiyot', ['киёт', 'кият', 'қиёт', 'qiyot', 'kiyot', 'markaz 5', 's 5']),
-    area('Minor', ['минор', 'minor', 'ц 6', 'c 6']), area('TashGRES', ['ташгрэс', 'tashgres']), area('Manzara', ['манзара', 'manzara']),
+    area('Minor', ['минор', 'minor', 'ц 6', 'c 6']), area('ToshGRES', ['ташгрэс', 'tashgres', 'TashGRES', 'toshgres']), area('Manzara', ['манзара', 'manzara']),
   ]),
   Yakkasaray: Object.freeze([
     area('Bashlyk', ['башлык', 'бошлиқ', 'boshliq', 'bashlyk']), area('Kushbegi', ['кушбеги', 'қушбеги', 'qushbegi', 'kushbegi']),
