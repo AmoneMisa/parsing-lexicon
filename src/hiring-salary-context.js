@@ -18,9 +18,29 @@ export const COUNTRY_DEFAULT_CURRENCIES = Object.freeze({
   GE: 'GEL',
 });
 
+// These markets conventionally quote ordinary vacancy salaries per month when
+// a posting gives a local compensation amount but omits an explicit period.
+// Keep this deliberately narrow and opt-in: US/GB postings, for example, must
+// not silently become monthly because annual/hourly quoting is also common.
+export const COUNTRY_DEFAULT_SALARY_PERIODS = Object.freeze({
+  UA: 'month',
+  UZ: 'month',
+  KZ: 'month',
+  KG: 'month',
+  RO: 'month',
+  PL: 'month',
+  TR: 'month',
+  GE: 'month',
+});
+
 export function defaultCurrencyForCountry(value) {
   const country = detectCountryCodeFromText(value);
   return country ? COUNTRY_DEFAULT_CURRENCIES[country] || null : null;
+}
+
+export function defaultSalaryPeriodForCountry(value) {
+  const country = detectCountryCodeFromText(value);
+  return country ? COUNTRY_DEFAULT_SALARY_PERIODS[country] || null : null;
 }
 
 function contextCountry(options) {
@@ -39,45 +59,59 @@ function languageDefaultCountry(value) {
   return null;
 }
 
-function withCurrencyContext(parsed, value, options) {
+function withContext(parsed, value, options) {
   if (!parsed) return null;
-  if (parsed.currency) {
-    return Object.freeze({
-      ...parsed,
-      currencySource: 'explicit',
-      currencyCountry: null,
-    });
+
+  let currency = parsed.currency;
+  let currencySource = 'explicit';
+  let currencyCountry = null;
+  if (!currency) {
+    let country = null;
+    if (options.currencyFallback === 'country') country = contextCountry(options);
+    else if (options.currencyFallback === 'language') country = languageDefaultCountry(value);
+    currency = country ? COUNTRY_DEFAULT_CURRENCIES[country] || null : null;
+    currencySource = currency
+      ? options.currencyFallback === 'language' ? 'language-default' : 'country-default'
+      : 'unknown';
+    currencyCountry = currency ? country : null;
   }
 
-  let country = null;
-  if (options.currencyFallback === 'country') country = contextCountry(options);
-  else if (options.currencyFallback === 'language') country = languageDefaultCountry(value);
+  let period = parsed.period;
+  let periodSource = period ? 'explicit' : 'unknown';
+  let periodCountry = null;
+  if (!period && options.periodFallback === 'country') {
+    const country = contextCountry(options);
+    const fallback = country ? COUNTRY_DEFAULT_SALARY_PERIODS[country] || null : null;
+    if (fallback) {
+      period = fallback;
+      periodSource = 'country-default';
+      periodCountry = country;
+    }
+  }
 
-  const currency = country ? COUNTRY_DEFAULT_CURRENCIES[country] || null : null;
   return Object.freeze({
     ...parsed,
     currency,
-    currencySource: currency
-      ? options.currencyFallback === 'language' ? 'language-default' : 'country-default'
-      : 'unknown',
-    currencyCountry: currency ? country : null,
+    period,
+    currencySource,
+    currencyCountry,
+    periodSource,
+    periodCountry,
   });
 }
 
 /**
- * Parse salary text and optionally infer a missing currency from geography or
- * unambiguous local salary-language markers.
+ * Parse salary text and optionally infer missing currency/period from geography
+ * or unambiguous local salary-language markers.
  *
- * The fallback is deliberately opt-in. A bare number must never silently become
- * USD merely because a consumer happens to normalize all salaries to USD later.
- * Provenance is returned in `currencySource` so consumers can distinguish an
- * explicit currency from a contextual fallback.
+ * Fallbacks are deliberately opt-in. Provenance is returned so consumers can
+ * distinguish explicit values from contextual defaults.
  */
 export function parseHiringSalaryWithContext(value, options = {}) {
-  return withCurrencyContext(parseSalary(value), value, options);
+  return withContext(parseSalary(value), value, options);
 }
 
-const VACANCY_COMPENSATION_RE = /(?:salary|salary\s+range|base\s+pay|pay\s+range|annual\s+pay|compensation(?:\s+range)?|заработн\p{L}*\s+плат\p{L}*|зарплат\p{L}*|оклад\p{L}*|вилка\s+оплат\p{L}*|оплата\s+труда|компенсац\p{L}*|ставка)/giu;
+const VACANCY_COMPENSATION_RE = /(?:salary|salary\s+range|base\s+pay|pay\s+range|annual\s+pay|compensation(?:\s+range)?|заработн\p{L}*\s+плат\p{L}*|зарплат\p{L}*|з\s*[\/\\.\-]?\s*п(?=$|[^\p{L}\p{N}_])|оклад\p{L}*|вилка\s+оплат\p{L}*|оплата\s+труда|компенсац\p{L}*|ставка|💵|💰)/giu;
 
 // AI-recruiting/staffing postings (e.g. Mercor) routinely mention funding,
 // valuation or revenue figures in the same listing as the actual salary. A
