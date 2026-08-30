@@ -344,7 +344,10 @@ export const UZ_LOCATION_EXTENSIONS = Object.freeze({
 
   Navoiy: city({
     mahallas: [{ name: 'Guliston', aliases: ['Гулистон'], confidence: 'official' }],
-    microdistricts: numberedMicrodistricts([1,2,3,4,5,6,7,8,9,10,11,12]),
+    microdistricts: [
+      ...numberedMicrodistricts([1,2,3,4,5,6,7,8,9,10,11,12]),
+      ['17 microdistrict','17-kichik nohiya','17 kichik nohiya','17-й микрорайон','17 микрорайон','17-mikrorayon','17 mikrorayon','17 мкр'],
+    ],
     localAreas: [['Uzbekiston Massiv',"O'zbekiston massivi",'Узбекистон массив','Ўзбекистон массиви'],['Yangi Navoiy','Янги Навои','Янги Навоий'],['Center','Markaz','Центр'],['Sputnik','Спутник'],['Railway Station area','Вокзал']],
     landmarks: [['Alisher Navoiy Park',"Alisher Navoiy bog'i",'парк Алишера Навои'],['Farhod Palace of Culture','Farhod madaniyat saroyi','Дворец культуры Фархад'],['Navoiy Mining and Metallurgical Company','Navoiy kon-metallurgiya kombinati','НГМК','NGMK','Навоийский ГМК'],['Navoi International Airport','Navoiy aeroporti','NVI']],
   }),
@@ -370,7 +373,13 @@ export const UZ_LOCATION_EXTENSIONS = Object.freeze({
 
   Almalyk: city({
     mahallas: [{ name: 'Kamalak', aliases: ['Камалак','Радуга'], confidence: 'official' }],
-    microdistricts: numberedMicrodistricts([1,2,3,4,5]),
+    microdistricts: [
+      ...numberedMicrodistricts([1,2,3,4,5]),
+      ['5/1 microdistrict','5/1-kichik nohiya','5/1 kichik nohiya','5/1 микрорайон'],
+      ['5/2 microdistrict','5/2-kichik nohiya','5/2 kichik nohiya','5/2 микрорайон'],
+      ['5/3 microdistrict','5/3-kichik nohiya','5/3 kichik nohiya','5/3 микрорайон'],
+      ['Yubileyny microdistrict','Yubileyny','Yubiley kichi- nohiya','Yubiley kichik nohiya','Юбилейный микрорайон','Юбилейный'],
+    ],
     localAreas: [['Center','Markaz','Центр'],['Old City','Eski shahar','Старый город'],['New City','Yangi shahar','Новый город'],['Metallurg','Металлург'],['Sports Palace area','Дворец спорта'],['Railway Station area','Вокзал']],
     landmarks: [['Almalyk MMC','АГМК','AGMK','ОКМК','OKMK','Олмалиқ КМК','Almalyk Mining and Metallurgical Complex'],['Metallurg Stadium','Metallurg stadioni','стадион Металлург']],
   }),

@@ -69,6 +69,8 @@ export const GEOGRAPHY_DISPLAY_NAMES = Object.freeze({
       Tsukrovyi: 'Сахарный',
       Karakamysh: 'Каракамыш', Sebzar: 'Себзар', Tashselmash: 'Ташсельмаш', Aviasozlar: 'Авиасозлар',
       Kuylyuk: 'Куйлюк', Sergeli: 'Сергели массив', Sputnik: 'Спутник', 'Yangi Choshtepa': 'Янги Чоштепа',
+      Olympia: 'Олимпия', Olimpiya: 'Олимпия', Dustlik: 'Дустлик', Karasu: 'Карасу',
+      Traktorsozlar: 'Тракторсозлар', TTZ: 'ТТЗ', Qiyot: 'Кият',
       // Same places as Choshtepa/Takhtapul above, but under the spelling the
       // mahalla registry (uz-location-extensions.js) actually uses as its
       // canonical name -- exact-key lookup means both spellings must be here.
