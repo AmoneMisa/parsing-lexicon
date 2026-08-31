@@ -8,25 +8,28 @@ function match(city, text) {
   return result?.type === 'residentialComplexes' ? result.name : null;
 }
 
-test('Kharkiv Sokolnyky, Rohatynskyi and Saltivskyi aliases resolve', () => {
+test('Kharkiv Sokolnyky, Rohatynskyi and Saltivskyi residential aliases resolve with safe context', () => {
   const cases = new Map([
-    ['Сокільники', 'Sokolnyky'],
     ['ЖК Сокільники', 'Sokolnyky'],
-    ['Сокольники', 'Sokolnyky'],
     ['ЖК Сокольники', 'Sokolnyky'],
     ['Рогатинський', 'Rohatynskyi'],
     ['ЖК Рогатинський', 'Rohatynskyi'],
     ['Рогатинский', 'Rohatynskyi'],
     ['ЖК Рогатинский', 'Rohatynskyi'],
-    ['Салтівський', 'Saltivskyi'],
     ['ЖК Салтівський', 'Saltivskyi'],
-    ['Салтовский', 'Saltivskyi'],
     ['ЖК Салтовский', 'Saltivskyi'],
   ]);
 
   for (const [alias, canonical] of cases) {
     assert.equal(match('Kharkiv', alias), canonical);
   }
+});
+
+test('bare Sokolnyky and Saltivskyi forms stay available to non-residential geography', () => {
+  assert.equal(match('Kharkiv', 'Сокільники'), null);
+  assert.equal(match('Kharkiv', 'Сокольники'), null);
+  assert.equal(match('Kharkiv', 'Салтівський'), null);
+  assert.equal(match('Kharkiv', 'Салтовский'), null);
 });
 
 test('new Kharkiv residential aliases do not leak into Kyiv', () => {
