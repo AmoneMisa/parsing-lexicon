@@ -14,6 +14,7 @@ import { UA_MAJOR_LOCATION_EXTENSIONS } from './ua-location-extensions-major.js'
 import { UA_REGIONAL_LOCATION_EXTENSIONS } from './ua-location-extensions-regional.js';
 import { UA_SECONDARY_LOCATION_EXTENSIONS } from './ua-secondary-cities.js';
 import { UA_METRO_LOCATION_EXTENSIONS } from './ua-location-extensions-metro.js';
+import { UA_KHARKIV_LOCATION_TRANSLATIONS } from './ua-kharkiv-location-translations.js';
 
 export const UA_EXTRA_LOCATION_DICTIONARIES = Object.freeze({
   ...RAW_UA_EXTRA_LOCATION_DICTIONARIES,
@@ -92,8 +93,6 @@ function normalizeUzSemanticLocations(country) {
   const qorasuv = (tashkent?.microdistricts || []).find(({ name }) => name === 'Qorasuv');
 
   if (tashkent && qorasuv) {
-    // Bare Qorasuv is ambiguous with numbered Qorasuv/Karasu blocks. The
-    // umbrella area therefore requires an area/massif/daha form in free text.
     const qorasuvAliases = Object.freeze([...new Set([
       ...(qorasuv.aliases || []).filter((alias) => !/^(?:qorasuv|korasuv|корасув|карасу)$/iu.test(String(alias).trim())),
       'Qorasuv dahasi',
@@ -129,10 +128,6 @@ function normalizeUzSemanticLocations(country) {
     const landmarks = samarkand.landmarks || [];
     const localAreas = samarkand.localAreas || [];
     const streets = samarkand.streets || [];
-
-    // Legacy UZ seeds contain a few Samarkand listing labels as separate
-    // canonicals or under the wrong semantic collection. Normalize them to the
-    // single physical subjects already represented by geo-catalog.
     const centralPark = landmarks.find(({ name }) => name === 'Central Park');
     const alisherPark = landmarks.find(({ name }) => name === 'Alisher Navoiy Park');
     const canonicalPark = centralPark || alisherPark;
@@ -205,8 +200,6 @@ function normalizeUzSemanticLocations(country) {
     const oldCity = localAreas.find(({ name }) => name === 'Old City');
 
     if (ichanKala && oldCity) {
-      // UNESCO identifies Itchan Kala as the historic inner-city of Khiva.
-      // Keep listing-friendly Old City forms as aliases of that one place.
       const normalizedIchanKala = semanticEntry(ichanKala, 'Ichan Kala', [
         ...(ichanKala.aliases || []),
         ...(oldCity.aliases || []),
@@ -317,9 +310,6 @@ function normalizeUaSemanticLocations(country) {
   const odesa = country?.Odesa;
   if (!odesa) return country;
 
-  // “5–16 station of Velykyi Fontan” are traditional listing/locality zones
-  // anchored to the Fontanska Road transit stops, not twelve standalone city
-  // microdistricts. Keep their parsing value but expose them as local areas.
   const fontanStationAreas = Object.freeze(
     (odesa.microdistricts || [])
       .filter(({ name }) => ODESA_FONTAN_STATION_RE.test(name))
@@ -351,6 +341,9 @@ const UZ_LOCATION_DICTIONARIES = normalizeUzSemanticLocations(mergeLocationCount
 ));
 
 const UA_SEMANTIC_LOCATION_EXTENSIONS = normalizeUaSemanticLocations(UA_MAJOR_LOCATION_EXTENSIONS);
+const UA_KHARKIV_TRANSLATION_EXTENSIONS = Object.freeze({
+  Kharkiv: UA_KHARKIV_LOCATION_TRANSLATIONS,
+});
 
 const COUNTRY_LOCATION_DICTIONARIES = Object.freeze({
   ...BASE_LOCATION_DICTIONARIES,
@@ -365,14 +358,13 @@ const COUNTRY_LOCATION_DICTIONARIES = Object.freeze({
     UA_REGIONAL_LOCATION_EXTENSIONS,
     UA_SECONDARY_LOCATION_EXTENSIONS,
     UA_METRO_LOCATION_EXTENSIONS,
+    UA_KHARKIV_TRANSLATION_EXTENSIONS,
   ),
 });
 
 /** Canonical country -> city -> location dictionary registry. */
 export const LOCATION_DICTIONARIES = COUNTRY_LOCATION_DICTIONARIES;
 
-// Compatibility exports. Legacy seeds are not canonical ownership; consumers
-// should use LOCATION_DICTIONARIES/locationCities().
 export {
   UA_REGION_ENTRIES,
   UA_SECONDARY_CITIES,
