@@ -11,6 +11,7 @@ function match(city, text) {
 test('Kharkiv numbered microdistrict abbreviations resolve to stable canonicals', () => {
   const cases = new Map([
     ['601 мкр.', '601 microdistrict'],
+    ['614 мкр.', '614 microdistrict'],
     ['615 м/р', '615 microdistrict'],
     ['625 мкр', '625 microdistrict'],
     ['626-й м/р', '626 microdistrict'],
@@ -28,7 +29,7 @@ test('Kharkiv numbered microdistrict abbreviations resolve to stable canonicals'
 });
 
 test('Kharkiv numbered abbreviations remain city-scoped', () => {
-  for (const alias of ['601 мкр.', '615 м/р', '625 мкр', '656 мрн', '535А м/р', '606а м/р']) {
+  for (const alias of ['601 мкр.', '614 мкр.', '615 м/р', '625 мкр', '656 мрн', '535А м/р', '606а м/р']) {
     assert.equal(match('Kyiv', alias), null);
   }
 });
