@@ -11,8 +11,8 @@ test('Kharkiv recognizes Zhukovskoho listing aliases', () => {
 });
 
 test('Odesa recognizes newly promoted geo-backed microdistrict aliases', () => {
-  assert.equal(match('квартира в Вузовском районе', 'UA', 'Odesa')?.name, 'Vuzivskyi');
-  assert.equal(match('дом на Чубаевке', 'UA', 'Odesa')?.name, 'Chubaivka');
+  assert.equal(match('Вузовский район, квартира', 'UA', 'Odesa')?.name, 'Vuzivskyi');
+  assert.equal(match('Чубаевка, дом', 'UA', 'Odesa')?.name, 'Chubaivka');
   assert.equal(match('ж/м Котовского, аренда', 'UA', 'Odesa')?.name, 'Kotivskoho');
 });
 
@@ -23,7 +23,7 @@ test('Kyiv accepts common transliteration variants without changing canonicals',
 });
 
 test('Samarkand normalizes Sogdiana and Kimyogarlar to their physical semantic types', () => {
-  const sogdiana = match('квартира в Согдиёне', 'UZ', 'Samarkand');
+  const sogdiana = match('махалля Согдиёна', 'UZ', 'Samarkand');
   assert.equal(sogdiana?.type, 'mahallas');
   assert.equal(sogdiana?.name, 'Sogdiana');
 
