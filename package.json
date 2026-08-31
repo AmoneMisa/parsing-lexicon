@@ -50,6 +50,7 @@
     "./tashkent-colloquial": "./src/tashkent-colloquial.js",
     "./tashkent-residential-complexes": "./src/tashkent-residential-complexes.js",
     "./tashkent-pois": "./src/tashkent-pois.js",
+    "./tashkent-gastronomic-streets": "./src/tashkent-gastronomic-streets.js",
     "./tashkent-housing-geography": {
       "types": "./src/tashkent-housing-geography.d.ts",
       "import": "./src/tashkent-housing-geography.js"

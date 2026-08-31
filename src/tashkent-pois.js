@@ -15,6 +15,7 @@ function poi(name, category, aliases = [], options = {}) {
 }
 
 const MALL_CONTEXT = '(?:mall|молл|трц|тц|торгов(?:ый|ого)\\s+центр|savdo\\s+markazi|shopping\\s+(?:center|centre))';
+const PARK_CONTEXT = '(?:парк|bog|боғ|park|national|milliy)';
 
 export const TASHKENT_PARKS = Object.freeze([
   poi('Tashkent City Park', 'park', ['Ташкент Сити парк', 'Парк Tashkent City']),
@@ -22,21 +23,28 @@ export const TASHKENT_PARKS = Object.freeze([
   poi('Ecopark', 'park', ['Eco Park', 'Экопарк', 'Центральный экопарк']),
   poi('Central Park Mirzo Ulugbek', 'park', ['Центральный парк имени Мирзо Улугбека', 'Центральный парк', 'Central Park', 'Парк Мирзо Улугбека']),
   poi('Japanese Garden', 'park', ['Японский сад', "Yapon bog'i", 'Yapon bog‘i', 'Yapon bogʻI']),
-  poi('Milliy Bog Park', 'park', ['Миллий бог', "Milliy Bog'", 'Milliy Bog‘', 'Milliy Bogʻ', 'Национальный парк'], { contextRequired: true, context: '(?:парк|bog|боғ|park|national)' }),
-  poi('Alisher Navoi National Park', 'park', ['Парк имени Алишера Навои']),
-  poi('Dream Park', 'park', ['Dream Park имени Гафура Гуляма', 'Парк имени Гафура Гуляма', 'Парк Гафура Гуляма']),
-  poi('Anhor Park', 'park', ['Anhor', 'Анхор']),
-  poi('Lokomotiv Park', 'park', ['Anhor Lokomotiv', 'Анхор Локомотив', 'Парк Локомотив']),
+  poi('Alisher Navoi National Park', 'park', [
+    'Парк имени Алишера Навои',
+    'Национальный парк Узбекистана имени Алишера Навои',
+    'Milliy Bog Park',
+    "Milliy Bog'",
+    'Milliy Bog‘',
+    'Milliy Bogʻ',
+    'Миллий бог',
+    'Национальный парк',
+  ], { contextRequired: true, context: PARK_CONTEXT }),
+  poi('Dream Park', 'park', ['Dream Park имени Гафура Гуляма', 'Парк имени Гафура Гуляма', 'Парк Гафура Гуляма', 'Gafur Gulyam Park', 'Gafur Gulam Dream Park', "G'afur G'ulom bog'i", 'Парк культуры и отдыха имени Гафура Гуляма']),
+  poi('Anhor Lokomotiv Park', 'park', ['Anhor Lokomotiv', 'Anhor-Lokomotiv', 'Анхор Локомотив', 'Парк Анхор Локомотив', 'Парк Локомотив']),
   poi('Tashkentland', 'park', ['Ташкентленд']),
   poi('Victory Park', 'park', ['Парк Победы', "G'alaba Bog'i", 'G‘alaba Bog‘i', 'Gʻalaba Bogʻi']),
-  poi('Ashgabat Park', 'park', ['Ашхабад парк', 'Ashxobod Park']),
-  poi('Dostlik Park', 'park', ['Парк Дустлик', "Do'stlik Park", 'Do‘stlik Park', 'Doʻstlik Park']),
-  poi('Navruz Park', 'park', ['Парк Навруз']),
-  poi('Bobur Park', 'park', ['Парк Бабура', 'Парк Бобура', "Bobur bog'i", 'Bobur bog‘i']),
-  poi('Furqat Park', 'park', ['Парк Фурката']),
+  poi('Ashgabat Park', 'park', ['Ашхабад парк', 'Ashxobod Park', "Ashxobod bog'i", 'Ashxobod bog‘i']),
+  poi('Dostlik Park', 'park', ['Парк Дустлик', "Do'stlik Park", 'Do‘stlik Park', 'Doʻstlik Park', 'Bobur Park', 'Парк Бабура', 'Парк Бобура', "Bobur bog'i", 'Bobur bog‘i']),
+  poi('Navruz Park', 'park', ['Парк Навруз', 'Navroʻz bogʻi', "Navro'z bog'i"]),
+  poi('Furqat Park', 'park', ['Парк Фурката', "Furqat bog'i", 'Furqat bog‘i']),
   poi('Yakub Kolas Park', 'park', ['Парк Якуба Коласа', 'Парк имени Якуба Коласа']),
-  poi('Friendship of Peoples Park', 'park', ['Парк Дружбы народов']),
-  poi('Yangi Ozbekiston Park', 'park', ["Yangi O'zbekiston Bog'i", 'Yangi O‘zbekiston Bog‘i', 'Парк Новый Узбекистан', 'Новый Узбекистан', "Yangi O'zbekiston Park"]),
+  poi('Friendship of Peoples Park', 'park', ['Парк Дружбы народов', "Xalqlar Do'stligi Park", 'Xalqlar Do‘stligi Park']),
+  poi('Yangi Ozbekiston Park', 'park', ["Yangi O'zbekiston Bog'i", 'Yangi O‘zbekiston Bog‘i', 'Yangi Oʻzbekiston bogʻi', 'Парк Новый Узбекистан', 'Новый Узбекистан', "Yangi O'zbekiston Park"]),
+  poi('Tashkent Botanical Garden', 'park', ['Botanical Garden named after Fyodor Rusanov', 'Botanical Garden named after Fyodor Rusananov', 'Ботанический сад имени Фёдора Русанова', 'Ташкентский ботанический сад', 'Fyodor Rusanov nomidagi Botanika bog‘i', 'Toshkent botanika bog‘i']),
 ]);
 
 export const TASHKENT_SQUARES = Object.freeze([
@@ -71,9 +79,10 @@ export const TASHKENT_MARKETS = Object.freeze([
 
 export const TASHKENT_MALLS = Object.freeze([
   poi('Tashkent City Mall', 'mall', ['Ташкент Сити Молл']),
-  poi('Samarqand Darvoza', 'mall', ['Самарканд Дарвоза']),
+  poi('Samarqand Darvoza', 'mall', ['Самарканд Дарвоза', 'Samarkand Darvoza']),
   poi('Compass Mall', 'mall', ['Compass', 'ТРЦ Compass', 'ТЦ Compass', 'Compass savdo markazi'], { contextRequired: true, context: MALL_CONTEXT }),
   poi('Mega Planet', 'mall', ['MegaPlanet', 'Мега Планет', 'ТРЦ Mega Planet', 'Mega Planet savdo markazi']),
+  poi('Anhor Park Mall', 'mall', ['Anhor Park', 'Anhor Mall', 'Anhor Park Savdo Markazi', 'Анхор Парк', 'Анхор Молл', 'ТРЦ Анхор', 'ТЦ Анхор']),
   poi('Riviera Mall', 'mall', ['Riviera', 'Ривьера Молл', 'ТРЦ Riviera', 'Riviera savdo markazi'], { contextRequired: true, context: MALL_CONTEXT }),
   poi('NEXT Mall', 'mall', ['Next', 'NEXT', 'Некст Молл', 'ТРЦ NEXT', 'NEXT savdo markazi'], { contextRequired: true, context: MALL_CONTEXT }),
   poi('Atlas Mall', 'mall', ['Atlas', 'Атлас Молл', 'ТРЦ Atlas', 'Atlas savdo markazi'], { contextRequired: true, context: MALL_CONTEXT }),
@@ -81,13 +90,12 @@ export const TASHKENT_MALLS = Object.freeze([
   poi('Depo Mall', 'mall', ['Depo', 'Депо Молл', 'ТРЦ Depo', 'Depo savdo markazi'], { contextRequired: true, context: MALL_CONTEXT }),
   poi('Vega Centre', 'mall', ['Vega Center', 'Вега Центр', 'Vega savdo markazi']),
   poi('Yunusabad Gallery', 'mall', ['Юнусабад Галерея', 'Yunusobod Galereya', 'Yunusobod Gallery']),
-  poi('Poytaxt Mall', 'mall', ['Poytaxt', 'Пойтахт Молл', 'Пойтахт', 'Poytaxt savdo markazi'], { contextRequired: true, context: MALL_CONTEXT }),
+  poi('Poytaxt Mall', 'mall', ['Poytaxt', 'Пойтахт Молл', 'Пойтахт', 'Poytaxt Shopping Center', 'Poytaxt savdo markazi'], { contextRequired: true, context: MALL_CONTEXT }),
   poi('Alfraganus Mall', 'mall', ['Alfraganus', 'Альфраганус Молл', 'Alfraganus savdo markazi'], { contextRequired: true, context: MALL_CONTEXT }),
-  poi('HT Mall', 'mall', ['HT Молл', 'HT savdo markazi']),
+  poi('High Town Mall', 'mall', ['HT Mall', 'HT Молл', 'HT savdo markazi']),
   poi('Seoul Mun Mall', 'mall', ['Seoul Mun', 'Сеул Мун Молл', 'Seoul Mun savdo markazi'], { contextRequired: true, context: MALL_CONTEXT }),
   poi('Ecobozor', 'mall', ['Eco Bozor', 'Ekobozor', 'Эко Бозор', 'Экобозор']),
-  poi('Magnum Samarkand Darvoza', 'mall', ['Magnum super', 'Magnum Supermarket', 'Магнум Самарканд Дарвоза']),
-  poi('Baraka Market', 'mall', ['Baraka market', 'Baraka Supermarket', 'Baraka Savdo', 'Барака маркет', 'Барака Савдо']),
+  poi('Chimgan Shopping Center', 'mall', ['Chimgan', 'Chimgan Mall', 'ТРЦ Чимган', 'ТЦ Чимган', 'Chimgan savdo markazi'], { contextRequired: true, context: MALL_CONTEXT }),
 ]);
 
 export const TASHKENT_ATTRACTIONS = Object.freeze([
@@ -180,6 +188,13 @@ export const TASHKENT_MEDICAL_POIS = Object.freeze([
   poi('Republic Specialized Nephrology and Transplantation Centre', 'medical', ['Republican Nephrology Center', 'Республиканский нефрологический центр', 'Центр нефрологии и трансплантации']),
   poi('Republican Perinatal Center', 'medical', ['Республиканский перинатальный центр', 'Перинатальный центр']),
   poi('Institute of Obstetrics and Gynecology', 'medical', ['Институт акушерства и гинекологии']),
+  poi('AKFA Medline', 'medical', ['AKFA MEDLINE', 'Akfa Medline', 'Акфа Медлайн']),
+  poi('Shifo Nur', 'medical', ['Шифо Нур']),
+  poi('Nano Medical Clinic', 'medical', ['Клиника Нано', 'Nano Clinic', 'Nano Klinikasi', 'Nano tibbiy klinikasi']),
+  poi('Medas Medical Center', 'medical', ['Medas Group', 'MEDAS', 'Медицинский центр MEDAS']),
+  poi('Prof Med Clinic', 'medical', ['ProfMedService', 'Prof Med Klinikasi', 'Клиника Профмедсервис']),
+  poi('Dr. Akshay Kumar Eye Clinic', 'medical', ['Глазная клиника доктора Акшая Кумара', 'Vedanta Medical']),
+  poi('Shox International Hospital', 'medical', ['Shox Hospital', 'Международная больница Шоx']),
 ]);
 
 export const TASHKENT_LEGACY_LANDMARKS = Object.freeze([
