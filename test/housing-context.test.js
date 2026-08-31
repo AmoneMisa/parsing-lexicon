@@ -11,6 +11,17 @@ test('housing action stays orthogonal to rent duration', () => {
   });
 });
 
+test('Uzbek per-day operating costs do not turn a sale into short rent', () => {
+  const text = `Тошкент шахар, Шайхонтохур тумани, Самарканд Дарваза МФЙ,
+  биринчи каватда, 2 хонали квартира, 56 м.кв. Мебель ва техникаси колади.
+  Электрга 50% чегирма бу домда, кунига барча жихозларни ишлатганиздаям
+  купи билан 8 минг сум езади. Нархи такалгани 940 мил сум. ками йук.`;
+
+  assert.equal(resolveHousingIntent(text), null);
+  assert.equal(resolveHousingIntent('Квартира ижарага берилади, нархи кунига 300 минг сум')?.dealType, 'shortRent');
+  assert.equal(resolveHousingIntent('Квартира нархи кунига 300 минг сум')?.dealType, 'shortRent');
+});
+
 test('housing context preserves negated policies and legal state', () => {
   const result = parseHousingContext('Новый ремонт. Без животных, с детьми можно. Ипотека возможна. Кадастр готов. Без торга.');
   assert.equal(result.condition, 'newRenovation');

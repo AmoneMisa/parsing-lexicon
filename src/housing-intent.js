@@ -5,6 +5,8 @@ const group = (canonical, aliases, extra = {}) => lexiconEntity(canonical, alias
 const KK_RENT_OUT_ALIASES = Object.freeze(['жалға беремін', 'жалға беріледі']);
 const RO_SALE_OFFER_ALIASES = Object.freeze(['de vânzare', 'de vanzare']);
 const UZ_CONTEXTUAL_RENT_OUT_RE = /(?:^|[^\p{L}\p{N}_])(?:ijaraga|ижарага)(?=$|[^\p{L}\p{N}_])[^.!?\r\n]{0,48}(?:beraman|beriladi|topshiraman|бераман|берилади|топшираман)(?=$|[^\p{L}\p{N}_])/iu;
+const UZ_PER_DAY_RE = /(?:^|[^\p{L}\p{N}_])(?:kuniga|кунига)(?=$|[^\p{L}\p{N}_])/iu;
+const UZ_DAILY_RENT_PRICE_RE = /(?:narx|нарх|ijara|ижара|to['’`]?lov|т[ўу]лов|оплата)[^.!?\r\n]{0,48}(?:kuniga|кунига)|(?:kuniga|кунига)[^.!?\r\n]{0,48}(?:narx|нарх|ijara|ижара|to['’`]?lov|т[ўу]лов|оплата)/iu;
 
 export const HOUSING_ACTIONS = Object.freeze([
   group('sell', {
@@ -91,8 +93,8 @@ export const HOUSING_DEAL_TYPES = Object.freeze([
     en: ['daily rent', 'short term', 'short-term rent', 'per day', 'hourly'],
     uk: ['подобово', 'погодинно', 'на добу', 'на годину', 'короткострокова оренда'],
     ro: ['regim hotelier', 'pe zi', 'zilnic', 'pe noapte', 'închiriere pe termen scurt', 'inchiriere pe termen scurt'],
-    uzLatn: ['kunlik', 'sutkaga', 'sutkalik', 'soatlik', 'kuniga'],
-    uzCyrl: ['кунлик', 'суткага', 'суткалик', 'соатлик', 'кунига'],
+    uzLatn: ['kunlik', 'sutkaga', 'sutkalik', 'soatlik'],
+    uzCyrl: ['кунлик', 'суткага', 'суткалик', 'соатлик'],
     kk: ['тәулік', 'тәуліктік', 'тәулігіне', 'сағаттық', 'күндік'],
   }),
 ]);
@@ -111,11 +113,13 @@ export function resolveHousingIntent(value) {
   const actionMatch = findCanonical(text, HOUSING_ACTIONS, { partial: true });
   const action = actionMatch?.canonical || (UZ_CONTEXTUAL_RENT_OUT_RE.test(text) ? 'rentOut' : null);
   const durationDeal = findCanonical(text, HOUSING_DEAL_TYPES, { partial: true });
+  const hasContextualUzPerDay = UZ_PER_DAY_RE.test(text)
+    && ((action === 'rentOut' || action === 'rentIn') || UZ_DAILY_RENT_PRICE_RE.test(text));
 
   if (action) {
     const base = HOUSING_ACTION_MAP[action];
     let dealType = base.dealType;
-    if (durationDeal?.canonical === 'shortRent' && (action === 'rentOut' || action === 'rentIn')) {
+    if ((durationDeal?.canonical === 'shortRent' || hasContextualUzPerDay) && (action === 'rentOut' || action === 'rentIn')) {
       dealType = 'shortRent';
     }
     return Object.freeze({
@@ -125,11 +129,11 @@ export function resolveHousingIntent(value) {
     });
   }
 
-  if (!durationDeal) return null;
+  if (!durationDeal && !hasContextualUzPerDay) return null;
   return Object.freeze({
     action: null,
     listingKind: null,
-    dealType: durationDeal.canonical,
+    dealType: durationDeal?.canonical || 'shortRent',
   });
 }
 
