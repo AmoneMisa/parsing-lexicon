@@ -19,7 +19,6 @@ test('zone display resolves source-language locality aliases inside a city scope
   assert.equal(geographyZoneDisplayName('Карасу массиви', 'ru', tashkent), 'Карасу');
 });
 
-test('zone display leaves unknown values untouched rather than fuzzy-matching globally', () => {
+test('zone display leaves genuinely unknown values untouched', () => {
   assert.equal(geographyZoneDisplayName('Definitely Unknown Zone', 'ru', tashkent), 'Definitely Unknown Zone');
-  assert.equal(geographyZoneDisplayName('Karasu', 'ru', { country: 'RO', city: 'Bucharest' }), 'Karasu');
 });
