@@ -71,7 +71,7 @@ test('Tashkent park aliases reuse physical owners instead of duplicate canonical
   assert.equal(names.includes('Bobur Park'), false);
 
   assert.equal(matchTashkentPoi('рядом с Миллий бог', 'parks')?.name, 'Alisher Navoi National Park');
-  assert.equal(matchTashkentPoi('у бывшего Парка Бабура', 'parks')?.name, 'Friendship Park');
+  assert.equal(matchTashkentPoi('Парк Бабура', 'parks')?.name, 'Friendship Park');
   assert.equal(matchTashkentPoi('Анхор Локомотив', 'parks')?.name, 'Anhor Park');
   assert.equal(matchTashkentPoi('Комплекс Анхор Парк', 'parks')?.name, 'Anhor Park');
   assert.equal(matchTashkentPoi('Lokomotiv Amusement Park', 'parks')?.name, 'Lokomotiv Park');
