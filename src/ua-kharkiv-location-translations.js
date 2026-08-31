@@ -5,11 +5,20 @@ import { locationEntries } from './location-merge.js';
 // major Ukraine location layer so mergeLocationEntries enriches one subject
 // instead of creating parallel parser entities.
 const numberedMicrodistricts = Object.freeze([
-  '455','519','520','521','522','524','531','533','601','602','603','604','605','606','607','608','614','615','616','624','625','626','627','656',
+  '455','519','520','521','522','524','531','533','536','537','601','602','603','604','605','606','607','608','614','615','616','624','625','626','627','656',
 ]);
+
+const NUMBERED_EXTRA_ALIASES = Object.freeze({
+  536: Object.freeze(['Містечко Будівельників', 'Містечко будівельників', 'Городок Строителей', 'Городок строителей']),
+  537: Object.freeze(['537 м.р.', '537 м.р']),
+});
 
 const numberedMicrodistrictRow = (number) => [
   `${number} microdistrict`,
+  `${number}-й мікрорайон`,
+  `${number} мікрорайон`,
+  `${number}-й микрорайон`,
+  `${number} микрорайон`,
   `${number} мкр`,
   `${number} мкр.`,
   `${number}-й мкр`,
@@ -18,12 +27,13 @@ const numberedMicrodistrictRow = (number) => [
   `${number}-й м/р`,
   `${number} мрн`,
   `${number} мрн.`,
+  ...(NUMBERED_EXTRA_ALIASES[number] || []),
 ];
 
 export const UA_KHARKIV_LOCATION_TRANSLATIONS = Object.freeze({
   microdistricts: locationEntries([
     ...numberedMicrodistricts.map(numberedMicrodistrictRow),
-    ['535A', '535A мкр', '535А мкр', '535а мкр', '535A мкр.', '535А мкр.', '535а мкр.', '535A м/р', '535А м/р', '535а м/р', '535A мрн', '535А мрн', '535а мрн'],
+    ['535A', '535 microdistrict', '535-й мікрорайон', '535 мікрорайон', '535-й микрорайон', '535 микрорайон', '535 мкр', '535 мкр.', '535-й мкр', '535-й мкр.', '535 м/р', '535 мрн', '535A мкр', '535А мкр', '535а мкр', '535A мкр.', '535А мкр.', '535а мкр.', '535A м/р', '535А м/р', '535а м/р', '535A мрн', '535А мрн', '535а мрн'],
     ['606A', '606A мкр', '606А мкр', '606а мкр', '606A мкр.', '606А мкр.', '606а мкр.', '606A м/р', '606А м/р', '606а м/р', '606A мрн', '606А мрн', '606а мрн'],
     ['627 microdistrict', '624A', '624А', '624а', '624A microdistrict', '624А мікрорайон', '624а мікрорайон', '624А микрорайон', '624а микрорайон', '624А мкр', '624а мкр'],
     ['Horizont', 'Обрій', 'Обрий', 'Obrii', 'Горизонт'],
