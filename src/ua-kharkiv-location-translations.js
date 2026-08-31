@@ -4,7 +4,28 @@ import { locationEntries } from './location-merge.js';
 // benefit from explicit UA/RU coverage. Canonicals intentionally match the
 // major Ukraine location layer so mergeLocationEntries enriches one subject
 // instead of creating parallel parser entities.
+const numberedMicrodistricts = Object.freeze([
+  '455','519','520','521','522','524','531','533','601','602','603','604','605','606','607','608','614','615','616','624','625','626','627','656',
+]);
+
+const numberedMicrodistrictRow = (number) => [
+  `${number} microdistrict`,
+  `${number} мкр`,
+  `${number} мкр.`,
+  `${number}-й мкр`,
+  `${number}-й мкр.`,
+  `${number} м/р`,
+  `${number}-й м/р`,
+  `${number} мрн`,
+  `${number} мрн.`,
+];
+
 export const UA_KHARKIV_LOCATION_TRANSLATIONS = Object.freeze({
+  microdistricts: locationEntries([
+    ...numberedMicrodistricts.map(numberedMicrodistrictRow),
+    ['535A', '535A мкр', '535А мкр', '535а мкр', '535A мкр.', '535А мкр.', '535а мкр.', '535A м/р', '535А м/р', '535а м/р', '535A мрн', '535А мрн', '535а мрн'],
+    ['606A', '606A мкр', '606А мкр', '606а мкр', '606A мкр.', '606А мкр.', '606а мкр.', '606A м/р', '606А м/р', '606а м/р', '606A мрн', '606А мрн', '606а мрн'],
+  ]),
   residentialComplexes: locationEntries([
     ['Pavlovsky Kvartal', 'Павлівський квартал', 'ЖК Павлівський квартал', 'Павловский квартал', 'ЖК Павловский квартал'],
     ['Dim na Sumskii', 'Будинок на Сумській', 'Дім на Сумській', 'ЖК Будинок на Сумській', 'Дом на Сумской', 'ЖК Дом на Сумской'],
