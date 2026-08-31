@@ -22,7 +22,7 @@ export const TASHKENT_PARKS = Object.freeze([
   poi('Ecopark', 'park', ['Eco Park', 'Экопарк', 'Центральный экопарк', 'Экопарк имени Бабура', 'Центральный экопарк имени Захириддина Мухаммада Бабура', "Zahiriddin Muhammad Bobur nomidagi markaziy eko bog'i", 'Zahiriddin Muhammad Bobur nomidagi markaziy eko bog‘i']),
   poi('Central Park Mirzo Ulugbek', 'park', ['Центральный парк имени Мирзо Улугбека', 'Центральный парк', 'Central Park', 'Парк Мирзо Улугбека']),
   poi('Japanese Garden', 'park', ['Японский сад', "Yapon bog'i", 'Yapon bog‘i', 'Yapon bogʻI']),
-  poi('Alisher Navoi National Park', 'park', ['Парк имени Алишера Навои', 'Milliy Bog Park', 'Миллий бог', "Milliy Bog'", 'Milliy Bog‘', 'Milliy Bogʻ', 'Национальный парк', "O'zbekiston milliy bog'i", 'O‘zbekiston milliy bog‘i'], { contextRequired: true, context: '(?:парк|bog|боғ|park|national|navoi|наво)' }),
+  poi('Alisher Navoi National Park', 'park', ['Парк имени Алишера Навои', 'Milliy Bog Park', 'Миллий бог', "Milliy Bog'", 'Milliy Bog‘', 'Milliy Bogʻ', 'Национальный парк', "O'zbekiston milliy bog'i", 'O‘zbekiston milliy bog‘i'], { contextRequired: true, context: '(?:парк|bog|бог|боғ|park|national|navoi|наво)' }),
   poi('Dream Park', 'park', ['Dream Park имени Гафура Гуляма', 'Парк имени Гафура Гуляма', 'Парк Гафура Гуляма', 'Gafur Gulom Park', "G'afur G'ulom bog'i", 'G‘afur G‘ulom bog‘i']),
   poi('Anhor Park', 'park', ['Anhor', 'Анхор', 'Anhor Lokomotiv', 'Анхор Локомотив', 'Anhor Lokomotiv Park', 'Комплекс Анхор Парк', 'Anhor Park Complex']),
   poi('Lokomotiv Park', 'park', ['Парк Локомотив', 'Lokomotiv Amusement Park', 'Lokomotiv attraksionlar bog‘i']),
