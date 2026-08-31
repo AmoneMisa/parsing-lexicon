@@ -4,15 +4,16 @@ import { aliasesOf, findCanonical } from './normalization.js';
 import { canonicalCountryCode } from './countries.js';
 
 const ZONE_KINDS = Object.freeze([
+  ['city', []],
   ['district', ['districts']],
   ['microdistrict', ['microdistricts']],
+  ['metro', ['metro']],
   ['mahalla', ['mahallas']],
   ['local_area', ['localAreas']],
   ['development_area', ['developmentAreas']],
   ['residential_complex', ['residentialComplexes']],
   ['settlement', ['settlements']],
   ['suburb', ['suburbs']],
-  ['metro', ['metro']],
 ]);
 
 const CYRILLIC_RE = /\p{Script=Cyrillic}/u;
@@ -62,9 +63,6 @@ function localizedEntryLabel(entry, locale, kind, compact = false) {
   const canonical = entry.canonical || entry.name;
   if (!canonical) return null;
 
-  // Prefer stable presentation tables when they already know this canonical.
-  // Passing no city context avoids a source-language alias from overriding an
-  // established Russian display name such as Chilanzar -> Чиланзар.
   const established = geographyDisplayName(canonical, locale, kind, null);
   const label = established !== canonical
     ? established
@@ -88,20 +86,17 @@ function resolveDictionaryZone(raw, locale, context, compact = false) {
 }
 
 function directZoneLabel(raw, locale, context) {
-  const dictionary = dictionaryForContext(context);
-  if (dictionary) {
-    // With an explicit city scope, never fall through to global display tables:
-    // the same canonical-looking token may belong to another city.
-    const scoped = resolveDictionaryZone(raw, locale, context, true);
-    return scoped && scoped !== raw ? scoped : null;
-  }
-
-  // Context-free callers may still use globally unambiguous presentation names.
+  // Preserve the existing consumer precedence: stable shared presentation names
+  // win first, then the selected city dictionary fills aliases that those tables
+  // do not know. This keeps canonical geo-catalog values such as Karasu usable
+  // even when the listing lexicon canonical is Qorasuv.
   for (const [kind] of ZONE_KINDS) {
     const translated = geographyDisplayName(raw, locale, kind, null);
     if (translated && translated !== raw) return compactBase(translated);
   }
-  return null;
+
+  const scoped = resolveDictionaryZone(raw, locale, context, true);
+  return scoped && scoped !== raw ? scoped : null;
 }
 
 function compositeBaseLabel(rawBase, locale, context) {
