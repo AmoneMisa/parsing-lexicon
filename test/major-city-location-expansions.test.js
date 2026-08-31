@@ -4,22 +4,34 @@ import { LOCATION_DICTIONARIES, matchDictionaryLocation } from '../src/locations
 
 const match = (text, country, city) => matchDictionaryLocation(text, country, city);
 
-test('Kharkiv recognizes Zhukovskoho listing aliases', () => {
-  const result = match('Сдам квартиру, посёлок Жуковского, рядом ХАИ', 'UA', 'Kharkiv');
-  assert.equal(result?.type, 'microdistricts');
-  assert.equal(result?.name, 'Zhukovskoho');
+test('Kharkiv recognizes Zhukovskoho and Kulynychi listing aliases', () => {
+  const zhukovskoho = match('Сдам квартиру, посёлок Жуковского, рядом ХАИ', 'UA', 'Kharkiv');
+  assert.equal(zhukovskoho?.type, 'microdistricts');
+  assert.equal(zhukovskoho?.name, 'Zhukovskoho');
+
+  const kulynychi = match('дом, селище Кулиничі, Харків', 'UA', 'Kharkiv');
+  assert.equal(kulynychi?.type, 'microdistricts');
+  assert.equal(kulynychi?.name, 'Kulynychi');
 });
 
-test('Odesa recognizes newly promoted geo-backed microdistrict aliases', () => {
+test('Odesa recognizes expanded colloquial microdistrict aliases', () => {
   assert.equal(match('Вузовский район, квартира', 'UA', 'Odesa')?.name, 'Vuzivskyi');
   assert.equal(match('Чубаевка, дом', 'UA', 'Odesa')?.name, 'Chubaivka');
   assert.equal(match('ж/м Котовского, аренда', 'UA', 'Odesa')?.name, 'Kotivskoho');
+  assert.equal(match('квартира на Молдаванке', 'UA', 'Odesa')?.name, 'Moldavanka');
+  assert.equal(match('дом, район Пересыпи', 'UA', 'Odesa')?.name, 'Peresyp');
+  assert.equal(match('Черноморка район, участок', 'UA', 'Odesa')?.name, 'Chornomorka');
 });
 
 test('Kyiv accepts common transliteration variants without changing canonicals', () => {
   assert.equal(match('flat in Troieshchyna', 'UA', 'Kyiv')?.name, 'Troyeshchyna');
   assert.equal(match('apartment in Lypky', 'UA', 'Kyiv')?.name, 'Lipky');
   assert.equal(match('Borshchagovka apartment', 'UA', 'Kyiv')?.name, 'Borshchahivka');
+  assert.equal(match('flat in Shulyavka', 'UA', 'Kyiv')?.name, 'Shuliavka');
+  assert.equal(match('apartment in Solomyanka', 'UA', 'Kyiv')?.name, 'Solomianka');
+  assert.equal(match('rent in Kurenevka', 'UA', 'Kyiv')?.name, 'Kurenivka');
+  assert.equal(match('flat in Rusanovka', 'UA', 'Kyiv')?.name, 'Rusanivka');
+  assert.equal(match('apartment Poznyaki', 'UA', 'Kyiv')?.name, 'Pozniaky');
 });
 
 test('Samarkand normalizes Sogdiana and Kimyogarlar to their physical semantic types', () => {
