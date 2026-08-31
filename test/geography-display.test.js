@@ -81,3 +81,32 @@ test('local display lookup remains city-scoped and never guesses without context
     'Chorsu Bazaar',
   );
 });
+
+
+test('Tashkent multilingual locality labels stay deterministic across semantic types', () => {
+  const tashkent = { country: 'UZ', city: 'Tashkent' };
+
+  assert.equal(geographyDisplayName("Qo'yliq-6", 'uz', 'local_area', tashkent), 'Qo‘yliq-6 mavzesi');
+  assert.equal(geographyDisplayName("Qo'yliq-6", 'ru', 'local_area', tashkent), 'Куйлюк-6');
+  assert.equal(geographyDisplayName('Qalqon', 'uz', 'mahalla', tashkent), 'Qalqon mahallasi');
+  assert.equal(geographyDisplayName('Qalqon', 'uz', 'local_area', tashkent), 'Qalqon mavzesi');
+  assert.equal(geographyDisplayName('Qalqon', 'ru', 'local_area', tashkent), 'массив Калкон');
+  assert.equal(geographyDisplayName("Bog'bon", 'ru', 'mahalla', tashkent), 'Богбон');
+  assert.equal(geographyDisplayName("Bog'bon", 'ru', 'local_area', tashkent), 'массив Богбон');
+  assert.equal(geographyDisplayName('Guruchariq', 'ru', 'local_area', tashkent), 'массив Гуручарик');
+  assert.equal(geographyDisplayName('Guruchariq', 'uz', 'local_area', tashkent), 'Guruchariq mavzesi');
+  assert.equal(geographyDisplayName('Beruniy-B1', 'uz', 'local_area', tashkent), 'Beruniy-B1 mavzesi');
+  assert.equal(geographyDisplayName('Parkent-Riyoziy', 'ru', 'local_area', tashkent), 'Паркент-Риёзий');
+  assert.equal(geographyDisplayName('Parkent-Siolkovskiy', 'ru', 'local_area', tashkent), 'Паркент-Сиолковский');
+});
+
+
+test("Tashkent Suvsoz and Sug'diyona labels preserve locality semantics", () => {
+  const tashkent = { country: 'UZ', city: 'Tashkent' };
+  assert.equal(geographyDisplayName('Suvsoz-4', 'uz', 'local_area', tashkent), 'Suvsoz-4 mavzesi');
+  assert.equal(geographyDisplayName('Suvsoz-4', 'ru', 'local_area', tashkent), 'Сувсоз-4');
+  assert.equal(geographyDisplayName("Sug'diyona", 'uz', 'mahalla', tashkent), "Sug'diyona mahallasi");
+  assert.equal(geographyDisplayName("Sug'diyona", 'uz', 'local_area', tashkent), "Sug'diyona mavzesi");
+  assert.equal(geographyDisplayName("Sug'diyona", 'ru', 'mahalla', tashkent), 'махалля Согдиана');
+  assert.equal(geographyDisplayName("Sug'diyona", 'ru', 'local_area', tashkent), 'массив Согдиана');
+});
