@@ -24,7 +24,7 @@ export const TASHKENT_PARKS = Object.freeze([
   poi('Japanese Garden', 'park', ['Японский сад', "Yapon bog'i", 'Yapon bog‘i', 'Yapon bogʻI']),
   poi('Alisher Navoi National Park', 'park', ['Парк имени Алишера Навои', 'Milliy Bog Park', 'Миллий бог', "Milliy Bog'", 'Milliy Bog‘', 'Milliy Bogʻ', 'Национальный парк', "O'zbekiston milliy bog'i", 'O‘zbekiston milliy bog‘i'], { contextRequired: true, context: '(?:парк|bog|боғ|park|national|navoi|наво)' }),
   poi('Dream Park', 'park', ['Dream Park имени Гафура Гуляма', 'Парк имени Гафура Гуляма', 'Парк Гафура Гуляма', 'Gafur Gulom Park', "G'afur G'ulom bog'i", 'G‘afur G‘ulom bog‘i']),
-  poi('Anhor Park', 'park', ['Anhor', 'Анхор', 'Anhor Lokomotiv', 'Анхор Локомотив', 'Anhor Lokomotiv Park']),
+  poi('Anhor Park', 'park', ['Anhor', 'Анхор', 'Anhor Lokomotiv', 'Анхор Локомотив', 'Anhor Lokomotiv Park', 'Комплекс Анхор Парк', 'Anhor Park Complex']),
   poi('Lokomotiv Park', 'park', ['Парк Локомотив', 'Lokomotiv Amusement Park', 'Lokomotiv attraksionlar bog‘i']),
   poi('Tashkentland', 'park', ['Ташкентленд']),
   poi('Victory Park', 'park', ['Парк Победы', "G'alaba Bog'i", 'G‘alaba Bog‘i', 'Gʻalaba Bogʻi']),
@@ -66,6 +66,7 @@ export const TASHKENT_MARKETS = Object.freeze([
   poi('Orikzor Bazaar', 'market', ['Урикзор', "O'rikzor", 'O‘rikzor', 'Oʻrikzor']),
   poi('Kadysheva Bazaar', 'market', ['Кадышева рынок', 'Кадышева базар']),
   poi('Yangiobod Bazaar', 'market', ['Янгиабадский рынок', 'Янгиабад', 'Yangiobod bozori']),
+  poi('Sampi Bazaar', 'market', ['Sampi', 'Sampi bozori', 'Сампи', 'рынок Сампи', 'ТЦ Sampi', 'Торговый центр Sampi']),
 ]);
 
 export const TASHKENT_MALLS = Object.freeze([
@@ -75,23 +76,27 @@ export const TASHKENT_MALLS = Object.freeze([
   poi('Mega Planet', 'mall', ['MegaPlanet', 'Мега Планет', 'ТРЦ Mega Planet', 'Mega Planet savdo markazi']),
   poi('Riviera Mall', 'mall', ['Riviera', 'Ривьера Молл', 'ТРЦ Riviera', 'Riviera savdo markazi'], { contextRequired: true, context: MALL_CONTEXT }),
   poi('NEXT Mall', 'mall', ['Next', 'NEXT', 'Некст Молл', 'ТРЦ NEXT', 'NEXT savdo markazi'], { contextRequired: true, context: MALL_CONTEXT }),
+  poi('Chimgan', 'mall', ['Chimgan Mall', 'Торговый центр Чимган', 'ТЦ Чимган', 'ТРЦ Чимган', 'Чимган']),
   poi('Atlas Chilanzar', 'mall', ['Atlas Chilanzar Mall', 'Atlas Chilanzar', 'Атлас Чиланзар', 'ТРЦ Atlas Chilanzar', 'Atlas Chilanzar savdo markazi']),
-  poi('Atlas Chimgan', 'mall', ['Atlas Chimgan Mall', 'Chimgan Mall', 'Чимган', 'Атлас Чимган', 'ТРЦ Atlas Chimgan', 'Atlas Chimgan savdo markazi']),
   poi('Atlas Yunusobod', 'mall', ['Atlas Yunusabad', 'Atlas Yunusobod Mall', 'Атлас Юнусабад', 'Атлас Юнусобод', 'ТРЦ Atlas Yunusobod', 'Atlas Yunusobod savdo markazi']),
-  poi('Parus Mall', 'mall', ['Parus', 'Парус Молл', 'ТРЦ Parus', 'Parus savdo markazi'], { contextRequired: true, context: MALL_CONTEXT }),
+  poi('Parus Mall', 'mall', ['Parus', 'Парус Молл', 'ТРЦ Parus', 'СРЦ Parus', 'ТРЦ Парус', 'Parus savdo markazi'], { contextRequired: true, context: MALL_CONTEXT }),
   poi('Depo Mall', 'mall', ['Depo', 'DEPO Mall', 'Депо Молл', 'ТРЦ Depo', 'Depo savdo markazi'], { contextRequired: true, context: MALL_CONTEXT }),
   poi('Vega Centre', 'mall', ['Vega Center', 'Вега Центр', 'Vega savdo markazi']),
   poi('Yunusabad Gallery', 'mall', ['Юнусабад Галерея', 'Yunusobod Galereya', 'Yunusobod Gallery']),
-  poi('Poytaxt Mall', 'mall', ['Poytaxt', 'Пойтахт Молл', 'Пойтахт', 'Poytaxt savdo markazi'], { contextRequired: true, context: MALL_CONTEXT }),
-  poi('Alfraganus Mall', 'mall', ['Alfraganus', 'Альфраганус Молл', 'Alfraganus savdo markazi'], { contextRequired: true, context: MALL_CONTEXT }),
+  poi('Poytaxt Mall', 'mall', ['Poytaxt', 'Пойтахт Молл', 'Пойтахт', 'Торговый центр Пойтахт', 'Poytaxt savdo markazi'], { contextRequired: true, context: MALL_CONTEXT }),
+  poi('Alfraganus Mall', 'mall', ['Alfraganus', 'Альфраганус Молл', 'Альфраганус', 'Alfraganus savdo markazi'], { contextRequired: true, context: MALL_CONTEXT }),
   poi('High Town Mall', 'mall', ['HT Mall', 'HT Молл', 'High Town City', 'High Town City Mall', 'Хай Таун Молл', 'High Town savdo markazi']),
-  poi('Seoul Mun Mall', 'mall', ['Seoul Mun', 'Seoul Moon', 'Сеул Мун Молл', 'Seoul Mun savdo markazi'], { contextRequired: true, context: MALL_CONTEXT }),
+  poi('Seoul Mun Mall', 'mall', ['Seoul Mun', 'Seoul Moon', 'Сеул Мун Молл', 'ТК Seoul Mun', 'Seoul Mun savdo markazi'], { contextRequired: true, context: MALL_CONTEXT }),
+  poi('Golden Life', 'mall', ['Golden Life Mall', 'Голден Лайф', 'ТРЦ Golden Life', 'ТЦ Golden Life']),
+  poi("Chig'atoy Mall", 'mall', ["Chig'atoy", 'Chigatoy', "ТРЦ Chig'atoy", 'ТРЦ Чигатай', 'ТЦ Чигатай']),
+  poi('Scopus Mall', 'mall', ['Scopus', 'Скопус Молл', 'ТРЦ Scopus']),
   poi('Ecobozor', 'mall', ['Eco Bozor', 'Ekobozor', 'Эко Бозор', 'Экобозор']),
 ]);
 
 export const TASHKENT_RETAIL_POIS = Object.freeze([
   poi('Magnum Samarkand Darvoza', 'supermarket', ['Magnum super', 'Magnum Supermarket', 'Магнум Самарканд Дарвоза']),
   poi('Baraka Market', 'supermarket', ['Baraka market', 'Baraka Supermarket', 'Baraka Savdo', 'Барака маркет', 'Барака Савдо']),
+  poi('Atlas Chimgan', 'department_store', ['Atlas Temur Malik', 'Atlas Chimgan hypermarket', 'Атлас Чимган']),
 ]);
 
 export const TASHKENT_ATTRACTIONS = Object.freeze([
@@ -190,6 +195,7 @@ export const TASHKENT_LEGACY_LANDMARKS = Object.freeze([
   poi('TSUM', 'legacy', ['ЦУМ']),
   poi('Main Post Office', 'legacy', ['Главпочтамт']),
   poi('GUM', 'legacy', ['ГУМ']),
+  poi('Turkuaz Chorsu', 'legacy', ['Туркуаз Чорсу', 'Turkuaz', 'бывший Turkuaz Chorsu']),
 ]);
 
 export const TASHKENT_POI_GROUPS = Object.freeze({
