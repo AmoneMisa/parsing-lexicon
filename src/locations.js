@@ -15,6 +15,7 @@ import { UA_REGIONAL_LOCATION_EXTENSIONS } from './ua-location-extensions-region
 import { UA_SECONDARY_LOCATION_EXTENSIONS } from './ua-secondary-cities.js';
 import { UA_METRO_LOCATION_EXTENSIONS } from './ua-location-extensions-metro.js';
 import { UA_KHARKIV_LOCATION_TRANSLATIONS } from './ua-kharkiv-location-translations.js';
+import { UA_CITY_LOCATION_EXPANSIONS } from './ua-city-location-expansions.js';
 
 export const UA_EXTRA_LOCATION_DICTIONARIES = Object.freeze({
   ...RAW_UA_EXTRA_LOCATION_DICTIONARIES,
@@ -125,6 +126,9 @@ function normalizeUzSemanticLocations(country) {
 
   const samarkand = normalized?.Samarkand;
   if (samarkand) {
+    const microdistricts = samarkand.microdistricts || [];
+    const mahallas = samarkand.mahallas || [];
+    const settlements = samarkand.settlements || [];
     const landmarks = samarkand.landmarks || [];
     const localAreas = samarkand.localAreas || [];
     const streets = samarkand.streets || [];
@@ -168,11 +172,65 @@ function normalizeUzSemanticLocations(country) {
       ? semanticEntry(canonicalUniversity, 'University Boulevard', universityAliases, 'street')
       : null;
 
+    const sogdianaMicrodistrict = microdistricts.find(({ name }) => name === 'Sogdiana');
+    const sogdianaLocalArea = localAreas.find(({ name }) => name === 'Sugdiyona');
+    const sogdianaMahalla = mahallas.find(({ name }) => name === 'Sogdiana');
+    const normalizedSogdiana = semanticEntry(
+      sogdianaMahalla || sogdianaLocalArea || sogdianaMicrodistrict || {},
+      'Sogdiana',
+      [
+        ...(sogdianaMahalla?.aliases || []),
+        ...(sogdianaLocalArea?.aliases || []),
+        ...(sogdianaMicrodistrict?.aliases || []),
+        'Sugdiyona',
+        "Sug'diyona",
+        'Sug‘diyona',
+        "So'g'diyona",
+        'So‘g‘diyona',
+        'Согдиана',
+        'Согдиёна',
+        'Сўғдиёна',
+      ],
+      'mahalla',
+    );
+
+    const kimyogarlarMicrodistrict = microdistricts.find(({ name }) => name === 'Kimyogarlar');
+    const kimyogarlarLocalArea = localAreas.find(({ name }) => name === 'Kimyogarlar');
+    const kimyogarlarSettlement = settlements.find(({ name }) => name === 'Kimyogarlar');
+    const normalizedKimyogarlar = semanticEntry(
+      kimyogarlarSettlement || kimyogarlarLocalArea || kimyogarlarMicrodistrict || {},
+      'Kimyogarlar',
+      [
+        ...(kimyogarlarSettlement?.aliases || []),
+        ...(kimyogarlarLocalArea?.aliases || []),
+        ...(kimyogarlarMicrodistrict?.aliases || []),
+        'Кимёгарлар',
+        'Химики',
+        'Химгородок',
+        'посёлок Химиков',
+        'поселок Химиков',
+      ],
+      'settlement',
+    );
+
     normalized = Object.freeze({
       ...normalized,
       Samarkand: Object.freeze({
         ...samarkand,
-        localAreas: Object.freeze(localAreas.filter(({ name }) => name !== 'University Boulevard')),
+        mahallas: Object.freeze([
+          ...mahallas.filter(({ name }) => name !== 'Sogdiana'),
+          normalizedSogdiana,
+        ]),
+        microdistricts: Object.freeze(
+          microdistricts.filter(({ name }) => !['Sogdiana', 'Kimyogarlar'].includes(name)),
+        ),
+        localAreas: Object.freeze(
+          localAreas.filter(({ name }) => !['University Boulevard', 'Sugdiyona', 'Kimyogarlar'].includes(name)),
+        ),
+        settlements: Object.freeze([
+          ...settlements.filter(({ name }) => name !== 'Kimyogarlar'),
+          normalizedKimyogarlar,
+        ]),
         streets: Object.freeze([
           ...streets.filter(({ name }) => name !== 'University Boulevard'),
           ...(normalizedUniversity ? [normalizedUniversity] : []),
@@ -359,6 +417,7 @@ const COUNTRY_LOCATION_DICTIONARIES = Object.freeze({
     UA_SECONDARY_LOCATION_EXTENSIONS,
     UA_METRO_LOCATION_EXTENSIONS,
     UA_KHARKIV_TRANSLATION_EXTENSIONS,
+    UA_CITY_LOCATION_EXPANSIONS,
   ),
 });
 
