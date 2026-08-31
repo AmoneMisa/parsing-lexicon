@@ -38,6 +38,10 @@ const TASHKENT_UNSUPPORTED_SEED_MICRODISTRICTS = new Set([
   'Yunusabad-22',
 ]);
 
+const LEGACY_SAMARKAND_SILK_ROAD_RESIDENCE = (
+  BASE_LOCATION_DICTIONARIES.UZ?.Samarkand?.residentialComplexes || []
+).find(({ name }) => name === 'Silk Road Residence');
+
 // The UZ seed is compatibility storage. In 0.3 semantic corrections are
 // applied before merging it with the canonical Uzbekistan extension layer.
 const UZ_BASE_LOCATION_DICTIONARIES = Object.freeze({
@@ -48,9 +52,17 @@ const UZ_BASE_LOCATION_DICTIONARIES = Object.freeze({
       (BASE_LOCATION_DICTIONARIES.UZ?.Tashkent?.microdistricts || [])
         .filter(({ name }) => !TASHKENT_UNSUPPORTED_SEED_MICRODISTRICTS.has(name)),
     ),
+    residentialComplexes: Object.freeze([
+      ...(BASE_LOCATION_DICTIONARIES.UZ?.Tashkent?.residentialComplexes || [])
+        .filter(({ name }) => name !== 'Tashkent City' && name !== 'Silk Road Residence'),
+      ...(LEGACY_SAMARKAND_SILK_ROAD_RESIDENCE ? [LEGACY_SAMARKAND_SILK_ROAD_RESIDENCE] : []),
+    ]),
+  }),
+  Samarkand: Object.freeze({
+    ...(BASE_LOCATION_DICTIONARIES.UZ?.Samarkand || {}),
     residentialComplexes: Object.freeze(
-      (BASE_LOCATION_DICTIONARIES.UZ?.Tashkent?.residentialComplexes || [])
-        .filter(({ name }) => name !== 'Tashkent City'),
+      (BASE_LOCATION_DICTIONARIES.UZ?.Samarkand?.residentialComplexes || [])
+        .filter(({ name }) => name !== 'Silk Road Residence'),
     ),
   }),
 });
