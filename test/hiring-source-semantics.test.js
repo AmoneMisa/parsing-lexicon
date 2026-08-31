@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import {
+  cleanHiringSourceText,
   detectRecruitmentAgency,
   detectUsLocation,
   detectVisaSponsorshipWording,
@@ -14,6 +15,12 @@ import {
   parseHiringSourceSalary,
   TEMPORARY_WORK_AUTH_RE,
 } from '../src/hiring-source-semantics.js';
+
+test('source cleanup removes leaked vacancy-page CSS without changing prose', () => {
+  const text = 'Отправить резюме .maw\\_\\_modal\\_popup\\_box .popup-207:hover { background: #ffffff !important; color: #000000 !important; }';
+  assert.equal(cleanHiringSourceText(text), 'Отправить резюме');
+  assert.equal(cleanHiringSourceText('Опыт работы с CSS обязателен.'), 'Опыт работы с CSS обязателен.');
+});
 
 test('structured source fields reuse shared field dictionaries', () => {
   assert.equal(extractCandidateStructuredField('Narxi: 6 mln', 'salary'), '6 mln');

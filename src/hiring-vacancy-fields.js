@@ -1,8 +1,13 @@
 import { detectDegreeLevel } from './hiring-requirements.js';
+import { cleanHiringSourceText } from './hiring-source-semantics.js';
 import { normalizeUnicode } from './normalization.js';
 
 export function detectHiringEducation(value) {
-  const text = String(value || '');
+  // Some vacancy pages append the fields of their application modal to the
+  // vacancy body. Degree choices in that UI describe the applicant form, not
+  // the vacancy requirement (for example: "Пол Мужской Женский Образование
+  // ... Высшее специалитет, магистратура Выберите вакансию").
+  const text = cleanHiringSourceText(value);
   // Vacancy requirements often state "Bachelor's or Master's degree". That is
   // an accepted-alternative list, not a Master's minimum; expose the least
   // restrictive accepted level so filters do not hide valid Bachelor holders.

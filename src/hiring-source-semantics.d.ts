@@ -3,6 +3,7 @@ import type { SalaryParseResult } from '../index.d.ts';
 export type CandidateExperienceMention = Readonly<{ years: number; context: string; approximate?: true }>;
 export type VisaSponsorshipWording = 'offered' | 'notOffered' | null;
 
+export function cleanHiringSourceText(value: unknown): string;
 export function extractCandidateStructuredField(value: unknown, key: string, maxLength?: number): string | null;
 export function extractJobStructuredField(value: unknown, key: string, maxLength?: number): string | null;
 export function extractCandidateDisplayName(value: unknown): string;

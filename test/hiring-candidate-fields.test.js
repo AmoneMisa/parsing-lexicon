@@ -63,6 +63,9 @@ test('temporal parsing handles absolute, relative and day-month hiring dates', (
 test('vacancy field semantics centralize education and application language', () => {
   assert.equal(detectHiringEducation("Master's degree required"), 'master');
   assert.equal(detectHiringEducation('Высшее образование'), 'higher');
+  assert.equal(detectHiringEducation(
+    'Требования: ответственность; коммуникабельность. Отправить резюме Пол Мужской Женский Образование Среднее профессиональное Высшее бакалавриат Высшее специалитет, магистратура Выберите вакансию Продавец-консультант Кассир',
+  ), null);
   assert.equal(detectApplicationLanguage('Please submit your CV in English.'), 'English');
   assert.equal(detectApplicationLanguage('Отправьте CV на русском'), 'Russian');
 });
