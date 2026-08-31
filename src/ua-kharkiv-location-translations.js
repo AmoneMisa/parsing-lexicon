@@ -25,6 +25,7 @@ export const UA_KHARKIV_LOCATION_TRANSLATIONS = Object.freeze({
   ]),
   landmarks: locationEntries([
     ['Sarzhyn Yar', 'Саржин Яр', 'Саржин яр'],
+    ['Lisopark', 'Лісопарк', 'Харківський лісопарк', 'Лесопарк', 'Харьковский лесопарк'],
     ['Machine Builders Park', 'Парк Машинобудівників', 'Парк Машиностроителей', 'парк Артема', 'парк Артёма'],
     ['Zelenyi Hai', 'Зелений Гай', 'Зеленый Гай', 'Зелёный Гай'],
     ['Karpivskyi Garden', 'Карпівський сад', 'Карповский сад'],
