@@ -59,3 +59,13 @@ test('Samarkand normalizes Sogdiana and Kimyogarlar to their physical semantic t
     false,
   );
 });
+
+test('Silk Road Residence belongs to Tashkent rather than Samarkand', () => {
+  const samarkandProjects = LOCATION_DICTIONARIES.UZ.Samarkand.residentialComplexes || [];
+  const tashkentProjects = LOCATION_DICTIONARIES.UZ.Tashkent.residentialComplexes || [];
+
+  assert.equal(samarkandProjects.some(({ name }) => name === 'Silk Road Residence'), false);
+  assert.equal(tashkentProjects.some(({ name }) => name === 'Silk Road Residence'), true);
+  assert.equal(match('ЖК Silk Road Residence, Ташкент', 'UZ', 'Tashkent')?.name, 'Silk Road Residence');
+  assert.equal(match('Silk Road Residence, Самарканд', 'UZ', 'Samarkand'), null);
+});
