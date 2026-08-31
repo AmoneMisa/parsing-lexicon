@@ -20,6 +20,10 @@ test('Kharkiv major streets resolve across current Ukrainian and Russian forms',
     ['Аэрокосмический проспект', 'Aerokosmichnyi Avenue'],
     ['вулиця Амосова', 'Amosova Street'],
     ['улица Амосова', 'Amosova Street'],
+    ['вулиця Валентинівська', 'Valentynivska Street'],
+    ['улица Валентиновская', 'Valentynivska Street'],
+    ['вулиця Соборності України', 'Sobornosti Ukrainy Street'],
+    ['улица Соборности Украины', 'Sobornosti Ukrainy Street'],
   ]);
 
   for (const [alias, canonical] of cases) {
@@ -37,6 +41,10 @@ test('Kharkiv historical street names resolve to current street canonicals', () 
     ['проспект Гагарина', 'Aerokosmichnyi Avenue'],
     ['улица Корчагинцев', 'Amosova Street'],
     ['вулиця Корчагінців', 'Amosova Street'],
+    ['вулиця Блюхера', 'Valentynivska Street'],
+    ['улица Блюхера', 'Valentynivska Street'],
+    ['вулиця Дружби Народів', 'Sobornosti Ukrainy Street'],
+    ['улица Дружбы Народов', 'Sobornosti Ukrainy Street'],
   ]);
 
   for (const [alias, canonical] of cases) {
@@ -57,7 +65,13 @@ test('explicit Haharina avenue wording beats the homonymous listing area', () =>
 });
 
 test('Kharkiv street aliases stay city-scoped', () => {
-  for (const alias of ['проспект Ювілейний', 'проспект Тракторостроителей', 'улица Корчагинцев']) {
+  for (const alias of [
+    'проспект Ювілейний',
+    'проспект Тракторостроителей',
+    'улица Корчагинцев',
+    'улица Валентиновская',
+    'вулиця Соборності України',
+  ]) {
     const result = match('Kyiv', alias);
     assert.notEqual(result?.type, 'streets');
   }
