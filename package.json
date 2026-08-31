@@ -27,6 +27,10 @@
       "types": "./src/geography-display.d.ts",
       "import": "./src/geography-display.js"
     },
+    "./geography-zone-display": {
+      "types": "./src/geography-zone-display.d.ts",
+      "import": "./src/geography-zone-display.js"
+    },
     "./geography-detection": {
       "types": "./src/geography-detection.d.ts",
       "import": "./src/geography-detection.js"
