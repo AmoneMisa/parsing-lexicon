@@ -225,13 +225,92 @@ function normalizeUzSemanticLocations(country) {
       'settlement',
     );
 
+    const chilquduqSource = mahallas.find(({ name }) => ['Chilquduq', 'Chilkuduq', 'Chilkuduk'].includes(name));
+    const navrozSource = mahallas.find(({ name }) => name === "Navro'z");
+    const shirinSource = mahallas.find(({ name }) => name === 'Shirin');
+    const choponOtaSource = mahallas.find(({ name }) => name === "Cho'pon ota");
+    const normalizedChilquduq = semanticEntry(
+      { ...(chilquduqSource || {}), parent: 'Xishrov' },
+      'Chilquduq',
+      [
+        ...(chilquduqSource?.aliases || []),
+        'Chilkuduq',
+        'Chilkuduk',
+        'Chilquduq MFY',
+        'Chilquduq mahallasi',
+        'Чилқудуқ',
+        'Чилкудук',
+      ],
+      'mahalla',
+    );
+    const normalizedNavroz = navrozSource
+      ? semanticEntry({ ...navrozSource, parent: 'Xishrov' }, "Navro'z", navrozSource.aliases || [], 'mahalla')
+      : null;
+    const normalizedShirin = shirinSource
+      ? semanticEntry({ ...shirinSource, parent: 'Farhod' }, 'Shirin', shirinSource.aliases || [], 'mahalla')
+      : null;
+    const normalizedChoponOta = choponOtaSource
+      ? semanticEntry({ ...choponOtaSource, parent: 'Farhod' }, "Cho'pon ota", choponOtaSource.aliases || [], 'mahalla')
+      : null;
+
+    const existingXishrov = settlements.find(({ name }) => ['Xishrov', 'Xishrav', 'Khishrav'].includes(name));
+    const normalizedXishrov = semanticEntry(
+      existingXishrov || {},
+      'Xishrov',
+      [
+        ...(existingXishrov?.aliases || []),
+        'Xishrav',
+        'Khishrav',
+        'Хишрав',
+        "So'lim shaharchasi",
+        'So‘lim shaharchasi',
+        'Solim shaharchasi',
+        'Сўлим шаҳарчаси',
+        'Сулим шахарчаси',
+      ],
+      'settlement',
+    );
+    const existingFarhod = settlements.find(({ name }) => ['Farhod', 'Farxod'].includes(name));
+    const normalizedFarhod = semanticEntry(
+      existingFarhod || {},
+      'Farhod',
+      [
+        ...(existingFarhod?.aliases || []),
+        'Farhod shaharchasi',
+        'Farxod shaharchasi',
+        'Фарход шаҳарчаси',
+        'Фарход шахарчаси',
+      ],
+      'settlement',
+    );
+
+    const verifiedSamarkandStreetRows = Object.freeze([
+      ['Siyob Street', ['Siyob ko‘chasi', "Siyob ko'chasi", 'Сиёб кўчаси', 'Сиабская улица']],
+      ["Cho'pon-Ota Street", ["Cho'pon-Ota ko'chasi", 'Cho‘pon-Ota ko‘chasi', 'Чўпон Ота кўчаси', 'улица Чупон-Ота']],
+      ['Academician Vohid Abdullayev Street', ['Akademik Vohid Abdullayev ko‘chasi', "Akademik Vohid Abdullayev ko'chasi", 'Vohid Abdullayev ko‘chasi', 'улица Академика Вохида Абдуллаева']],
+    ]);
+    const verifiedSamarkandStreetNames = new Set(verifiedSamarkandStreetRows.map(([name]) => name));
+    const verifiedSamarkandStreets = verifiedSamarkandStreetRows.map(([name, aliases]) => semanticEntry({}, name, aliases, 'street'));
+
     normalized = Object.freeze({
       ...normalized,
       Samarkand: Object.freeze({
         ...samarkand,
         mahallas: Object.freeze([
-          ...mahallas.filter(({ name }) => name !== 'Sogdiana'),
+          ...mahallas.filter(({ name }) => ![
+            'Sogdiana',
+            'Chilquduq',
+            'Chilkuduq',
+            'Chilkuduk',
+            "Navro'z",
+            'Shirin',
+            "Cho'pon ota",
+          ].includes(name)),
           normalizedSogdiana,
+          normalizedChilquduq,
+          ...(normalizedNavroz ? [normalizedNavroz] : []),
+          ...(normalizedShirin ? [normalizedShirin] : []),
+          ...(normalizedChoponOta ? [normalizedChoponOta] : []),
         ]),
         microdistricts: Object.freeze(
           microdistricts.filter(({ name }) => !['Sogdiana', 'Kimyogarlar'].includes(name)),
@@ -240,12 +319,15 @@ function normalizeUzSemanticLocations(country) {
           localAreas.filter(({ name }) => !['University Boulevard', 'Sugdiyona', 'Kimyogarlar'].includes(name)),
         ),
         settlements: Object.freeze([
-          ...settlements.filter(({ name }) => name !== 'Kimyogarlar'),
+          ...settlements.filter(({ name }) => !['Kimyogarlar', 'Xishrov', 'Xishrav', 'Khishrav', 'Farhod', 'Farxod'].includes(name)),
           normalizedKimyogarlar,
+          normalizedXishrov,
+          normalizedFarhod,
         ]),
         streets: Object.freeze([
-          ...streets.filter(({ name }) => name !== 'University Boulevard'),
+          ...streets.filter(({ name }) => name !== 'University Boulevard' && !verifiedSamarkandStreetNames.has(name)),
           ...(normalizedUniversity ? [normalizedUniversity] : []),
+          ...verifiedSamarkandStreets,
         ]),
         landmarks: Object.freeze([
           ...landmarks.filter(({ name }) => ![
