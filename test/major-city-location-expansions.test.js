@@ -41,7 +41,7 @@ test('Kyiv accepts common transliteration variants without changing canonicals',
   assert.equal(match('Feofaniya house', 'UA', 'Kyiv')?.name, 'Feofaniia');
 });
 
-test('Samarkand normalizes Sogdiana and Kimyogarlar to their physical semantic types', () => {
+test('Samarkand normalizes physical semantic types and current locality names', () => {
   const sogdiana = match('махалля Согдиёна', 'UZ', 'Samarkand');
   assert.equal(sogdiana?.type, 'mahallas');
   assert.equal(sogdiana?.name, 'Sogdiana');
@@ -50,14 +50,38 @@ test('Samarkand normalizes Sogdiana and Kimyogarlar to their physical semantic t
   assert.equal(kimyogarlar?.type, 'settlements');
   assert.equal(kimyogarlar?.name, 'Kimyogarlar');
 
+  const chilquduq = match('махалля Чилкудук, Самарканд', 'UZ', 'Samarkand');
+  assert.equal(chilquduq?.type, 'mahallas');
+  assert.equal(chilquduq?.name, 'Chilquduq');
+
+  const xishrov = match("So'lim shaharchasi, Samarqand", 'UZ', 'Samarkand');
+  assert.equal(xishrov?.type, 'settlements');
+  assert.equal(xishrov?.name, 'Xishrov');
+
+  const farhod = match('Farhod shaharchasi, Samarqand', 'UZ', 'Samarkand');
+  assert.equal(farhod?.type, 'settlements');
+  assert.equal(farhod?.name, 'Farhod');
+
+  const samarkand = LOCATION_DICTIONARIES.UZ.Samarkand;
   assert.equal(
-    (LOCATION_DICTIONARIES.UZ.Samarkand.microdistricts || []).some(({ name }) => name === 'Sogdiana' || name === 'Kimyogarlar'),
+    (samarkand.microdistricts || []).some(({ name }) => name === 'Sogdiana' || name === 'Kimyogarlar'),
     false,
   );
   assert.equal(
-    (LOCATION_DICTIONARIES.UZ.Samarkand.localAreas || []).some(({ name }) => name === 'Sugdiyona' || name === 'Kimyogarlar'),
+    (samarkand.localAreas || []).some(({ name }) => name === 'Sugdiyona' || name === 'Kimyogarlar'),
     false,
   );
+  assert.equal((samarkand.mahallas || []).some(({ name }) => name === 'Chilkuduk'), false);
+  assert.equal((samarkand.mahallas || []).find(({ name }) => name === 'Chilquduq')?.parent, 'Xishrov');
+  assert.equal((samarkand.mahallas || []).find(({ name }) => name === "Navro'z")?.parent, 'Xishrov');
+  assert.equal((samarkand.mahallas || []).find(({ name }) => name === 'Shirin')?.parent, 'Farhod');
+  assert.equal((samarkand.mahallas || []).find(({ name }) => name === "Cho'pon ota")?.parent, 'Farhod');
+});
+
+test('Samarkand recognizes verified street canonicals independently of listing areas', () => {
+  assert.equal(match('улица Чупон-Ота, Самарканд', 'UZ', 'Samarkand')?.name, "Cho'pon-Ota Street");
+  assert.equal(match('Siyob ko‘chasi, Samarqand', 'UZ', 'Samarkand')?.name, 'Siyob Street');
+  assert.equal(match('Akademik Vohid Abdullayev ko‘chasi, 14', 'UZ', 'Samarkand')?.name, 'Academician Vohid Abdullayev Street');
 });
 
 test('Silk Road Residence belongs to Tashkent rather than Samarkand', () => {
