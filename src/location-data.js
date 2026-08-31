@@ -75,7 +75,7 @@ export const LOCATION_DICTIONARIES = Object.freeze({
       ]),
       landmarks: entries([
         ['Registan Square', 'площадь Регистан', 'Registon maydoni', 'Регистон майдони'], ['Gur-e-Amir', 'Гур Эмир', 'Go‘ri Amir', "Go'ri Amir"],
-        ['Siab Bazaar', 'Сиабский базар', 'Siyob bozori'], ['Samarkand Railway Station', 'Самаркандский вокзал', 'Samarqand vokzali'],
+        ['Siyob Bazaar', 'Siab Bazaar', 'Сиабский базар', 'Siyob bozori'], ['Samarkand Railway Station', 'Самаркандский вокзал', 'Samarqand vokzali'],
       ]),
     }),
   }),

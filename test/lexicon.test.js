@@ -141,6 +141,8 @@ test('Tashkent residential complexes are canonical, deduplicated and alias-aware
   assert.equal(canonicalTashkentResidentialComplex('Eco Residence'), 'Eco Residence');
   assert.equal(canonicalTashkentResidentialComplex('Mavrid mavzesi'), 'Mavrid mavzesi');
   assert.equal(canonicalTashkentResidentialComplex('Yashil Makon'), 'Yashil Makon');
+  assert.equal(canonicalTashkentResidentialComplex('Dostlar'), 'Do‘stlar');
+  assert.equal(canonicalTashkentResidentialComplex('Do\'stlar'), 'Do‘stlar');
   assert.equal(matchTashkentResidentialComplex('ЖК BASHKENT Mening orzuyim')?.name, 'BASHKENT Mening orzuyim');
 });
 

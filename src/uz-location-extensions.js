@@ -210,6 +210,7 @@ export const UZ_LOCATION_EXTENSIONS = Object.freeze({
       ['Tashkent City', 'Ташкент Сити', 'Toshkent City', 'Tashkent City IBC'],
     ],
     streets: [
+      { name: "Bog'bon Street", aliases: ['Bog‘bon ko‘chasi', "Bog'bon ko'chasi", 'Bogbon kochasi', 'улица Богбон', 'ул. Богбон'], parent: 'Yunusabad' },
       { name: 'Gulobod Street', aliases: ['Gulobod ko‘chasi', "Gulobod ko'chasi", 'улица Гулобод', 'ул. Гулобод'], parent: 'Shaykhantahur' },
       { name: 'Sebzor Street', aliases: ['Sebzor ko‘chasi', "Sebzor ko'chasi", 'улица Себзор', 'ул. Себзор'], parent: 'Almazar' },
       { name: 'Lolazor Street', aliases: ['Lolazor ko‘chasi', "Lolazor ko'chasi", 'улица Лолазор', 'ул. Лолазор'], parent: 'Uchtepa' },
@@ -241,7 +242,7 @@ export const UZ_LOCATION_EXTENSIONS = Object.freeze({
       ['Registan Square','Регистан','Registon','Площадь Регистан'],['Gur-e Amir','Гур-Эмир',"Go'ri Amir",'Гўри Амир'],['Shohi Zinda','Шахи-Зинда','Шоҳи Зинда'],['Bibi-Khanym','Биби-Ханым','Bibixonim','Бибихоним'],
       ['Siyob Bazaar','Сиабский базар','Siyob bozori','Сиёб бозори'],['Afrosiyob','Афросиаб','Афросиёб'],['Ulugbek Observatory','Обсерватория Улугбека',"Ulug'bek rasadxonasi"],['University Boulevard','Университетский бульвар','Universitet xiyoboni'],
       ['Eternal City','Вечный город','Boqiy shahar'],['Silk Road Samarkand'],['Samarkand City','Самарканд Сити'],['Samarkand International Airport','Международный аэропорт Самарканд','Samarqand xalqaro aeroporti','SKD'],
-      ['Samarkand Railway Station','Самарканд вокзал','Samarqand vokzali'],['Central Park','Центральный парк',"Markaziy bog'"],['Alisher Navoiy Park','Парк Алишера Навои',"Alisher Navoiy bog'i"],['Youth Park','Парк Молодёжи',"Yoshlar bog'i"],
+      ['Samarkand Railway Station','Самарканд вокзал','Samarqand vokzali'],['Alisher Navoiy Park','Central Park','Центральный парк',"Markaziy bog'",'Парк Алишера Навои',"Alisher Navoiy bog'i"],['Youth Park','Парк Молодёжи',"Yoshlar bog'i"],
       ['Yangi Ozbekiston Park',"Yangi O'zbekiston bog'i",'Парк Новый Узбекистан'],['Family Park'],
     ],
   }),

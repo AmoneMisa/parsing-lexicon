@@ -87,6 +87,7 @@ test('Tashkent City has one canonical semantic owner in the runtime registry', (
 
 test('verified Tashkent streets resolve through the canonical UZ registry', () => {
   const expected = new Map([
+    ["Bog'bon ko'chasi", "Bog'bon Street"],
     ['улица Гулобод', 'Gulobod Street'],
     ['Sebzor ko‘chasi', 'Sebzor Street'],
     ['улица Лолазор', 'Lolazor Street'],

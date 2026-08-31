@@ -60,7 +60,7 @@ export const TASHKENT_RESIDENTIAL_COMPLEXES = Object.freeze([
   complex('Comfort House', ['Комфорт Хаус']),
   complex('Darhan', ['Darkhan Residence', 'Дархан Резиденс', 'Дархан', 'Darkhan']),
   complex('DARVOZA'),
-  complex('Dostlar', ['Do‘stlar', 'Do\'stlar', 'Doʻstlar', 'Дустлар', 'Дўстлар', 'Дустлар ЖК']),
+  complex('Do‘stlar', ['Dostlar', 'Do\'stlar', 'Doʻstlar', 'Дустлар', 'Дўстлар', 'Дустлар ЖК']),
   complex('Dream House', ['Дрим-Хаус', 'Дрим Хаус']),
   complex('Dreamland Aeroport'),
   complex('Dreamland Do\'stlik'),

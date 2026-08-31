@@ -154,6 +154,14 @@ test('Tashkent gap aliases resolve without hiding stronger semantic types', () =
   assert.ok(names(minorMetro, 'metro').includes('Minor'));
 });
 
+test('Samarkand POI aliases keep one canonical physical owner', () => {
+  const samarkand = UZ_EXPANDED_LOCATION_DICTIONARIES.Samarkand.landmarks;
+  assert.equal(samarkand.filter((entry) => ['Siab Bazaar', 'Siyob Bazaar'].includes(entry.name)).length, 1);
+  assert.equal(samarkand.find((entry) => entry.aliases.includes('Siab Bazaar'))?.name, 'Siyob Bazaar');
+  assert.equal(samarkand.filter((entry) => ['Central Park', 'Alisher Navoiy Park'].includes(entry.name)).length, 1);
+  assert.equal(samarkand.find((entry) => entry.aliases.includes('Alisher Navoiy Park'))?.name, 'Central Park');
+});
+
 test('Xonobod remains ambiguous without city/region context', () => {
   const bare = matchCentralAsiaLocationEntities('Xonobod', 'UZ');
   assert.equal(bare.city, null);
