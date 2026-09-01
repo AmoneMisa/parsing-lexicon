@@ -88,4 +88,18 @@ export const KG_LOCATION_EXTENSIONS = Object.freeze({
       ['Karakol Ski Base', 'горнолыжная база Каракол', 'лыжная база Каракол'],
     ],
   }),
+
+  // These cities are intentionally registered before inventing local districts.
+  // Country-wide enrichment can now discover their spatial vocabulary through
+  // the same crawler and promote only verified results afterwards.
+  'Jalal-Abad': city(),
+  Tokmok: city(),
+  Naryn: city(),
+  Talas: city(),
+  Batken: city(),
+  'Kara-Balta': city(),
+  Balykchy: city(),
+  Kant: city(),
+  Uzgen: city(),
+  'Kyzyl-Kiya': city(),
 });
