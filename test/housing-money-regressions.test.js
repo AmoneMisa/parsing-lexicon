@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import {parseHousingPrice} from '../src/housing-money.js';
+import {parseHousingPrice, parseHousingPricePerSqm} from '../src/housing-money.js';
 
 test('housing multipliers do not match measurement or word prefixes', () => {
   assert.deepEqual(parseHousingPrice('Yunusobod 500 m2 hovli sotiladi', 'UZS'), {
@@ -75,4 +75,46 @@ test('dotted currency suffix parses as money but payment amounts stay out of lis
 
 test('marks an approximate price when the text hedges the amount', () => {
   assert.deepEqual(parseHousingPrice('Цена около 800$'), { amount: 800, currency: 'USD', approximate: true });
+});
+
+test('sale price per square meter is not parsed as the listing total', () => {
+  const text = 'Цена: Гибрид/Ипотека на стадии строительство 18%/рассрочка От 13 млн за м2 Эксклюзив';
+
+  assert.deepEqual(parseHousingPrice(text, 'UZS'), {
+    amount: null,
+    currency: 'UZS',
+    approximate: false,
+  });
+  assert.deepEqual(parseHousingPricePerSqm(text, 'UZS'), {
+    amount: 13_000_000,
+    currency: 'UZS',
+    approximate: false,
+  });
+});
+
+test('per-square-meter parser supports explicit currencies and common unit forms', () => {
+  assert.deepEqual(parseHousingPricePerSqm('13 000 000 сум/м²', 'USD'), {
+    amount: 13_000_000,
+    currency: 'UZS',
+    approximate: false,
+  });
+  assert.deepEqual(parseHousingPricePerSqm('price per sqm: 1,100 USD'), {
+    amount: 1100,
+    currency: 'USD',
+    approximate: false,
+  });
+});
+
+test('a total sale price still wins when a separate per-square-meter quote is present', () => {
+  const text = 'Цена 572 млн сум, 13 млн сум за м2';
+  assert.deepEqual(parseHousingPrice(text, 'UZS'), {
+    amount: 572_000_000,
+    currency: 'UZS',
+    approximate: false,
+  });
+  assert.deepEqual(parseHousingPricePerSqm(text, 'UZS'), {
+    amount: 13_000_000,
+    currency: 'UZS',
+    approximate: false,
+  });
 });
