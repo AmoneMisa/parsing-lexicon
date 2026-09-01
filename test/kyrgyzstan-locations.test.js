@@ -5,18 +5,35 @@ import { canonicalCentralAsiaCity, canonicalKyrgyzstanCity, KG_CITY_CATALOG, KG_
 import { canonicalCity } from '../src/geography.js';
 import { LOCATION_DICTIONARIES, matchDictionaryLocation } from '../src/locations-runtime.js';
 
-test('KG canonical city lexicon covers crawler cities', () => {
+const crawlerCities = Object.freeze([
+  'Bishkek',
+  'Osh',
+  'Jalal-Abad',
+  'Karakol',
+  'Tokmok',
+  'Naryn',
+  'Talas',
+  'Batken',
+  'Kara-Balta',
+  'Balykchy',
+  'Kant',
+  'Uzgen',
+  'Kyzyl-Kiya',
+]);
+
+test('KG canonical city lexicon covers country-wide crawler cities', () => {
   assert.equal(canonicalCity('Бишкек', 'KG'), 'Bishkek');
   assert.equal(canonicalCity('Ош', 'KG'), 'Osh');
-  assert.equal(canonicalCity('Каракол', 'KG'), 'Karakol');
-  assert.equal(canonicalKyrgyzstanCity('Бишкек'), 'Bishkek');
-  assert.equal(canonicalCentralAsiaCity('Ош', 'KG'), 'Osh');
-  assert.ok(KG_CITY_CATALOG.some(({ canonical }) => canonical === 'Karakol'));
+  assert.equal(canonicalCity('Жалал-Абад', 'KG'), 'Jalal-Abad');
+  assert.equal(canonicalCity('Өзгөн', 'KG'), 'Uzgen');
+  assert.equal(canonicalKyrgyzstanCity('Кара-Балта'), 'Kara-Balta');
+  assert.equal(canonicalCentralAsiaCity('Кызыл-Кыя', 'KG'), 'Kyzyl-Kiya');
   assert.ok(KG_LOCATION_TERMS.microdistrict.includes('кичирайон'));
 
-  assert.ok(LOCATION_DICTIONARIES.KG?.Bishkek);
-  assert.ok(LOCATION_DICTIONARIES.KG?.Osh);
-  assert.ok(LOCATION_DICTIONARIES.KG?.Karakol);
+  for (const city of crawlerCities) {
+    assert.ok(KG_CITY_CATALOG.some(({ canonical }) => canonical === city), city);
+    assert.ok(LOCATION_DICTIONARIES.KG?.[city], city);
+  }
 });
 
 test('Bishkek district and microdistrict aliases resolve', () => {
