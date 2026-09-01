@@ -183,10 +183,15 @@ export function parseHousingPrice(value, fallbackCurrency = '') {
     }
   }
 
-  const labelled = priceText.match(new RegExp(`${PRICE_KEYWORD}\\s*[:\\-–—]?\\s*(${MONEY_NUMBER_PATTERN})`, 'i'));
+  const labelled = priceText.match(new RegExp(
+    `${PRICE_KEYWORD}\\s*[:\\-–—]?\\s*(${MONEY_NUMBER_PATTERN})(?:\\s*(${SCALE_PATTERN})(?=$|[^\\p{L}\\p{N}_]))?`,
+    'iu',
+  ));
   if (price == null && labelled) {
-    const amount = parseNumericAmount(labelled[1]);
-    if (amount != null && amount >= 50 && amount <= 5_000_000_000) price = amount;
+    const amount = labelled[2]
+      ? parseScaledAmount(labelled[1], labelled[2])
+      : parseNumericAmount(labelled[1]);
+    if (amount != null && amount >= 50 && amount <= 5_000_000_000) price = Math.round(amount);
   }
 
   if (price == null) {
