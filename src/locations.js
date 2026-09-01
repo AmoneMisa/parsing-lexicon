@@ -38,6 +38,46 @@ const TASHKENT_UNSUPPORTED_SEED_MICRODISTRICTS = new Set([
   'Yunusabad-22',
 ]);
 
+const TASHKENT_MAHALLA_ALIAS_ADDITIONS = Object.freeze({
+  Humoyun: Object.freeze([
+    'Khumoyun',
+    'Humoyun MFY',
+    'Ҳумоюн маҳалласи',
+    'Хумоюн',
+    'махалля Хумаюн',
+  ]),
+  "Bog'ko'cha": Object.freeze([
+    "Bog'ko'cha mahallasi",
+    "Bog'ko'cha MFY",
+    'Боғкўча маҳалласи',
+    'Богкуча махалла',
+    'махалля Богкуча',
+  ]),
+  "Bog'bon": Object.freeze([
+    "Bog'bon MFY",
+    'Богбон махалла',
+  ]),
+  Shifokorlar: Object.freeze([
+    'Shifokorlar MFY',
+    'Шифокорлар маҳалласи',
+    'Шифокорлар махалласи',
+    'махалля Шифокорлар',
+  ]),
+  "Chamanbog'": Object.freeze([
+    "Chamanbog' mahallasi",
+    "Chamanbog' MFY",
+    'Чаманбоғ маҳалласи',
+    'Чаманбог махалла',
+    'махалля Чаманбог',
+  ]),
+  Asalobod: Object.freeze([
+    'Asalobod MFY',
+    'Асалобод маҳалласи',
+    'Асалобод махалла',
+    'махалля Асалобод',
+  ]),
+});
+
 const LEGACY_SAMARKAND_SILK_ROAD_RESIDENCE = (
   BASE_LOCATION_DICTIONARIES.UZ?.Samarkand?.residentialComplexes || []
 ).find(({ name }) => name === 'Silk Road Residence');
@@ -102,10 +142,27 @@ function normalizeUzSemanticLocations(country) {
       })];
     }),
   ));
-  const tashkent = normalized?.Tashkent;
-  const qorasuv = (tashkent?.microdistricts || []).find(({ name }) => name === 'Qorasuv');
 
-  if (tashkent && qorasuv) {
+  const tashkent = normalized?.Tashkent;
+  if (tashkent) {
+    normalized = Object.freeze({
+      ...normalized,
+      Tashkent: Object.freeze({
+        ...tashkent,
+        mahallas: Object.freeze((tashkent.mahallas || []).map((entry) => {
+          const additions = TASHKENT_MAHALLA_ALIAS_ADDITIONS[entry.name];
+          return additions
+            ? semanticEntry(entry, entry.name, [...(entry.aliases || []), ...additions], 'mahalla')
+            : entry;
+        })),
+      }),
+    });
+  }
+
+  const normalizedTashkent = normalized?.Tashkent;
+  const qorasuv = (normalizedTashkent?.microdistricts || []).find(({ name }) => name === 'Qorasuv');
+
+  if (normalizedTashkent && qorasuv) {
     const qorasuvAliases = Object.freeze([...new Set([
       ...(qorasuv.aliases || []).filter((alias) => !/^(?:qorasuv|korasuv|корасув|карасу)$/iu.test(String(alias).trim())),
       'Qorasuv dahasi',
@@ -126,10 +183,10 @@ function normalizeUzSemanticLocations(country) {
     normalized = Object.freeze({
       ...normalized,
       Tashkent: Object.freeze({
-        ...tashkent,
-        microdistricts: Object.freeze((tashkent.microdistricts || []).filter(({ name }) => name !== 'Qorasuv')),
+        ...normalizedTashkent,
+        microdistricts: Object.freeze((normalizedTashkent.microdistricts || []).filter(({ name }) => name !== 'Qorasuv')),
         localAreas: Object.freeze([
-          ...(tashkent.localAreas || []),
+          ...(normalizedTashkent.localAreas || []),
           qorasuvArea,
         ]),
       }),
