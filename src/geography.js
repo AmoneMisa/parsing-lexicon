@@ -57,10 +57,19 @@ const RO_CITIES_BASE = Object.freeze([
 export const RO_CITIES = Object.freeze([...RO_CITIES_BASE, ...RO_CITY_EXTENSIONS]);
 
 export const KG_CITIES = Object.freeze([
-  entity('Bishkek', { ru: ['Бишкек'], en: ['Bishkek'], kk: ['Бішкек'], uzLatn: ['Bishkek'] }, { country: 'KG', type: 'city' }),
-  entity('Osh', { ru: ['Ош'], en: ['Osh'], kk: ['Ош'], uzLatn: ['Osh'] }, { country: 'KG', type: 'city' }),
-  entity('Karakol', { ru: ['Каракол'], en: ['Karakol'], kk: ['Қаракөл'], uzLatn: ['Karakol'] }, { country: 'KG', type: 'city' }),
-
+  entity('Bishkek', { ky: ['Бишкек'], ru: ['Бишкек'], en: ['Bishkek'], kk: ['Бішкек'], uzLatn: ['Bishkek'] }, { country: 'KG', type: 'city' }),
+  entity('Osh', { ky: ['Ош'], ru: ['Ош'], en: ['Osh'], kk: ['Ош'], uzLatn: ['Osh'] }, { country: 'KG', type: 'city' }),
+  entity('Jalal-Abad', { ky: ['Жалал-Абад', 'Жалал Абад'], ru: ['Джалал-Абад', 'Джалал Абад'], en: ['Jalal-Abad', 'Jalalabad'] }, { country: 'KG', type: 'city' }),
+  entity('Karakol', { ky: ['Каракол'], ru: ['Каракол', 'Пржевальск'], en: ['Karakol', 'Przhevalsk'], kk: ['Қаракөл'], uzLatn: ['Karakol'] }, { country: 'KG', type: 'city' }),
+  entity('Tokmok', { ky: ['Токмок'], ru: ['Токмок'], en: ['Tokmok'] }, { country: 'KG', type: 'city' }),
+  entity('Naryn', { ky: ['Нарын'], ru: ['Нарын'], en: ['Naryn'] }, { country: 'KG', type: 'city' }),
+  entity('Talas', { ky: ['Талас'], ru: ['Талас'], en: ['Talas'] }, { country: 'KG', type: 'city' }),
+  entity('Batken', { ky: ['Баткен'], ru: ['Баткен'], en: ['Batken'] }, { country: 'KG', type: 'city' }),
+  entity('Kara-Balta', { ky: ['Кара-Балта', 'Кара Балта'], ru: ['Кара-Балта', 'Кара Балта'], en: ['Kara-Balta', 'Kara Balta'] }, { country: 'KG', type: 'city' }),
+  entity('Balykchy', { ky: ['Балыкчы'], ru: ['Балыкчи'], en: ['Balykchy', 'Balykchi'] }, { country: 'KG', type: 'city' }),
+  entity('Kant', { ky: ['Кант'], ru: ['Кант'], en: ['Kant'] }, { country: 'KG', type: 'city' }),
+  entity('Uzgen', { ky: ['Өзгөн', 'Озгон'], ru: ['Узген', 'Озгон'], en: ['Uzgen', 'Özgön', 'Ozgon'] }, { country: 'KG', type: 'city' }),
+  entity('Kyzyl-Kiya', { ky: ['Кызыл-Кыя', 'Кызыл Кыя'], ru: ['Кызыл-Кия', 'Кызыл Кия'], en: ['Kyzyl-Kiya', 'Kyzyl Kiya'] }, { country: 'KG', type: 'city' }),
 ]);
 
 /** Canonical cities used across global hiring and housing ingestion. */
