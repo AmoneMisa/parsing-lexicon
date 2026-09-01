@@ -25,6 +25,7 @@ const PAYMENT_AMOUNT_TERMS = Object.freeze([
   SELLER_TERMS.commission,
 ].filter(Boolean));
 const PRICE_KEYWORD_RE = new RegExp(PRICE_KEYWORD, 'iu');
+const UNIT_PRICE_SUFFIX_RE = /^\s*(?:\/\s*|(?:за|на|per)\s+(?:1\s*)?)(?:m2|m²|м2|м²|кв\.?\s*м(?:2|²)?|квадратн(?:ый|ого)?\s+метр(?:а|ов)?|sqm)\b/iu;
 
 function escapeRegex(value) {
   return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -46,6 +47,11 @@ function isPaymentScopedAmount(text, start, end) {
   if (findCanonical(left, PAYMENT_AMOUNT_TERMS, { partial: true })) return true;
   return !PRICE_KEYWORD_RE.test(left)
     && Boolean(findCanonical(right, PAYMENT_AMOUNT_TERMS, { partial: true }));
+}
+
+function isUnitPriceScopedAmount(text, end) {
+  const right = text.slice(end, Math.min(text.length, end + 40));
+  return UNIT_PRICE_SUFFIX_RE.test(right);
 }
 
 const APPROXIMATE_RE = /около|примерно|~|≈/iu;
@@ -71,7 +77,8 @@ export function parseHousingPrice(value, fallbackCurrency = '') {
   ));
   if (compactThousandUah) {
     const amount = parseNumericAmount(compactThousandUah[1]);
-    if (amount != null && amount >= 1 && amount <= 5_000_000) {
+    const end = (compactThousandUah.index ?? 0) + compactThousandUah[0].length;
+    if (amount != null && amount >= 1 && amount <= 5_000_000 && !isUnitPriceScopedAmount(text, end)) {
       price = Math.round(amount * 1000);
       currency = 'UAH';
     }
@@ -85,7 +92,8 @@ export function parseHousingPrice(value, fallbackCurrency = '') {
   ));
   if (price == null && expandedUzbekThousands) {
     const amount = Number(expandedUzbekThousands[1]) * 1000;
-    if (amount >= 1_000_000 && amount <= 5_000_000_000) {
+    const end = (expandedUzbekThousands.index ?? 0) + expandedUzbekThousands[0].length;
+    if (amount >= 1_000_000 && amount <= 5_000_000_000 && !isUnitPriceScopedAmount(text, end)) {
       price = amount;
       currency = 'UZS';
     }
@@ -94,7 +102,8 @@ export function parseHousingPrice(value, fallbackCurrency = '') {
   const labelled = text.match(new RegExp(`${PRICE_KEYWORD}\\s*[:\\-–—]?\\s*(${MONEY_NUMBER_PATTERN})`, 'i'));
   if (price == null && labelled) {
     const amount = parseNumericAmount(labelled[1]);
-    if (amount != null && amount >= 50 && amount <= 5_000_000_000) price = amount;
+    const end = (labelled.index ?? 0) + labelled[0].length;
+    if (amount != null && amount >= 50 && amount <= 5_000_000_000 && !isUnitPriceScopedAmount(text, end)) price = amount;
   }
 
   if (price == null) {
@@ -111,6 +120,7 @@ export function parseHousingPrice(value, fallbackCurrency = '') {
       let match;
       while ((match = regex.exec(text)) !== null) {
         if (isPaymentScopedAmount(text, match.index ?? 0, regex.lastIndex)) continue;
+        if (isUnitPriceScopedAmount(text, regex.lastIndex)) continue;
         const amount = parseNumericAmount(match[1]);
         if (amount != null && amount >= 50 && amount <= 5_000_000_000 && (tagged == null || amount > tagged)) tagged = amount;
       }
@@ -126,7 +136,8 @@ export function parseHousingPrice(value, fallbackCurrency = '') {
       const millions = Number(splitMillion[1]);
       const thousands = Number(splitMillion[2]);
       const amount = millions * 1_000_000 + thousands * 1_000;
-      if (amount >= 1_000_000 && amount <= 5_000_000_000) price = amount;
+      const end = (splitMillion.index ?? 0) + splitMillion[0].length;
+      if (amount >= 1_000_000 && amount <= 5_000_000_000 && !isUnitPriceScopedAmount(text, end)) price = amount;
     }
   }
 
@@ -141,7 +152,8 @@ export function parseHousingPrice(value, fallbackCurrency = '') {
     const match = text.match(new RegExp(`(\\d+(?:[.,]\\d+)?)\\s*(${scalePattern})(?=$|[^\\p{L}\\p{N}_])`, 'iu'));
     if (match) {
       const amount = parseScaledAmount(match[1], match[2]);
-      if (amount != null && amount >= 1000 && amount <= 5_000_000_000) price = Math.round(amount);
+      const end = (match.index ?? 0) + match[0].length;
+      if (amount != null && amount >= 1000 && amount <= 5_000_000_000 && !isUnitPriceScopedAmount(text, end)) price = Math.round(amount);
     }
   }
 
@@ -151,7 +163,9 @@ export function parseHousingPrice(value, fallbackCurrency = '') {
     for (const match of text.matchAll(bareAmountRe)) {
       const raw = match[0];
       const start = match.index ?? 0;
-      if (isPaymentScopedAmount(text, start, start + raw.length)) continue;
+      const end = start + raw.length;
+      if (isPaymentScopedAmount(text, start, end)) continue;
+      if (isUnitPriceScopedAmount(text, end)) continue;
       const digits = raw.replace(/[\s.,]/g, '');
       if (digits[0] === '0') continue;
       const amount = parseNumericAmount(raw);
