@@ -25,7 +25,7 @@ const PAYMENT_AMOUNT_TERMS = Object.freeze([
   SELLER_TERMS.commission,
 ].filter(Boolean));
 const PRICE_KEYWORD_RE = new RegExp(PRICE_KEYWORD, 'iu');
-const UNIT_PRICE_SUFFIX_RE = /^\s*(?:\/\s*|(?:за|на|per)\s+(?:1\s*)?)(?:m2|m²|м2|м²|кв\.?\s*м(?:2|²)?|квадратн(?:ый|ого)?\s+метр(?:а|ов)?|sqm)\b/iu;
+const UNIT_PRICE_SUFFIX_RE = /^\s*(?:\/\s*|(?:за|на|per)\s+(?:1\s*)?)(?:m2|m²|м2|м²|кв\.?\s*м(?:2|²)?|квадратн(?:ый|ого)?\s+метр(?:а|ов)?|sqm)(?![\p{L}\p{N}_])/iu;
 
 function escapeRegex(value) {
   return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
