@@ -8,7 +8,7 @@ export const UA_METRO_LOCATION_EXTENSIONS = Object.freeze({
     // shadowed by broader historical area names.
     microdistricts: locationEntries([
       ...['1','2','3','5','6','7','8','9','10','11','13','14','20','21','22','23','24','25','26','27'].map((n) => [
-        `Troyeshchyna ${n} microdistrict`,
+        `Troieshchyna ${n} microdistrict`,
         `${n}-й мікрорайон Вигурівщини-Троєщини`, `${n} мікрорайон Вигурівщини-Троєщини`, `Троєщина ${n}`,
         `${n}-й микрорайон Вигуровщины-Троещины`, `${n} микрорайон Вигуровщины-Троещины`, `Троещина ${n}`,
       ]),
