@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
+import { canonicalCentralAsiaCity, canonicalKyrgyzstanCity, KG_CITY_CATALOG, KG_LOCATION_TERMS } from '../src/central-asia.js';
 import { canonicalCity } from '../src/geography.js';
 import { LOCATION_DICTIONARIES, matchDictionaryLocation } from '../src/locations-runtime.js';
 
@@ -8,6 +9,10 @@ test('KG canonical city lexicon covers crawler cities', () => {
   assert.equal(canonicalCity('Бишкек', 'KG'), 'Bishkek');
   assert.equal(canonicalCity('Ош', 'KG'), 'Osh');
   assert.equal(canonicalCity('Каракол', 'KG'), 'Karakol');
+  assert.equal(canonicalKyrgyzstanCity('Бишкек'), 'Bishkek');
+  assert.equal(canonicalCentralAsiaCity('Ош', 'KG'), 'Osh');
+  assert.ok(KG_CITY_CATALOG.some(({ canonical }) => canonical === 'Karakol'));
+  assert.ok(KG_LOCATION_TERMS.microdistrict.includes('кичирайон'));
 
   assert.ok(LOCATION_DICTIONARIES.KG?.Bishkek);
   assert.ok(LOCATION_DICTIONARIES.KG?.Osh);
