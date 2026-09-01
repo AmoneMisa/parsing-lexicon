@@ -1,11 +1,25 @@
 import { locationEntries } from './location-merge.js';
 
+const districts = (rows) => Object.freeze({ districts: locationEntries(rows) });
 const microdistricts = (rows) => Object.freeze({ microdistricts: locationEntries(rows) });
 
 // Listing-facing aliases that enrich the major Ukraine dictionaries without
 // changing their established parser canonicals. Keep physical coordinates and
 // source ownership in geo-catalog.
 export const UA_CITY_LOCATION_EXPANSIONS = Object.freeze({
+  Mykolaiv: districts([
+    ['Tsentralnyi', 'Центральний', 'Центральный', 'Центральний район', 'Центральный район'],
+    ['Zavodskyi', 'Заводський', 'Заводской', 'Заводський район', 'Заводской район'],
+    ['Inhulskyi', 'Інгульський', 'Ингульский', 'Інгульський район', 'Ингульский район', 'Ленінський', 'Ленинский', 'Ленінський район', 'Ленинский район', 'Слобідський', 'Слободской'],
+    ['Korabelnyi', 'Корабельний', 'Корабельный', 'Корабельний район', 'Корабельный район'],
+  ]),
+
+  Kherson: districts([
+    ['Tsentralnyi', 'Центральний', 'Центральный', 'Центральний район', 'Центральный район', 'Суворовський', 'Суворовский', 'Суворовський район', 'Суворовский район'],
+    ['Dniprovskyi', 'Дніпровський', 'Днепровский', 'Дніпровський район', 'Днепровский район'],
+    ['Korabelnyi', 'Корабельний', 'Корабельный', 'Корабельний район', 'Корабельный район', 'Комсомольський', 'Комсомольский', 'Комсомольський район', 'Комсомольский район'],
+  ]),
+
   Kharkiv: microdistricts([
     ['Zhukovskoho', 'Селище ім. Жуковського', 'селище Жуковського', 'Жуковського', 'посёлок Жуковского', 'поселок Жуковского', 'Жуковского', 'Zhukovskoho settlement'],
     ['Kulynychi', 'Кулиничі', 'Кулиничи', 'селище Кулиничі', 'посёлок Кулиничи', 'поселок Кулиничи', 'Kulynichi'],
