@@ -22,11 +22,14 @@ const FIELD_EXTRA_ALIASES = Object.freeze({
 });
 
 const APPLICATION_MODAL_RE = /(?:отправить\s+резюме\s+)?пол\s+мужской\s+женский\s+образование[\s\S]{0,500}?выберите\s+вакансию[\s\S]*/iu;
-const LEAKED_CSS_RULE_RE = /\s*[.#][\w\\-]+(?:\s+[.#][\w\\-]+)?(?::[\w-]+)?\s*\{\s*(?:[\w-]+\s*:\s*[^;{}]+;?\s*)+\}\s*/gu;
+const LEAKED_STYLESHEET_START_RE = /:root\s*\{\s*--[\w-]+\s*:/iu;
+const LEAKED_CSS_RULE_RE = /\s*(?:[.#][\w\\-]+|:root)(?:[^{}\n]{0,300})\{\s*(?:(?:--)?[\w-]+\s*:\s*[^;{}]+;?\s*)+\}\s*/giu;
 
-/** Remove source-page controls and stylesheet fragments copied into vacancy text. */
+/** Remove source-page controls and stylesheet fragments copied into hiring text. */
 export function cleanHiringSourceText(value) {
-  return String(value || '')
+  const text = String(value || '');
+  const stylesheetStart = text.search(LEAKED_STYLESHEET_START_RE);
+  return (stylesheetStart >= 0 ? text.slice(0, stylesheetStart) : text)
     .replace(APPLICATION_MODAL_RE, '')
     .replace(LEAKED_CSS_RULE_RE, ' ')
     .replace(/[ \t]+(?=\n)/g, '')

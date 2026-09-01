@@ -19,6 +19,10 @@ import {
 test('source cleanup removes leaked vacancy-page CSS without changing prose', () => {
   const text = 'Отправить резюме .maw\\_\\_modal\\_popup\\_box .popup-207:hover { background: #ffffff !important; color: #000000 !important; }';
   assert.equal(cleanHiringSourceText(text), 'Отправить резюме');
+  const candidateWithStylesheet = 'Captain / First Officer\n:Root { --color-primary-50: 244 245 246; --color-primary-DEFAULT: var(--color-primary-500); } .dark { --color-primary-DEFAULT: var(--color-primary-400); } .carousel,.carousel *{box-sizing:border-box}';
+  assert.equal(cleanHiringSourceText(candidateWithStylesheet), 'Captain / First Officer');
+  const truncatedStylesheet = ':Root { --color-primary-50: 244 245 246; } .dark { --color-primary-DEFAULT: var(--color-primary-400); } Vacancies - Qanotsharq :root{--vc-clr-primary:#000}.carousel{height:var(--vc-carousel-height);overflow:hidden';
+  assert.equal(cleanHiringSourceText(truncatedStylesheet), '');
   assert.equal(cleanHiringSourceText('Опыт работы с CSS обязателен.'), 'Опыт работы с CSS обязателен.');
 });
 
