@@ -3,7 +3,6 @@ import { aliasesOf, escapeRegex, normalizeUnicode } from './normalization.js';
 import { parseSalary } from './money.js';
 import { extractCandidateName } from './hiring-candidate-fields.js';
 import { countryCurrency } from './country-context.js';
-import { matchProfession } from './hiring-professions.js';
 
 const FIELD_EXTRA_ALIASES = Object.freeze({
   candidate: Object.freeze({
@@ -72,8 +71,7 @@ export function splitHiringVacancyEntries(value) {
   if (!text) return Object.freeze({ prefix: '', suffix: '', entries: Object.freeze([]) });
 
   const headings = [...text.matchAll(INLINE_VACANCY_HEADING_RE)]
-    .map((match) => ({ start: match.index ?? 0, title: match[1].replace(/\s+/g, ' ').trim() }))
-    .filter(({ title }) => Boolean(matchProfession(title, { allowWeak: true })));
+    .map((match) => ({ start: match.index ?? 0, title: match[1].replace(/\s+/g, ' ').trim() }));
   if (headings.length < 2) return Object.freeze({ prefix: text, suffix: '', entries: Object.freeze([]) });
 
   let suffix = '';
