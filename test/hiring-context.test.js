@@ -42,6 +42,12 @@ test('explicit we-do-sponsor wording is recognized as sponsorship offered', () =
   assert.ok(!parsed.workAuthorization.includes('noSponsorship'));
 });
 
+test('inline emoji section markers preserve vacancy responsibilities and conditions', () => {
+  const parsed = parseHiringContext('✅Требования: • Знание русского языка. ✅Обязанности: • Приём и выкладка товаров; • Консультирование клиентов. ✅Условия: • График работы: 6/1; • Два сменных варианта.', { mode: 'vacancy' });
+  assert.equal(parsed.sections.responsibilities, '• Приём и выкладка товаров; • Консультирование клиентов.');
+  assert.equal(parsed.sections.offer, '• График работы: 6/1; • Два сменных варианта.');
+});
+
 test('classifies obvious job-service and closed-vacancy noise', () => {
   assert.equal(classifyHiringMessage('Помогу найти работу. Подбор вакансий под ваше резюме.'), 'job_service');
   assert.equal(classifyHiringMessage('Вакансия закрыта, сотрудник найден.'), 'closed_vacancy');

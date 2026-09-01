@@ -66,6 +66,24 @@ export function detectWorkSchedules(value) {
   return Object.freeze(collectCanonical(String(value || ''), [...SCHEDULE_TERMS, ...WORK_SCHEDULE_EXTENSIONS]));
 }
 
+const WORK_TIME_RANGE_RE = /(?:^|[^\p{L}\p{N}])(?:с|from|de\s+la)?\s*([01]?\d|2[0-3])[:.]([0-5]\d)\s*(?:[-–—]|до|to|până\s+la|pana\s+la|gacha)\s*([01]?\d|2[0-3])[:.]([0-5]\d)(?!\d)/giu;
+
+/** Extract explicit working-time intervals without confusing them with contact hours. */
+export function extractWorkTimeRanges(value) {
+  const text = String(value || '');
+  const ranges = [];
+  const seen = new Set();
+  for (const match of text.matchAll(WORK_TIME_RANGE_RE)) {
+    const start = `${match[1].padStart(2, '0')}:${match[2]}`;
+    const end = `${match[3].padStart(2, '0')}:${match[4]}`;
+    const key = `${start}-${end}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    ranges.push(Object.freeze({ start, end }));
+  }
+  return Object.freeze(ranges);
+}
+
 export function detectProbation(value) {
   const text = String(value || '');
   for (const entry of PROBATION_MATCH_ORDER) {

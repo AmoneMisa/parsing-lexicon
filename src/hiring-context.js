@@ -207,8 +207,15 @@ const SECTION_PATTERNS = Object.freeze(Object.fromEntries(
   Object.entries(HIRING_SECTION_MARKERS).map(([key, entry]) => [key, sectionPattern(entry)]),
 ));
 
+const INLINE_SECTION_LABELS = Object.values(HIRING_SECTION_MARKERS)
+  .flatMap((entry) => aliasesOf(entry))
+  .sort((a, b) => b.length - a.length)
+  .map((value) => escapeRegex(value).replace(/\s+/g, '\\s+'))
+  .join('|');
+const INLINE_SECTION_MARKER_RE = new RegExp(`([^\\p{L}\\p{N}\\s])(?=(?:${INLINE_SECTION_LABELS})\\s*[:：—-])`, 'giu');
+
 export function splitHiringSections(value) {
-  const text = String(value || '').replace(/\r/g, '');
+  const text = String(value || '').replace(/\r/g, '').replace(INLINE_SECTION_MARKER_RE, '\n$1');
   const out = {};
   let current = null;
   for (const rawLine of text.split('\n')) {
