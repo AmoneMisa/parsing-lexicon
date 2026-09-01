@@ -183,10 +183,36 @@ export function parseHousingPrice(value, fallbackCurrency = '') {
     }
   }
 
-  const labelled = priceText.match(new RegExp(`${PRICE_KEYWORD}\\s*[:\\-–—]?\\s*(${MONEY_NUMBER_PATTERN})`, 'i'));
+  // Split-million forms must win before a generic labelled amount. Otherwise
+  // "Narxi 2 миллион 500" would stop at 2,000,000 and lose the trailing 500k.
+  if (price == null) {
+    const splitMillion = priceText.match(/(?:^|[^\p{L}\p{N}_])(\d{1,3})\s*(?:млн\.?|mln\.?|миллион(?:а|ов)?|million(?:s)?)\s+(\d{1,3})(?=$|[^\p{L}\p{N}_])/iu);
+    if (splitMillion) {
+      const millions = Number(splitMillion[1]);
+      const thousands = Number(splitMillion[2]);
+      const amount = millions * 1_000_000 + thousands * 1_000;
+      if (amount >= 1_000_000 && amount <= 5_000_000_000) price = amount;
+    }
+  }
+
+  const labelled = priceText.match(new RegExp(
+    `${PRICE_KEYWORD}\\s*[:\\-–—]?\\s*(${MONEY_NUMBER_PATTERN})(?:\\s*(${SCALE_PATTERN})(?=$|[^\\p{L}\\p{N}_]))?`,
+    'iu',
+  ));
   if (price == null && labelled) {
-    const amount = parseNumericAmount(labelled[1]);
-    if (amount != null && amount >= 50 && amount <= 5_000_000_000) price = amount;
+    const baseAmount = parseNumericAmount(labelled[1]);
+    // A common malformed Uzbek marketplace form is "450000 ming som". The
+    // already-expanded amount is the intended 450,000; multiplying it by
+    // another thousand would create a 450,000,000 false price. Keep normal
+    // shorthand such as "450 ming" and "2500 ming" scaled.
+    const ignoreRepeatedUzbekThousand = labelled[2]
+      && /^(?:ming|минг)$/iu.test(labelled[2])
+      && baseAmount != null
+      && baseAmount >= 10_000;
+    const amount = labelled[2] && !ignoreRepeatedUzbekThousand
+      ? parseScaledAmount(labelled[1], labelled[2])
+      : baseAmount;
+    if (amount != null && amount >= 50 && amount <= 5_000_000_000) price = Math.round(amount);
   }
 
   if (price == null) {
@@ -208,18 +234,6 @@ export function parseHousingPrice(value, fallbackCurrency = '') {
       }
     }
     price = tagged;
-  }
-
-  // Uzbek classifieds often split a round million and the trailing thousands:
-  // "2 млн 500" / "2 миллион 500" means 2,500,000, not 2,000,000 plus an unrelated 500.
-  if (price == null) {
-    const splitMillion = priceText.match(/(?:^|[^\p{L}\p{N}_])(\d{1,3})\s*(?:млн\.?|mln\.?|миллион(?:а|ов)?|million(?:s)?)\s+(\d{1,3})(?=$|[^\p{L}\p{N}_])/iu);
-    if (splitMillion) {
-      const millions = Number(splitMillion[1]);
-      const thousands = Number(splitMillion[2]);
-      const amount = millions * 1_000_000 + thousands * 1_000;
-      if (amount >= 1_000_000 && amount <= 5_000_000_000) price = amount;
-    }
   }
 
   if (price == null) {
