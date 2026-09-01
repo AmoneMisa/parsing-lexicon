@@ -51,6 +51,9 @@ export const UZ_SEARCH_TARGETS = Object.freeze([
   city("Ellikqal'a", { uzLatn: ["Ellikqal'a", 'Ellikkala'], kaaLat: ['Elliqala'], ru: ['Элликкала'], en: ['Ellikkala'] }, { country: 'UZ', type: 'search_target', priority: 'P4', region: "Qoraqalpog'iston" }),
 ]);
 
+/** Canonical Kyrgyzstan city catalog used by geography consumers. */
+export const KG_CITY_CATALOG = CITIES_BY_COUNTRY.KG;
+
 export const KZ_LOCATION_TERMS = Object.freeze({
   microdistrict: Object.freeze(['микрорайон', 'микр.', 'микр', 'мкр.', 'мкр', 'м-н', 'мкр-н', 'ықшамаудан', 'ықш.ауд.', 'ықш']),
   residentialArea: Object.freeze(['жилой массив', 'жилмассив', 'ж/м', 'ж.м.', 'тұрғын алабы', 'тұрғын массиві', 'массив']),
@@ -66,6 +69,14 @@ export const UZ_LOCATION_TERMS = Object.freeze({
   residentialComplex: Object.freeze(['ЖК', 'жк', 'turar joy majmuasi', 'residential complex', 'residence']),
 });
 
+export const KG_LOCATION_TERMS = Object.freeze({
+  city: Object.freeze(['шаар', 'шаары', 'город', 'г.', 'city']),
+  district: Object.freeze(['район', 'району', 'р-н', 'district']),
+  microdistrict: Object.freeze(['микрорайон', 'мкр', 'мкр.', 'кичирайон', 'кичи район']),
+  residentialArea: Object.freeze(['жилмассив', 'жилой массив', 'массив', 'конуш', 'жаңы конуш']),
+  residentialComplex: Object.freeze(['ЖК', 'жк', 'жилой комплекс', 'турак жай комплекси', 'residential complex', 'residence']),
+});
+
 export function canonicalKazakhstanCity(value) {
   return canonicalCity(value, 'KZ');
 }
@@ -74,14 +85,27 @@ export function canonicalUzbekistanCity(value) {
   return canonicalCity(value, 'UZ');
 }
 
+export function canonicalKyrgyzstanCity(value) {
+  return canonicalCity(value, 'KG');
+}
+
 export function canonicalCentralAsiaCity(value, country = null) {
   if (country === 'KZ') return canonicalKazakhstanCity(value);
   if (country === 'UZ') return canonicalUzbekistanCity(value);
-  return canonicalKazakhstanCity(value) || canonicalUzbekistanCity(value);
+  if (country === 'KG') return canonicalKyrgyzstanCity(value);
+  return canonicalKazakhstanCity(value)
+    || canonicalUzbekistanCity(value)
+    || canonicalKyrgyzstanCity(value);
 }
 
 export function centralAsiaCityAliases(canonical, country) {
-  const catalog = country === 'KZ' ? KZ_CITY_CATALOG : country === 'UZ' ? UZ_CITY_CATALOG : [...KZ_CITY_CATALOG, ...UZ_CITY_CATALOG];
+  const catalog = country === 'KZ'
+    ? KZ_CITY_CATALOG
+    : country === 'UZ'
+      ? UZ_CITY_CATALOG
+      : country === 'KG'
+        ? KG_CITY_CATALOG
+        : [...KZ_CITY_CATALOG, ...UZ_CITY_CATALOG, ...KG_CITY_CATALOG];
   const item = catalog.find((entry) => entry.canonical === canonical);
   return item ? Object.freeze([...new Set([item.canonical, ...aliasesOf(item)])]) : Object.freeze([]);
 }
