@@ -453,6 +453,57 @@ function normalizeUzSemanticLocations(country) {
     });
   }
 
+  const nukus = normalized?.Nukus;
+  if (nukus) {
+    const mahallas = nukus.mahallas || [];
+    const localAreas = nukus.localAreas || [];
+    const aliasesByCanonical = new Map([
+      ['Qizil qum', ['Qızıl qum', 'Qızılqum']],
+      ['Gúzar', ['Guzar']],
+      ['Isbilermenler aymagi', ['Isbilermenler aymaǵı']],
+      ['Darbent', ['Dárbent']],
+      ['Abat makan', ['Abat mákan']],
+      ['Jolshilar', ['Jolshılar']],
+      ['Qutli qonis', ['Qutlı qonıs']],
+      ['Amanliq guzari', ['Amanlıq gúzarı']],
+      ['Aydin jol', ['Aydın jol']],
+      ['Qum awil', ['Qum awıl']],
+      ['Qutli makan', ['Qutlı mákan']],
+      ['Shimbay shayxana', ['Shımbay shayxana']],
+      ['Shayirlar awili', ['Shayırlar awılı']],
+      ['Tungish qonis', ['Tunǵısh qonıs']],
+      ['Qurilisshi', ['Qurılısshı']],
+      ['Ornek', ['Órnek', "O'rnek"]],
+      ['Jana zaman', ['Jańa zaman']],
+      ['Baqshiliq', ['Baqshılıq']],
+      ['Tinishliq', ['Tınıshlıq']],
+      ['Xaliqlar dosligi', ['Xalıqlar doslıǵı']],
+      ['Boz awil', ['Boz awıl']],
+      ['Jas awlad', ['Jas áwlad']],
+      ['Aq jagis', ['Aq jaǵıs']],
+      ['Tele oray', ['Telecentr']],
+      ['Shadli awil', ['Shadlı']],
+      ['Qumbiz awil', ['Qumbız awıl']],
+    ]);
+
+    normalized = Object.freeze({
+      ...normalized,
+      Nukus: Object.freeze({
+        ...nukus,
+        mahallas: Object.freeze(mahallas.map((entry) => {
+          const aliases = aliasesByCanonical.get(entry.name);
+          return aliases
+            ? semanticEntry(entry, entry.name, [...(entry.aliases || []), ...aliases], 'mahalla')
+            : entry;
+        })),
+        // These names already have canonical mahalla owners. Keeping a second
+        // local-area owner makes exact bridge resolution ambiguous and causes
+        // the crawler to inspect the same physical place twice.
+        localAreas: Object.freeze(localAreas.filter(({ name }) => !['Dosliq', 'Samanbay'].includes(name))),
+      }),
+    });
+  }
+
   return normalized;
 }
 
