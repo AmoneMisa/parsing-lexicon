@@ -23,6 +23,8 @@ test('source cleanup removes leaked vacancy-page CSS without changing prose', ()
   assert.equal(cleanHiringSourceText(candidateWithStylesheet), 'Captain / First Officer');
   const truncatedStylesheet = ':Root { --color-primary-50: 244 245 246; } .dark { --color-primary-DEFAULT: var(--color-primary-400); } Vacancies - Qanotsharq :root{--vc-clr-primary:#000}.carousel{height:var(--vc-carousel-height);overflow:hidden';
   assert.equal(cleanHiringSourceText(truncatedStylesheet), '');
+  const concatenatedModal = 'Достойная и стабильная зарплата. Отправить резюме Отправить резюме [telegram] ПолМужскойЖенский ОбразованиеСреднее профессиональноеВысшее бакалавриат Выберите вакансиюПродавец-консультантКассир Отправить резюме .popup-207:hover { color: #000000 !important; }';
+  assert.equal(cleanHiringSourceText(concatenatedModal), 'Достойная и стабильная зарплата.');
   assert.equal(cleanHiringSourceText('Опыт работы с CSS обязателен.'), 'Опыт работы с CSS обязателен.');
 });
 

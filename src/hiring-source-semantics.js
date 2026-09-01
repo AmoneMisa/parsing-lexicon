@@ -21,7 +21,7 @@ const FIELD_EXTRA_ALIASES = Object.freeze({
   }),
 });
 
-const APPLICATION_MODAL_RE = /(?:отправить\s+резюме\s+)?пол\s+мужской\s+женский\s+образование[\s\S]{0,500}?выберите\s+вакансию[\s\S]*/iu;
+const APPLICATION_MODAL_RE = /(?:отправить\s*резюме\s*)+(?:\[telegram\]\s*)?пол\s*мужской\s*женский\s*образование[\s\S]{0,500}?выберите\s*вакансию[\s\S]*/iu;
 const LEAKED_STYLESHEET_START_RE = /:root\s*\{\s*--[\w-]+\s*:/iu;
 const LEAKED_CSS_RULE_RE = /\s*(?:[.#][\w\\-]+|:root)(?:[^{}\n]{0,300})\{\s*(?:(?:--)?[\w-]+\s*:\s*[^;{}]+;?\s*)+\}\s*/giu;
 
