@@ -50,5 +50,9 @@ test('inline emoji section markers preserve vacancy responsibilities and conditi
 
 test('classifies obvious job-service and closed-vacancy noise', () => {
   assert.equal(classifyHiringMessage('Помогу найти работу. Подбор вакансий под ваше резюме.'), 'job_service');
+  assert.equal(
+    classifyHiringMessage('Команда Doda Jobs создала специализированные Telegram-каналы с вакансиями по самым востребованным направлениям. Теперь искать работу стало ещё проще — выбирай свою сферу и подписывайся! IT и Digital. Бухгалтерия и Юриспруденция. Продажи и Маркетинг.'),
+    'job_service',
+  );
   assert.equal(classifyHiringMessage('Вакансия закрыта, сотрудник найден.'), 'closed_vacancy');
 });

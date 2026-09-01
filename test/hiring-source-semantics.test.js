@@ -13,6 +13,7 @@ import {
   extractNiceToHaveContext,
   parseCandidateSalary,
   parseHiringSourceSalary,
+  splitHiringVacancyEntries,
   TEMPORARY_WORK_AUTH_RE,
 } from '../src/hiring-source-semantics.js';
 
@@ -33,6 +34,21 @@ test('structured source fields reuse shared field dictionaries', () => {
   assert.equal(extractCandidateStructuredField("Ma'lumoti: Oliy", 'education'), 'Oliy');
   assert.equal(extractJobStructuredField('Company: Acme', 'company'), 'Acme');
   assert.equal(extractJobStructuredField('Locație: București', 'location'), 'București');
+});
+
+test('multi-vacancy posts split role-local details from shared company and contacts', () => {
+  const text = '💊ВАКАНСИИ В ФАРМАЦЕВТИЧЕСКОЙ КОМПАНИИ «SHARQ DARMON» 📍Место работы: Бектемирский район ✔️АГЕНТ ПО ПРОДАЖАМ (МЕДИЦИНСКИЙ ПРЕДСТАВИТЕЛЬ) ⏳ Зарплата: обсуждается. ✔️СПЕЦИАЛИСТ ПО РЕГИСТРАЦИИ ЛЕКАРСТВЕННЫХ СРЕДСТВ • Женщина, возраст до 50 лет ⏳Зарплата: 8 000 000 – 10 000 000 сум ✔️ХИМИК-АНАЛИТИК • Знание русского языка ⏳Зарплата: 6 000 000 – 7 000 000 сум ✔️КЛАДОВЩИК • Мужчина, возраст 20–30 лет ⏳Зарплата: 4 000 000 – 5 000 000 сум ✈️Telegram: @sharq_darmon_hh 📞Контакт: +998774071713';
+  const split = splitHiringVacancyEntries(text);
+  assert.match(split.prefix, /SHARQ DARMON/);
+  assert.deepEqual(split.entries.map(({ title }) => title), [
+    'АГЕНТ ПО ПРОДАЖАМ (МЕДИЦИНСКИЙ ПРЕДСТАВИТЕЛЬ)',
+    'СПЕЦИАЛИСТ ПО РЕГИСТРАЦИИ ЛЕКАРСТВЕННЫХ СРЕДСТВ',
+    'ХИМИК-АНАЛИТИК',
+    'КЛАДОВЩИК',
+  ]);
+  assert.match(split.entries[1].text, /8 000 000 – 10 000 000/);
+  assert.doesNotMatch(split.entries[1].text, /6 000 000/);
+  assert.match(split.suffix, /@sharq_darmon_hh/);
 });
 
 test('candidate fallback identity and experience cover legacy CV formats', () => {

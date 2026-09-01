@@ -101,6 +101,10 @@ function rangeSearchText(text) {
   for (const symbol of Object.keys(CURRENCY_SYMBOL_CANDIDATES)) {
     normalized = normalized.split(symbol).join(' '.repeat(symbol.length));
   }
+  // Some job boards render salary parts as separate UI tokens and join their
+  // accessible text with middle dots: "2 500 · - 3 000 · €". Treat those
+  // decorative separators as whitespace while preserving source offsets.
+  normalized = normalized.replace(/[·•]/gu, ' ');
   return normalized;
 }
 

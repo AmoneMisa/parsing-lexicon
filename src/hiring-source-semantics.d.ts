@@ -6,6 +6,13 @@ export type VisaSponsorshipWording = 'offered' | 'notOffered' | null;
 export function cleanHiringSourceText(value: unknown): string;
 export function extractCandidateStructuredField(value: unknown, key: string, maxLength?: number): string | null;
 export function extractJobStructuredField(value: unknown, key: string, maxLength?: number): string | null;
+export type HiringVacancyEntry = Readonly<{ title: string; text: string }>;
+export type SplitHiringVacancyPost = Readonly<{
+  prefix: string;
+  suffix: string;
+  entries: readonly HiringVacancyEntry[];
+}>;
+export function splitHiringVacancyEntries(value: unknown): SplitHiringVacancyPost;
 export function extractCandidateDisplayName(value: unknown): string;
 export function extractCandidateExperienceMentions(value: unknown): readonly CandidateExperienceMention[];
 export function parseHiringSourceSalary(value: unknown): SalaryParseResult | null;

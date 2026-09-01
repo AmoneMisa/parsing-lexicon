@@ -3,6 +3,7 @@ import { aliasesOf, escapeRegex, normalizeUnicode } from './normalization.js';
 import { parseSalary } from './money.js';
 import { extractCandidateName } from './hiring-candidate-fields.js';
 import { countryCurrency } from './country-context.js';
+import { matchProfession } from './hiring-professions.js';
 
 const FIELD_EXTRA_ALIASES = Object.freeze({
   candidate: Object.freeze({
@@ -60,6 +61,40 @@ export function extractCandidateStructuredField(value, key, maxLength = 220) {
 
 export function extractJobStructuredField(value, key, maxLength = 220) {
   return extractField(value, JOB_FIELD_TERMS[key], FIELD_EXTRA_ALIASES.job[key] || [], maxLength);
+}
+
+const INLINE_VACANCY_HEADING_RE = /✔️?\s*([A-ZА-ЯЁЎҚҒҲІЇЄ][A-ZА-ЯЁЎҚҒҲІЇЄ\s()\/-]{2,100}?)(?=\s*(?:[•⏳✔📍✈📞]|$))/gu;
+const SHARED_HIRING_CONTACT_RE = /(?:✈️?\s*Telegram\s*:|📞\s*Контакт\s*:)/iu;
+
+/** Split a multi-vacancy source post into role-local blocks and shared context. */
+export function splitHiringVacancyEntries(value) {
+  const text = cleanHiringSourceText(value);
+  if (!text) return Object.freeze({ prefix: '', suffix: '', entries: Object.freeze([]) });
+
+  const headings = [...text.matchAll(INLINE_VACANCY_HEADING_RE)]
+    .map((match) => ({ start: match.index ?? 0, title: match[1].replace(/\s+/g, ' ').trim() }))
+    .filter(({ title }) => Boolean(matchProfession(title, { allowWeak: true })));
+  if (headings.length < 2) return Object.freeze({ prefix: text, suffix: '', entries: Object.freeze([]) });
+
+  let suffix = '';
+  let contentEnd = text.length;
+  const lastStart = headings.at(-1).start;
+  const contact = SHARED_HIRING_CONTACT_RE.exec(text.slice(lastStart));
+  if (contact?.index != null) {
+    contentEnd = lastStart + contact.index;
+    suffix = text.slice(contentEnd).trim();
+  }
+
+  const entries = headings.map((heading, index) => {
+    const end = Math.min(headings[index + 1]?.start ?? contentEnd, contentEnd);
+    return Object.freeze({ title: heading.title, text: text.slice(heading.start, end).trim() });
+  }).filter(({ text: entryText }) => Boolean(entryText));
+
+  return Object.freeze({
+    prefix: text.slice(0, headings[0].start).trim(),
+    suffix,
+    entries: Object.freeze(entries),
+  });
 }
 
 export function extractCandidateDisplayName(value) {

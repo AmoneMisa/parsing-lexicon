@@ -130,6 +130,7 @@ export function parseExperience(value) {
 
   const range = text.match(RANGE_RE);
   if (range) {
+    if (/(?:возраст|вік|age|yosh|ёш|vârsta|varsta)/iu.test(range[0]) && !/(?:опыт|experience|досвід|tajriba|тәжірибе)/iu.test(range[0])) return null;
     const minYears = Number(range[1].replace(',', '.'));
     const maxYears = Number(range[2].replace(',', '.'));
     return Object.freeze({ requirement: modifier || 'required', minYears: Math.min(minYears, maxYears), maxYears: Math.max(minYears, maxYears) });
@@ -137,6 +138,7 @@ export function parseExperience(value) {
 
   const single = text.match(MIN_RE);
   if (single) {
+    if (/(?:возраст|вік|age|yosh|ёш|vârsta|varsta)/iu.test(single[0]) && !/(?:опыт|experience|досвід|tajriba|тәжірибе)/iu.test(single[0])) return null;
     const years = Number(single[1].replace(',', '.'));
     const isExact = !/(?:от|не\s+менее|minimum|min\.?|at\s+least|від|kamida|кемінде|\+)/iu.test(single[0]);
     return Object.freeze({ requirement: modifier || 'required', minYears: years, maxYears: isExact ? years : null });

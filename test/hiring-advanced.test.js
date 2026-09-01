@@ -76,6 +76,7 @@ test('experience parser handles none preferred min and ranges', () => {
   assert.deepEqual(parseExperience('опыт 1-3 года'), { requirement: 'required', minYears: 1, maxYears: 3 });
   assert.deepEqual(parseExperience('не менее 2 лет'), { requirement: 'required', minYears: 2, maxYears: null });
   assert.equal(parseExperience('experience preferred')?.requirement, 'preferred');
+  assert.equal(parseExperience('Мужчина, возраст 20–30 лет'), null);
 });
 
 test('collision collector exposes strong profession alias collisions instead of silently hiding them', () => {

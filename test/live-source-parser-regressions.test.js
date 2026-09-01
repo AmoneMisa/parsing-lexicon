@@ -49,6 +49,22 @@ test('salary parser protects schedule/time numbers from becoming compensation', 
   assert.deepEqual(detectWorkSchedules('График 6/1, 09:00-18:00'), ['sixOne']);
 });
 
+test('job-board token separators preserve a complete salary range', () => {
+  const text = 'Водитель грузовика и фуры · 2 500 · - 3 000 · € · ООО Ка Т, ТОО | Алматы, KZ · в Ташкенте, полная занятость, опыт работы от 2 лет';
+  assert.deepEqual(parseSalary(text), {
+    min: 2500,
+    max: 3000,
+    currency: 'EUR',
+    period: null,
+    gross: null,
+    negotiable: false,
+    approximate: false,
+  });
+  const contextual = parseHiringVacancySalary(text, { country: 'UZ', periodFallback: 'country' });
+  assert.equal(contextual?.period, 'month');
+  assert.equal(contextual?.periodSource, 'country-default');
+});
+
 test('Uzbekistan vacancy salary can opt into monthly market fallback with provenance', () => {
   const parsed = parseHiringSalaryWithContext('З/П: 6 000 000 сум', {
     country: 'UZ',
