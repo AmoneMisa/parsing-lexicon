@@ -6,7 +6,7 @@ const match = (text, city) => matchDictionaryLocation(text, 'UA', city)?.name ??
 
 test('Kyiv numbered neighbourhood aliases beat broader area names', () => {
   assert.equal(match('10-й «Б» мікрорайон Позняків', 'Kyiv'), 'Pozniaky 10B microdistrict');
-  assert.equal(match('квартира, Троещина 24', 'Kyiv'), 'Troyeshchyna 24 microdistrict');
+  assert.equal(match('квартира, Троещина 24', 'Kyiv'), 'Troieshchyna 24 microdistrict');
   assert.equal(match('Осокорки 7А', 'Kyiv'), 'Osokorky 7A microdistrict');
   assert.equal(match('3-й микрорайон Радужного массива', 'Kyiv'), 'Raiduzhnyi 3 microdistrict');
   assert.equal(match('12-й мікрорайон Біличів', 'Kyiv'), 'Bilychi 12 microdistrict');
