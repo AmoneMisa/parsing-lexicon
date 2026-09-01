@@ -21,9 +21,28 @@ function parseBedrooms(text) {
 }
 
 function parseBathrooms(text) {
-  const match = text.match(/(\d)\s*(?:сан\s?уз(?:е)?л\p{L}*|с\/?у(?=$|[^\p{L}\p{N}_])|ванн[аы]|bathrooms?|sanuzel|hammom)/iu)
-    || text.match(/(?:сан\s?уз(?:е)?л\p{L}*|bathrooms?|sanuzel|hammom)\D{0,4}(\d)/iu);
-  return number(match, 1, 10);
+  const bathroom = '(?:сан\\s?уз(?:е)?л\\p{L}*|с\\/?у(?=$|[^\\p{L}\\p{N}_])|ванн[аы]|bathrooms?|sanuzel|hammom)';
+  const areaUnit = '(?:м²|м2|m²|m2|sqm|sq\\.?\\s*m|кв\\.?\\s*м(?:²|2)?)';
+
+  // Room-area rows such as "Санузел4.52 м²" carry the size of a singular
+  // bathroom, not a bathroom count. Resolve these before generic count forms
+  // so another nearby number cannot win.
+  const singularArea = text.match(new RegExp(
+    `(?:сан\\s?уз(?:е)?л|bathroom|sanuzel|hammom)\\s*[:=\\-–—]?\\s*\\d{1,4}(?:[.,]\\d{1,2})?\\s*${areaUnit}(?=$|[^\\p{L}\\p{N}_])`,
+    'iu',
+  ));
+  if (singularArea) return 1;
+
+  const forward = text.match(new RegExp(`(\\d{1,2})\\s*${bathroom}`, 'iu'));
+  const forwardCount = number(forward, 1, 10);
+  if (forwardCount != null) return forwardCount;
+
+  const reversed = text.match(new RegExp(
+    `${bathroom}\\D{0,4}(\\d{1,2})(?![.,]\\d)(?!\\s*${areaUnit})`,
+    'iu',
+  ));
+  const reversedCount = number(reversed, 1, 10);
+  return reversedCount;
 }
 
 function parseBuildingYear(text) {
@@ -191,7 +210,7 @@ export function parseHousingListingFields(value, { country = '' } = {}) {
       /евро[- ]?(?:студи\p{L}*|двушк\p{L}*|трёшк\p{L}*|трешк\p{L}*|четырёшк\p{L}*|четрешк\p{L}*|планировк\p{L}*|[1-9](?!\p{N}))|европланировк\p{L}*|euro[- ]?layout/iu,
     ),
     gas,
-    newBuilding: bool(text, /новостро|новобуд|новый\s+дом|novast(?:royka|iroyka)|navast(?:royka|iroyka)|new\s*build|newly\s*built|yangi\s+(?:bino|qurilgan|uy)|bloc\s+nou/iu),
+    newBuilding: bool(text, /новостро|новобуд|новый\s+дом|novast(?:royka|iroyka)|navast(?:royka|iroyka)|new\s*build|newly\s+built|yangi\s+(?:bino|qurilgan|uy)|bloc\s+nou/iu),
     communalSeparated: parseCommunalSeparated(text, country),
     parking: bool(
       text,

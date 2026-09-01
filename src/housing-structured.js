@@ -102,13 +102,17 @@ export function parseHousingFloor(value) {
     }
   }
 
-  const explicit = text.match(/(?:этаж|поверх|floor|etaj|qavat|қабат|кават|қават)[^\S\r\n]*[:№#-]?[^\S\r\n]*(\d{1,3})[^\S\r\n]*(?:[,;/]|из|of|din|dan)?[^\S\r\n]*(?:дом[^\S\r\n]*)?(?:из[^\S\r\n]*)?(\d{1,3})?[^\S\r\n]*(?:этаж\p{L}*|поверх\p{L}*|floors?|etaje|qavatli|қабатты|каватли|қаватли)?/iu);
-  let floor = toNumber(explicit?.[1]);
-  let totalFloors = toNumber(explicit?.[2]);
+  // Prefer the common "7 этаж" form before trying "этаж 7". Otherwise the
+  // marker-first parser can consume the next unrelated number (for example
+  // "7 этаж 44м²") and report floor 44.
+  const beforeMarker = text.match(/(?:^|[^\d])(\d{1,3})\s*-?\s*(?:(?:chi|чи)\s*)?(?:этаж(?:да)?|поверх|floor|etaj|qavat(?:i(?:da(?:gi)?)?|da)?|қабат(?:ы(?:нда(?:ғы)?)?|та)?|кават(?:и(?:да(?:ги)?)?|да)?|қават(?:и(?:да(?:ги)?)?|да)?)(?=$|[^\p{L}\p{N}_])/iu);
+  let floor = toNumber(beforeMarker?.[1]);
+  let totalFloors = null;
 
   if (floor == null) {
-    const beforeMarker = text.match(/(?:^|[^\d])(\d{1,3})\s*-?\s*(?:(?:chi|чи)\s*)?(?:этаж(?:да)?|поверх|floor|etaj|qavat(?:i(?:da(?:gi)?)?|da)?|қабат(?:ы(?:нда(?:ғы)?)?|та)?|кават(?:и(?:да(?:ги)?)?|да)?|қават(?:и(?:да(?:ги)?)?|да)?)(?=$|[^\p{L}\p{N}_])/iu);
-    floor = toNumber(beforeMarker?.[1]);
+    const explicit = text.match(/(?:этаж|поверх|floor|etaj|qavat|қабат|кават|қават)[^\S\r\n]*[:№#-]?[^\S\r\n]*(\d{1,3})[^\S\r\n]*(?:[,;/]|из|of|din|dan)?[^\S\r\n]*(?:дом[^\S\r\n]*)?(?:из[^\S\r\n]*)?(\d{1,3})?[^\S\r\n]*(?:этаж\p{L}*|поверх\p{L}*|floors?|etaje|qavatli|қабатты|каватли|қаватли)?/iu);
+    floor = toNumber(explicit?.[1]);
+    totalFloors = toNumber(explicit?.[2]);
   }
 
   if (floor == null && FIRST_FLOOR_WORD_RE.test(text)) floor = 1;
