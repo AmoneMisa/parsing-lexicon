@@ -5,4 +5,5 @@ export type HousingPriceParseResult = Readonly<{
 }>;
 
 export function parseHousingPrice(value: unknown, fallbackCurrency?: string): HousingPriceParseResult;
+export function parseHousingPricePerSqm(value: unknown, fallbackCurrency?: string): HousingPriceParseResult;
 export const parsePriceFromText: typeof parseHousingPrice;

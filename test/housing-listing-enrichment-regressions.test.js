@@ -111,6 +111,34 @@ test('Central House OLX listing: nearby categories are canonical and negated stu
   assert.equal(enrichment.commission, true);
 });
 
+const LISTING_YANGI_TASHKENT_8382612 = `
+Янги Ташкент продаётся срочно 2-комн 7 этаж 44м² КОРОБКА цена Гибрид!
+2-Х КОМНАТНАЯ КВАРТИРА
+Гостиная17,77 м²
+Кухня 4.62 м²
+Спальня12,60 м²
+Прихожая3,34 м²
+Санузел4.52 м²
+Лоджия3.74 м²
+Цена: Гибрид/Ипотека на стадии строительство 18%/рассрочка От 13 млн за м2 Эксклюзив
+`;
+
+test('#8382612 Yangi Tashkent sale: room-area decimals are not room counts', () => {
+  const enrichment = parseHousingListingEnrichment(LISTING_YANGI_TASHKENT_8382612, { country: 'UZ' });
+  assert.equal(enrichment.rooms, 2);
+  assert.equal(enrichment.floor, 7);
+  assert.equal(enrichment.areaSqm, 44);
+  assert.equal(enrichment.bathrooms, 1);
+});
+
+test('#8382612 Yangi Tashkent sale: per-m² quote is not the total apartment price', () => {
+  assert.deepEqual(parseHousingPrice(LISTING_YANGI_TASHKENT_8382612, 'UZS'), {
+    amount: null,
+    currency: 'UZS',
+    approximate: false,
+  });
+});
+
 // TODO(follow-up): add exact-text regressions for #3428, #8398667, #8390002,
 // #8388527, #8390008, #8386865, #8386867, and a Mercor job-posting example
 // once the raw source text for each is supplied — see the plan's "Known

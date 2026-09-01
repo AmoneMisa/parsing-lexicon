@@ -30,6 +30,75 @@ function escapeRegex(value) {
   return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
+const SCALE_PATTERN = [...new Set(NUMBER_MULTIPLIERS.flatMap((entry) => aliasesOf(entry)).filter(Boolean))]
+  .sort((a, b) => String(b).length - String(a).length)
+  .map(escapeRegex)
+  .join('|');
+
+const PER_SQM_UNIT = String.raw`(?:m(?:2|²)|м(?:2|²)|м\s*кв\.?|кв\.?\s*м(?:2|²)?|sqm|sq\.?\s*m|square\s+met(?:er|re)s?|квадратн\p{L}*\s+метр\p{L}*)`;
+const PER_SQM_NUMBER = `(${MONEY_NUMBER_PATTERN})(?:\\s*(${SCALE_PATTERN})(?=$|[^\\p{L}\\p{N}_]))?`;
+const PER_SQM_CURRENCY = `(?:\\s*${CURRENCY_ALT}(?![\\p{L}\\p{N}_]))?`;
+const PER_SQM_AFTER_AMOUNT_RE = new RegExp(
+  `${PER_SQM_NUMBER}${PER_SQM_CURRENCY}\\s*(?:за\\s*(?:1\\s*)?|по\\s*|/\\s*|per\\s+)${PER_SQM_UNIT}(?=$|[^\\p{L}\\p{N}_])`,
+  'igu',
+);
+const PER_SQM_AFTER_UNIT_RE = new RegExp(
+  `${PER_SQM_NUMBER}${PER_SQM_CURRENCY}\\s*${PER_SQM_UNIT}\\s*(?:uchun|учун|ga|га)(?=$|[^\\p{L}\\p{N}_])`,
+  'igu',
+);
+const PER_SQM_BEFORE_AMOUNT_RE = new RegExp(
+  `(?:за\\s*(?:1\\s*)?|по\\s*|per\\s+)${PER_SQM_UNIT}\\s*[:=\\-–—]?\\s*${PER_SQM_NUMBER}${PER_SQM_CURRENCY}(?=$|[^\\p{L}\\p{N}_])`,
+  'igu',
+);
+
+function parsedMoneyAmount(numberValue, scaleValue) {
+  const amount = scaleValue
+    ? parseScaledAmount(numberValue, scaleValue)
+    : parseNumericAmount(numberValue);
+  return amount != null && amount >= 1 && amount <= 5_000_000_000
+    ? Math.round(amount)
+    : null;
+}
+
+const APPROXIMATE_RE = /около|примерно|~|≈/iu;
+
+function perSquareMeterMatches(text, fallbackCurrency = '') {
+  const matches = [];
+  const seen = new Set();
+
+  for (const regex of [PER_SQM_AFTER_AMOUNT_RE, PER_SQM_AFTER_UNIT_RE, PER_SQM_BEFORE_AMOUNT_RE]) {
+    regex.lastIndex = 0;
+    let match;
+    while ((match = regex.exec(text)) !== null) {
+      const amount = parsedMoneyAmount(match[1], match[2]);
+      if (amount == null) continue;
+      const start = match.index ?? 0;
+      const end = regex.lastIndex;
+      const key = `${start}:${end}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      matches.push({
+        start,
+        end,
+        amount,
+        currency: moneyCurrencyFromText(match[0], fallbackCurrency || '') || fallbackCurrency || '',
+        approximate: APPROXIMATE_RE.test(match[0]),
+      });
+    }
+  }
+
+  return matches.sort((a, b) => a.start - b.start);
+}
+
+function maskRanges(text, ranges) {
+  if (!ranges.length) return text;
+  let masked = text;
+  for (const { start, end } of [...ranges].sort((a, b) => b.start - a.start)) {
+    masked = `${masked.slice(0, start)}${' '.repeat(Math.max(0, end - start))}${masked.slice(end)}`;
+  }
+  return masked;
+}
+
 function isPaymentScopedAmount(text, start, end) {
   const left = text
     .slice(Math.max(0, start - 56), start)
@@ -48,7 +117,23 @@ function isPaymentScopedAmount(text, start, end) {
     && Boolean(findCanonical(right, PAYMENT_AMOUNT_TERMS, { partial: true }));
 }
 
-const APPROXIMATE_RE = /около|примерно|~|≈/iu;
+export function parseHousingPricePerSqm(value, fallbackCurrency = '') {
+  const original = String(value || '');
+  if (!original) return Object.freeze({ amount: null, currency: fallbackCurrency || '', approximate: false });
+
+  const text = maskPhoneLikeSpans(original);
+  const candidates = perSquareMeterMatches(text, fallbackCurrency);
+  if (!candidates.length) {
+    return Object.freeze({ amount: null, currency: fallbackCurrency || '', approximate: false });
+  }
+
+  const candidate = candidates[0];
+  return Object.freeze({
+    amount: candidate.amount,
+    currency: candidate.currency,
+    approximate: candidate.approximate,
+  });
+}
 
 export function parseHousingPrice(value, fallbackCurrency = '') {
   const original = String(value || '');
@@ -57,15 +142,22 @@ export function parseHousingPrice(value, fallbackCurrency = '') {
   // Contact spans are removed once, before every money branch. A phone can
   // therefore never win as a labelled, currency-tagged or fallback amount.
   const text = maskPhoneLikeSpans(original);
-  let currency = moneyCurrencyFromText(text, fallbackCurrency || '') || '';
-  const explicit = Boolean(findCanonical(text, CURRENCY_TERMS, { partial: true }));
+  // Unit prices are not listing totals. Mask their exact spans before running
+  // the ordinary total-price parser so "От 13 млн за м2" cannot become a
+  // 13,000,000 UZS apartment price. The dedicated parser above still exposes
+  // the unit price to consumers that need it.
+  const priceText = maskRanges(text, perSquareMeterMatches(text, fallbackCurrency));
+  let currency = moneyCurrencyFromText(priceText, fallbackCurrency || '')
+    || moneyCurrencyFromText(text, fallbackCurrency || '')
+    || '';
+  const explicit = Boolean(findCanonical(priceText, CURRENCY_TERMS, { partial: true }));
   let price = null;
 
   // Common Ukrainian/Russian classifieds shorthand: "10 т грн" / "10 т гр".
   // Keep this housing-specific instead of adding globally ambiguous aliases
   // `т` (tonne) and `гр` (gram) to the shared money lexicon. A nearby price
   // keyword plus an explicit hryvnia shorthand makes the intent unambiguous.
-  const compactThousandUah = text.match(new RegExp(
+  const compactThousandUah = priceText.match(new RegExp(
     `${PRICE_KEYWORD}[^\\r\\n]{0,48}?(\\d{1,6}(?:[.,]\\d{1,2})?)\\s*т(?:ыс\\.?)?\\s*(?:гр(?:н)?|₴|uah)(?=$|[^\\p{L}\\p{N}_])`,
     'iu',
   ));
@@ -79,7 +171,7 @@ export function parseHousingPrice(value, fallbackCurrency = '') {
 
   // Uzbek ads also use a dot as a thousands separator after four leading
   // digits: "2500.000 сум" means 2,500,000 UZS, not 2,500 UZS.
-  const expandedUzbekThousands = text.match(new RegExp(
+  const expandedUzbekThousands = priceText.match(new RegExp(
     `${PRICE_KEYWORD}[^\\d\\r\\n]{0,16}(\\d{4})[.]000\\s*(?:с[ўу]м|so['‘’ʻʼ]?m|som|sum|uzs)(?=$|[^\\p{L}\\p{N}_])`,
     'iu',
   ));
@@ -91,10 +183,36 @@ export function parseHousingPrice(value, fallbackCurrency = '') {
     }
   }
 
-  const labelled = text.match(new RegExp(`${PRICE_KEYWORD}\\s*[:\\-–—]?\\s*(${MONEY_NUMBER_PATTERN})`, 'i'));
+  // Split-million forms must win before a generic labelled amount. Otherwise
+  // "Narxi 2 миллион 500" would stop at 2,000,000 and lose the trailing 500k.
+  if (price == null) {
+    const splitMillion = priceText.match(/(?:^|[^\p{L}\p{N}_])(\d{1,3})\s*(?:млн\.?|mln\.?|миллион(?:а|ов)?|million(?:s)?)\s+(\d{1,3})(?=$|[^\p{L}\p{N}_])/iu);
+    if (splitMillion) {
+      const millions = Number(splitMillion[1]);
+      const thousands = Number(splitMillion[2]);
+      const amount = millions * 1_000_000 + thousands * 1_000;
+      if (amount >= 1_000_000 && amount <= 5_000_000_000) price = amount;
+    }
+  }
+
+  const labelled = priceText.match(new RegExp(
+    `${PRICE_KEYWORD}\\s*[:\\-–—]?\\s*(${MONEY_NUMBER_PATTERN})(?:\\s*(${SCALE_PATTERN})(?=$|[^\\p{L}\\p{N}_]))?`,
+    'iu',
+  ));
   if (price == null && labelled) {
-    const amount = parseNumericAmount(labelled[1]);
-    if (amount != null && amount >= 50 && amount <= 5_000_000_000) price = amount;
+    const baseAmount = parseNumericAmount(labelled[1]);
+    // A common malformed Uzbek marketplace form is "450000 ming som". The
+    // already-expanded amount is the intended 450,000; multiplying it by
+    // another thousand would create a 450,000,000 false price. Keep normal
+    // shorthand such as "450 ming" and "2500 ming" scaled.
+    const ignoreRepeatedUzbekThousand = labelled[2]
+      && /^(?:ming|минг)$/iu.test(labelled[2])
+      && baseAmount != null
+      && baseAmount >= 10_000;
+    const amount = labelled[2] && !ignoreRepeatedUzbekThousand
+      ? parseScaledAmount(labelled[1], labelled[2])
+      : baseAmount;
+    if (amount != null && amount >= 50 && amount <= 5_000_000_000) price = Math.round(amount);
   }
 
   if (price == null) {
@@ -109,8 +227,8 @@ export function parseHousingPrice(value, fallbackCurrency = '') {
     const reSymNum = new RegExp(`${PRICE_CURRENCY_BEFORE_NUMBER}\\s*(${MONEY_NUMBER_PATTERN})`, 'igu');
     for (const regex of [reNumSym, reSymNum]) {
       let match;
-      while ((match = regex.exec(text)) !== null) {
-        if (isPaymentScopedAmount(text, match.index ?? 0, regex.lastIndex)) continue;
+      while ((match = regex.exec(priceText)) !== null) {
+        if (isPaymentScopedAmount(priceText, match.index ?? 0, regex.lastIndex)) continue;
         const amount = parseNumericAmount(match[1]);
         if (amount != null && amount >= 50 && amount <= 5_000_000_000 && (tagged == null || amount > tagged)) tagged = amount;
       }
@@ -118,27 +236,11 @@ export function parseHousingPrice(value, fallbackCurrency = '') {
     price = tagged;
   }
 
-  // Uzbek classifieds often split a round million and the trailing thousands:
-  // "2 млн 500" / "2 миллион 500" means 2,500,000, not 2,000,000 plus an unrelated 500.
   if (price == null) {
-    const splitMillion = text.match(/(?:^|[^\p{L}\p{N}_])(\d{1,3})\s*(?:млн\.?|mln\.?|миллион(?:а|ов)?|million(?:s)?)\s+(\d{1,3})(?=$|[^\p{L}\p{N}_])/iu);
-    if (splitMillion) {
-      const millions = Number(splitMillion[1]);
-      const thousands = Number(splitMillion[2]);
-      const amount = millions * 1_000_000 + thousands * 1_000;
-      if (amount >= 1_000_000 && amount <= 5_000_000_000) price = amount;
-    }
-  }
-
-  if (price == null) {
-    const scalePattern = [...new Set(NUMBER_MULTIPLIERS.flatMap((entry) => aliasesOf(entry)).filter(Boolean))]
-      .sort((a, b) => String(b).length - String(a).length)
-      .map(escapeRegex)
-      .join('|');
     // Multiplier aliases include useful one-letter forms such as `m` and `k`.
     // Require the alias to end at a token boundary so measurements/words like
     // `500 m2` and `5 minut` cannot be promoted to 500 million / 5 million.
-    const match = text.match(new RegExp(`(\\d+(?:[.,]\\d+)?)\\s*(${scalePattern})(?=$|[^\\p{L}\\p{N}_])`, 'iu'));
+    const match = priceText.match(new RegExp(`(\\d+(?:[.,]\\d+)?)\\s*(${SCALE_PATTERN})(?=$|[^\\p{L}\\p{N}_])`, 'iu'));
     if (match) {
       const amount = parseScaledAmount(match[1], match[2]);
       if (amount != null && amount >= 1000 && amount <= 5_000_000_000) price = Math.round(amount);
@@ -148,10 +250,10 @@ export function parseHousingPrice(value, fallbackCurrency = '') {
   if (price == null) {
     const bareAmountRe = /\d{1,3}(?:[ \u00A0.,]\d{3})+|\d{4,}/g;
     let best = null;
-    for (const match of text.matchAll(bareAmountRe)) {
+    for (const match of priceText.matchAll(bareAmountRe)) {
       const raw = match[0];
       const start = match.index ?? 0;
-      if (isPaymentScopedAmount(text, start, start + raw.length)) continue;
+      if (isPaymentScopedAmount(priceText, start, start + raw.length)) continue;
       const digits = raw.replace(/[\s.,]/g, '');
       if (digits[0] === '0') continue;
       const amount = parseNumericAmount(raw);
@@ -161,11 +263,11 @@ export function parseHousingPrice(value, fallbackCurrency = '') {
   }
 
   if (!explicit && fallbackCurrency === 'UZS' && price != null) {
-    const dailyUzbek = /(?:kunlik|sutkaga|kecha[- ]?kunduz|посуточн|суточн)/i.test(text);
+    const dailyUzbek = /(?:kunlik|sutkaga|kecha[- ]?kunduz|посуточн|суточн)/i.test(priceText);
     currency = price >= 1_000_000 || (dailyUzbek && price >= 10_000) ? 'UZS' : 'USD';
   }
 
-  return Object.freeze({ amount: price, currency, approximate: price != null && APPROXIMATE_RE.test(text) });
+  return Object.freeze({ amount: price, currency, approximate: price != null && APPROXIMATE_RE.test(priceText) });
 }
 
 // Compatibility name for callers migrating from Flat Finder's local parser.
