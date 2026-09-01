@@ -21,9 +21,27 @@ function parseBedrooms(text) {
 }
 
 function parseBathrooms(text) {
-  const match = text.match(/(\d)\s*(?:сан\s?уз(?:е)?л\p{L}*|с\/?у(?=$|[^\p{L}\p{N}_])|ванн[аы]|bathrooms?|sanuzel|hammom)/iu)
-    || text.match(/(?:сан\s?уз(?:е)?л\p{L}*|bathrooms?|sanuzel|hammom)\D{0,4}(\d)/iu);
-  return number(match, 1, 10);
+  const bathroom = '(?:сан\\s?уз(?:е)?л\\p{L}*|с\\/?у(?=$|[^\\p{L}\\p{N}_])|ванн[аы]|bathrooms?|sanuzel|hammom)';
+  const areaUnit = '(?:м²|м2|m²|m2|sqm|sq\\.?\\s*m|кв\\.?\\s*м(?:²|2)?)';
+
+  const forward = text.match(new RegExp(`(\\d{1,2})\\s*${bathroom}`, 'iu'));
+  const forwardCount = number(forward, 1, 10);
+  if (forwardCount != null) return forwardCount;
+
+  // A room-area value immediately after the label is not a bathroom count:
+  // "Санузел4.52 м²" describes the size of one bathroom, not four bathrooms.
+  const reversed = text.match(new RegExp(
+    `${bathroom}\\D{0,4}(\\d{1,2})(?![.,]\\d)(?!\\s*${areaUnit})`,
+    'iu',
+  ));
+  const reversedCount = number(reversed, 1, 10);
+  if (reversedCount != null) return reversedCount;
+
+  const singularArea = text.match(new RegExp(
+    `(?:сан\\s?уз(?:е)?л|bathroom|sanuzel|hammom)\\s*[:=\\-–—]?\\s*\\d{1,4}(?:[.,]\\d{1,2})?\\s*${areaUnit}(?=$|[^\\p{L}\\p{N}_])`,
+    'iu',
+  ));
+  return singularArea ? 1 : null;
 }
 
 function parseBuildingYear(text) {
