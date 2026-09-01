@@ -7,11 +7,16 @@ import {
 } from './locations.js';
 import { LOCATION_LIST_KEYS, mergeLocationCountries } from './location-merge.js';
 import { KG_LOCATION_EXTENSIONS } from './kg-location-extensions.js';
+import { KZ_DISTRICT_EXTENSIONS } from './kz-district-extensions.js';
 
 export { UA_REGION_ENTRIES, UA_SECONDARY_CITIES, matchUkraineRegion, matchUkraineSecondaryCity };
 
 export const LOCATION_DICTIONARIES = Object.freeze({
   ...BASE_LOCATION_DICTIONARIES,
+  KZ: mergeLocationCountries(
+    BASE_LOCATION_DICTIONARIES.KZ || {},
+    KZ_DISTRICT_EXTENSIONS,
+  ),
   KG: mergeLocationCountries(
     BASE_LOCATION_DICTIONARIES.KG || {},
     KG_LOCATION_EXTENSIONS,
