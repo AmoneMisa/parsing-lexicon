@@ -152,3 +152,12 @@ export function classifyHousingDealType(value) {
   return null;
 }
 
+// A bare "сутки/суток" (day-rate) mention outranks a source's generic
+// long-rent default, even when the rest of the text does not otherwise
+// resolve to shortRent.
+const EXPLICIT_SHORT_STAY_RE = /(?:^|[^\p{L}\p{N}_])сут(?:ки|ок)(?=$|[^\p{L}\p{N}_])/iu;
+
+export function looksExplicitDailyRentalMention(value) {
+  return EXPLICIT_SHORT_STAY_RE.test(String(value || ''));
+}
+

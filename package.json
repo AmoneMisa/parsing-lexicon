@@ -1,6 +1,6 @@
 {
   "name": "@whiteslove/parsing-lexicon",
-  "version": "0.5.15",
+  "version": "0.6.0",
   "description": "Shared deterministic multilingual parsing lexicon for WhitesLove housing and hiring services",
   "repository": {
     "type": "git",
@@ -189,7 +189,11 @@
       "types": "./src/hiring-skills.d.ts",
       "import": "./src/hiring-skills.js"
     },
-    "./hiring-advanced": "./src/hiring-advanced.js"
+    "./hiring-advanced": "./src/hiring-advanced.js",
+    "./hiring-safety": {
+      "types": "./src/hiring-safety.d.ts",
+      "import": "./src/hiring-safety.js"
+    }
   },
   "files": [
     "src",

@@ -1,5 +1,6 @@
 import { deepFreeze } from './lexicon-core.js';
 import { parseHousingAmenities } from './housing-text.js';
+import { housingSemanticCanonical } from './housing-display.js';
 
 const AMENITY_LABELS = Object.freeze({
   dishwasher: 'Dishwasher',
@@ -93,6 +94,85 @@ export function parseHousingNearbyMentions(value) {
     if (!out.includes(label)) out.push(label);
   }
   return deepFreeze(out.slice(0, 16));
+}
+
+const NEARBY_CATEGORY_ALIASES = [
+  ['park', ['park', 'парк']],
+  ['school', ['school', 'школа']],
+  ['market', ['market', 'рынок', 'ринок', 'базар']],
+  ['stadium', ['stadium', 'стадион', 'стадіон']],
+  ['clinic', ['clinic', 'клиника', 'клініка']],
+];
+
+/**
+ * De-duplicates a raw list of nearby-place mentions: collapses generic terms
+ * ("park"/"парк"/"парки") onto their shared canonical identity, then drops a
+ * bare category name ("park") when a more specific mention of that category
+ * ("Central park") is already present.
+ */
+export function dedupeHousingNearbyMentions(values) {
+  const unique = [];
+  const seen = new Set();
+  for (const raw of values || []) {
+    const value = String(raw || '').replace(/\s+/g, ' ').trim();
+    if (!value) continue;
+    const key = housingSemanticCanonical(value).toLocaleLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    unique.push(value);
+  }
+
+  const categoryForExact = (value) => {
+    const key = value.toLocaleLowerCase();
+    return NEARBY_CATEGORY_ALIASES.find(([, aliases]) => aliases.includes(key))?.[0] || null;
+  };
+  const hasSpecific = (category) => {
+    const aliases = NEARBY_CATEGORY_ALIASES.find(([name]) => name === category)?.[1] || [];
+    return unique.some((value) => {
+      const key = value.toLocaleLowerCase();
+      if (aliases.includes(key)) return false;
+      return aliases.some((alias) => key.startsWith(`${alias} `) || key.endsWith(` ${alias}`));
+    });
+  };
+
+  return unique.filter((value) => {
+    const category = categoryForExact(value);
+    return !category || !hasSpecific(category);
+  });
+}
+
+// EN / RO / RU / UA / UZ / KZ keyword patterns for deriving human-friendly
+// listing-card tags from free-text title + description.
+export const HOUSING_LISTING_KEYWORD_TAGS = Object.freeze([
+  ['furnished', /\b(furnished|mobilat|mebl|меблюванн|мебльован|с мебелью|обставлен|jihozlangan|jihozli|жиһаз)/i],
+  ['unfurnished', /\b(unfurnished|nemobilat|без мебел|без меблів|jihozsiz|жиһazsіz|жиһазсыз)/i],
+  ['renovated', /\b(renovat|euro ?renov|євроремонт|ремонт|отремонт|reamenajat|с ремонтом|ta'?mirlangan|remont|жөндел|жөндеу)/i],
+  ['new build', /\b(new build|bloc nou|constructie noua|новострой|новобуд|новостро|yangi qurilgan|novostroyka|жаңа құрыл)/i],
+  ['parking', /\b(parking|parcare|garaj|garage|гараж|парков|парко-?місц|avtoturargoh|avtomobil joyi|автотұрақ|көлік)/i],
+  ['balcony', /\b(balcony|balcon|балкон|лоджи|лоджі|balkon|балкон)/i],
+  ['elevator', /\b(elevator|lift|ліфт|лифт|lift|лифт)/i],
+  ['pets ok', /\b(pets? ?(allowed|ok)|se accepta animale|можно с животными|з тваринами|uy hayvon|жануар)/i],
+  ['no agency', /\b(no agency|fara intermediari|fără comision|без посредник|без агент|собственник|власник|від власника|vositachisiz|egasidan|иесінен)/i],
+  ['utilities included', /\b(utilities included|utilitati incluse|комунальні включ|коммунальн.*включ|kommunal)/i],
+  ['studio', /\b(studio|garsonier|студи[яї]|studiya)/i],
+  ['air conditioning', /\b(air ?condition|\ba\/?c\b|conditioner|кондиционер|кондиціонер|konditsioner|klimat|klima\b|aer condi[țt]ionat)/i],
+  ['microwave', /\b(microwave|микроволнов|мікрохвильов|mikroto'?lqinli|mikrovolnovka|cuptor cu microunde|СВЧ)/i],
+  ['dishwasher', /\b(dishwasher|посудомо|посудомийн|idish yuvish|idishyuvg|ma[șs]ina de sp[ăa]lat vase)/i],
+  ['washing machine', /\b(washing ?machine|стиральн(?:ая|ой) маш|пральн(?:а|ої) маш|kir yuvish|kir mashina|ma[șs]ina de sp[ăa]lat rufe)/i],
+  ['central heating', /\b(central heating|centrala termica|central[ăa]|центральн.*отопл|опаленн|isitish|жылу)/i],
+  ['pool', /\b(pool|piscina|бассейн|басейн|basseyn)/i],
+  ['negotiable', /\b(negotiable|negociabil|торг(?! центр)|можен торг|kelishilgan|kelishamiz|келісім)/i],
+  ['for rent', /\b(for rent|de inchiriat|inchiriere|оренда|аренда|сдам|сдаётся|здам|ijara|arenda|жалға)/i],
+  ['for sale', /\b(for sale|de vanzare|vanzare|продаж|продажа|продам|продаётся|sotiladi|sotuv|сатылады)/i],
+]);
+
+export function matchHousingListingKeywordTags(text) {
+  const value = String(text || '').toLowerCase();
+  const tags = [];
+  for (const [tag, re] of HOUSING_LISTING_KEYWORD_TAGS) {
+    if (re.test(value)) tags.push(tag);
+  }
+  return deepFreeze(tags);
 }
 
 export function parseHousingNearbyShops(value) {

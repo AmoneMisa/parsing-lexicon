@@ -8,4 +8,5 @@ export const HOUSING_DEAL_TYPES: readonly unknown[];
 export const HOUSING_ACTION_MAP: Readonly<Record<HousingAction, Readonly<{ listingKind: HousingListingKind; dealType: Exclude<HousingDealType, 'shortRent'> }>>>;
 export function resolveHousingIntent(value: unknown): HousingIntentResult | null;
 export declare function classifyHousingDealType(value: unknown): 'sale' | 'longRent' | 'shortRent' | null;
+export declare function looksExplicitDailyRentalMention(value: unknown): boolean;
 
