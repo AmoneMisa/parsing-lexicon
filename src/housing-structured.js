@@ -7,7 +7,7 @@ import { GENERIC_LANDMARK_TERMS } from './landmarks.js';
 import { LOCATION_RELATIONS, parseHousingContext } from './housing-context.js';
 import { resolveHousingIntent } from './housing-intent.js';
 import { countryCurrency, countryPhoneHint } from './country-context.js';
-import { findTelegramContacts, parsePhoneNumbers } from './contact.js';
+import { findTelegramContacts, maskPhoneLikeSpans, parsePhoneNumbers } from './contact.js';
 import { parseHousingAddress } from './housing-address.js';
 import { parseHousingListingFields } from './housing-listing-fields.js';
 import { parseHousingPrice } from './housing-money.js';
@@ -167,8 +167,9 @@ export function parseHousingAreas(value) {
 }
 
 function amountAroundKeyword(text, keywordRe) {
-  const after = text.match(new RegExp(`${keywordRe.source}[^\\d$€₴₸]{0,24}([$€₴₸])?\\s*(\\d{1,9}(?:[.,]\\d{1,2})?)\\s*([\\p{L}.'$€₴₸]{0,12})`, 'iu'));
-  const before = text.match(new RegExp(`([$€₴₸])?\\s*(\\d{1,9}(?:[.,]\\d{1,2})?)\\s*([\\p{L}.']{0,12})[^\\d]{0,16}${keywordRe.source}`, 'iu'));
+  const value = maskPhoneLikeSpans(text);
+  const after = value.match(new RegExp(`${keywordRe.source}[^\\d$€₴₸\\r\\n]{0,24}([$€₴₸])?\\s*(\\d{1,3}(?:[ \\u00a0]\\d{3})+|\\d{1,9}(?:[.,]\\d{1,2})?)\\s*([\\p{L}.'$€₴₸]{0,12})`, 'iu'));
+  const before = value.match(new RegExp(`([$€₴₸])?\\s*(\\d{1,3}(?:[ \\u00a0]\\d{3})+|\\d{1,9}(?:[.,]\\d{1,2})?)\\s*([\\p{L}.']{0,12})[^\\d\\r\\n]{0,16}${keywordRe.source}`, 'iu'));
   const match = after || before;
   if (!match) return { amount: null, currency: null };
   const amount = toNumber(match[2]);
