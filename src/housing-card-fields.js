@@ -1,6 +1,7 @@
 import { deepFreeze } from './lexicon-core.js';
 import { parseHousingAmenities } from './housing-text.js';
 import { housingSemanticCanonical } from './housing-display.js';
+import { isDirectOwner } from './housing-commercial.js';
 
 const AMENITY_LABELS = Object.freeze({
   dishwasher: 'Dishwasher',
@@ -152,7 +153,6 @@ export const HOUSING_LISTING_KEYWORD_TAGS = Object.freeze([
   ['balcony', /\b(balcony|balcon|балкон|лоджи|лоджі|balkon|балкон)/i],
   ['elevator', /\b(elevator|lift|ліфт|лифт|lift|лифт)/i],
   ['pets ok', /\b(pets? ?(allowed|ok)|se accepta animale|можно с животными|з тваринами|uy hayvon|жануар)/i],
-  ['no agency', /\b(no agency|fara intermediari|fără comision|без посредник|без агент|собственник|власник|від власника|vositachisiz|egasidan|иесінен)/i],
   ['utilities included', /\b(utilities included|utilitati incluse|комунальні включ|коммунальн.*включ|kommunal)/i],
   ['studio', /\b(studio|garsonier|студи[яї]|studiya)/i],
   ['air conditioning', /\b(air ?condition|\ba\/?c\b|conditioner|кондиционер|кондиціонер|konditsioner|klimat|klima\b|aer condi[țt]ionat)/i],
@@ -172,6 +172,10 @@ export function matchHousingListingKeywordTags(text) {
   for (const [tag, re] of HOUSING_LISTING_KEYWORD_TAGS) {
     if (re.test(value)) tags.push(tag);
   }
+  // Owner/no-agency detection is the same signal housing-commercial.js's
+  // isDirectOwner already owns; compose it instead of a second regex here
+  // so the two can't drift apart.
+  if (isDirectOwner(text)) tags.push('no agency');
   return deepFreeze(tags);
 }
 
