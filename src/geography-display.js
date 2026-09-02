@@ -1,6 +1,6 @@
 import { COUNTRIES, canonicalCountryCode, countryByCode } from './countries.js';
 import { CITIES, REGIONS } from './geography.js';
-import { dictionaryFor } from './locations.js';
+import { dictionaryFor } from './locations-runtime.js';
 import { aliasesOf } from './normalization.js';
 
 // Centralized presentation names for canonical geography values.

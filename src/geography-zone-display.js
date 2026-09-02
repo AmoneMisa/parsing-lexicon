@@ -1,5 +1,5 @@
 import { geographyDisplayName } from './geography-display.js';
-import { dictionaryFor } from './locations.js';
+import { dictionaryFor } from './locations-runtime.js';
 import { aliasesOf, findCanonical } from './normalization.js';
 import { canonicalCountryCode } from './countries.js';
 
