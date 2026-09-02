@@ -111,7 +111,11 @@ export function parseHiringSalaryWithContext(value, options = {}) {
   return withContext(parseSalary(value), value, options);
 }
 
-const VACANCY_COMPENSATION_RE = /(?:salary|salary\s+range|base\s+pay|pay\s+range|annual\s+pay|compensation(?:\s+range)?|заработн\p{L}*\s+плат\p{L}*|зарплат\p{L}*|з\s*[\/\\.\-]?\s*п(?=$|[^\p{L}\p{N}_])|оклад\p{L}*|вилка\s+оплат\p{L}*|оплата\s+труда|компенсац\p{L}*|ставка|💵|💰)/giu;
+// Include short local-board labels/markers used in real vacancy feeds: `З/п`,
+// `ЗП`, and the money emoji that ish-bor-style cards use before a salary field.
+// The marker is still required for long prose so unrelated large numbers are not
+// promoted to compensation merely because the vacancy happens to be in UZ/KZ.
+const VACANCY_COMPENSATION_RE = /(?:💵|💰|salary|salary\s+range|base\s+pay|pay\s+range|annual\s+pay|compensation(?:\s+range)?|з\s*[/\\.\-]?\s*п\b|заработн\p{L}*\s+плат\p{L}*|зарплат\p{L}*|оклад\p{L}*|вилка\s+оплат\p{L}*|оплата\s+труда|компенсац\p{L}*|ставка)/giu;
 
 // AI-recruiting/staffing postings (e.g. Mercor) routinely mention funding,
 // valuation or revenue figures in the same listing as the actual salary. A

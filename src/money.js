@@ -108,6 +108,21 @@ function rangeSearchText(text) {
   return normalized;
 }
 
+function isWorkTimeRange(text, match, start, end) {
+  if (CLOCK_RANGE_RE.test(match[0])) return true;
+
+  const first = Number(String(match[1] || '').replace(',', '.'));
+  const second = Number(String(match[3] || '').replace(',', '.'));
+  if (!Number.isFinite(first) || !Number.isFinite(second) || first > 24 || second > 24) return false;
+
+  // Bare 9-19 can be a schedule too. Reject it as money only when the nearby
+  // context explicitly talks about working hours/schedule; a real salary such
+  // as "$9-19/hour" still survives because it has pay/currency context and no
+  // schedule marker.
+  const window = text.slice(Math.max(0, start - 48), Math.min(text.length, end + 48));
+  return WORK_TIME_CONTEXT_RE.test(window);
+}
+
 function bestRange(text, protectedSpans) {
   const ranges = new RegExp(MONEY_RANGE_RE.source, 'giu');
   const candidates = [];
