@@ -81,4 +81,10 @@ export const UA_CITY_LOCATION_EXPANSIONS = Object.freeze({
     ['Armenian Market Square', 'площа Вірменський Ринок', 'Вірменський Ринок', 'Armenian Market'],
     ['Kamianets-Podilskyi Railway Station', 'залізничний вокзал Кам’янець-Подільський', "залізничний вокзал Кам'янець-Подільський", 'вокзал Кам’янець-Подільський', "вокзал Кам'янець-Подільський"],
   ]),
+
+  Drohobych: landmarks([
+    ["St. George's Church", 'Церква Святого Юра', 'церква Святого Юра', 'Храм Святого Юра', "St George's Church", "Saint George's Church"],
+    ['Drohobych Saltworks', 'Дрогобицька солеварня', 'Дрогобицький солевиварювальний завод', 'солеварня Дрогобич', 'Drohobych Salt Plant'],
+    ['Drohobych Railway Station', 'станція Дрогобич', 'залізничний вокзал Дрогобич', 'вокзал Дрогобич', 'Stantsiia Drohobych'],
+  ]),
 });
