@@ -10,6 +10,7 @@ export const HOUSING_DEAL_TYPE_EXTENSIONS = Object.freeze([
   group('longRent', {
     ru: ['снять', 'в месяц', 'месяц'],
     en: ['monthly'],
+    uk: ['зняти', 'на місяць', 'місяць'],
     uzLatn: ['ijaraga', 'oyiga', 'beriladi'],
     uzCyrl: ['ижарага', 'ойига', 'берилади'],
     kk: ['айына'],
@@ -17,6 +18,7 @@ export const HOUSING_DEAL_TYPE_EXTENSIONS = Object.freeze([
   group('shortRent', {
     ru: ['сутки', 'суток', 'суточно'],
     en: ['daily'],
+    uk: ['доба', 'діб', 'подобово'],
     uzLatn: ['kunlik', 'sutkalik'],
     uzCyrl: ['кунлик', 'суткалик'],
     kk: ['тәуліктік'],
@@ -27,6 +29,7 @@ export const HOUSING_ROOM_ONLY_EXTENSIONS = Object.freeze([
   group('roomOnly', {
     ru: ['шеринг'],
     en: ['room only'],
+    uk: ['шерінг'],
     uzLatn: ['student qizlarga', 'talaba qizlarga', 'opshijit dom', 'obshijit dom'],
     uzCyrl: ['студент қизларга', 'талаба қизларга'],
   }),
