@@ -118,9 +118,17 @@ test('extracts deposit, utilities and commission context', () => {
   assert.equal(result.deposit.required, true);
   assert.equal(result.deposit.amount, 500);
   assert.equal(result.deposit.currency, 'USD');
+  assert.deepEqual(parseHousingPayments('Депозит 1 500 000 UZS').deposit, {
+    required: true, kind: 'deposit', amount: 1_500_000, currency: 'UZS',
+  });
   assert.equal(result.prepaymentMonths, 2);
   assert.equal(result.utilities, 'utilitiesSeparate');
   assert.equal(result.commission.required, false);
+});
+
+test('does not confuse a following phone number with a deposit amount', () => {
+  const result = parseHousingPayments('Цена 450$\n\nИмеется договорной депозит.\n\n+998903720270 @arenda_tashkent10');
+  assert.deepEqual(result.deposit, { required: true, kind: 'deposit', amount: null, currency: null });
 });
 
 test('does not confuse a deposit duration with a money amount', () => {
