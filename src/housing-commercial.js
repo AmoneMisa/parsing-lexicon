@@ -21,6 +21,15 @@ export function looksParkingOnly(value) {
 }
 
 // Cross-language "no agency" / "direct from owner" signals.
+//
+// This is a separate, deliberately broader/stricter pattern than
+// SELLER_TERMS.owner (housing.js) / parseHousingSeller (housing-structured.js)
+// — not an accidental duplicate. Consumers use isDirectOwner as a
+// high-confidence override checked BEFORE falling back to
+// parseHousingSeller's owner-vs-agency comparative scoring (see
+// classifyTelegramAgency in whiteslove.me-backend-platform's
+// apps/flats/src/scrapers/telegram.js). If you're tempted to merge these,
+// check that call site's expectations first.
 const DIRECT_OWNER_RE = /(?:без\s+(?:макл(?:ер[а-яё]*)?|посредник[а-яё]*|ри[еэ]?лтор[а-яё]*|агент[а-яё]*)|от\s+(?:собственник[а-яё]*|хозяин[а-яё]*)|від\s+(?:власник[а-яіїґ]*|власниц[яії][а-яіїґ]*|господар[а-яіїґ]*)|без\s+(?:посередник[а-яіїґ]*|рі[єе]лтор[а-яіїґ]*|агент[а-яіїґ]*)|прямо\s+від\s+(?:власник[а-яіїґ]*|власниц[яії][а-яіїґ]*|господар[а-яіїґ]*)|(?:власник|власниця)\s+(?:зда[єе]|прода[єе])|no\s+(?:agency|broker|realtor|agent)|owner\s+direct|direct\s+from\s+(?:owner|landlord)|f(?:ă|a)r(?:ă|a)\s+(?:agen(?:ț|t)ie|intermediar\w*)|direct\s+(?:de\s+la\s+)?proprietar|makler\s*[- ]?siz|maklersiz|bez\s*makler(?:a|ov)?|bezmakler(?:a|ov)?|vositachi\s*[- ]?siz|vositachisiz|egasidan|uy\s+egasidan|делдалсыз|делдал\s*жоқ|иесінен|үй\s+иесінен)/iu;
 
 // Cross-language "no commission" signals. Direct-owner language implies zero
