@@ -16,7 +16,7 @@ function poi(name, category, aliases = [], options = {}) {
 }
 
 const MALL_CONTEXT = '(?:mall|молл|трц|тц|торгов(?:ый|ого)\\s+центр|savdo\\s+markazi|shopping\\s+(?:center|centre))';
-const PARK_CONTEXT = '(?:парк|bog|боғ|park|national|milliy)';
+const PARK_CONTEXT = '(?:парк|bog|бог|боғ|park|national|milliy|navoi|наво)';
 
 export const TASHKENT_PARKS = Object.freeze([
   poi('Tashkent City Park', 'park', ['Ташкент Сити парк', 'Парк Tashkent City']),
@@ -98,6 +98,9 @@ export const TASHKENT_MALLS = Object.freeze([
   poi('Seoul Mun Mall', 'mall', ['Seoul Mun', 'Сеул Мун Молл', 'Seoul Mun savdo markazi'], { contextRequired: true, context: MALL_CONTEXT }),
   poi('Ecobozor', 'mall', ['Eco Bozor', 'Ekobozor', 'Эко Бозор', 'Экобозор']),
   poi('Chimgan Shopping Center', 'mall', ['Chimgan', 'Chimgan Mall', 'ТРЦ Чимган', 'ТЦ Чимган', 'Chimgan savdo markazi'], { contextRequired: true, context: MALL_CONTEXT }),
+  poi('Golden Life', 'mall', ['Golden Life Mall', 'Голден Лайф', 'ТРЦ Golden Life', 'ТЦ Golden Life']),
+  poi("Chig'atoy Mall", 'mall', ["Chig'atoy", 'Chigatoy', "ТРЦ Chig'atoy", 'ТРЦ Чигатай', 'ТЦ Чигатай']),
+  poi('Scopus Mall', 'mall', ['Scopus', 'Скопус Молл', 'ТРЦ Scopus']),
 ]);
 
 export const TASHKENT_ATTRACTIONS = Object.freeze([
