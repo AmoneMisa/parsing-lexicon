@@ -29,6 +29,25 @@ test('housing multipliers still parse complete scale words', () => {
   });
 });
 
+test('per-square-meter amounts are not treated as total listing prices', () => {
+  assert.deepEqual(
+    parseHousingPrice('Цена: Гибрид/Ипотека на стадии строительство 18%/ рассрочка От 13 млн за м2 Эксклюзив', 'UZS'),
+    {amount: null, currency: 'UZS', approximate: false},
+  );
+  assert.deepEqual(
+    parseHousingPrice('Цена 13 000 000 сум за м²', 'UZS'),
+    {amount: null, currency: 'UZS', approximate: false},
+  );
+  assert.deepEqual(
+    parseHousingPrice('Sale price $1200/m2', 'USD'),
+    {amount: null, currency: 'USD', approximate: false},
+  );
+  assert.deepEqual(
+    parseHousingPrice('Цена 45 000$; также 13 млн сум за м2', 'UZS'),
+    {amount: 45_000, currency: 'USD', approximate: false},
+  );
+});
+
 test('parses Uzbek classifieds split-million notation', () => {
   assert.deepEqual(
     parseHousingPrice('2 хона 2 млн 500 + агентство хизмати', 'UZS'),
