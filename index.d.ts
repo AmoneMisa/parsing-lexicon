@@ -379,6 +379,7 @@ export * from './src/housing-title.js';
 export * from './src/housing-language.js';
 export * from './src/housing-features.js';
 export * from './src/housing-listing-fields.js';
+export * from './src/housing-card-fields.js';
 
 // housing semantic helper declarations added in 0.2.5
 export function resolveHousingOccupancy(value: unknown): 'wholeProperty' | 'room' | 'sharedRoom' | 'bedSpace' | null;

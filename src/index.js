@@ -47,6 +47,7 @@ export * from './housing-text.js';
 export * from './housing-poi-extensions.js';
 export * from './housing-display.js';
 export * from './housing-listing-enrichment.js';
+export * from './housing-card-fields.js';
 export * from './hiring.js';
 export * from './hiring-languages.js';
 export * from './hiring-context.js';

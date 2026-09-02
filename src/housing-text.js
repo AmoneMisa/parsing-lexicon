@@ -178,7 +178,7 @@ export function parseHousingAmenities(value) {
   if (!text) return Object.freeze([]);
   const amenities = [];
   if (/(?:посудомо|посудомийн|dishwasher|idish\s*yuvish|idishyuvg|ma[șs]ina de sp[ăa]lat vase)/iu.test(text)) amenities.push('dishwasher');
-  if (/(?:комнат\p{L}*\s+раздельн|изолированн\p{L}*\s+комнат|separate\s+rooms?)/iu.test(text)) amenities.push('separateRooms');
+  if (/(?:комнат\p{L}*\s+раздельн|(?:раздельн|изолированн)\p{L}*\s+комнат|separate\s+rooms?)/iu.test(text)) amenities.push('separateRooms');
   if (/(?:кроват|\bbed\b|\bspalni\b|\bsplani\b|yotoq\s+karavot|ётоқ\s+каравот)/iu.test(text)) amenities.push('bed');
   if (/(?:стиральн\p{L}*\s+машин|washing\s+machine|kir\s*yuvish\s*mashin|kirmoshina|кир\s+ювиш\s+машина)/iu.test(text)) amenities.push('washingMachine');
   if (/(?:холодильник|refrigerator|fridge|muzlatgich|музлатгич|xolodilnik)/iu.test(text)) amenities.push('refrigerator');
