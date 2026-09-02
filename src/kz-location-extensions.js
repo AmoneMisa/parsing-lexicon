@@ -28,7 +28,7 @@ const numberedMicrodistrict = (n, suffix = '') => {
   const id = `${n}${suffix}`;
   return [
     `${id} microdistrict`,
-    `${id} микрорайон`, `${id} мкр`, `${id} мкр.`, `${id}мкр`, `${id} м-н`, `${id} м-н.`, `${id} микро`, `${id}-й мкр`, `${id} мкр-н`, `${id} ықшамаудан`,
+    `${id} микрорайон`, `${id} мкр`, `${id} мкр.`, `${id}мкр`, `${id} м-н`, `${id} м-н.`, `${id} микро`, `${id}-й мкр`, `${id} мкр-н`, `${id} ықшамаудан`, `${id} шағын аудан`,
   ];
 };
 
@@ -230,7 +230,7 @@ export const KZ_LOCATION_EXTENSIONS = Object.freeze({
     ],
     suburbs: [['Baskudyk','Баскудык','Басқұдық'],['Atameken','Атамекен'],['Munaily','Мунайлы','Мұнайлы'],['Mangystau','Мангистау','Маңғыстау'],['Batyr','Батыр'],['Daulet','Даулет','Дәулет'],['KyzylTobe','Кызылтобе','Қызылтөбе'],['Umirzak','Умирзак','Өмірзақ']],
     residentialComplexes: [['Green Plaza'],['Green Park'],['Aktau Riviera'],['Riviera'],['Florence','Florence Residence'],['Caspian Riviera'],['Caspian Palace'],['Caspian Tower'],['Aktau Towers'],['Aktau City'],['Grand Nur Plaza'],['Grand Victory'],['President','President Residence'],['Family Town'],['Prime Park'],['Prime Residence']],
-    landmarks: [['Caspian Sea','Каспийское море','Каспий'],['Rock Trail','Скальная тропа'],['Embankment','набережная'],['Lighthouse','Маяк'],['TRK Aktau','ТРК Актау'],['Aktau Mall'],['Halyk Arena'],['Botanical Garden','Ботанический сад']],
+    landmarks: [['Caspian Sea','Каспийское море','Каспий'],['Rock Trail','Скальная тропа'],['Embankment','набережная'],['Lighthouse','Маяк'],['TRK Aktau','ТРК Актау','Aktau Mall'],['Halyk Arena'],['Botanical Garden','Ботанический сад']],
   }),
 
   Atyrau: city({
