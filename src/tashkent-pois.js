@@ -11,6 +11,7 @@ function poi(name, category, aliases = [], options = {}) {
     re: aliasesToRegex(all),
     contextRequired: Boolean(options.contextRequired),
     contextRe: options.context ? new RegExp(options.context, 'iu') : null,
+    ...(options.parent ? { parent: options.parent } : {}),
   });
 }
 
@@ -65,6 +66,7 @@ export const TASHKENT_MARKETS = Object.freeze([
   poi('Ippodrom Bazaar', 'market', ['Ипподром']),
   poi('Abu Sahiy', 'market', ['Абу Сахий']),
   poi('Orikzor Bazaar', 'market', ['Урикзор', "O'rikzor", 'O‘rikzor', 'Oʻrikzor']),
+  poi('Stroygorod', 'market', ['Стройгород', 'рынок Стройгород', 'Стройгород рынок', 'Stroygorod market', 'Stroygorod bazaar'], { parent: 'Uchtepa' }),
   poi('Kadysheva Bazaar', 'market', ['Кадышева рынок', 'Кадышева базар']),
   poi('Yangiobod Bazaar', 'market', ['Янгиабадский рынок', 'Янгиабад', 'Yangiobod bozori']),
 ]);

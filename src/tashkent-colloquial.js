@@ -14,6 +14,10 @@ export const TASHKENT_AREA_ADDITIONS = Object.freeze({
   Almazar: Object.freeze([
     area('Shifokorlar-1', ['шифокорлар 1', 'shifokorlar 1']),
     area('Shifokorlar-2', ['шифокорлар 2', 'shifokorlar 2']),
+    area('Shifokorlar-3', ['шифокорлар 3', 'shifokorlar 3']),
+    area('Shifokorlar-4', ['шифокорлар 4', 'shifokorlar 4', 'toshgu toshpi', 'тошгу тошпи']),
+    area('Shifokorlar-5', ['шифокорлар 5', 'shifokorlar 5']),
+    area('Shifokorlar-6', ['шифокорлар 6', 'shifokorlar 6']),
     area('Beruni-3', ['беруни 3', 'beruniy 3', 'beruni 3']),
     area('Hislat', ['хислат', 'hislat', 'xislat']),
     ...[1, 2, 3, 4].map((n) => area(`Beshkurgan-${n}`, [`бешкурган ${n}`, `бешқўрғон ${n}`, `beshqo rg on ${n}`, `beshkurgan ${n}`])),
@@ -21,6 +25,9 @@ export const TASHKENT_AREA_ADDITIONS = Object.freeze({
   Bektemir: Object.freeze([
     area('Suvsoz-1', ['сувсоз 1', 'водник 1', 'suvsoz 1']),
     area('Suvsoz-2', ['сувсоз 2', 'водник 2', 'suvsoz 2']),
+    area('Suvsoz-3', ['сувсоз 3', 'suvsoz 3']),
+    area('Suvsoz-4', ['сувсоз 4', 'suvsoz 4']),
+    area('Suvsoz-5', ['сувсоз 5', 'suvsoz 5']),
     area('Binokor', ['бинокор', 'binokor']),
     area('Binokor-2', ['бинокор 2', 'binokor 2']),
     area('Majnuntol', ['мажнунтол', 'majnuntol']),

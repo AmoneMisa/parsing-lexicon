@@ -48,7 +48,7 @@ export const TASHKENT_METRO = Object.freeze([
   station('Hamid Olimjon', 'Хамид Алимджан', 'Hamid Olimjon', 'chilonzor', ['Хамид Олимжон', 'Hamid Alimjan', 'Hamid Alimjon']),
   station('Amir Temur Xiyoboni', 'Амир Темур Хиёбони', 'Amir Temur Xiyoboni', 'chilonzor', ['Сквер', 'Amir Timur Square', 'Amir Temur']),
   station('Mustaqillik Maydoni', 'Мустакиллик майдони', 'Mustaqillik Maydoni', 'chilonzor', ['Мустақиллик майдони', 'Площадь Независимости', 'Independence Square']),
-  station('Paxtakor', 'Пахтакор', 'Paxtakor', 'chilonzor', ['Pakhtakor']),
+  station('Paxtakor', 'Пахтакор', 'Paxtakor', 'chilonzor'),
   station('Xalqlar Dostligi', 'Халклар Дустлиги', 'Xalqlar Dostligi', 'chilonzor', ["Xalqlar Do'stligi", 'Xalqlar Do‘stligi', 'Xalqlar Doʻstligi', 'Халклар Дўстлиги', 'Халқлар Дўстлиги', 'Дружба народов', 'Bunyodkor', 'Бунёдкор']),
   station('Milliy Bog', 'Миллий Бог', 'Milliy Bog', 'chilonzor', ["Milliy Bog'", 'Milliy Bog‘', 'Milliy Bogʻ', 'Миллий Боғ', 'Yoshlik', 'Ёшлик']),
   station('Novza', 'Новза', 'Novza', 'chilonzor', ['Хамза', 'Hamza', 'Hamza metro', 'метро Хамза']),
@@ -123,9 +123,9 @@ export const TASHKENT_AREAS = Object.freeze({
     area('Karakamysh-2/4', ['каракамыш 2 4', 'қорақамиш 2 4', 'qoraqamish 2 4', 'karakamish 2 4']),
     area('Karakamysh-2/5', ['каракамыш 2 5', 'қорақамиш 2 5', 'qoraqamish 2 5', 'karakamish 2 5']),
     area('Olympia', ['олимпия', 'olimpiya', 'olympia']), area('Vuzgorodok', ['вузгородок', 'вуз городок', 'vuzgorodok']),
-    area('Medgorodok', ['медгородок', 'мед городок', 'medgorodok']),
-    area('Chimbay', ['чимбай', 'chimboy', 'chimbay']),
-    area('Takhtapul', ['тахтапуль', 'тахтапул', 'taxtapul', 'takhtapul']),
+    area('Medgorodok', ['медгородок', 'мед городок', 'medgorodok', 'TashMI-2', 'TashMI 2', 'ToshMI-2', 'ToshMI 2', 'ТашМИ-2', 'ТашМИ 2', 'ТошМИ-2', 'ТошМИ 2', 'новый ташми', 'новый ташми-2', 'янги ташми', 'yangi tashmi']),
+    area('Chimbay', ['чимбай', 'чимбой', 'chimboy', 'chimbay']),
+    area('Taxtapul', ['тахтапуль', 'тахтапул', 'taxtapul', 'takhtapul', 'Takhtapul']),
   ]),
   Mirobod: Object.freeze([
     area('Hospitalny', ['госпитальный', 'госпиталка', 'hospitalny']),
@@ -140,13 +140,13 @@ export const TASHKENT_AREAS = Object.freeze({
     area('Traktorsozlar-2', ['тракторсозлар 2', 'traktorsozlar 2', 'ттз 2', 'ttz 2']),
     area('TTZ-3', ['ттз 3', 'ttz 3']),
     area('Traktorsozlar-4', ['тракторсозлар 4', 'traktorsozlar 4', 'ттз 4', 'ttz 4']),
-    area('Yalangach', ['ялангач', 'yalangach', "yalang'och"]), area('Feruza', ['феруза', 'feruza']), area('Geofizika', ['геофизика', 'поселок геофизиков', 'geofizika']),
+    area('Yalangach', ['ялангач', 'ялангач массив', 'yalangach', "yalang'och", "yalang'och dahasi", 'высоковольтный', 'массив высоковольтный']), area('Feruza', ['феруза', 'feruza']), area('Geofizika', ['геофизика', 'поселок геофизиков', 'geofizika']),
   ]),
   Uchtepa: Object.freeze([
     area('Lolazor', ['лолазор', 'lolazor']),
   ]),
   Sergeli: Object.freeze([
-    area('Yangi Sergeli', ['янги сергели', 'yangi sergeli']), area('Stroygorod', ['стройгород', 'stroygorod']),
+    area('Yangi Sergeli', ['янги сергели', 'yangi sergeli']),
     area('Uzgarish', ['узгарыш', 'ўзгариш', "o'zgarish", 'uzgarish']),
   ]),
   Chilanzar: Object.freeze([
