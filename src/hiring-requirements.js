@@ -21,12 +21,12 @@ export function detectHiringSeniority(value) {
     ['director', /\b(?:engineering\s+)?director\b|директор/i],
     ['principal', /\bprincipal\b(?=[^,;\n]{0,60}\b(?:engineer|developer|architect)\b)/i],
     ['staff', /\bstaff\b(?=[^,;\n]{0,60}\b(?:engineer|developer|architect)\b)/i],
-    ['lead', /\b(?:team\s*lead|tech\s*lead|lead\s+(?:engineer|developer|frontend|backend))\b|тимлид|техлид|ведущ\w*/i],
+    ['lead', /\b(?:team\s*lead|tech\s*lead|lead\s+(?:engineer|developer|frontend|backend))\b|тимлид|техлид|ведущ\w*|yetakchi\s+(?:dasturchi|mutaxassis|muhandis)|жетекші\s+(?:бағдарламашы|маман|инженер)/iu],
     ['manager', /\bengineering manager\b|руководител/i],
-    ['senior', /\bsenior\b(?=[^,;\n]{0,60}\b(?:engineer|developer|frontend|backend|software)\b)|сеньор|старш\w*\s+(?:разработ|инженер)/i],
-    ['middle', /\b(?:middle|mid[- ]?level)\b(?=[^,;\n]{0,60}\b(?:engineer|developer|frontend|backend|software)\b)|мидл/i],
-    ['junior', /\bjunior\b(?=[^,;\n]{0,60}\b(?:engineer|developer|frontend|backend|software)\b)|джун\w*|младш\w*/i],
-    ['intern', /\b(?:intern|trainee)\b|стаж[ёе]р|стажир/i],
+    ['senior', /\bsenior\b(?=[^,;\n]{0,60}\b(?:engineer|developer|frontend|backend|software)\b)|сеньор|старш\w*\s+(?:разработ|инженер)|katta\s+(?:dasturchi|mutaxassis|muhandis)|аға\s+(?:бағдарламашы|маман|инженер)/iu],
+    ['middle', /\b(?:middle|mid[- ]?level)\b(?=[^,;\n]{0,60}\b(?:engineer|developer|frontend|backend|software)\b)|мидл|o['’ʻ]?rta\s+(?:dasturchi|mutaxassis|muhandis)|орта\s+(?:бағдарламашы|маман|инженер)/iu],
+    ['junior', /\bjunior\b(?=[^,;\n]{0,60}\b(?:engineer|developer|frontend|backend|software)\b)|джун\w*|младш\w*|kichik\s+(?:dasturchi|mutaxassis|muhandis)|кіші\s+(?:бағдарламашы|маман|инженер)/iu],
+    ['intern', /\b(?:intern|trainee)\b|стаж[ёе]р|стажир|amaliyotchi|stajyor|тәжірибеден\s+өтуші|стажер/iu],
   ];
   return checks.find(([, pattern]) => pattern.test(text))?.[0] || null;
 }
