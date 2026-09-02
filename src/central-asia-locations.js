@@ -1,4 +1,4 @@
-import { LOCATION_DICTIONARIES } from './locations.js';
+import { LOCATION_DICTIONARIES } from './locations-runtime.js';
 import { LOCATION_LIST_KEYS } from './location-merge.js';
 import { CITIES_BY_COUNTRY, canonicalCity } from './geography.js';
 import { aliasesOf, aliasesToRegex, normalizeForMatch } from './normalization.js';
@@ -6,7 +6,7 @@ import { KZ_AMBIGUOUS_LOCAL_NAMES, KZ_SEARCH_CLUSTERS } from './kz-location-exte
 import { UZ_AMBIGUOUS_LOCAL_NAMES } from './uz-location-extensions.js';
 
 // Compatibility names retained for consumers. The canonical dictionaries are
-// assembled once in locations.js; matcher layers must consume, not re-merge.
+// assembled once in the public runtime registry; matcher layers must consume, not re-merge.
 export const KZ_EXPANDED_LOCATION_DICTIONARIES = LOCATION_DICTIONARIES.KZ || Object.freeze({});
 export const UZ_EXPANDED_LOCATION_DICTIONARIES = LOCATION_DICTIONARIES.UZ || Object.freeze({});
 
