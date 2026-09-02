@@ -48,6 +48,22 @@ const KAZAKH_SEARCH_EQUIVALENCE = Object.freeze({
   ә: 'а', ғ: 'г', қ: 'к', ң: 'н', ө: 'о', ұ: 'у', ү: 'у', і: 'и', һ: 'х',
 });
 
+// Karakalpak Latin source data commonly alternates between ASCII-friendly
+// spellings and the current Latin letters used by OSM/local sources. Treat
+// these as search equivalences only; canonical spelling remains source-owned.
+const KARAKALPAK_LATIN_SEARCH_EQUIVALENCE = Object.freeze({
+  á: 'a', ǵ: 'g', ı: 'i', ń: 'n', ó: 'o', ú: 'u',
+});
+
+const KARAKALPAK_LATIN_PATTERN_EQUIVALENCE = Object.freeze({
+  a: '[aá]', á: '[aá]',
+  g: '[gǵ]', ǵ: '[gǵ]',
+  i: '[iı]', ı: '[iı]',
+  n: '[nń]', ń: '[nń]',
+  o: '[oó]', ó: '[oó]',
+  u: '[uú]', ú: '[uú]',
+});
+
 /** Search-oriented Cyrillic folding; canonical identity still comes from explicit aliases. */
 export function foldCyrillicForSearch(value) {
   return normalizeUnicode(value)
@@ -65,9 +81,17 @@ function foldKazakhForSearch(value) {
     .join('');
 }
 
+function foldKarakalpakLatinForSearch(value) {
+  return normalizeUnicode(value)
+    .toLocaleLowerCase()
+    .split('')
+    .map((char) => KARAKALPAK_LATIN_SEARCH_EQUIVALENCE[char] ?? char)
+    .join('');
+}
+
 export function normalizedAliasKeys(value, { transliteration = true } = {}) {
   const forms = transliteration
-    ? [value, foldCyrillicForSearch(value), foldKazakhForSearch(value)]
+    ? [value, foldCyrillicForSearch(value), foldKazakhForSearch(value), foldKarakalpakLatinForSearch(value)]
     : [value];
   return [...new Set(forms.flatMap((form) => [
     normalizeForMatch(form),
@@ -103,7 +127,7 @@ function createAliasOwnersIndex(entries, { transliteration = true } = {}) {
   for (const entry of entries || []) {
     for (const sourceAlias of valuesOf(entry)) {
       const searchForms = transliteration
-        ? [sourceAlias, foldCyrillicForSearch(sourceAlias), foldKazakhForSearch(sourceAlias)]
+        ? [sourceAlias, foldCyrillicForSearch(sourceAlias), foldKazakhForSearch(sourceAlias), foldKarakalpakLatinForSearch(sourceAlias)]
         : [sourceAlias];
       for (const searchAlias of searchForms) {
         for (const key of normalizedAliasKeys(searchAlias, { transliteration: false })) {
@@ -186,8 +210,19 @@ export function escapeRegex(value) {
 }
 
 function aliasPattern(value) {
-  return escapeRegex(normalizeUnicode(value).trim())
-    .replace(/[\s\-–—'’‘`ʻʼ]+/g, "[\\s\\-–—'’‘`ʻʼ]*");
+  const source = normalizeUnicode(value).trim();
+  let pattern = '';
+  let separatorOpen = false;
+  for (const char of source) {
+    if (/[\s\-–—'’‘`ʻʼ]/u.test(char)) {
+      if (!separatorOpen) pattern += "[\\s\\-–—'’‘`ʻʼ]*";
+      separatorOpen = true;
+      continue;
+    }
+    separatorOpen = false;
+    pattern += KARAKALPAK_LATIN_PATTERN_EQUIVALENCE[char.toLocaleLowerCase()] ?? escapeRegex(char);
+  }
+  return pattern;
 }
 
 function matcherFor(entries, { transliteration = true } = {}) {
