@@ -9,6 +9,10 @@ export const HIRING_MONTHS = Object.freeze({
   iulie: 6, august: 7, septembrie: 8, octombrie: 9, noiembrie: 10, decembrie: 11,
   січня: 0, лютого: 1, березня: 2, квітня: 3, травня: 4, червня: 5,
   липня: 6, серпня: 7, вересня: 8, жовтня: 9, листопада: 10, грудня: 11,
+  yanvar: 0, fevral: 1, mart: 2, aprel: 3, iyun: 5,
+  iyul: 6, avgust: 7, sentabr: 8, oktabr: 9, noyabr: 10, dekabr: 11,
+  қаңтар: 0, ақпан: 1, наурыз: 2, сәуір: 3, мамыр: 4, маусым: 5,
+  шілде: 6, тамыз: 7, қыркүйек: 8, қазан: 9, қараша: 10, желтоқсан: 11,
 });
 
 export const UNICODE_LEFT_BOUNDARY = '(?<![\\p{L}\\p{N}])';

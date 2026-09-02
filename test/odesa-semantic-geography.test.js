@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { dictionaryFor, matchDictionaryLocation } from '../src/locations.js';
+import { dictionaryFor, matchDictionaryLocation } from '../src/locations-runtime.js';
 
 test('Odesa Fontan station zones are local areas, not standalone microdistricts', () => {
   const odesa = dictionaryFor('UA', 'Odesa');

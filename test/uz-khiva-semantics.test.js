@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { LOCATION_DICTIONARIES, matchDictionaryLocation } from '../src/locations.js';
+import { LOCATION_DICTIONARIES, matchDictionaryLocation } from '../src/locations-runtime.js';
 
 test('Khiva Old City is an alias of Ichan Kala, not a second canonical', () => {
   const localAreas = LOCATION_DICTIONARIES.UZ.Khiva.localAreas;

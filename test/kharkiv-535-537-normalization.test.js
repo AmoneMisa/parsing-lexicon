@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { dictionaryFor, matchDictionaryLocation } from '../src/locations.js';
+import { dictionaryFor, matchDictionaryLocation } from '../src/locations-runtime.js';
 
 function match(city, text) {
   const result = matchDictionaryLocation(text, 'UA', city);

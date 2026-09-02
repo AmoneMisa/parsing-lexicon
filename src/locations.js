@@ -6,7 +6,7 @@ import {
   matchUkraineRegion,
   matchUkraineSecondaryCity,
 } from './location-data.js';
-import { LOCATION_LIST_KEYS, mergeLocationCountries } from './location-merge.js';
+import { mergeLocationCountries } from './location-merge.js';
 import { aliasesToRegex } from './normalization.js';
 import { KZ_LOCATION_EXTENSIONS } from './kz-location-extensions.js';
 import { UZ_LOCATION_EXTENSIONS } from './uz-location-extensions.js';
@@ -17,7 +17,7 @@ import { UA_METRO_LOCATION_EXTENSIONS } from './ua-location-extensions-metro.js'
 import { UA_KHARKIV_LOCATION_TRANSLATIONS } from './ua-kharkiv-location-translations.js';
 import { UA_CITY_LOCATION_EXPANSIONS } from './ua-city-location-expansions.js';
 
-export const UA_EXTRA_LOCATION_DICTIONARIES = Object.freeze({
+const UA_EXTRA_LOCATION_DICTIONARIES = Object.freeze({
   ...RAW_UA_EXTRA_LOCATION_DICTIONARIES,
   Zaporizhzhia: Object.freeze({
     ...RAW_UA_EXTRA_LOCATION_DICTIONARIES.Zaporizhzhia,
@@ -527,6 +527,9 @@ function normalizeUaSemanticLocations(country) {
   const odesa = country?.Odesa;
   if (!odesa) return country;
 
+  // “5–16 station of Velykyi Fontan” are traditional listing/locality zones
+  // anchored to the Fontanska Road transit stops, not twelve standalone city
+  // microdistricts. Keep their parsing value but expose them as local areas.
   const fontanStationAreas = Object.freeze(
     (odesa.microdistricts || [])
       .filter(({ name }) => ODESA_FONTAN_STATION_RE.test(name))
@@ -589,34 +592,3 @@ export {
   matchUkraineRegion,
   matchUkraineSecondaryCity,
 };
-
-export function dictionaryFor(countryCode, city) {
-  return LOCATION_DICTIONARIES[countryCode]?.[city] || null;
-}
-
-export function locationCities(countryCode) {
-  return LOCATION_DICTIONARIES[countryCode] || Object.freeze({});
-}
-
-export function matchDictionaryLocation(text, countryCode, city = null) {
-  const country = locationCities(countryCode);
-  const cities = city && country[city] ? [[city, country[city]]] : Object.entries(country);
-  const value = String(text || '');
-  let best = null;
-  for (const [cityName, data] of cities) {
-    for (const type of LOCATION_LIST_KEYS) {
-      for (const entry of data[type] || []) {
-        const match = entry?.re?.exec(value);
-        if (!match) continue;
-        const start = match.index;
-        const end = start + match[0].length;
-        const containsBest = best && start <= best.start && end >= best.end && end - start > best.end - best.start;
-        if (best && !containsBest) continue;
-        best = { city: cityName, type, name: entry.name, aliases: entry.aliases, start, end };
-      }
-    }
-  }
-  if (!best) return null;
-  const { start: _start, end: _end, ...result } = best;
-  return result;
-}

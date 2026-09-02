@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { LOCATION_DICTIONARIES, matchDictionaryLocation } from '../src/locations.js';
+import { LOCATION_DICTIONARIES, matchDictionaryLocation } from '../src/locations-runtime.js';
 
 test('Samarkand semantic duplicates have one canonical owner', () => {
   const samarkand = LOCATION_DICTIONARIES.UZ.Samarkand;

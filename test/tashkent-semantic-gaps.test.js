@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 
 import { TASHKENT_AREAS } from '../src/geo.js';
 import { TASHKENT_AREA_ADDITIONS } from '../src/tashkent-colloquial.js';
-import { locationCities } from '../src/locations.js';
+import { locationCities } from '../src/locations-runtime.js';
 import { matchCentralAsiaLocationEntities } from '../src/central-asia-locations.js';
 
 const names = (result, type) => result.matches

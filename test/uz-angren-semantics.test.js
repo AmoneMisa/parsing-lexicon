@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { LOCATION_DICTIONARIES, matchDictionaryLocation } from '../src/locations.js';
+import { LOCATION_DICTIONARIES, matchDictionaryLocation } from '../src/locations-runtime.js';
 
 const QUARTERS = Object.freeze([
   '2 quarter','3 quarter','5 quarter','6 quarter','7 quarter','8 quarter','9 quarter','10 quarter','11 quarter','32 quarter',

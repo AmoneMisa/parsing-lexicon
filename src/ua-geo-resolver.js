@@ -1,4 +1,4 @@
-import { locationCities } from './locations.js';
+import { locationCities } from './locations-runtime.js';
 import { ODESA_METROPOLITAN_ENTITIES } from './odesa-metropolitan.js';
 import {
   UA_LOCATION_COORDINATES,

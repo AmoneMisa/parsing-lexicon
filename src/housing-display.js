@@ -24,10 +24,23 @@ const DISPLAY = Object.freeze({
     'Bobur Park': 'Парк Бобура', 'Independence Square': 'Площадь Независимости', 'Mega Planet': 'Mega Planet',
     'Bek Baraka': 'Бек-Барака', Khadra: 'Хадра',
   }),
+  uk: Object.freeze({
+    Park: 'Парк', Metro: 'Метро', 'Bus stop': 'Автобусна зупинка', 'Public transport': 'Громадський транспорт',
+    'Main road': 'Головна дорога', Clinic: 'Клініка', 'Maternity hospital': 'Пологовий будинок', Hospital: 'Лікарня',
+    School: 'Школа', Kindergarten: 'Дитячий садок', Childcare: 'Дитячі заклади', University: 'Університет',
+    'Shopping center': 'Торговий центр', Shop: 'Магазин', Korzinka: 'Korzinka', Supermarket: 'Супермаркет',
+    Market: 'Ринок', Cafe: 'Кафе', Restaurant: 'Ресторан', Playground: 'Дитячий майданчик', Pharmacy: 'Аптека',
+    Mosque: 'Мечеть', Church: 'Церква', 'Railway station': 'Залізничний вокзал', Airport: 'Аеропорт',
+    'Bobur Park': 'Парк Бабура', 'Independence Square': 'Площа Незалежності', 'Mega Planet': 'Mega Planet',
+    'Bek Baraka': 'Бек-Барака', Khadra: 'Хадра',
+  }),
 });
 
 function languageKey(locale) {
-  return String(locale || 'en').toLowerCase().startsWith('ru') ? 'ru' : 'en';
+  const key = String(locale || 'en').toLowerCase();
+  if (key.startsWith('uk')) return 'uk';
+  if (key.startsWith('ru')) return 'ru';
+  return 'en';
 }
 
 function exactPoi(value) {

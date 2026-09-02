@@ -7,7 +7,7 @@ import { TASHKENT_DISTRICTS } from '../src/geo.js';
 import { detectCityFromText, detectCountryCodeFromText } from '../src/geography-detection.js';
 import { GEOGRAPHY_DISPLAY_NAMES, geographyDisplayName } from '../src/geography-display.js';
 import { LOCATION_LIST_KEYS } from '../src/location-merge.js';
-import { LOCATION_DICTIONARIES, matchDictionaryLocation } from '../src/locations.js';
+import { LOCATION_DICTIONARIES, matchDictionaryLocation } from '../src/locations-runtime.js';
 
 test('canonical CITIES is the only city catalog used by free-text detection', async () => {
   const source = await readFile(new URL('../src/geography-detection.js', import.meta.url), 'utf8');
@@ -66,7 +66,7 @@ test('city ownership is valid and unique', () => {
 });
 
 test('location matcher consumes the canonical collection key list', async () => {
-  const source = await readFile(new URL('../src/locations.js', import.meta.url), 'utf8');
+  const source = await readFile(new URL('../src/locations-runtime.js', import.meta.url), 'utf8');
   assert.match(source, /for \(const type of LOCATION_LIST_KEYS\)/u);
   assert.ok(LOCATION_LIST_KEYS.includes('mahallas'));
   assert.ok(LOCATION_LIST_KEYS.includes('localAreas'));

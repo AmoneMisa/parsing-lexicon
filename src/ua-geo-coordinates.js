@@ -1,6 +1,6 @@
 import { normalizeForMatch } from './normalization.js';
 import { canonicalUkraineCity } from './ukraine.js';
-import { locationCities } from './locations.js';
+import { locationCities } from './locations-runtime.js';
 import { matchOdesaMetropolitanEntity } from './odesa-metropolitan.js';
 
 // Coordinate contract intentionally mirrors Flat Finder's existing Uzbekistan

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { matchDictionaryLocation } from '../src/locations.js';
+import { matchDictionaryLocation } from '../src/locations-runtime.js';
 
 const cities = Object.freeze([
   'Samarkand',

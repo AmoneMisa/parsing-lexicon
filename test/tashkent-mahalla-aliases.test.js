@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { locationCities } from '../src/locations.js';
+import { locationCities } from '../src/locations-runtime.js';
 import { matchCentralAsiaLocationEntities } from '../src/central-asia-locations.js';
 
 const cases = [
