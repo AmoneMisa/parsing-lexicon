@@ -163,6 +163,8 @@ function normalizeUzSemanticLocations(country) {
   const qorasuv = (normalizedTashkent?.microdistricts || []).find(({ name }) => name === 'Qorasuv');
 
   if (normalizedTashkent && qorasuv) {
+    // Bare Qorasuv is ambiguous with numbered Qorasuv/Karasu blocks. The
+    // umbrella area therefore requires an area/massif/daha form in free text.
     const qorasuvAliases = Object.freeze([...new Set([
       ...(qorasuv.aliases || []).filter((alias) => !/^(?:qorasuv|korasuv|корасув|карасу)$/iu.test(String(alias).trim())),
       'Qorasuv dahasi',
@@ -201,6 +203,10 @@ function normalizeUzSemanticLocations(country) {
     const landmarks = samarkand.landmarks || [];
     const localAreas = samarkand.localAreas || [];
     const streets = samarkand.streets || [];
+
+    // Legacy UZ seeds contain a few Samarkand listing labels as separate
+    // canonicals or under the wrong semantic collection. Normalize them to the
+    // single physical subjects already represented by geo-catalog.
     const centralPark = landmarks.find(({ name }) => name === 'Central Park');
     const alisherPark = landmarks.find(({ name }) => name === 'Alisher Navoiy Park');
     const canonicalPark = centralPark || alisherPark;
@@ -409,6 +415,8 @@ function normalizeUzSemanticLocations(country) {
     const oldCity = localAreas.find(({ name }) => name === 'Old City');
 
     if (ichanKala && oldCity) {
+      // UNESCO identifies Itchan Kala as the historic inner-city of Khiva.
+      // Keep listing-friendly Old City forms as aliases of that one place.
       const normalizedIchanKala = semanticEntry(ichanKala, 'Ichan Kala', [
         ...(ichanKala.aliases || []),
         ...(oldCity.aliases || []),
