@@ -31,6 +31,7 @@ export * from './landmarks.js';
 export * from './tashkent-colloquial.js';
 export * from './tashkent-residential-complexes.js';
 export * from './tashkent-pois.js';
+export * from './tashkent-gastronomic-streets.js';
 export * from './odesa-metropolitan.js';
 export * from './housing.js';
 export * from './housing-intent.js';
