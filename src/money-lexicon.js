@@ -75,5 +75,5 @@ export const SALARY_MODIFIERS = Object.freeze({
 export const NUMBER_MULTIPLIERS = Object.freeze([
   group('thousand', { ru: ['к', 'тыс', 'тыс.', 'тысяч', 'тысячи'], en: ['k', 'thousand'], uk: ['к', 'тис', 'тис.', 'тисяч'], ro: ['k', 'mii'], uzLatn: ['k', 'ming'], uzCyrl: ['минг'], kk: ['k', 'мың'] }, { multiplier: 1_000 }),
   group('million', { ru: ['м', 'млн', 'млн.', 'миллион', 'миллионов'], en: ['m', 'mln', 'million', 'millions'], uk: ['м', 'млн', 'мільйон', 'мільйонів'], ro: ['m', 'mil', 'milioane'], uzLatn: ['m', 'mln', 'million'], uzCyrl: ['млн', 'миллион'], kk: ['м', 'млн', 'миллион'] }, { multiplier: 1_000_000 }),
-  group('billion', { ru: ['млрд', 'миллиард', 'миллиардов'], en: ['bn', 'billion'], uk: ['млрд', 'мільярд'], ro: ['mld', 'miliard'], uzLatn: ['mlrd', 'billion'], uzCyrl: ['млрд', 'миллиард'], kk: ['млрд', 'миллиард'] }, { multiplier: 1_000_000_000 }),
+  group('billion', { ru: ['млрд', 'миллиард', 'миллиардов'], en: ['bn', 'billion'], uk: ['млрд', 'мільярд'], ro: ['mld', 'miliard', 'miliarde'], uzLatn: ['mlrd', 'billion'], uzCyrl: ['млрд', 'миллиард'], kk: ['млрд', 'миллиард'] }, { multiplier: 1_000_000_000 }),
 ]);
