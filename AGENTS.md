@@ -36,6 +36,27 @@ The canonical location shape is:
 
 The public canonical registry is `LOCATION_DICTIONARIES` from `src/locations.js`.
 
+## City coverage priority
+
+When adding a new city or materially expanding an existing city, **current administrative districts are the first required city-local vocabulary layer**.
+
+Before prioritizing microdistricts, neighborhoods, local areas, mahallas, residential complexes, landmarks, parks, malls, streets, transit-oriented aliases, or other secondary coverage:
+
+1. determine whether the city currently has official administrative districts or equivalent first-level municipal divisions;
+2. verify the current district canonicals from authoritative municipal, legal, planning, or other defensible sources;
+3. add every verified current district to the city's `districts` collection with the necessary Ukrainian/Russian/local-language/transliteration aliases used by listings;
+4. put historical, renamed, colloquial, and alternate-language forms in aliases of the current district rather than creating obsolete duplicate district canonicals;
+5. align district canonicals with `AmoneMisa/geo-catalog`, where coordinates and spatial ownership belong;
+6. only after district coverage is verified should normal city enrichment proceed to microdistricts/neighborhoods, residential complexes, landmarks/POIs, streets, transport, and other finer-grained vocabulary.
+
+A city must not be treated as substantially or fully populated merely because it has extensive microdistrict, residential-complex, or landmark vocabulary while its current administrative districts are absent.
+
+If a city has no current administrative district division, verify that fact explicitly rather than inventing districts. Informal listing phrases containing “район” are not evidence of an administrative district and belong in the correct semantic collection.
+
+For city expansion tasks, the default coverage order is therefore:
+
+`city -> administrative districts -> microdistricts/neighborhoods/local areas -> residential complexes -> landmarks/POIs/parks/malls -> streets/transport/other enrichment`
+
 ## Coordinates are out of scope
 
 This package is a parsing lexicon. It must not own geographic coordinates.
@@ -150,13 +171,14 @@ CI currently tests supported Node versions through the repository workflow. Do n
 Before making a change, inspect the current `master` and answer these questions internally:
 
 1. Which existing country/city source owns this data?
-2. Is there already a constructor/merge helper for this shape?
-3. Am I creating duplicate canonical ownership or duplicate data?
-4. Am I adding a second aggregation path instead of using `LOCATION_DICTIONARIES`?
-5. Can this be implemented without new files, exports, abstractions, or wrappers?
-6. Am I accidentally adding coordinate data that belongs in `AmoneMisa/geo-catalog`?
-7. Am I introducing a temporary technical file that does not belong to the architecture?
-8. Which regression test will prevent the old architecture/problem from returning?
+2. If this is a new city or city expansion, have I verified and represented its current administrative districts before secondary city-local vocabulary?
+3. Is there already a constructor/merge helper for this shape?
+4. Am I creating duplicate canonical ownership or duplicate data?
+5. Am I adding a second aggregation path instead of using `LOCATION_DICTIONARIES`?
+6. Can this be implemented without new files, exports, abstractions, or wrappers?
+7. Am I accidentally adding coordinate data that belongs in `AmoneMisa/geo-catalog`?
+8. Am I introducing a temporary technical file that does not belong to the architecture?
+9. Which regression test will prevent the old architecture/problem from returning?
 
 If the answer reveals a conflict with this file, preserve the architecture first and then add the requested coverage.
 
