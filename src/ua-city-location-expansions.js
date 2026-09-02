@@ -1,6 +1,7 @@
 import { locationEntries } from './location-merge.js';
 
 const microdistricts = (rows) => Object.freeze({ microdistricts: locationEntries(rows) });
+const landmarks = (rows) => Object.freeze({ landmarks: locationEntries(rows) });
 
 // Listing-facing aliases that enrich the major Ukraine dictionaries without
 // changing their established parser canonicals. Keep physical coordinates and
@@ -72,5 +73,12 @@ export const UA_CITY_LOCATION_EXPANSIONS = Object.freeze({
     ['Pushcha-Vodytsia', 'Pushcha Vodytsia', 'Pushcha-Voditsa'],
     ['Vynohradar', 'Vinogradar'],
     ['Nyvky', 'Nivki'],
+  ]),
+
+  'Kamianets-Podilskyi': landmarks([
+    ['Old Castle', 'Кам’янець-Подільський замок', "Кам'янець-Подільський замок", 'Старий замок', 'Kamianets-Podilskyi Castle'],
+    ['Polskyi Rynok Square', 'площа Польський Ринок', 'Польський Ринок', 'Polski Rynok', 'Polish Market Square'],
+    ['Armenian Market Square', 'площа Вірменський Ринок', 'Вірменський Ринок', 'Armenian Market'],
+    ['Kamianets-Podilskyi Railway Station', 'залізничний вокзал Кам’янець-Подільський', "залізничний вокзал Кам'янець-Подільський", 'вокзал Кам’янець-Подільський', "вокзал Кам'янець-Подільський"],
   ]),
 });
