@@ -108,6 +108,12 @@ export const HOUSING_POI_EXTENSIONS = Object.freeze([
     uzLatn: ['Assalom Jomiy', 'Assalom Jomiy turar joy majmuasi'],
     uzCyrl: ['Ассалом Жомий'],
   }, { category: 'residential_complex', display: { ru: 'ЖК «Ассалом Жомий»', en: 'Assalom Jomiy' } }),
+  group('Assalom Sohil', {
+    ru: ['Ассалом Сохил', 'ЖК Ассалом Сохил', 'жилой комплекс Ассалом Сохил'],
+    en: ['Assalom Sohil', 'Assalom Sohil residential complex'],
+    uzLatn: ['Assalom Sohil', 'Assalom Sohil turar joy majmuasi'],
+    uzCyrl: ['Ассалом Сохил'],
+  }, { category: 'residential_complex', display: { ru: 'ЖК «Ассалом Сохил»', en: 'Assalom Sohil' } }),
   group('Jomiy Roundabout', {
     ru: ['круг Жомий', 'круг жомий', 'кольцо Жомий'],
     en: ['Jomiy Roundabout', 'Jomiy circle'],
