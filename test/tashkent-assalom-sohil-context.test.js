@@ -33,12 +33,15 @@ test('#8870067: Assalom Sohil is the listing complex, not nearby Infinity', () =
   assert.equal(enrichment.residenceComplex, 'Assalom Sohil');
 });
 
-test('#8870067: the explicit Assalom Sohil mention is not classified as nearby', () => {
+test('#8870067: Assalom Sohil is primary evidence and ЖК Инфинити is a nearby reference', () => {
   const result = matchCentralAsiaLocationEntities(LISTING_8870067, 'UZ', 'Tashkent');
   const assalom = result.matches.find((item) => item.name === 'Assalom Sohil');
+  const infinity = result.matches.find((item) => item.name === 'Infinity');
 
   assert.ok(assalom);
   assert.notEqual(assalom.role, 'nearby');
+  assert.ok(infinity);
+  assert.equal(infinity.role, 'nearby');
 });
 
 test('Central Asia location matches mark coordinated proximity targets as nearby', () => {
@@ -52,6 +55,14 @@ test('Central Asia location matches mark coordinated proximity targets as nearby
   const infinity = result.matches.find((item) => item.name === 'Infinity');
   assert.equal(assalom?.role, 'nearby');
   assert.equal(infinity?.role, 'nearby');
+});
+
+test('a trailing ЖК alias is also recognized when the type marker comes first', () => {
+  const result = matchCentralAsiaLocationEntities('рядом с ЖК Инфинити', 'UZ', 'Tashkent');
+  const infinity = result.matches.find((item) => item.name === 'Infinity');
+
+  assert.ok(infinity);
+  assert.equal(infinity.role, 'nearby');
 });
 
 test('a direct subject marker wins over an unrelated temporal "до" in the same clause', () => {
