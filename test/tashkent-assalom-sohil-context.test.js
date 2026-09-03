@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { matchCentralAsiaLocationEntities } from '../src/central-asia-locations.js';
 import { parseHousingListingEnrichment } from '../src/housing-listing-enrichment.js';
 
 const LISTING_8870067 = `
@@ -43,4 +44,28 @@ test('#8870067: nearby Infinity does not override an explicitly named primary co
   );
 
   assert.equal(enrichment.residenceComplex, 'Assalom Sohil');
+});
+
+test('Central Asia location matches mark coordinated proximity targets as nearby', () => {
+  const result = matchCentralAsiaLocationEntities(
+    'До Assalom Sohil и Infinity 5 мин на машине',
+    'UZ',
+    'Tashkent',
+  );
+
+  const assalom = result.matches.find((item) => item.name === 'Assalom Sohil');
+  const infinity = result.matches.find((item) => item.name === 'Infinity');
+  assert.equal(assalom?.role, 'nearby');
+  assert.equal(infinity?.role, 'nearby');
+});
+
+test('a direct subject marker wins over an unrelated temporal "до" in the same clause', () => {
+  const result = matchCentralAsiaLocationEntities(
+    'До пятницы сдается квартира в ЖК Assalom Sohil',
+    'UZ',
+    'Tashkent',
+  );
+
+  const assalom = result.matches.find((item) => item.name === 'Assalom Sohil');
+  assert.equal(assalom?.role, 'primary');
 });
