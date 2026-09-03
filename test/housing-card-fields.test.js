@@ -16,6 +16,12 @@ test('parses the backend card quarter labels without location ownership', () => 
   assert.equal(parseHousingQuarterLabel('C-2, Tashkent'), 'C-2');
 });
 
+test('does not promote a nearby central block reference to the listing quarter', () => {
+  assert.equal(parseHousingQuarterLabel('До Ц1 и ЖК Инфинити 5 мин на машине'), null);
+  assert.equal(parseHousingQuarterLabel('Ориентир: Ц1'), null);
+  assert.equal(parseHousingQuarterLabel('Ц1, квартира в центре'), 'C-1');
+});
+
 test('returns stable card labels for amenities without dedicated fields', () => {
   assert.deepEqual(
     parseHousingCardAmenities('Посудомоечная машина, раздельные комнаты, телевизор, постельное бельё'),

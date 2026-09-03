@@ -52,6 +52,59 @@ test('Assalom Jomiy listing: commission amount parses separately from the main r
   assert.deepEqual(parseHousingPrice(LISTING_ASSALOM_JOMIY, 'UZS'), { amount: 600, currency: 'USD', approximate: false });
 });
 
+const LISTING_ASSALOM_SOHIL = `
+Сдается квартира в Новостройке
+
+ГОЛДЕН ХАУС
+
+АССАЛОМ СОХИЛ
+
+2/10/16
+
+Узбум
+
+До Ц1 и ЖК Инфинити 5 мин на машине
+
+Общая площадь 65кв2
+
+По кадастру 58кв2 без балкона
+
+Два лифта
+
+Евролюкс ремонт
+
+Все под ключ готово
+
+Есть стиральная и сушильная машинка, гардеробная комната, посудамойка, кондиционер
+
+Раздельная двухкомнатная квартира
+
+Панорамные окна
+
+В комплексе на первом этаже частный детский садик
+
+Много бесплатных парковочных мест
+
+Кадастр есть
+`;
+
+test('Assalom Sohil listing: nearby Infinity is not selected as the apartment residential complex', () => {
+  const enrichment = parseHousingListingEnrichment(LISTING_ASSALOM_SOHIL, { country: 'UZ' });
+  assert.equal(enrichment.rooms, 2);
+  assert.equal(enrichment.floor, 10);
+  assert.equal(enrichment.totalFloors, 16);
+  assert.equal(enrichment.areaSqm, 65);
+  assert.equal(enrichment.residenceComplex, 'Assalom Sohil');
+  assert.ok(enrichment.nearby.includes('Infinity'));
+  assert.equal(enrichment.address, null, 'compact 2/10/16 must not be promoted to a street address');
+});
+
+test('nearby-only residential complex references do not become the listing complex', () => {
+  const enrichment = parseHousingListingEnrichment('Сдается квартира. До Ц1 и ЖК Инфинити 5 мин на машине.', { country: 'UZ' });
+  assert.equal(enrichment.residenceComplex, null);
+  assert.ok(enrichment.nearby.includes('Infinity'));
+});
+
 test('parseHousingCommissionAmount ignores listings with no monetary commission mention', () => {
   assert.equal(parseHousingCommissionAmount('Сдается квартира, без комиссии'), null);
 });

@@ -84,6 +84,23 @@ export function parseHousingFloor(value) {
   const text = normalizeUnicode(value ?? '');
   if (!text) return deepFreeze({ floor: null, totalFloors: null });
 
+  // Common classifieds shorthand is rooms/floor/total floors, e.g. 2/10/16.
+  // It must be checked before the generic floor/total fraction parser or the
+  // first two numbers would incorrectly become floor=2, totalFloors=10.
+  // Requiring the triple to occupy its own line avoids treating dates as this
+  // housing-specific shorthand inside ordinary prose.
+  const compactTriple = text.match(/(?:^|[\r\n])\s*(\d{1,2})\s*[\/\\]\s*(\d{1,3})\s*[\/\\]\s*(\d{1,3})\s*(?=$|[\r\n])/u);
+  if (compactTriple) {
+    const rooms = toNumber(compactTriple[1]);
+    const floor = toNumber(compactTriple[2]);
+    const totalFloors = toNumber(compactTriple[3]);
+    if (rooms != null && rooms >= 1 && rooms <= 20
+      && floor != null && totalFloors != null
+      && floor >= 1 && floor <= totalFloors && totalFloors <= 200) {
+      return deepFreeze({ floor, totalFloors });
+    }
+  }
+
   const fraction = text.match(/(?:^|[^\d])(\d{1,3})\s*[\/\\]\s*(\d{1,3})(?=$|[^\d])/u);
   if (fraction) {
     const floor = toNumber(fraction[1]);
@@ -142,7 +159,7 @@ const AREA_LABELS = Object.freeze([
   ['total', /(?:общая\s+площадь|площадь|total\s+area|surface\s+area|suprafa(?:ță|ta)(?:\s+total(?:ă|a))?|umumiy\s+maydon|жалпы\s+аудан)/iu],
 ]);
 
-const AREA_UNIT_RE = String.raw`(?:м²|м2|m²|m2|sqm|sq\.?\s*m|mp|кв\.?\s*м|квадрат\p{L}*)`;
+const AREA_UNIT_RE = String.raw`(?:м²|м2|m²|m2|sqm|sq\.?\s*m|mp|кв\.?\s*м|кв2|квадрат\p{L}*)`;
 
 function areaAfterLabel(text, labelRe) {
   const re = new RegExp(`${labelRe.source}\\s*[:=-]?\\s*(\\d{1,4}(?:[.,]\\d{1,2})?)\\s*${AREA_UNIT_RE}`, 'iu');

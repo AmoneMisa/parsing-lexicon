@@ -39,6 +39,7 @@ const PLACE_KINDS = Object.freeze([
 const NEARBY_BLOCK_RE = /(?:^|\n)[^\n]{0,30}?(?:что\s+(?:есть|находится)\s+р[яa]дом|р[яa]дом(?:\s+(?:есть|находятся|расположены|с\s+домом))?|непода[лл][её]ку|поблизости|в\s+шаговой\s+доступности|окружени[ие]|ориентир(?:ы|ами)?|yaqinida|atrofida|yonida|nearby|landmarks?)\s*[:—-]?\s*([^\n]{4,500})/iu;
 const NEARBY_NOISE_RE = /^(?:и|а|в|на|у|до|от|все|вс[её]|есть|рядом|близко|недалеко|минут\p{L}*|пешком|транспорт|остановк\p{L}*|магазин|магазины|аптека|аптеки|садик|садики|всё\s+необходимое|развит\p{L}*)$/iu;
 const NEARBY_FILLER_RE = /(?:инфраструктур\p{L}*|все\s+необходимо|вс[её]\s+рядом|шаговой\s+доступност|развитый\s+район)/iu;
+const QUARTER_NEARBY_PREFIX_RE = /(?:^|[\s,;:—–-])(?:до|рядом\s+(?:с|со)|недалеко\s+от|возле|около|ориентир\s*[:—–-]?|near(?:by)?|close\s+to|lângă|aproape\s+de)\s*$/iu;
 
 function enumeratedNearby(text) {
   const blocks = [...text.matchAll(new RegExp(NEARBY_BLOCK_RE.source, `${NEARBY_BLOCK_RE.flags}g`))]
@@ -61,18 +62,33 @@ function enumeratedNearby(text) {
   return items;
 }
 
+function isNearbyQuarterReference(text, match) {
+  const start = match?.index ?? -1;
+  if (start < 0) return false;
+  const before = text.slice(Math.max(0, start - 64), start);
+  return QUARTER_NEARBY_PREFIX_RE.test(before);
+}
+
+function firstPrimaryQuarterMatch(text, pattern) {
+  const flags = pattern.flags.includes('g') ? pattern.flags : `${pattern.flags}g`;
+  for (const match of text.matchAll(new RegExp(pattern.source, flags))) {
+    if (!isNearbyQuarterReference(text, match)) return match;
+  }
+  return null;
+}
+
 export function parseHousingQuarterLabel(value) {
   const text = String(value || '');
   if (!text) return null;
   if (/(?:^|[^\p{L}\p{N}_])(?:глинк[аи]?|glinka)(?:$|[^\p{L}\p{N}_])/iu.test(text)) return 'Glinka';
-  const match = text.match(/(\d{1,3})\s*(?:-?\s*(?:chi|чи))?\s*[-\s]?\s*(?:квартал|кв-?л(?=$|[^\p{L}\p{N}_])|kvartal(?:i)?|квартил|kvartil|мкр(?=$|[^\p{L}\p{N}_])|микрорайон|массив|massiv|daha(?:si|dan)?|hudud|худуд)/iu)
-    || text.match(/(?:квартал|kvartal(?:i)?|квартил|kvartil|мкр|микрорайон|массив|massiv|daha(?:si|dan)?|hudud|худуд)\s*[-№#]?\s*(\d{1,3})/iu)
-    || text.match(/(?:чиланзар|chilonzor|chilanzar)\s*[-№#]?\s*(\d{1,2})(?!\d)/iu);
+  const match = firstPrimaryQuarterMatch(text, /(\d{1,3})\s*(?:-?\s*(?:chi|чи))?\s*[-\s]?\s*(?:квартал|кв-?л(?=$|[^\p{L}\p{N}_])|kvartal(?:i)?|квартил|kvartil|мкр(?=$|[^\p{L}\p{N}_])|микрорайон|массив|massiv|daha(?:si|dan)?|hudud|худуд)/iu)
+    || firstPrimaryQuarterMatch(text, /(?:квартал|kvartal(?:i)?|квартил|kvartil|мкр|микрорайон|массив|massiv|daha(?:si|dan)?|hudud|худуд)\s*[-№#]?\s*(\d{1,3})/iu)
+    || firstPrimaryQuarterMatch(text, /(?:чиланзар|chilonzor|chilanzar)\s*[-№#]?\s*(\d{1,2})(?!\d)/iu);
   if (match) {
     const label = `${Number(match[1])} kvartal`;
     return STREET_LIKE_PLACE_RE.test(label) ? null : label;
   }
-  const centralBlock = text.match(/(?:^|[^\p{L}\p{N}_])(?:ц|c)\s*[-–]?\s*(\d{1,2})(?:$|[^\p{L}\p{N}_])/iu);
+  const centralBlock = firstPrimaryQuarterMatch(text, /(?:^|[^\p{L}\p{N}_])(?:ц|c)\s*[-–]?\s*(\d{1,2})(?:$|[^\p{L}\p{N}_])/iu);
   return centralBlock ? `C-${Number(centralBlock[1])}` : null;
 }
 
