@@ -139,6 +139,15 @@ function semanticBounds(value, match) {
   return { start, end };
 }
 
+const NUMBERED_LOCAL_AREA_NAME_RE = /(?:^|[-–—/\s])\d{1,2}[aа]?(?=$|[^\p{L}\p{N}_])/iu;
+const NUMBERED_CHILD_SUFFIX_RE = /^\s*[-–—/]\s*\d{1,2}[aа]?(?=$|[^\p{L}\p{N}_])/iu;
+
+function isUmbrellaAreaPrefixOfNumberedBlock(value, candidate) {
+  if (candidate.type !== 'local_area') return false;
+  if (NUMBERED_LOCAL_AREA_NAME_RE.test(String(candidate.name || ''))) return false;
+  return NUMBERED_CHILD_SUFFIX_RE.test(value.slice(candidate.end));
+}
+
 const RESIDENTIAL_MARKER_TEXT = String.raw`(?:ж\.?\s*к\.?|жил(?:ой|ого)?\s+комплекс\p{L}*|residential\s+complex|turar\s+joy\s+majmuasi|tjm)`;
 const residentialMarkedAliasCache = new WeakMap();
 
@@ -241,6 +250,7 @@ function findEntryMatches(text, cityName, data) {
         explicitContext: false,
         role: 'mentioned',
       };
+      if (isUmbrellaAreaPrefixOfNumberedBlock(value, candidate)) continue;
       candidate.explicitContext = hasExplicitContext(value, candidate);
       candidate.role = locationMentionRole(value, candidate);
       raw.push(candidate);
