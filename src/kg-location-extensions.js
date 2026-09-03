@@ -83,7 +83,7 @@ export const KG_LOCATION_EXTENSIONS = Object.freeze({
       ['Center', 'Центр', 'центр Каракола', 'Каракол центр'],
     ],
     landmarks: [
-      ['Dungan Mosque', 'Дунганская мечеть', 'Дунган мечити'],
+      ['Dungan Mosque', 'Дунганская мечеть', 'Дунганской мечети', 'Дунган мечити'],
       ['Holy Trinity Cathedral', 'Свято-Троицкий собор', 'Троицкий собор'],
       ['Karakol Ski Base', 'горнолыжная база Каракол', 'лыжная база Каракол'],
     ],

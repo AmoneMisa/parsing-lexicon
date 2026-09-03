@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { LOCATION_DICTIONARIES, matchDictionaryLocation } from '../src/locations.js';
+import { LOCATION_DICTIONARIES, matchDictionaryLocation } from '../src/locations-runtime.js';
 
 const aliases = Object.freeze([
   ['Qızılqum', 'Qizil qum'],
