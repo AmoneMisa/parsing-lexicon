@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {
   defaultCurrencyForCountry,
   parseHiringSalaryWithContext,
+  parseHiringVacancySalary,
 } from '../src/hiring-salary-context.js';
 import { parseNumericAmount } from '../src/money-core.js';
 
@@ -77,4 +78,30 @@ test('local currency lookup accepts country aliases', () => {
   assert.equal(defaultCurrencyForCountry('Uzbekistan'), 'UZS');
   assert.equal(defaultCurrencyForCountry('Казахстан'), 'KZT');
   assert.equal(defaultCurrencyForCountry('Україна'), 'UAH');
+});
+
+test('Flagma-style USD range keeps both endpoints and uses UZ monthly fallback', () => {
+  const salary = parseHiringVacancySalary('Бухгалтер · 2 700 · - 3 000 · $ · ДИНАРА.С.В., ИП | Астана, KZ · в Ташкенте, удаленно', {
+    country: 'UZ',
+    periodFallback: 'country',
+  });
+  assert.ok(salary);
+  assert.equal(salary.min, 2_700);
+  assert.equal(salary.max, 3_000);
+  assert.equal(salary.currency, 'USD');
+  assert.equal(salary.period, 'month');
+  assert.equal(salary.periodSource, 'country-default');
+});
+
+test('explicit Russian monthly marker wins for UZS vacancy salary', () => {
+  const salary = parseHiringVacancySalary('Мы предлагаем 1 300 000 UZS в месяц за всего 4 часа работы в день.', {
+    country: 'UZ',
+    periodFallback: 'country',
+  });
+  assert.ok(salary);
+  assert.equal(salary.min, 1_300_000);
+  assert.equal(salary.max, 1_300_000);
+  assert.equal(salary.currency, 'UZS');
+  assert.equal(salary.period, 'month');
+  assert.equal(salary.periodSource, 'explicit');
 });
