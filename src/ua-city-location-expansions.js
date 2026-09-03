@@ -99,6 +99,10 @@ export const UA_CITY_LOCATION_EXPANSIONS = Object.freeze({
     ['Lesya Ukrainka Park', 'парк імені Лесі Українки', 'парк Лесі Українки'],
   ]),
 
+  Novovolynsk: landmarks([
+    ['Нововолинський історичний музей', 'Нововолинський міський історичний музей', 'Novovolynsk Historical Museum'],
+  ]),
+
   Volodymyr: landmarks([
     ['Володимирський історичний музей імені Омеляна Дверницького', 'Володимир-Волинський історичний музей'],
     ['Volodymyr dytynets', 'Володимирський дитинець'],
