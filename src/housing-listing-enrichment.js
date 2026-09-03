@@ -3,6 +3,7 @@ import { findAllCanonical, normalizeUnicode } from './normalization.js';
 import { GENERIC_LANDMARK_TERMS } from './landmarks.js';
 import { matchTashkentHousingDistrict, matchTashkentHousingMetro, matchTashkentHousingQuarter } from './tashkent-housing-geography.js';
 import { TASHKENT_LANDMARKS } from './tashkent-pois.js';
+import { TASHKENT_RESIDENTIAL_COMPLEXES, matchTashkentResidentialComplex } from './tashkent-residential-complexes.js';
 import { parseHousingRoomCount, parseHousingFloor, parseHousingAreas } from './housing-structured.js';
 import { parseHousingListingFields } from './housing-listing-fields.js';
 import { parseHousingResidentialComplex } from './housing-text.js';
@@ -38,6 +39,9 @@ const AIR_CONDITIONER_RE = /(?:кондицион|air\s*con|konditsioner|kandit(
 const PER_PERSON_PRICE_RE = /(?:kishi\s+boshiga|киши\s+бошига)\s*(\d{1,3}(?:[\s.,]\d{3})*|\d+(?:[.,]\d+)?)\s*(ming|минг|million|mln|млн)?(?:dan|дан)?/iu;
 const WALK_MINUTES_RE = /(?:yayov|piyoda|пешком)\s*(\d{1,2})\s*(?:daqiqa|min(?:ute)?s?|минут)/iu;
 const TRANSIT_ROUTES_RE = /(?:aftobuslar|avtobuslar|автобуслар|автобусы)[^\r\n\d]{0,24}((?:\d{1,4}[\s,;/]*){1,10})/iu;
+const NEARBY_RELATION_TAIL_RE = /(?<!\p{L})(?:рядом\s+(?:с|со)|недалеко\s+от|возле|около|ориентир\s*[:—–-]?|near(?:by)?|close\s+to|lângă|aproape\s+de)(?!\p{L})[^.!?\r\n;]*/giu;
+const NEARBY_TRAVEL_TAIL_RE = /(?<!\p{L})(?:до|până\s+la)(?!\p{L})[^.!?\r\n;]{0,96}(?<!\p{L})\d{1,3}\s*(?:мин(?:ут(?:ы|а|ах)?|\.?)?|min(?:ute)?s?|дақиқ\p{L}*|daqiqa|км|km|метр(?:а|ов)?|m)(?!\p{L})[^.!?\r\n;]*/giu;
+const RESIDENTIAL_CONTEXT_RE = /(?:ж\.?\s*к\.?|жил(?:ой|ого)\s+комплекс|новострой(?:ка|ки)?|residential\s+complex|residence|turar\s+joy|uy[-\s]?joy|majmua|массив)/iu;
 
 function unique(values) {
   return [...new Set(values.filter(Boolean))];
@@ -45,6 +49,42 @@ function unique(values) {
 
 function categoryOf(entry) {
   return entry?.category || GENERIC_CATEGORY[entry?.canonical] || 'landmark';
+}
+
+function nearbyReferenceRanges(text) {
+  const ranges = [];
+  for (const pattern of [NEARBY_RELATION_TAIL_RE, NEARBY_TRAVEL_TAIL_RE]) {
+    const regex = new RegExp(pattern.source, pattern.flags);
+    for (const match of text.matchAll(regex)) {
+      const start = match.index ?? 0;
+      ranges.push({ start, end: start + match[0].length });
+    }
+  }
+  return ranges;
+}
+
+function insideNearbyReference(match, ranges) {
+  return ranges.some((range) => match.start >= range.start && match.end <= range.end);
+}
+
+function withoutNearbyLocationReferences(text) {
+  return String(text || '')
+    .replace(NEARBY_RELATION_TAIL_RE, ' ')
+    .replace(NEARBY_TRAVEL_TAIL_RE, ' ');
+}
+
+function hasResidentialContext(text, match) {
+  if (!match.entry?.ambiguous) return true;
+  const context = text.slice(Math.max(0, match.start - 36), Math.min(text.length, match.end + 36));
+  return RESIDENTIAL_CONTEXT_RE.test(context);
+}
+
+function residentialComplexNearbyMatches(text) {
+  const ranges = nearbyReferenceRanges(text);
+  if (!ranges.length) return [];
+  return findAllCanonical(text, TASHKENT_RESIDENTIAL_COMPLEXES)
+    .filter((match) => insideNearbyReference(match, ranges) && hasResidentialContext(text, match))
+    .map((match) => ({ canonical: match.canonical, category: 'residential_complex', start: match.start }));
 }
 
 function extensionMatches(text) {
@@ -83,7 +123,7 @@ function genericMatches(text) {
 export function parseHousingNearby(value) {
   const text = normalizeUnicode(value ?? '');
   if (!text) return deepFreeze([]);
-  const specific = [...extensionMatches(text), ...catalogPoiMatches(text)].sort((a, b) => a.start - b.start);
+  const specific = [...extensionMatches(text), ...catalogPoiMatches(text), ...residentialComplexNearbyMatches(text)].sort((a, b) => a.start - b.start);
   const specificCategories = new Set(specific.map((item) => item.category));
   const generic = genericMatches(text)
     .filter((item) => !specificCategories.has(item.category))
@@ -201,7 +241,10 @@ export function parseHousingListingEnrichment(value, { country = '' } = {}) {
   const quarter = matchTashkentHousingQuarter(text);
   const district = matchTashkentHousingDistrict(text)?.name || quarter?.district || null;
   const metro = matchTashkentHousingMetro(text)?.name || null;
-  const parsedRc = specificResidentialComplex(text) || parseHousingResidentialComplex(text);
+  const primaryResidentialText = withoutNearbyLocationReferences(text);
+  const parsedRc = specificResidentialComplex(primaryResidentialText)
+    || matchTashkentResidentialComplex(primaryResidentialText)?.name
+    || parseHousingResidentialComplex(primaryResidentialText);
   const commission = parseHousingCommission(text);
   const commissionAmount = parseHousingCommissionAmount(text);
   const address = parseHousingAddress(text);
