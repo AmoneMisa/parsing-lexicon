@@ -188,7 +188,7 @@ const rows = [
   ['chat_operator','customer_support',['chat operator','оператор чата','чат оператор']],
   ['customer_success_manager','customer_support',['customer success manager','csm','менеджер по успеху клиентов']],
   ['office_manager','administration',['office manager','офис менеджер','офіс менеджер']],
-  ['administrator','administration',['administrator','администратор','адміністратор','administrator']],
+  ['administrator','administration',['administrator','администратор','администратором','адміністратор','адміністратором']],
   ['receptionist','administration',['receptionist','ресепшионист','ресепшн','рецепционист']],
   ['executive_assistant','administration',['executive assistant','personal assistant','ассистент руководителя','личный помощник']],
   ['secretary','administration',['secretary','секретарь','секретар']],

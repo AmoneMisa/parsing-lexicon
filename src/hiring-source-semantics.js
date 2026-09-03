@@ -24,6 +24,10 @@ const FIELD_EXTRA_ALIASES = Object.freeze({
 const APPLICATION_MODAL_RE = /(?:отправить\s*резюме\s*)+(?:\[telegram\]\s*)?пол\s*мужской\s*женский\s*образование[\s\S]{0,500}?выберите\s*вакансию[\s\S]*/iu;
 const LEAKED_STYLESHEET_START_RE = /:root\s*\{\s*--[\w-]+\s*:/iu;
 const LEAKED_CSS_RULE_RE = /\s*(?:[.#][\w\\-]+|:root)(?:[^{}\n]{0,300})\{\s*(?:(?:--)?[\w-]+\s*:\s*[^;{}]+;?\s*)+\}\s*/giu;
+// Button/chrome labels copied along with a resume from Ukrainian job boards
+// (novarobota.ua, robota.ua, work.ua and similar). Matched as whole lines so
+// genuine resume prose is never touched.
+const JOB_BOARD_UI_NOISE_RE = /^(?:подробнее|детальніше|предпросмотр|попередній\s+перегляд|добавить\s+в\s+отклики\/?\s*избранное|додати\s+до\s+відгуків\/?\s*обраного|предложить\s+вакансию|запропонувати\s+вакансію|для\s+того\s+чтобы\s+предложить\s+вакансию\s+нужно\s+авторизоваться\s+как\s+работодатель|щоб\s+запропонувати\s+вакансію[^\n]*|пожаловаться\s+на\s+резюме|поскаржитися\s+на\s+резюме|отправить)$/iu;
 
 /** Remove source-page controls and stylesheet fragments copied into hiring text. */
 export function cleanHiringSourceText(value) {
@@ -32,7 +36,11 @@ export function cleanHiringSourceText(value) {
   return (stylesheetStart >= 0 ? text.slice(0, stylesheetStart) : text)
     .replace(APPLICATION_MODAL_RE, '')
     .replace(LEAKED_CSS_RULE_RE, ' ')
+    .split('\n')
+    .filter((line) => !JOB_BOARD_UI_NOISE_RE.test(line.trim()))
+    .join('\n')
     .replace(/[ \t]+(?=\n)/g, '')
+    .replace(/\n{3,}/g, '\n\n')
     .trim();
 }
 

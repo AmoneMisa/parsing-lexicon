@@ -31,6 +31,7 @@ const FEATURE_RULES = Object.freeze([
   ['partTime', /подработк|підробіт|part[-\s]?time|неполный\s+день|неповн(?:ий|а)\s+день|yarim\s+stavka/iu],
   ['nightShift', /ночн(?:ая|ую|ой)\s+смен|нічн(?:а|у|ої)\s+змін|night\s+shift|tungi\s+smena/iu],
   ['openToRelocation', /готов\p{L}*\s+к\s+переезду|готов\p{L}*\s+переехать|готов\p{L}*\s+до\s+переїзду|relocat(?:e|ion)|ko(?:'|’)chib\s+o(?:'|’)tish/iu],
+  ['withPets', /тварин\p{L}*|животн\p{L}*|жануар\p{L}*|\bwith\s+(?:animals|pets)\b|\banimals?\b|\bpets?\b|hayvon(?:lar)?(?:\s+bilan)?/iu],
 ]);
 
 const RELOCATION_NEGATIVE_RE = /не\s+готов\p{L}*\s+к\s+переезду|не\s+розгляда\p{L}*\s+переїзд|not\s+(?:open|ready)\s+to\s+relocat/iu;

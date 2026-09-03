@@ -1,6 +1,6 @@
 import type { DegreeLevel } from './hiring-requirements.js';
 
-export type CandidateFeatureCode = 'student' | 'parentalLeave' | 'noExperience' | 'partTime' | 'nightShift' | 'openToRelocation';
+export type CandidateFeatureCode = 'student' | 'parentalLeave' | 'noExperience' | 'partTime' | 'nightShift' | 'openToRelocation' | 'withPets';
 export type HiringScopeCode = 'architecture' | 'leadership' | 'mentoring' | 'scale' | 'ownership';
 
 export function isCandidateNonTargetContext(value: unknown): boolean;

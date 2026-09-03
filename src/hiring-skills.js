@@ -149,7 +149,7 @@ export const SKILL_CATALOG = [
   ...group('Marketing', 'Digital Marketing', [
     ['Digital Marketing'], ['Content Marketing'], ['Social Media Marketing', ['smm']], ['Email Marketing'],
     ['Google Ads', ['google adwords']], ['Meta Ads', ['facebook ads']], ['Google Analytics', ['ga4']],
-    ['Google Tag Manager', ['gtm']], ['Marketing Automation'], ['Copywriting', ['копирайтинг']],
+    ['Google Tag Manager'], ['Marketing Automation'], ['Copywriting', ['копирайтинг']],
     ['Market Research'], ['A/B Testing', ['ab testing']], ['Conversion Rate Optimization', ['cro']],
   ]),
   ...group('HR', 'Recruiting & People', [
