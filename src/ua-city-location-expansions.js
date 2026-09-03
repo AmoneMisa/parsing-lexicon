@@ -87,4 +87,10 @@ export const UA_CITY_LOCATION_EXPANSIONS = Object.freeze({
     ['Drohobych Saltworks', 'Дрогобицька солеварня', 'Дрогобицький солевиварювальний завод', 'Drohobych Salt Plant'],
     ['Drohobych Railway Station', 'станція Дрогобич', 'Stantsiia Drohobych'],
   ]),
+
+  Kolomyia: landmarks([
+    ['Pysanka Museum', 'Музей писанкового розпису', 'Музей писанки', 'Музей Писанка'],
+    ['National Museum of Hutsulshchyna and Pokuttia Folk Art', 'Національний музей народного мистецтва Гуцульщини та Покуття імені Й. Кобринського', 'Музей Гуцульщини та Покуття'],
+    ['Kolomyia Railway Station', 'Залізнична станція Коломия', 'залізничний вокзал Коломия'],
+  ]),
 });
