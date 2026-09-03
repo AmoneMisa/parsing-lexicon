@@ -1,3 +1,5 @@
+import { cleanHiringSourceText } from './hiring-source-semantics.js'
+
 // These canonical labels are ordinary words or one-letter tokens. Matching the
 // label itself would create noisy results; only their explicit aliases are safe.
 const AMBIGUOUS_CANONICALS = new Set(['C', 'Go', 'Make', 'REST', 'Spring'])
@@ -283,7 +285,7 @@ export function canonicalSkillName(value) {
 }
 
 export function extractSkillDetails(text) {
-  const normalized = normalizeSkillText(text)
+  const normalized = normalizeSkillText(cleanHiringSourceText(text))
   const found = []
   const names = new Set()
   for (const { definition, patterns } of COMPILED_SKILLS) {

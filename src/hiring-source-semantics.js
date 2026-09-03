@@ -24,6 +24,10 @@ const FIELD_EXTRA_ALIASES = Object.freeze({
 const APPLICATION_MODAL_RE = /(?:отправить\s*резюме\s*)+(?:\[telegram\]\s*)?пол\s*мужской\s*женский\s*образование[\s\S]{0,500}?выберите\s*вакансию[\s\S]*/iu;
 const LEAKED_STYLESHEET_START_RE = /:root\s*\{\s*--[\w-]+\s*:/iu;
 const LEAKED_CSS_RULE_RE = /\s*(?:[.#][\w\\-]+|:root)(?:[^{}\n]{0,300})\{\s*(?:(?:--)?[\w-]+\s*:\s*[^;{}]+;?\s*)+\}\s*/giu;
+// A leaked upload-input fragment (e.g. `_Resume.html'" value="Добавить резюме" />`)
+// scraped from a job-board form. Its stray ".html" would otherwise be
+// misread as the HTML skill/language.
+const LEAKED_HTML_INPUT_RE = /[^\n<>]{0,120}?\bvalue\s*=\s*"[^"\n]*"\s*\/>\s*/giu;
 // Button/chrome labels copied along with a resume from Ukrainian job boards
 // (novarobota.ua, robota.ua, work.ua and similar). Matched as whole lines so
 // genuine resume prose is never touched.
@@ -35,6 +39,7 @@ export function cleanHiringSourceText(value) {
   const stylesheetStart = text.search(LEAKED_STYLESHEET_START_RE);
   return (stylesheetStart >= 0 ? text.slice(0, stylesheetStart) : text)
     .replace(APPLICATION_MODAL_RE, '')
+    .replace(LEAKED_HTML_INPUT_RE, '')
     .replace(LEAKED_CSS_RULE_RE, ' ')
     .split('\n')
     .filter((line) => !JOB_BOARD_UI_NOISE_RE.test(line.trim()))
