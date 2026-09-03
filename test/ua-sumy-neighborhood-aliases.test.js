@@ -13,4 +13,17 @@ test('verified Sumy listing-facing neighborhoods resolve to existing geo canonic
   assert.equal(match('район Веретенівки'), 'Veretenivka');
   assert.equal(match('житловий масив Веретенівка'), 'Veretenivka');
   assert.equal(match('Веретеновка'), 'Veretenivka');
+
+  assert.equal(match('Лука'), 'Luka');
+  assert.equal(match('район Лука'), 'Luka');
+
+  assert.equal(match('Роменський'), 'Romenskyi');
+  assert.equal(match('Роменский'), 'Romenskyi');
+  assert.equal(match('мікрорайон Роменський'), 'Romenskyi');
+  assert.equal(match('микрорайон Роменский'), 'Romenskyi');
+
+  assert.equal(match('Добровольна'), 'Dobrovilna');
+  assert.equal(match('Добровольная'), 'Dobrovilna');
+  assert.equal(match('район Добровольна'), 'Dobrovilna');
+  assert.equal(match('район Добровольная'), 'Dobrovilna');
 });
