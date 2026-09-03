@@ -11,6 +11,7 @@ test('Nizhyn dictionary contains geo-aligned landmark canonicals', () => {
   assert.ok(names.has('Nizhyn Railway Station'));
   assert.ok(names.has('Ніжинський краєзнавчий музей імені Івана Спаського'));
   assert.ok(names.has('Ніжинська поштова станція'));
+  assert.ok(names.has('Ніжинський державний університет імені Миколи Гоголя'));
 });
 
 test('Nizhyn landmark aliases resolve to expected canonicals', () => {
@@ -18,6 +19,8 @@ test('Nizhyn landmark aliases resolve to expected canonicals', () => {
     ['Залізничний вокзал Ніжина', 'Nizhyn Railway Station'],
     ['Ніжинський краєзнавчий музей ім. І. Спаського', 'Ніжинський краєзнавчий музей імені Івана Спаського'],
     ['Музей «Ніжинська поштова станція»', 'Ніжинська поштова станція'],
+    ['НДУ ім. М. Гоголя', 'Ніжинський державний університет імені Миколи Гоголя'],
+    ['Nizhyn Mykola Gogol State University', 'Ніжинський державний університет імені Миколи Гоголя'],
   ];
 
   for (const [text, name] of cases) {
