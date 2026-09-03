@@ -1,6 +1,6 @@
 {
   "name": "@whiteslove/parsing-lexicon",
-  "version": "0.6.8",
+  "version": "0.6.9",
   "description": "Shared deterministic multilingual parsing lexicon for WhitesLove housing and hiring services",
   "repository": {
     "type": "git",
@@ -37,9 +37,18 @@
     },
     "./central-asia": "./src/central-asia.js",
     "./ukraine": "./src/ukraine.js",
-    "./ua-geo-coordinates": { "types": "./src/ua-geo-coordinates.d.ts", "import": "./src/ua-geo-coordinates.js" },
-    "./ua-geo-resolver": { "types": "./src/ua-geo-resolver.d.ts", "import": "./src/ua-geo-resolver.js" },
-    "./uz-geo-coordinates": { "types": "./src/uz-geo-coordinates.d.ts", "import": "./src/uz-geo-coordinates.js" },
+    "./ua-geo-coordinates": {
+      "types": "./src/ua-geo-coordinates.d.ts",
+      "import": "./src/ua-geo-coordinates.js"
+    },
+    "./ua-geo-resolver": {
+      "types": "./src/ua-geo-resolver.d.ts",
+      "import": "./src/ua-geo-resolver.js"
+    },
+    "./uz-geo-coordinates": {
+      "types": "./src/uz-geo-coordinates.d.ts",
+      "import": "./src/uz-geo-coordinates.js"
+    },
     "./location-merge": "./src/location-merge.js",
     "./locations": "./src/locations-runtime.js",
     "./kg-location-extensions": "./src/kg-location-extensions.js",
