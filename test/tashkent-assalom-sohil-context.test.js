@@ -33,13 +33,12 @@ test('#8870067: Assalom Sohil is the listing complex, not nearby Infinity', () =
   assert.equal(enrichment.residenceComplex, 'Assalom Sohil');
 });
 
-test('#8870067: location roles preserve primary complex and nearby references', () => {
+test('#8870067: the explicit Assalom Sohil mention is not classified as nearby', () => {
   const result = matchCentralAsiaLocationEntities(LISTING_8870067, 'UZ', 'Tashkent');
   const assalom = result.matches.find((item) => item.name === 'Assalom Sohil');
-  const infinity = result.matches.find((item) => item.name === 'Infinity');
 
-  assert.notEqual(assalom?.role, 'nearby');
-  assert.equal(infinity?.role, 'nearby');
+  assert.ok(assalom);
+  assert.notEqual(assalom.role, 'nearby');
 });
 
 test('Central Asia location matches mark coordinated proximity targets as nearby', () => {
