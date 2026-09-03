@@ -2,6 +2,7 @@ import { locationEntries } from './location-merge.js';
 
 const districts = (rows) => Object.freeze({ districts: locationEntries(rows) });
 const microdistricts = (rows) => Object.freeze({ microdistricts: locationEntries(rows) });
+const landmarks = (rows) => Object.freeze({ landmarks: locationEntries(rows) });
 
 // Listing-facing aliases that enrich the major Ukraine dictionaries without
 // changing their established parser canonicals. Keep physical coordinates and
@@ -117,5 +118,47 @@ export const UA_CITY_LOCATION_EXPANSIONS = Object.freeze({
     ['Pushcha-Vodytsia', 'Pushcha Vodytsia', 'Pushcha-Voditsa'],
     ['Vynohradar', 'Vinogradar'],
     ['Nyvky', 'Nivki'],
+  ]),
+
+  'Kamianets-Podilskyi': landmarks([
+    ['Old Castle', 'Кам’янець-Подільський замок', "Кам'янець-Подільський замок", 'Старий замок', 'Kamianets-Podilskyi Castle'],
+    ['Polskyi Rynok Square', 'площа Польський Ринок', 'Польський Ринок', 'Polski Rynok', 'Polish Market Square'],
+    ['Armenian Market Square', 'площа Вірменський Ринок', 'Вірменський Ринок', 'Armenian Market'],
+    ['Kamianets-Podilskyi Railway Station', 'залізничний вокзал Кам’янець-Подільський', "залізничний вокзал Кам'янець-Подільський", 'вокзал Кам’янець-Подільський', "вокзал Кам'янець-Подільський"],
+  ]),
+
+  Drohobych: landmarks([
+    ["St. George's Church", 'Церква Святого Юра', 'церква Святого Юра', 'Храм Святого Юра', "St George's Church", "Saint George's Church"],
+    ['Drohobych Saltworks', 'Дрогобицька солеварня', 'Дрогобицький солевиварювальний завод', 'Drohobych Salt Plant'],
+    ['Drohobych Railway Station', 'станція Дрогобич', 'Stantsiia Drohobych'],
+  ]),
+
+  Kolomyia: landmarks([
+    ['Pysanka Museum', 'Музей писанкового розпису', 'Музей писанки', 'Музей Писанка'],
+    ['National Museum of Hutsulshchyna and Pokuttia Folk Art', 'Національний музей народного мистецтва Гуцульщини та Покуття імені Й. Кобринського', 'Музей Гуцульщини та Покуття'],
+    ['Kolomyia Railway Station', 'Залізнична станція Коломия', 'залізничний вокзал Коломия'],
+  ]),
+
+  Kovel: landmarks([
+    ['Kovel Railway Station', 'Вокзал станції Ковель', 'Залізничний вокзал Ковель', 'вокзал Ковель'],
+    ['Lesya Ukrainka Park', 'парк імені Лесі Українки', 'парк Лесі Українки'],
+  ]),
+
+  Novovolynsk: landmarks([
+    ['Нововолинський історичний музей', 'Нововолинський міський історичний музей', 'Novovolynsk Historical Museum'],
+  ]),
+
+  Nizhyn: landmarks([
+    ['Nizhyn Railway Station', 'Залізничний вокзал Ніжина', 'станція Ніжин'],
+    ['Ніжинський краєзнавчий музей імені Івана Спаського', 'Ніжинський краєзнавчий музей ім. І. Спаського', 'Ніжинський краєзнавчий музей ім. Спаського І.Г.'],
+    ['Ніжинська поштова станція', 'Музей «Ніжинська поштова станція»', 'Ніжинський музей "Поштова станція"'],
+  ]),
+
+  Volodymyr: landmarks([
+    ['Володимирський історичний музей імені Омеляна Дверницького', 'Володимир-Волинський історичний музей'],
+    ['Volodymyr dytynets', 'Володимирський дитинець'],
+    ['Костел святих Йоакима та Анни', 'Костел Йоакима і Анни', 'Парафіяльний костел святих Йоакима та Анни'],
+    ['Свято-Успенський кафедральний собор', 'Свято-Успенський собор', 'Успенський собор'],
+    ['Свято-Василівська церква-ротонда', 'Василівська церква-ротонда', 'Василівська ротонда', 'церква Святого Василя'],
   ]),
 });
