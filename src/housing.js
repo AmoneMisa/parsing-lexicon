@@ -43,7 +43,7 @@ export const ADDRESS_TERMS = Object.freeze({
   }),
   landmark: group('landmark', {
     ru: ['ориентир', 'рядом с', 'возле', 'напротив'], en: ['landmark', 'near', 'next to', 'opposite'], uk: ['орієнтир', 'поруч', 'біля', 'навпроти'], ro: ['reper', 'lângă', 'langa', 'în apropiere', 'in apropiere', 'vizavi'],
-    uzLatn: ['mo‘ljal', "mo'ljal", 'yaqinida', 'yonida', 'ro‘parasida'], uzCyrl: ['мўлжал', 'яқинида', 'ёнида', 'рўпарасида'], kk: ['бағдар', 'жанында', 'маңында', 'қарсысында'],
+    uzLatn: ['mo‘ljal', "mo'ljal", 'yaqinida', 'yonida', 'ro‘parasida'], uzCyrl: ['мўлжал', 'мулжал', 'яқинида', 'ёнида', 'рўпарасида'], kk: ['бағдар', 'жанында', 'маңында', 'қарсысында'],
   }),
 });
 
