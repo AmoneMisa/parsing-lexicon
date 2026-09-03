@@ -41,7 +41,7 @@ export const HOUSING_LANDMARK_EXTENSIONS = Object.freeze([
     ru: ['рынки', 'базары'],
     en: ['markets', 'bazaars'],
     uzLatn: ['bozorlar'],
-    uzCyrl: ['бозорлар', 'базары'],
+    uzCyrl: ['бозорлар'],
   }, { category: 'market' }),
   group('Cafe', {
     ru: ['кафе и рестораны'],
