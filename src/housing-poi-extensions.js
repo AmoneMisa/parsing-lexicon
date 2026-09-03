@@ -137,6 +137,10 @@ export const HOUSING_POI_EXTENSIONS = Object.freeze([
   }, { category: 'park', display: { ru: 'Парк Kitoblar Dunyosi', en: 'Kitoblar Dunyosi Park' } }),
   group('Interpol', { ru: ['Интерпол'], en: ['Interpol'], uzLatn: ['Interpol'] }, { category: 'landmark', display: { ru: 'Интерпол', en: 'Interpol' } }),
   group('Jemchug', { ru: ['Жемчуг'], en: ['Jemchug'], uzLatn: ['jemchug'] }, { category: 'landmark', display: { ru: 'Жемчуг', en: 'Jemchug' } }),
+  group('Eurobazar', {
+    uk: ['Євробазар', 'ТЦ Євробазар'],
+    en: ['Eurobazar'],
+  }, { category: 'shopping_mall', country: 'UA', city: 'Sumy', display: { uk: 'ТЦ «Євробазар»', en: 'Eurobazar' } }),
   group('Sumy Railway Station', {
     uk: ['Суми (станція)', 'залізничний вокзал Суми', 'вокзал станції Суми'],
     en: ['Sumy railway station'],
