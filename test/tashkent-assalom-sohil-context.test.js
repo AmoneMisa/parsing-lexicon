@@ -33,13 +33,16 @@ test('#8870067: Assalom Sohil is the listing complex, not nearby Infinity', () =
   assert.equal(enrichment.residenceComplex, 'Assalom Sohil');
 });
 
-test('#8870067: Assalom Sohil is primary evidence and ЖК Инфинити is a nearby reference', () => {
+test('#8870067: Assalom Sohil is primary evidence while Ц1 and ЖК Инфинити stay nearby', () => {
   const result = matchCentralAsiaLocationEntities(LISTING_8870067, 'UZ', 'Tashkent');
   const assalom = result.matches.find((item) => item.name === 'Assalom Sohil');
+  const c1 = result.matches.find((item) => item.name === 'Buyuk Ipak Yuli');
   const infinity = result.matches.find((item) => item.name === 'Infinity');
 
   assert.ok(assalom);
   assert.notEqual(assalom.role, 'nearby');
+  assert.ok(c1);
+  assert.equal(c1.role, 'nearby');
   assert.ok(infinity);
   assert.equal(infinity.role, 'nearby');
 });
