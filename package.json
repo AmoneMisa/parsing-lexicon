@@ -189,7 +189,10 @@
       "types": "./src/hiring-profession-display.d.ts",
       "import": "./src/hiring-profession-display.js"
     },
-    "./hiring-skills": "./src/hiring-skills.js",
+    "./hiring-skills": {
+      "types": "./src/hiring-skills.d.ts",
+      "import": "./src/hiring-skills.js"
+    },
     "./hiring-advanced": "./src/hiring-advanced.js",
     "./hiring-safety": {
       "types": "./src/hiring-safety.d.ts",
