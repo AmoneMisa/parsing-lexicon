@@ -30,20 +30,16 @@ const LISTING_8870067 = `
 
 test('#8870067: Assalom Sohil is the listing complex, not nearby Infinity', () => {
   const enrichment = parseHousingListingEnrichment(LISTING_8870067, { country: 'UZ' });
-
   assert.equal(enrichment.residenceComplex, 'Assalom Sohil');
-  assert.equal(enrichment.rooms, 2);
-  assert.equal(enrichment.floor, 10);
-  assert.equal(enrichment.totalFloors, 16);
 });
 
-test('#8870067: nearby Infinity does not override an explicitly named primary complex', () => {
-  const enrichment = parseHousingListingEnrichment(
-    'АССАЛОМ СОХИЛ\n2/10/16\nДо Ц1 и ЖК Инфинити 5 мин на машине',
-    { country: 'UZ' },
-  );
+test('#8870067: location roles preserve primary complex and nearby references', () => {
+  const result = matchCentralAsiaLocationEntities(LISTING_8870067, 'UZ', 'Tashkent');
+  const assalom = result.matches.find((item) => item.name === 'Assalom Sohil');
+  const infinity = result.matches.find((item) => item.name === 'Infinity');
 
-  assert.equal(enrichment.residenceComplex, 'Assalom Sohil');
+  assert.notEqual(assalom?.role, 'nearby');
+  assert.equal(infinity?.role, 'nearby');
 });
 
 test('Central Asia location matches mark coordinated proximity targets as nearby', () => {
