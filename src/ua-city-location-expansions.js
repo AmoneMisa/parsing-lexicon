@@ -93,4 +93,9 @@ export const UA_CITY_LOCATION_EXPANSIONS = Object.freeze({
     ['National Museum of Hutsulshchyna and Pokuttia Folk Art', 'Національний музей народного мистецтва Гуцульщини та Покуття імені Й. Кобринського', 'Музей Гуцульщини та Покуття'],
     ['Kolomyia Railway Station', 'Залізнична станція Коломия', 'залізничний вокзал Коломия'],
   ]),
+
+  Kovel: landmarks([
+    ['Kovel Railway Station', 'Вокзал станції Ковель', 'Залізничний вокзал Ковель', 'вокзал Ковель'],
+    ['Lesya Ukrainka Park', 'парк імені Лесі Українки', 'парк Лесі Українки'],
+  ]),
 });
