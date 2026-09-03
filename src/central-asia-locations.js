@@ -139,6 +139,42 @@ function semanticBounds(value, match) {
   return { start, end };
 }
 
+const RESIDENTIAL_MARKER_TEXT = String.raw`(?:ж\.?\s*к\.?|жил(?:ой|ого)?\s+комплекс\p{L}*|residential\s+complex|turar\s+joy\s+majmuasi|tjm)`;
+const residentialMarkedAliasCache = new WeakMap();
+
+function stripResidentialMarker(value) {
+  return String(value || '')
+    .replace(new RegExp(`^\\s*${RESIDENTIAL_MARKER_TEXT}\\s*[:\\-–—]?\\s*`, 'iu'), '')
+    .replace(new RegExp(`\\s*${RESIDENTIAL_MARKER_TEXT}\\s*$`, 'iu'), '')
+    .trim();
+}
+
+function residentialMarkedAliasRegex(item) {
+  if (residentialMarkedAliasCache.has(item)) return residentialMarkedAliasCache.get(item);
+  const aliases = [...new Set([item?.name, ...(item?.aliases || [])]
+    .map(stripResidentialMarker)
+    .filter(Boolean))];
+  const re = aliases.length ? aliasesToRegex(aliases) : null;
+  residentialMarkedAliasCache.set(item, re);
+  return re;
+}
+
+function markedResidentialMatch(value, item) {
+  const aliasRe = residentialMarkedAliasRegex(item);
+  if (!aliasRe) return null;
+  const markerRe = new RegExp(`(?:^|[^\\p{L}\\p{N}_])${RESIDENTIAL_MARKER_TEXT}\\s*[:\\-–—]?\\s*`, 'giu');
+  for (const marker of value.matchAll(markerRe)) {
+    const tailStart = (marker.index ?? 0) + marker[0].length;
+    const tail = value.slice(tailStart, Math.min(value.length, tailStart + 96));
+    const aliasMatch = tail.match(aliasRe);
+    if (!aliasMatch) continue;
+    const offset = aliasMatch.index ?? 0;
+    if (offset > 0 && /\S/u.test(tail.slice(0, offset))) continue;
+    return { 0: aliasMatch[0], index: tailStart + offset };
+  }
+  return null;
+}
+
 const LOCATION_CLAUSE_BOUNDARY_RE = /[\n\r.!?;|]/u;
 const PRIMARY_LOCATION_PREFIX_RE = /(?:(?:^|[^\p{L}\p{N}_])(?:адрес|локаци(?:я|и)|расположени(?:е|я)|находится)\s*[:\-–—]?\s*|(?:^|[^\p{L}\p{N}_])(?:в|на)\s+(?:(?:ж\.?\s*к\.?|жил(?:ом|ой)\s+комплекс\p{L}*|микрорайон\p{L}*|мкр\.?|массив\p{L}*|махалл\p{L}*|mahalla|massiv|district|район\p{L}*|metro|метро)\s*)?)$/iu;
 const NEARBY_LOCATION_PREFIX_RE = /(?:^|[^\p{L}\p{N}_])(?:до|около|возле|рядом(?:\s+(?:с|со))?|недалеко\s+от|неподал[её]ку\s+от|вблизи|напротив|ориентир(?:ом)?|near|nearby|close\s+to|next\s+to|opposite|landmark|yaqin(?:ida)?|yonida|mo['’ʻ]?ljal|яқин(?:ида)?|ёнида|мўлжал|жақын|жанында|маңында)(?=$|[^\p{L}\p{N}_])[\s\S]{0,96}$/iu;
@@ -184,7 +220,8 @@ function findEntryMatches(text, cityName, data) {
   const raw = [];
   for (const key of LOCATION_LIST_KEYS) {
     for (const item of data?.[key] || []) {
-      const match = value.match(item?.re);
+      const match = value.match(item?.re)
+        || (key === 'residentialComplexes' ? markedResidentialMatch(value, item) : null);
       if (!match) continue;
       const { start, end } = semanticBounds(value, match);
       const candidate = {
