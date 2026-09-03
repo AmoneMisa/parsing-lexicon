@@ -122,7 +122,7 @@ export function parseHousingFloor(value) {
   // Prefer the common "7 этаж" form before trying "этаж 7". Otherwise the
   // marker-first parser can consume the next unrelated number (for example
   // "7 этаж 44м²") and report floor 44.
-  const beforeMarker = text.match(/(?:^|[^\d])(\d{1,3})\s*-?\s*(?:(?:chi|чи)\s*)?(?:этаж(?:да)?|поверх|floor|etaj|qavat(?:i(?:da(?:gi)?)?|da)?|қабат(?:ы(?:нда(?:ғы)?)?|та)?|кават(?:и(?:да(?:ги)?)?|да)?|қават(?:и(?:да(?:gi)?)?|да)?)(?=$|[^\p{L}\p{N}_])/iu);
+  const beforeMarker = text.match(/(?:^|[^\d])(\d{1,3})\s*-?\s*(?:(?:chi|чи)\s*)?(?:этаж(?:да)?|поверх|floor|etaj|qavat(?:i(?:da(?:gi)?)?|da)?|қабат(?:ы(?:нда(?:ғы)?)?|та)?|кават(?:и(?:да(?:ги)?)?|да)?|қават(?:и(?:да(?:ги)?)?|да)?)(?=$|[^\p{L}\p{N}_])/iu);
   let floor = toNumber(beforeMarker?.[1]);
   let totalFloors = null;
 
