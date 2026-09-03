@@ -139,6 +139,41 @@ function semanticBounds(value, match) {
   return { start, end };
 }
 
+const LOCATION_CLAUSE_BOUNDARY_RE = /[\n\r.!?;|]/u;
+const PRIMARY_LOCATION_PREFIX_RE = /(?:\b(?:адрес|локаци(?:я|и)|расположени(?:е|я)|находится)\s*[:\-–—]?\s*|\b(?:в|на)\s+(?:(?:ж\.?\s*к\.?|жил(?:ом|ой)\s+комплекс\p{L}*|микрорайон\p{L}*|мкр\.?|массив\p{L}*|махалл\p{L}*|mahalla|massiv|district|район\p{L}*|metro|метро)\s*)?)$/iu;
+const NEARBY_LOCATION_PREFIX_RE = /(?:^|[\s,:—–-])(?:до|около|возле|рядом(?:\s+(?:с|со))?|недалеко\s+от|неподал[её]ку\s+от|вблизи|напротив|ориентир(?:ом)?|near|nearby|close\s+to|next\s+to|opposite|landmark|yaqin(?:ida)?|yonida|mo['’ʻ]?ljal|яқин(?:ида)?|ёнида|мўлжал|жақын|жанында|маңында|ориентир)\b[\s\S]{0,96}$/iu;
+const DISTANCE_LOCATION_PREFIX_RE = /(?:\d+(?:[.,]\d+)?\s*(?:мин(?:ут\p{L}*)?|min(?:ute)?s?|daqiqa|м|m|метр\p{L}*|км|km)\s*(?:от|до|from|to)\s+)[\s\S]{0,80}$/iu;
+const NEARBY_LOCATION_SUFFIX_RE = /^\s*(?:[-—–:]\s*)?(?:(?:\d+(?:[.,]\d+)?\s*(?:мин(?:ут\p{L}*)?|min(?:ute)?s?|daqiqa|м|m|метр\p{L}*|км|km))|(?:рядом|поблизости|nearby|yaqin(?:ida)?|яқин(?:ида)?|жақын))(?:\b|\s|$)/iu;
+
+function clauseStart(value, start) {
+  for (let index = start - 1; index >= 0; index -= 1) {
+    if (LOCATION_CLAUSE_BOUNDARY_RE.test(value[index])) return index + 1;
+  }
+  return 0;
+}
+
+function clauseEnd(value, end) {
+  for (let index = end; index < value.length; index += 1) {
+    if (LOCATION_CLAUSE_BOUNDARY_RE.test(value[index])) return index;
+  }
+  return value.length;
+}
+
+function locationMentionRole(value, candidate) {
+  const start = clauseStart(value, candidate.start);
+  const end = clauseEnd(value, candidate.end);
+  const before = value.slice(start, candidate.start);
+  const after = value.slice(candidate.end, end);
+
+  // A direct subject marker later in the same clause wins over an unrelated
+  // earlier temporal "до": "до пятницы квартира в ЖК X" is still ЖК X itself.
+  if (PRIMARY_LOCATION_PREFIX_RE.test(before)) return 'primary';
+  if (NEARBY_LOCATION_PREFIX_RE.test(before) || DISTANCE_LOCATION_PREFIX_RE.test(before) || NEARBY_LOCATION_SUFFIX_RE.test(after)) {
+    return 'nearby';
+  }
+  return 'mentioned';
+}
+
 function publicMatch(candidate) {
   const { start, end, matchedText, explicitContext, ...result } = candidate;
   return Object.freeze(result);
@@ -167,8 +202,10 @@ function findEntryMatches(text, cityName, data) {
         end,
         matchedText: value.slice(start, end),
         explicitContext: false,
+        role: 'mentioned',
       };
       candidate.explicitContext = hasExplicitContext(value, candidate);
+      candidate.role = locationMentionRole(value, candidate);
       raw.push(candidate);
     }
   }
