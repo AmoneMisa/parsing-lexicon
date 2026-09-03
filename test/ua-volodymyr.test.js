@@ -12,6 +12,7 @@ test('Volodymyr dictionary contains geo-aligned landmark canonicals', () => {
   assert.ok(names.has('Volodymyr dytynets'));
   assert.ok(names.has('Костел святих Йоакима та Анни'));
   assert.ok(names.has('Свято-Успенський кафедральний собор'));
+  assert.ok(names.has('Свято-Василівська церква-ротонда'));
 });
 
 test('Volodymyr landmark aliases resolve to expected canonicals', () => {
@@ -22,6 +23,9 @@ test('Volodymyr landmark aliases resolve to expected canonicals', () => {
     ['Парафіяльний костел святих Йоакима та Анни', 'Костел святих Йоакима та Анни'],
     ['Свято-Успенський собор', 'Свято-Успенський кафедральний собор'],
     ['Успенський собор', 'Свято-Успенський кафедральний собор'],
+    ['Василівська церква-ротонда', 'Свято-Василівська церква-ротонда'],
+    ['Василівська ротонда', 'Свято-Василівська церква-ротонда'],
+    ['церква Святого Василя', 'Свято-Василівська церква-ротонда'],
   ];
 
   for (const [text, name] of cases) {
