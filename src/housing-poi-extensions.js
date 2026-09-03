@@ -148,6 +148,10 @@ export const HOUSING_POI_EXTENSIONS = Object.freeze([
     uk: ['Суми (станція)', 'залізничний вокзал Суми', 'вокзал станції Суми'],
     en: ['Sumy railway station'],
   }, { category: 'transport', country: 'UA', city: 'Sumy', display: { uk: 'Залізничний вокзал Суми', en: 'Sumy Railway Station' } }),
+  group('Sumy Airport', {
+    uk: ['Аеропорт Суми', 'аеропорт «Суми»', 'Сумський аеропорт'],
+    en: ['Sumy Airport'],
+  }, { category: 'airport', country: 'UA', city: 'Sumy', display: { uk: 'Аеропорт «Суми»', en: 'Sumy Airport' } }),
   group('Sumy State University', {
     uk: ['Сумський державний університет', 'СумДУ'],
     en: ['SumDU'],
