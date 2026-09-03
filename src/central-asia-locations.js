@@ -140,10 +140,10 @@ function semanticBounds(value, match) {
 }
 
 const LOCATION_CLAUSE_BOUNDARY_RE = /[\n\r.!?;|]/u;
-const PRIMARY_LOCATION_PREFIX_RE = /(?:\b(?:адрес|локаци(?:я|и)|расположени(?:е|я)|находится)\s*[:\-–—]?\s*|\b(?:в|на)\s+(?:(?:ж\.?\s*к\.?|жил(?:ом|ой)\s+комплекс\p{L}*|микрорайон\p{L}*|мкр\.?|массив\p{L}*|махалл\p{L}*|mahalla|massiv|district|район\p{L}*|metro|метро)\s*)?)$/iu;
-const NEARBY_LOCATION_PREFIX_RE = /(?:^|[\s,:—–-])(?:до|около|возле|рядом(?:\s+(?:с|со))?|недалеко\s+от|неподал[её]ку\s+от|вблизи|напротив|ориентир(?:ом)?|near|nearby|close\s+to|next\s+to|opposite|landmark|yaqin(?:ida)?|yonida|mo['’ʻ]?ljal|яқин(?:ида)?|ёнида|мўлжал|жақын|жанында|маңында|ориентир)\b[\s\S]{0,96}$/iu;
+const PRIMARY_LOCATION_PREFIX_RE = /(?:(?:^|[^\p{L}\p{N}_])(?:адрес|локаци(?:я|и)|расположени(?:е|я)|находится)\s*[:\-–—]?\s*|(?:^|[^\p{L}\p{N}_])(?:в|на)\s+(?:(?:ж\.?\s*к\.?|жил(?:ом|ой)\s+комплекс\p{L}*|микрорайон\p{L}*|мкр\.?|массив\p{L}*|махалл\p{L}*|mahalla|massiv|district|район\p{L}*|metro|метро)\s*)?)$/iu;
+const NEARBY_LOCATION_PREFIX_RE = /(?:^|[^\p{L}\p{N}_])(?:до|около|возле|рядом(?:\s+(?:с|со))?|недалеко\s+от|неподал[её]ку\s+от|вблизи|напротив|ориентир(?:ом)?|near|nearby|close\s+to|next\s+to|opposite|landmark|yaqin(?:ida)?|yonida|mo['’ʻ]?ljal|яқин(?:ида)?|ёнида|мўлжал|жақын|жанында|маңында)(?=$|[^\p{L}\p{N}_])[\s\S]{0,96}$/iu;
 const DISTANCE_LOCATION_PREFIX_RE = /(?:\d+(?:[.,]\d+)?\s*(?:мин(?:ут\p{L}*)?|min(?:ute)?s?|daqiqa|м|m|метр\p{L}*|км|km)\s*(?:от|до|from|to)\s+)[\s\S]{0,80}$/iu;
-const NEARBY_LOCATION_SUFFIX_RE = /^\s*(?:[-—–:]\s*)?(?:(?:\d+(?:[.,]\d+)?\s*(?:мин(?:ут\p{L}*)?|min(?:ute)?s?|daqiqa|м|m|метр\p{L}*|км|km))|(?:рядом|поблизости|nearby|yaqin(?:ida)?|яқин(?:ида)?|жақын))(?:\b|\s|$)/iu;
+const NEARBY_LOCATION_SUFFIX_RE = /^\s*(?:[-—–:]\s*)?(?:(?:\d+(?:[.,]\d+)?\s*(?:мин(?:ут\p{L}*)?|min(?:ute)?s?|daqiqa|м|m|метр\p{L}*|км|km))|(?:рядом|поблизости|nearby|yaqin(?:ida)?|яқин(?:ида)?|жақын))(?=$|[^\p{L}\p{N}_])/iu;
 
 function clauseStart(value, start) {
   for (let index = start - 1; index >= 0; index -= 1) {
