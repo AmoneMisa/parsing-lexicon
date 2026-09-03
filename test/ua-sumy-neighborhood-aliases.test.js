@@ -26,4 +26,15 @@ test('verified Sumy listing-facing neighborhoods resolve to existing geo canonic
   assert.equal(match('Добровольная'), 'Dobrovilna');
   assert.equal(match('район Добровольна'), 'Dobrovilna');
   assert.equal(match('район Добровольная'), 'Dobrovilna');
+
+  assert.equal(match('Хіммістечко'), 'Khimhorodok');
+  assert.equal(match('Курський'), 'Kurskyi');
+  assert.equal(match('9-й мікрорайон'), '9 microdistrict');
+  assert.equal(match('10-й мікрорайон'), '10 microdistrict');
+  assert.equal(match('11-й мікрорайон'), '11 microdistrict');
+  assert.equal(match('12-й мікрорайон'), '12 microdistrict');
+
+  assert.equal(match('Тепличний'), 'Teplychnyi');
+  assert.equal(match('мікрорайон Тепличний'), 'Teplychnyi');
+  assert.equal(match('м/н Тепличний'), 'Teplychnyi');
 });
