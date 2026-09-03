@@ -27,6 +27,11 @@ const NUMBER_WORDS = Object.freeze([
   [/(?<![\p{L}\p{N}_])(?:десятикомнатн\p{L}*|o['’]?n\s+xona(?:li)?|on\s+xona(?:li)?|ўн\s+хона(?:ли|лик)?|он\s+хона(?:ли|лик)?|10\s*(?:-\s*)?к(?:омн\p{L}*)?|10\s*(?:-\s*)?xona(?:li)?|10\s*(?:-\s*)?хона(?:лик|ли)?|ten[- ]bedroom|ten[- ]room)(?![\p{L}\p{N}_])/iu, 10],
 ]);
 
+// Common classifieds shorthand: rooms/floor/total floors, optionally followed
+// by the area ("2/10/16", "1/5/12-50m"). Requiring the shorthand to start its
+// own line avoids reading dates in ordinary prose as housing data.
+const COMPACT_SPEC_RE = /(?:^|[\r\n])[^\S\r\n]*(\d{1,2})[^\S\r\n]*[/\\][^\S\r\n]*(\d{1,3})[^\S\r\n]*[/\\][^\S\r\n]*(\d{1,3})(?:[^\S\r\n]*[-–—][^\S\r\n]*(\d{1,4}(?:[.,]\d{1,2})?)[^\S\r\n]*(?:м²|м2|m²|m2|кв\.?[^\S\r\n]*м|sqm|м|m)?)?(?=$|\s)/u;
+
 const FIRST_FLOOR_WORD_RE = /(?<![\p{L}\p{N}_])(?:перш(?:ий\s+поверх|ому\s+поверс(?:і|у))|(?:на\s+)?першому\s+поверсі|перв(?:ый\s+этаж|ом\s+этаже)|(?:на\s+)?первом\s+этаже)(?![\p{L}\p{N}_])/iu;
 
 function toNumber(value) {
@@ -34,6 +39,27 @@ function toNumber(value) {
   const normalized = String(value).replace(/\s+/g, '').replace(',', '.');
   const number = Number(normalized);
   return Number.isFinite(number) ? number : null;
+}
+
+// Reads the rooms/floor/total floors[-area] shorthand into its parts. All the
+// range checks live here so the floor, room and area parsers share a single
+// interpretation of the shorthand instead of each re-reading its numbers.
+function parseCompactSpec(text) {
+  const match = text.match(COMPACT_SPEC_RE);
+  if (!match) return null;
+  const rooms = toNumber(match[1]);
+  const floor = toNumber(match[2]);
+  const totalFloors = toNumber(match[3]);
+  const areaSqm = toNumber(match[4]);
+  if (rooms == null || rooms < 1 || rooms > 20) return null;
+  if (floor == null || totalFloors == null) return null;
+  if (floor < 1 || floor > totalFloors || totalFloors > 200) return null;
+  return {
+    rooms,
+    floor,
+    totalFloors,
+    areaSqm: areaSqm != null && areaSqm > 0 && areaSqm <= 100000 ? areaSqm : null,
+  };
 }
 
 function currencyNear(text) {
@@ -77,31 +103,29 @@ export function parseHousingRoomCount(value) {
   // put the label before the number: "Комнат - 4" instead of "4 комнаты".
   const reversed = text.match(/(?:комнат\p{L}*|xona(?:lar)?(?:i)?|хона(?:лар)?(?:и|лик|ли)?|rooms?)\s*[-:–—]\s*(\d{1,2})(?=$|[^\p{L}\p{N}])/iu);
   const reversedRooms = toNumber(reversed?.[1]);
-  return reversedRooms != null && reversedRooms >= 1 && reversedRooms <= 20 ? reversedRooms : null;
+  if (reversedRooms != null && reversedRooms >= 1 && reversedRooms <= 20) return reversedRooms;
+
+  // Listings that only carry the compact "1/5/12-50m" shorthand state the room
+  // count in its first number.
+  return parseCompactSpec(text)?.rooms ?? null;
 }
 
 export function parseHousingFloor(value) {
   const text = normalizeUnicode(value ?? '');
   if (!text) return deepFreeze({ floor: null, totalFloors: null });
 
-  // Common classifieds shorthand is rooms/floor/total floors, e.g. 2/10/16.
-  // It must be checked before the generic floor/total fraction parser or the
-  // first two numbers would incorrectly become floor=2, totalFloors=10.
-  // Requiring the triple to occupy its own line avoids treating dates as this
-  // housing-specific shorthand inside ordinary prose.
-  const compactTriple = text.match(/(?:^|[\r\n])\s*(\d{1,2})\s*[\/\\]\s*(\d{1,3})\s*[\/\\]\s*(\d{1,3})\s*(?=$|[\r\n])/u);
-  if (compactTriple) {
-    const rooms = toNumber(compactTriple[1]);
-    const floor = toNumber(compactTriple[2]);
-    const totalFloors = toNumber(compactTriple[3]);
-    if (rooms != null && rooms >= 1 && rooms <= 20
-      && floor != null && totalFloors != null
-      && floor >= 1 && floor <= totalFloors && totalFloors <= 200) {
-      return deepFreeze({ floor, totalFloors });
-    }
+  // The rooms/floor/total shorthand must be read before the generic
+  // floor/total fraction parser or its first two numbers would incorrectly
+  // become floor=2, totalFloors=10 for "2/10/16".
+  const compactSpec = parseCompactSpec(text);
+  if (compactSpec) {
+    return deepFreeze({ floor: compactSpec.floor, totalFloors: compactSpec.totalFloors });
   }
 
-  const fraction = text.match(/(?:^|[^\d])(\d{1,3})\s*[\/\\]\s*(\d{1,3})(?=$|[^\d])/u);
+  // Skip a pair that is merely the head of a rooms/floor/total triple the
+  // shorthand parser above rejected: there the floor and the total floors are
+  // the second and third numbers, never the first two.
+  const fraction = text.match(/(?:^|[^\d])(\d{1,3})\s*[\/\\]\s*(\d{1,3})(?!\s*[\/\\]\s*\d)(?=$|[^\d])/u);
   if (fraction) {
     const floor = toNumber(fraction[1]);
     const totalFloors = toNumber(fraction[2]);
@@ -176,6 +200,9 @@ export function parseHousingAreas(value) {
     const generic = text.match(new RegExp(`(?:^|[^\\d])(\\d{1,4}(?:[.,]\\d{1,2})?)\\s*${AREA_UNIT_RE}(?=$|[^\\p{L}\\p{N}])`, 'iu'));
     result.total = toNumber(generic?.[1]);
   }
+  // The compact "1/5/12-50m" shorthand glues the area to the floor block, where
+  // the unit is often a bare "m" the generic area matcher cannot trust alone.
+  if (result.total == null) result.total = parseCompactSpec(text)?.areaSqm ?? null;
   for (const key of Object.keys(result)) {
     const number = result[key];
     if (number != null && (number <= 0 || number > 100000)) result[key] = null;

@@ -385,3 +385,17 @@ test('structured parser strips Threads chrome and preserves the account as sourc
   assert.deepEqual(result.price, { amount: 1200, currency: 'USD', approximate: false });
   assert.equal(result.listingFields.internet, true);
 });
+
+test('compact rooms/floor/total shorthand carries the area and never floors the room count', () => {
+  const listing = '1/5/12-50m\nORZU SAROYI';
+  assert.deepEqual(parseHousingFloor(listing), { floor: 5, totalFloors: 12 });
+  assert.equal(parseHousingRoomCount(listing), 1);
+  assert.equal(parseHousingAreas(listing).total, 50);
+  assert.deepEqual(parseHousingFloor('1/5/12-50 м²'), { floor: 5, totalFloors: 12 });
+  assert.deepEqual(parseHousingFloor('2/10/16'), { floor: 10, totalFloors: 16 });
+  // Explicit room and area wording still wins over the shorthand numbers.
+  assert.equal(parseHousingRoomCount('2/10/16\nРаздельная двухкомнатная квартира'), 2);
+  assert.equal(parseHousingAreas('2/10/16-58m\nОбщая площадь 65кв2').total, 65);
+  // A triple mentioned inside a line still reports the floor pair, not its head.
+  assert.deepEqual(parseHousingFloor('ORZU SAROYI 1/5/12-50m'), { floor: 5, totalFloors: 12 });
+});
