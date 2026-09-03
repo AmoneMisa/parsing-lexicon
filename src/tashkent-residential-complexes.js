@@ -150,6 +150,7 @@ export const TASHKENT_RESIDENTIAL_COMPLEXES = Object.freeze([
   complex('Olmos Residence'),
   complex('Olmazor City', ['Алмазар Сити', 'Олмазор Сити']),
   complex('Orzu'),
+  complex('Orzu Saroyi', ['Орзу Саройи', 'Orzu Saroy', 'Орзу Сарой']),
   complex('OQSAROY', ['ОК САРОЙ', 'Оксарой', 'Oq Saroy', 'Oq-Saroy']),
   complex('O\'zbegim', ['Узбегим', 'O‘zbegim', 'Oʻzbegim', 'Ozbegim']),
   complex('O\'z Mahal', ['Озмахал', 'Узмахал', 'O‘z Mahal', 'Oʻz Mahal', 'Oz Mahal']),

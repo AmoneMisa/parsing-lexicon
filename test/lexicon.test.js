@@ -146,6 +146,15 @@ test('Tashkent residential complexes are canonical, deduplicated and alias-aware
   assert.equal(matchTashkentResidentialComplex('ЖК BASHKENT Mening orzuyim')?.name, 'BASHKENT Mening orzuyim');
 });
 
+test('a longer complex name is not collapsed onto its shorter prefix', () => {
+  // "Orzu" and "Orzu Saroyi" are different developments, so matching the prefix
+  // anchors the listing at the wrong complex with complex-level confidence.
+  assert.equal(matchTashkentResidentialComplex('ORZU SAROYI')?.name, 'Orzu Saroyi');
+  assert.equal(matchTashkentResidentialComplex('ЖК Orzu Saroyi')?.name, 'Orzu Saroyi');
+  assert.equal(matchTashkentResidentialComplex('Орзу Саройи')?.name, 'Orzu Saroyi');
+  assert.equal(matchTashkentResidentialComplex('ЖК Orzu, Мирабад')?.name, 'Orzu');
+});
+
 test('ambiguous Tashkent complex names require local residential context', () => {
   assert.equal(matchTashkentResidentialComplex('м. Pushkin, 5 минут пешком'), null);
   assert.equal(matchTashkentResidentialComplex('ЖК Pushkin, 2-комнатная квартира')?.name, 'Pushkin');

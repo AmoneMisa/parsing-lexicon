@@ -40,3 +40,14 @@ test('extracts open-ended nearby mentions and named shops for card fields', () =
     'ТРЦ Compass',
   ]);
 });
+
+test('a housing class is not a nearby shop', () => {
+  // The Klass chain shares its name with the bare word "класс", so every
+  // "бизнес-класс" listing gained a shop it never mentioned - and downstream
+  // that shop becomes a geocoding anchor.
+  assert.deepEqual(parseHousingNearbyShops('ЖК «Mavera Town» — бизнес-класс'), []);
+  assert.deepEqual(parseHousingNearbyShops('квартира эконом-класс'), []);
+  assert.deepEqual(parseHousingNearbyShops('премиум-класс жильё'), []);
+  assert.deepEqual(parseHousingNearbyShops('рядом магазин Класс'), ['Klass']);
+  assert.deepEqual(parseHousingNearbyShops('Klass рядом'), ['Klass']);
+});

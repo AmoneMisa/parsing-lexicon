@@ -20,7 +20,9 @@ const SHOP_CHAINS = Object.freeze([
   ['Havas', /(?:^|[^\p{L}\p{N}_])[хxh]avas(?=$|[^\p{L}\p{N}_])|хавас/iu],
   ['Carrefour', /carrefour|карфур/iu],
   ['ATB', /(?:^|[^\p{L}\p{N}_])(?:атб|atb)(?=$|[^\p{L}\p{N}_])/iu],
-  ['Klass', /(?:^|[^\p{L}\p{N}_])(?:klass|класс)(?=$|[^\p{L}\p{N}_])/iu],
+  // Hyphen excluded on both sides: the chain is a shop name, while
+  // "бизнес-класс" / "эконом-класс" / "премиум-класс" describe the housing.
+  ['Klass', /(?:^|[^\p{L}\p{N}_-])(?:klass|класс)(?=$|[^\p{L}\p{N}_-])/iu],
   ['Magnum', /magnum|магнум/iu],
   ['Bravo', /(?:^|[^\p{L}\p{N}_])bravo(?=$|[^\p{L}\p{N}_])|браво/iu],
   ['Metro C&C', /(?:^|[^\p{L}\p{N}_])metro\s*(?:cash|c\s*&\s*c|market)|метро\s*кэш/iu],
