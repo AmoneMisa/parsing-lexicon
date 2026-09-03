@@ -41,7 +41,7 @@ export const HOUSING_LANDMARK_EXTENSIONS = Object.freeze([
     ru: ['рынки', 'базары'],
     en: ['markets', 'bazaars'],
     uzLatn: ['bozorlar'],
-    uzCyrl: ['бозорлар'],
+    uzCyrl: ['бозорлар', 'базары'],
   }, { category: 'market' }),
   group('Cafe', {
     ru: ['кафе и рестораны'],
@@ -141,4 +141,8 @@ export const HOUSING_POI_EXTENSIONS = Object.freeze([
     uk: ['Суми (станція)', 'залізничний вокзал Суми', 'вокзал станції Суми'],
     en: ['Sumy railway station'],
   }, { category: 'transport', country: 'UA', city: 'Sumy', display: { uk: 'Залізничний вокзал Суми', en: 'Sumy Railway Station' } }),
+  group('Sumy State University', {
+    uk: ['Сумський державний університет', 'СумДУ'],
+    en: ['SumDU'],
+  }, { category: 'university', country: 'UA', city: 'Sumy', display: { uk: 'Сумський державний університет', en: 'Sumy State University' } }),
 ]);
