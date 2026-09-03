@@ -24,6 +24,7 @@ export const LAYOUT_TERMS = Object.freeze([
   group('euroTwoRoom', { ru: ['евродвушка', 'евро двушка'], en: ['euro two-room', 'euro one bedroom'], uk: ['євродвушка'], ro: ['apartament euro două camere'], uzLatn: ['evro ikki xonali'], uzCyrl: ['евро икки хонали'], kk: ['еуро екі бөлмелі'] }),
   group('euroThreeRoom', { ru: ['евротрёшка', 'евротрешка', 'евро трешка'], en: ['euro three-room', 'euro two bedroom'], uk: ['євротрійка'], ro: ['apartament euro trei camere'], uzLatn: ['evro uch xonali'], uzCyrl: ['евро уч хонали'], kk: ['еуро үш бөлмелі'] }),
   group('openPlan', { ru: ['свободная планировка'], en: ['open plan', 'free layout'], uk: ['вільне планування'], ro: ['plan deschis'], uzLatn: ['erkin reja'], uzCyrl: ['эркин режа'], kk: ['еркін жоспарлау'] }),
+  group('improvedLayout', { ru: ['улучшенная планировка', 'улучшенка'], en: ['improved layout'], uk: ['покращене планування', 'поліпшене планування'], ro: ['plan îmbunătățit'], uzLatn: ['yaxshilangan reja'], uzCyrl: ['яхшиланган режа'], kk: ['жақсартылған жоспарлау'] }),
   group('masterBedroom', { ru: ['мастер-спальня', 'мастер спальня'], en: ['master bedroom'], uk: ['майстер-спальня'], ro: ['dormitor matrimonial'], uzLatn: ['master yotoqxona'], uzCyrl: ['мастер ётоқхона'], kk: ['master bedroom'] }),
   group('walkInCloset', { ru: ['гардеробная'], en: ['walk-in closet', 'dressing room'], uk: ['гардеробна'], ro: ['dressing'], uzLatn: ['garderob xona'], uzCyrl: ['гардероб хона'], kk: ['киім бөлмесі'] }),
 ]);

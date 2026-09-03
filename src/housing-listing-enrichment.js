@@ -39,7 +39,7 @@ const AIR_CONDITIONER_RE = /(?:кондицион|air\s*con|konditsioner|kandit(
 const PER_PERSON_PRICE_RE = /(?:kishi\s+boshiga|киши\s+бошига)\s*(\d{1,3}(?:[\s.,]\d{3})*|\d+(?:[.,]\d+)?)\s*(ming|минг|million|mln|млн)?(?:dan|дан)?/iu;
 const WALK_MINUTES_RE = /(?:yayov|piyoda|пешком)\s*(\d{1,2})\s*(?:daqiqa|min(?:ute)?s?|минут)/iu;
 const TRANSIT_ROUTES_RE = /(?:aftobuslar|avtobuslar|автобуслар|автобусы)[^\r\n\d]{0,24}((?:\d{1,4}[\s,;/]*){1,10})/iu;
-const NEARBY_RELATION_TAIL_RE = /(?<!\p{L})(?:рядом\s+(?:с|со)|недалеко\s+от|возле|около|ориентир\s*[:—–-]?|near(?:by)?|close\s+to|lângă|aproape\s+de)(?!\p{L})[^.!?\r\n;]*/giu;
+const NEARBY_RELATION_TAIL_RE = /(?<!\p{L})(?:рядом\s+(?:с|со)|недалеко\s+от|возле|около|ориентир\s*[:—–-]?|ор[-–—]?р\.?\s*[:—–-]?|near(?:by)?|close\s+to|lângă|aproape\s+de)(?!\p{L})[^.!?\r\n;]*/giu;
 const NEARBY_TRAVEL_TAIL_RE = /(?<!\p{L})(?:до|până\s+la)(?!\p{L})[^.!?\r\n;]{0,96}(?<!\p{L})\d{1,3}\s*(?:мин(?:ут(?:ы|а|ах)?|\.?)?|min(?:ute)?s?|дақиқ\p{L}*|daqiqa|км|km|метр(?:а|ов)?|m)(?!\p{L})[^.!?\r\n;]*/giu;
 const RESIDENTIAL_CONTEXT_RE = /(?:ж\.?\s*к\.?|жил(?:ой|ого)\s+комплекс|новострой(?:ка|ки)?|residential\s+complex|residence|turar\s+joy|uy[-\s]?joy|majmua|массив)/iu;
 
