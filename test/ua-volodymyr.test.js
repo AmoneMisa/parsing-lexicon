@@ -10,12 +10,15 @@ test('Volodymyr dictionary contains geo-aligned landmark canonicals', () => {
   const names = new Set((dictionary.landmarks || []).map((entry) => entry.name));
   assert.ok(names.has('Володимирський історичний музей імені Омеляна Дверницького'));
   assert.ok(names.has('Volodymyr dytynets'));
+  assert.ok(names.has('Костел святих Йоакима та Анни'));
 });
 
 test('Volodymyr landmark aliases resolve to expected canonicals', () => {
   const cases = [
     ['Володимир-Волинський історичний музей', 'Володимирський історичний музей імені Омеляна Дверницького'],
     ['Володимирський дитинець', 'Volodymyr dytynets'],
+    ['Костел Йоакима і Анни', 'Костел святих Йоакима та Анни'],
+    ['Парафіяльний костел святих Йоакима та Анни', 'Костел святих Йоакима та Анни'],
   ];
 
   for (const [text, name] of cases) {
