@@ -8,11 +8,16 @@ import {
 import { LOCATION_LIST_KEYS, mergeLocationCountries } from './location-merge.js';
 import { KG_LOCATION_EXTENSIONS } from './kg-location-extensions.js';
 import { KZ_DISTRICT_EXTENSIONS } from './kz-district-extensions.js';
+import { UZ_TASHKENT_CONTEXT_EXTENSIONS } from './uz-tashkent-context-extensions.js';
 
 export { UA_REGION_ENTRIES, UA_SECONDARY_CITIES, matchUkraineRegion, matchUkraineSecondaryCity };
 
 export const LOCATION_DICTIONARIES = Object.freeze({
   ...BASE_LOCATION_DICTIONARIES,
+  UZ: mergeLocationCountries(
+    BASE_LOCATION_DICTIONARIES.UZ || {},
+    UZ_TASHKENT_CONTEXT_EXTENSIONS,
+  ),
   KZ: mergeLocationCountries(
     BASE_LOCATION_DICTIONARIES.KZ || {},
     KZ_DISTRICT_EXTENSIONS,
