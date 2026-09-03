@@ -137,4 +137,8 @@ export const HOUSING_POI_EXTENSIONS = Object.freeze([
   }, { category: 'park', display: { ru: 'Парк Kitoblar Dunyosi', en: 'Kitoblar Dunyosi Park' } }),
   group('Interpol', { ru: ['Интерпол'], en: ['Interpol'], uzLatn: ['Interpol'] }, { category: 'landmark', display: { ru: 'Интерпол', en: 'Interpol' } }),
   group('Jemchug', { ru: ['Жемчуг'], en: ['Jemchug'], uzLatn: ['jemchug'] }, { category: 'landmark', display: { ru: 'Жемчуг', en: 'Jemchug' } }),
+  group('Sumy Railway Station', {
+    uk: ['Суми (станція)', 'залізничний вокзал Суми', 'вокзал станції Суми'],
+    en: ['Sumy railway station'],
+  }, { category: 'transport', country: 'UA', city: 'Sumy', display: { uk: 'Залізничний вокзал Суми', en: 'Sumy Railway Station' } }),
 ]);
