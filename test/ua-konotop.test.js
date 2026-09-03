@@ -11,6 +11,7 @@ test('Konotop dictionary contains geo-aligned landmark canonicals', () => {
   assert.ok(names.has('Konotop Railway Station'));
   assert.ok(names.has('Конотопський міський краєзнавчий музей ім. О. М. Лазаревського'));
   assert.ok(names.has('Музей-садиба генерала М. І. Драгомирова'));
+  assert.ok(names.has('Конотопський музей авіації'));
 });
 
 test('Konotop landmark aliases resolve to expected canonicals', () => {
@@ -19,6 +20,7 @@ test('Konotop landmark aliases resolve to expected canonicals', () => {
     ['Конотопський краєзнавчий музей ім. О.М.Лазаревського', 'Конотопський міський краєзнавчий музей ім. О. М. Лазаревського'],
     ['Музей-садиба генерала М.І.Драгомирова', 'Музей-садиба генерала М. І. Драгомирова'],
     ['Музей-садиба М.І.Драгомирова', 'Музей-садиба генерала М. І. Драгомирова'],
+    ['Музей авіації', 'Конотопський музей авіації'],
   ];
 
   for (const [text, name] of cases) {
