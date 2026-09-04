@@ -59,4 +59,22 @@ export const KZ_SCRAPED_SECONDARY_LOCATION_EXTENSIONS = Object.freeze({
       ['Эталон', 'Etalon', 'ЖК Эталон'],
     ]),
   }),
+
+  Aktobe: Object.freeze({
+    residentialComplexes: residentialEntries([
+      ['Garden Residence', 'Гарден Резиденс', 'ЖК Garden Residence', 'ЖК Гарден Резиденс'],
+      ['Gold Square', 'Голд Сквер', 'ЖК Gold Square', 'ЖК Голд Сквер'],
+      ['Grand Nomad', 'Гранд Номад', 'ЖК Grand Nomad', 'ЖК Гранд Номад'],
+      ['Арайлы', 'Araily', 'Araiły', 'ЖК Арайлы'],
+      ['Астана Премиум', 'Astana Premium', 'ЖК Астана Премиум'],
+      ['Даулет', 'Дәулет', 'Daulet', 'Dáulet', 'ЖК Даулет', 'ЖК Дәулет'],
+      ['Домино', 'Domino', 'ЖК Домино'],
+      ['Жети казына', 'Жеті қазына', 'Zheti Qazyna', 'Zheti Kazyna', 'ЖК Жети казына', 'ЖК Жеті қазына'],
+      ['Коктем', 'Көктем', 'Koktem', 'ЖК Коктем', 'ЖК Көктем'],
+      ['Куандык', 'Қуандық', 'Kuandyk', 'Quandyq', 'ЖК Куандык', 'ЖК Қуандық'],
+      ['Полина', 'Polina', 'ЖК Полина'],
+      ['Сконур', 'Skonur', 'ЖК Сконур'],
+      ['Сункар', 'Сұңқар', 'Sunkar', 'Sunqar', 'ЖК Сункар', 'ЖК Сұңқар'],
+    ]),
+  }),
 });
