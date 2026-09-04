@@ -30,6 +30,14 @@ const residentialCases = [
   ['ЖК Віденський дім', 'Videnskyi Dim'],
 ];
 
+const microdistrictCases = [
+  ['337 мкр', '337 microdistrict'],
+  ['337-й мікрорайон', '337 microdistrict'],
+  ['339 микрорайон', '339 microdistrict'],
+  ['339 м/р', '339 microdistrict'],
+  ['524-й мікрорайон', '524 microdistrict'],
+];
+
 test('Kharkiv current street canonicals absorb Ukrainian, Russian and historical aliases', () => {
   for (const [input, canonical] of streetCases) {
     const match = matchDictionaryLocation(input, 'UA', 'Kharkiv');
@@ -42,6 +50,14 @@ test('Kharkiv residential aliases resolve to canonical complexes', () => {
   for (const [input, canonical] of residentialCases) {
     const match = matchDictionaryLocation(input, 'UA', 'Kharkiv');
     assert.equal(match?.type, 'residentialComplexes', input);
+    assert.equal(match?.name, canonical, input);
+  }
+});
+
+test('Kharkiv numbered microdistrict aliases resolve to stable canonical identities', () => {
+  for (const [input, canonical] of microdistrictCases) {
+    const match = matchDictionaryLocation(input, 'UA', 'Kharkiv');
+    assert.equal(match?.type, 'microdistricts', input);
     assert.equal(match?.name, canonical, input);
   }
 });
