@@ -22,7 +22,6 @@ export * from './locations-runtime.js';
 export * from './kg-location-extensions.js';
 export * from './kz-location-extensions.js';
 export * from './kz-district-extensions.js';
-export * from './kz-scraped-location-extensions.js';
 export * from './uz-location-extensions.js';
 export * from './central-asia-locations.js';
 export * from './ua-location-extensions-major.js';
