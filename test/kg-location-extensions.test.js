@@ -7,7 +7,7 @@ function byCanonical(group, canonical) {
   return group.find((entry) => entry.canonical === canonical);
 }
 
-test('Bishkek cleaned geography is exposed with stable semantic types', () => {
+test('Bishkek geography is exposed with stable semantic types', () => {
   const bishkek = KG_LOCATION_EXTENSIONS.Bishkek;
 
   const tenth = byCanonical(bishkek.microdistricts, '10-й микрорайон');
@@ -36,6 +36,29 @@ test('Bishkek cleaned geography is exposed with stable semantic types', () => {
   const yug7 = byCanonical(bishkek.residentialComplexes, 'Юг-7');
   assert.ok(yug7);
   assert.ok(yug7.re.test('Yug 7'));
+});
+
+test('Bishkek residential aliases cover Russian, Kyrgyz and Latin listing forms', () => {
+  const residential = KG_LOCATION_EXTENSIONS.Bishkek.residentialComplexes;
+  const cases = [
+    ['Level Lux', 'Левел Люкс'],
+    ['Nuran Park', 'Nuran Park турак жай комплекси'],
+    ['Art Square', 'Арт Сквер'],
+    ['Kok-Jar Hills', 'Көк-Жар Хиллс'],
+    ['Tokyo City', 'ЖК Токио Сити'],
+    ['Nova Prestige', 'Нова Престиж'],
+    ['Mega City', 'Мега-Сити'],
+    ['Sun House Plus', 'SunHouse PLUS'],
+    ['Испанский дом', 'Испан үйү'],
+    ['Brooklyn', 'Бруклин'],
+    ['Barcelona', 'МФК Барселона'],
+  ];
+
+  for (const [canonical, alias] of cases) {
+    const item = byCanonical(residential, canonical);
+    assert.ok(item, canonical);
+    assert.ok(item.re.test(alias), `${canonical} should match ${alias}`);
+  }
 });
 
 test('Bishkek Ak-Ordo spelling resolves through the existing Ak-Orgo semantic entry', () => {
