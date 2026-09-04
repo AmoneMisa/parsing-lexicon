@@ -16,6 +16,8 @@ const cases = Object.freeze([
   ['Жилой комплекс "Сымбат Classic"', 'Сымбат Classic'],
   ['ЖК «Тянь-Шань бермети»', 'Тянь-Шань бермети'],
   ['Жилой комплекс "Южный"', 'Южный'],
+  ['ЖК «Легенда»', 'Легенда'],
+  ['ЖК «Meridian»', 'Meridian'],
 ]);
 
 test('reviewed Bishkek residential aliases resolve in city scope', () => {
