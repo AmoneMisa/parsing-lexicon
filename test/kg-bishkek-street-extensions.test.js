@@ -34,6 +34,17 @@ const cases = [
   ['Тоголок Молдо көчөсү', 'Togolok Moldo Street'],
   ['улица Уметалиева', 'Umetaliev Street'],
   ['бульвар Молодой Гвардии', 'Molodaya Gvardiya Boulevard'],
+  ['Асанкул Куттубаев көчөсү', 'Asankul Kutubbaev Street'],
+  ['улица Медерова', 'Mederov Street'],
+  ['Жеңиш проспекти', 'Pobedy Avenue'],
+  ['Саякбай Каралаев көчөсү', 'Sayakbay Karalaev Street'],
+  ['улица Льва Толстого', 'Lev Tolstoy Street'],
+  ['Калык Акиев көчөсү', 'Kalyk Akiev Street'],
+  ['улица Курчатова', 'Kurchatov Street'],
+  ['Карасаев көчөсү', 'Karasaev Street'],
+  ['улица Алтын-Ордо', 'Altyn-Ordo Street'],
+  ['Миң-Куш көчөсү', 'Min-Kush Street'],
+  ['Ала-Арчинская улица', 'Ala-Archinskaya Street'],
 ];
 
 test('Bishkek street aliases collapse onto one canonical identity', () => {
