@@ -17,6 +17,7 @@ import { KZ_PRIMARY_ADDRESS_EXTENSIONS } from './kz-primary-address-extensions.j
 import { KZ_ALMATY_STREET_EXTENSIONS } from './kz-almaty-street-extensions.js';
 import { KZ_ALMATY_CLEANED_RESIDENTIAL_EXTENSIONS } from './kz-almaty-cleaned-residential-extensions.js';
 import { KZ_ASTANA_CLEANED_RESIDENTIAL_EXTENSIONS } from './kz-astana-cleaned-residential-extensions.js';
+import { KZ_SHYMKENT_CLEANED_ADDRESS_EXTENSIONS } from './kz-shymkent-cleaned-address-extensions.js';
 import { KZ_SCRAPED_TAIL_ADDRESS_EXTENSIONS as KZ_REGIONAL_ADDRESS_EXTENSIONS } from './kz-regional-address-extensions.js';
 import { KZ_SCRAPED_LOCATION_EXTENSIONS as KZ_RESIDENTIAL_EXTENSIONS } from './kz-residential-extensions.js';
 import { KZ_SCRAPED_SECONDARY_LOCATION_EXTENSIONS as KZ_REGIONAL_RESIDENTIAL_EXTENSIONS } from './kz-regional-residential-extensions.js';
@@ -69,6 +70,7 @@ export const LOCATION_DICTIONARIES = Object.freeze({
     KZ_ALMATY_STREET_EXTENSIONS,
     KZ_ALMATY_CLEANED_RESIDENTIAL_EXTENSIONS,
     KZ_ASTANA_CLEANED_RESIDENTIAL_EXTENSIONS,
+    KZ_SHYMKENT_CLEANED_ADDRESS_EXTENSIONS,
     KZ_REGIONAL_ADDRESS_EXTENSIONS,
     KZ_KOSTANAY_LOCATION_EXTENSIONS,
     KZ_PAVLODAR_LOCATION_EXTENSIONS,
