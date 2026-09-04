@@ -108,6 +108,9 @@ export const UZ_TASHKENT_CONTEXT_EXTENSIONS = Object.freeze({
         'Turkiston Avenue', 'TJM Turkiston', 'ЖК Turkiston', 'Turkiston TJM', 'Turkiston turar joy majmuasi',
         'Туркистон', 'ЖК Туркистон', 'Туркистон Авеню',
       ]),
+      residentialEntry('Karasaray', [
+        'Карасарай', 'ЖК Карасарай', 'Жилой комплекс Карасарай', 'Karasaray TJM', 'Karasaray turar joy majmuasi',
+      ]),
     ]),
   }),
 });

@@ -14,6 +14,12 @@ export const KZ_CITY_RESIDENTIAL_EXTENSIONS = Object.freeze({
   Shymkent: Object.freeze({
     residentialComplexes: locationEntries([
       ['Кок-Жайлау', 'Кок жайлау', 'ЖК Кок-Жайлау', 'ЖК Кок жайлау', 'Жилой комплекс Кок жайлау'],
+      ['Биик', 'БИИК', 'Biik', 'ЖК Биик', 'ЖК БИИК', 'жилой комплекс Биик'],
+    ]),
+  }),
+  Taraz: Object.freeze({
+    residentialComplexes: locationEntries([
+      ['Атшабар', 'Atshabar', 'ЖК Атшабар', 'жилой комплекс Атшабар'],
     ]),
   }),
 });

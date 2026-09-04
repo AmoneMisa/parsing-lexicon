@@ -7,5 +7,8 @@ export const KZ_PAVLODAR_LOCATION_EXTENSIONS = Object.freeze({
       ['Сарыарка', 'Микрорайон Сарыарка', 'микрорайон Сарыарка', 'мкр Сарыарка', 'Saryarka'],
       ['Усольский', 'Усольский микрорайон', 'микрорайон Усольский', 'мкр Усольский', 'Usolsky'],
     ]),
+    residentialComplexes: locationEntries([
+      ['Ирина', 'Irina', 'ЖК Ирина', 'жилой комплекс Ирина'],
+    ]),
   }),
 });

@@ -13,6 +13,7 @@ export const KG_BISHKEK_RESIDENTIAL_EXTENSIONS = Object.freeze({
       ['TIANSHAN-1', 'Tianshan-1', 'TIAN SHAN-1', 'Tian Shan 1', 'Тяньшань-1', 'Тянь-Шань-1', 'ЖК TIANSHAN-1', 'ЖК Тянь-Шань-1', 'TIANSHAN-1 турак жай комплекси'],
       ['Anka Tower', 'ANKA Tower', 'ANKA TOWER', 'Анка Тауэр', 'Анка Тауэр турак жай комплекси', 'ЖК Anka Tower', 'ЖК Анка Тауэр', 'Anka Tower турак жай комплекси'],
       ['УРПАК', 'Урпак', 'URPAK', 'Urpak', 'ЖК УРПАК', 'ЖК Урпак', 'жилой комплекс УРПАК', 'УРПАК турак жай комплекси', 'Urpak турак жай комплекси', 'Кут Урпак'],
+      ['Французский квартал', 'ЖК Французский квартал', 'Французский Квартал', 'French Quarter', 'French quarter'],
     ]),
   }),
 });
