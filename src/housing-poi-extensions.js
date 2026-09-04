@@ -195,4 +195,8 @@ export const HOUSING_POI_EXTENSIONS = Object.freeze([
     ru: ['ТРЦ «LUBAVA»', 'ТРЦ Любава'],
     en: ['LUBAVA', 'Lubava'],
   }, { category: 'shopping_mall', country: 'UA', city: 'Cherkasy', display: { uk: 'ТРЦ «LUBAVA»', en: 'LUBAVA' } }),
+  group('Cherkasy Central Market', {
+    uk: ['Центральний ринок', 'Центральний ринок Черкаси', 'Черкаський центральний ринок'],
+    en: ['Cherkasy Central Market'],
+  }, { category: 'market', country: 'UA', city: 'Cherkasy', display: { uk: 'Центральний ринок', en: 'Cherkasy Central Market' } }),
 ]);
