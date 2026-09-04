@@ -17,6 +17,8 @@ import { KZ_SCRAPED_LOCATION_EXTENSIONS as KZ_RESIDENTIAL_EXTENSIONS } from './k
 import { KZ_SCRAPED_SECONDARY_LOCATION_EXTENSIONS as KZ_REGIONAL_RESIDENTIAL_EXTENSIONS } from './kz-regional-residential-extensions.js';
 import { KZ_KOSTANAY_LOCATION_EXTENSIONS } from './kz-kostanay-location-extensions.js';
 import { KZ_PAVLODAR_LOCATION_EXTENSIONS } from './kz-pavlodar-location-extensions.js';
+import { KZ_MICRODISTRICT_EXTENSIONS } from './kz-microdistrict-extensions.js';
+import { KZ_CITY_RESIDENTIAL_EXTENSIONS } from './kz-city-residential-extensions.js';
 import { UA_RESIDENTIAL_EXTENSIONS } from './ua-residential-extensions.js';
 import { UZ_TASHKENT_CONTEXT_EXTENSIONS } from './uz-tashkent-context-extensions.js';
 import { UZ_SAMARKAND_CONTEXT_EXTENSIONS } from './uz-samarkand-context-extensions.js';
@@ -45,6 +47,8 @@ export const LOCATION_DICTIONARIES = Object.freeze({
     KZ_REGIONAL_ADDRESS_EXTENSIONS,
     KZ_KOSTANAY_LOCATION_EXTENSIONS,
     KZ_PAVLODAR_LOCATION_EXTENSIONS,
+    KZ_MICRODISTRICT_EXTENSIONS,
+    KZ_CITY_RESIDENTIAL_EXTENSIONS,
   ),
   KG: mergeLocationCountries(
     BASE_LOCATION_DICTIONARIES.KG || {},
