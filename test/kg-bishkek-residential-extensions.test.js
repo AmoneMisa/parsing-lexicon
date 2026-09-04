@@ -12,6 +12,9 @@ const cases = [
   ['ЖК Академия', 'Академия'],
   ['Елисейские поля Авангард', 'Елисейские поля'],
   ['ЖК Тянь-Шань-1', 'TIANSHAN-1'],
+  ['Анка Тауэр турак жай комплекси', 'Anka Tower'],
+  ['ЖК УРПАК', 'УРПАК'],
+  ['Кут Урпак', 'УРПАК'],
 ];
 
 test('Bishkek residential aliases resolve to stable canonical identities', () => {
