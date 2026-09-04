@@ -7,6 +7,8 @@ import {
 } from './locations.js';
 import { LOCATION_LIST_KEYS, mergeLocationCountries } from './location-merge.js';
 import { KG_LOCATION_EXTENSIONS } from './kg-location-extensions.js';
+import { KG_OSH_LOCATION_EXTENSIONS } from './kg-osh-location-extensions.js';
+import { KG_KARAKOL_LOCATION_EXTENSIONS } from './kg-karakol-location-extensions.js';
 import { KZ_DISTRICT_EXTENSIONS } from './kz-district-extensions.js';
 import { KZ_SCRAPED_ADDRESS_EXTENSIONS } from './kz-scraped-address-extensions.js';
 import { KZ_SCRAPED_TAIL_ADDRESS_EXTENSIONS } from './kz-scraped-address-extensions-tail.js';
@@ -40,6 +42,8 @@ export const LOCATION_DICTIONARIES = Object.freeze({
   KG: mergeLocationCountries(
     BASE_LOCATION_DICTIONARIES.KG || {},
     KG_LOCATION_EXTENSIONS,
+    KG_OSH_LOCATION_EXTENSIONS,
+    KG_KARAKOL_LOCATION_EXTENSIONS,
   ),
 });
 
