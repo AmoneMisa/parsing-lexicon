@@ -31,6 +31,10 @@ test('Samarkand Russian and Uzbek aliases resolve through corrected semantics', 
     ['улица Гагарина', ['streets', 'Gagarin Street']],
     ["Spitamen shoh ko'chasi", ['streets', 'Spitamen Avenue']],
     ['микрорайон Сартепа', ['mahallas', 'Sattepo']],
+    ['махалля Дустлик', ['mahallas', "Do'stlik"]],
+    ['Янги Ҳаёт', ['mahallas', 'Yangi Hayot']],
+    ["O'rta Xo'jasoat mahallasi", ['mahallas', "O'rta Xo'jasoat"]],
+    ['Урта Хужасахат', ['mahallas', "O'rta Xo'jasoat"]],
   ]);
 
   for (const [input, [type, canonical]] of expected) {
