@@ -182,4 +182,17 @@ export const HOUSING_POI_EXTENSIONS = Object.freeze([
     uk: ['Автостанція «Черкаси-3»', 'Черкаси АС-3', 'Черкаси АС3'],
     en: ['Cherkasy Bus Station No. 3'],
   }, { category: 'bus_station', country: 'UA', city: 'Cherkasy', display: { uk: 'Автостанція «Черкаси-3»', en: 'Cherkasy Bus Station No. 3' } }),
+  group('Cherkasy Autoexpress Bus Station', {
+    uk: ['Автовокзал «Автоекспрес»', 'АС «АВТОЕКСПРЕС-ЧЕРКАСИ»', 'Автовокзал «Автоекспрес» Черкаси'],
+    en: ['Cherkasy Autoexpress Bus Station'],
+  }, { category: 'bus_station', country: 'UA', city: 'Cherkasy', display: { uk: 'Автовокзал «Автоекспрес»', en: 'Cherkasy Autoexpress Bus Station' } }),
+  group('Dnipro Plaza', {
+    uk: ['ТРЦ «Дніпро-Плаза»', 'ТРЦ Дніпро Плаза', 'Дніпро Плаза'],
+    en: ['Dnipro Plaza'],
+  }, { category: 'shopping_mall', country: 'UA', city: 'Cherkasy', display: { uk: 'ТРЦ «Дніпро-Плаза»', en: 'Dnipro Plaza' } }),
+  group('LUBAVA', {
+    uk: ['ТРЦ «LUBAVA»', 'ТРЦ LUBAVA', 'ТРЦ «Любава»', 'ТРЦ Любава'],
+    ru: ['ТРЦ «LUBAVA»', 'ТРЦ Любава'],
+    en: ['LUBAVA', 'Lubava'],
+  }, { category: 'shopping_mall', country: 'UA', city: 'Cherkasy', display: { uk: 'ТРЦ «LUBAVA»', en: 'LUBAVA' } }),
 ]);

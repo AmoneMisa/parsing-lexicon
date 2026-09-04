@@ -38,3 +38,15 @@ test('Cherkasy bus station No. 3 keeps verified local aliases and city scope', (
   assert.deepEqual(station.aliases.en, ['Cherkasy Bus Station No. 3']);
   assert.ok(!station.aliases.uk.includes('Черкаси'));
 });
+
+test('Cherkasy Autoexpress bus station keeps verified local aliases and city scope', () => {
+  const station = HOUSING_POI_EXTENSIONS.find((entry) => entry.canonical === 'Cherkasy Autoexpress Bus Station');
+
+  assert.ok(station);
+  assert.equal(station.category, 'bus_station');
+  assert.equal(station.country, 'UA');
+  assert.equal(station.city, 'Cherkasy');
+  assert.deepEqual(station.aliases.uk, ['Автовокзал «Автоекспрес»', 'АС «АВТОЕКСПРЕС-ЧЕРКАСИ»', 'Автовокзал «Автоекспрес» Черкаси']);
+  assert.deepEqual(station.aliases.en, ['Cherkasy Autoexpress Bus Station']);
+  assert.ok(!station.aliases.uk.includes('Черкаси'));
+});
