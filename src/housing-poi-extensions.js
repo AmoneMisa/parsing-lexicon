@@ -144,12 +144,42 @@ export const HOUSING_POI_EXTENSIONS = Object.freeze([
     uk: ['Євробазар', 'ТЦ Євробазар'],
     en: ['Eurobazar'],
   }, { category: 'shopping_mall', country: 'UA', city: 'Sumy', display: { uk: 'ТЦ «Євробазар»', en: 'Eurobazar' } }),
+  group('Sumy Bus Station', {
+    uk: ['Автовокзал Суми', 'Сумський автовокзал', 'автовокзал на Степана Бандери'],
+    ru: ['автовокзал Сумы'],
+    en: ['Sumy Bus Station'],
+  }, { category: 'bus_station', country: 'UA', city: 'Sumy', display: { uk: 'Автовокзал Суми', en: 'Sumy Bus Station' } }),
   group('Sumy Railway Station', {
     uk: ['Суми (станція)', 'залізничний вокзал Суми', 'вокзал станції Суми'],
     en: ['Sumy railway station'],
   }, { category: 'transport', country: 'UA', city: 'Sumy', display: { uk: 'Залізничний вокзал Суми', en: 'Sumy Railway Station' } }),
+  group("Сумський м'ясокомбінат", {
+    uk: ["Сумський м'ясокомбінат", 'ВАТ «Сумський м\'ясокомбінат»'],
+  }, { category: 'landmark', country: 'UA', city: 'Sumy', display: { uk: "Сумський м'ясокомбінат" } }),
+  group('Sumy Airport', {
+    uk: ['Аеропорт Суми', 'аеропорт «Суми»', 'Сумський аеропорт'],
+    en: ['Sumy Airport'],
+  }, { category: 'airport', country: 'UA', city: 'Sumy', display: { uk: 'Аеропорт «Суми»', en: 'Sumy Airport' } }),
   group('Sumy State University', {
     uk: ['Сумський державний університет', 'СумДУ'],
     en: ['SumDU'],
   }, { category: 'university', country: 'UA', city: 'Sumy', display: { uk: 'Сумський державний університет', en: 'Sumy State University' } }),
+  group('Cherkasy Railway Station', {
+    uk: ['залізничний вокзал Черкаси', 'вокзал Черкаси', 'станція Черкаси'],
+    ru: ['железнодорожный вокзал Черкассы'],
+    en: ['Cherkasy railway station'],
+  }, { category: 'transport', country: 'UA', city: 'Cherkasy', display: { uk: 'Залізничний вокзал Черкаси', en: 'Cherkasy Railway Station' } }),
+  group('Cherkasy Bus Station No. 1', {
+    uk: ['Автовокзал «Черкаси»', 'Автовокзал №1', 'Новий автовокзал', 'Автовокзал «Новий»', 'автостанція №1'],
+    ru: ['автовокзал Черкассы'],
+    en: ['Cherkasy Bus Station No. 1'],
+  }, { category: 'bus_station', country: 'UA', city: 'Cherkasy', display: { uk: 'Автовокзал «Черкаси»', en: 'Cherkasy Bus Station No. 1' } }),
+  group('Cherkasy Bus Station No. 2', {
+    uk: ['Автостанція «Черкаси-2»', 'Черкаси АС-2', 'Автовокзал-2', 'Автовокзал №2', 'автостанція №2'],
+    en: ['Cherkasy Bus Station No. 2'],
+  }, { category: 'bus_station', country: 'UA', city: 'Cherkasy', display: { uk: 'Автостанція «Черкаси-2»', en: 'Cherkasy Bus Station No. 2' } }),
+  group('Cherkasy Bus Station No. 3', {
+    uk: ['Автостанція «Черкаси-3»', 'Черкаси АС-3', 'Черкаси АС3'],
+    en: ['Cherkasy Bus Station No. 3'],
+  }, { category: 'bus_station', country: 'UA', city: 'Cherkasy', display: { uk: 'Автостанція «Черкаси-3»', en: 'Cherkasy Bus Station No. 3' } }),
 ]);
