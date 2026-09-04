@@ -144,6 +144,11 @@ export const HOUSING_POI_EXTENSIONS = Object.freeze([
     uk: ['Євробазар', 'ТЦ Євробазар'],
     en: ['Eurobazar'],
   }, { category: 'shopping_mall', country: 'UA', city: 'Sumy', display: { uk: 'ТЦ «Євробазар»', en: 'Eurobazar' } }),
+  group('Sumy Bus Station', {
+    uk: ['Автовокзал Суми', 'Сумський автовокзал', 'автовокзал на Степана Бандери'],
+    ru: ['автовокзал Сумы'],
+    en: ['Sumy Bus Station'],
+  }, { category: 'bus_station', country: 'UA', city: 'Sumy', display: { uk: 'Автовокзал Суми', en: 'Sumy Bus Station' } }),
   group('Sumy Railway Station', {
     uk: ['Суми (станція)', 'залізничний вокзал Суми', 'вокзал станції Суми'],
     en: ['Sumy railway station'],
