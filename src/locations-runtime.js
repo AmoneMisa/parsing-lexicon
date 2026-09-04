@@ -21,6 +21,7 @@ import { KZ_PAVLODAR_LOCATION_EXTENSIONS } from './kz-pavlodar-location-extensio
 import { KZ_MICRODISTRICT_EXTENSIONS } from './kz-microdistrict-extensions.js';
 import { KZ_CITY_RESIDENTIAL_EXTENSIONS } from './kz-city-residential-extensions.js';
 import { UA_RESIDENTIAL_EXTENSIONS } from './ua-residential-extensions.js';
+import { UA_KHARKIV_MICRODISTRICT_EXTENSIONS } from './ua-kharkiv-microdistrict-extensions.js';
 import { UZ_TASHKENT_CONTEXT_EXTENSIONS } from './uz-tashkent-context-extensions.js';
 import { UZ_SAMARKAND_CONTEXT_EXTENSIONS } from './uz-samarkand-context-extensions.js';
 import { UZ_BUKHARA_LOCATION_EXTENSIONS } from './uz-bukhara-location-extensions.js';
@@ -46,6 +47,7 @@ export const LOCATION_DICTIONARIES = Object.freeze({
   UA: mergeLocationCountries(
     BASE_LOCATION_DICTIONARIES.UA || {},
     UA_RESIDENTIAL_EXTENSIONS,
+    UA_KHARKIV_MICRODISTRICT_EXTENSIONS,
   ),
   UZ: mergeLocationCountries(
     UZ_RUNTIME_BASE_LOCATION_DICTIONARIES,
