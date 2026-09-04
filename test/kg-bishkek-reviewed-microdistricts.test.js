@@ -13,7 +13,7 @@ test('reviewed Bishkek microdistrict aliases resolve in city scope', () => {
   for (const [text, expected] of cases) {
     const match = matchDictionaryLocation(text, 'KG', 'Bishkek');
     assert.ok(match, text);
-    assert.equal(match.type, 'microdistrict');
+    assert.equal(match.type, 'microdistricts');
     assert.equal(match.name, expected, text);
   }
 });
