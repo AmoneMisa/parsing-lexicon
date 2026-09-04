@@ -104,20 +104,20 @@ export const KZ_PRIMARY_ADDRESS_EXTENSIONS = Object.freeze({
       microdistrict('Nur Alatau', ['Нур Алатау', 'Нұр Алатау', 'Нұр Алатау шағын ауданы', 'Nur Alatau microdistrict']),
     ]),
     streets: Object.freeze([
-      street('проспект Аль-Фараби', [
-        'Проспект Аль-Фараби', 'пр-т Аль-Фараби', 'Аль-Фараби', 'Әл-Фараби даңғылы',
-        'Al-Farabi Avenue', 'Al Farabi Avenue', 'Al-Farabi Prospekt',
+      street('Al-Farabi Avenue', [
+        'проспект Аль-Фараби', 'Проспект Аль-Фараби', 'пр-т Аль-Фараби', 'Аль-Фараби', 'Әл-Фараби даңғылы',
+        'Al Farabi Avenue', 'Al-Farabi Prospekt',
       ]),
-      street('проспект Достык', [
-        'Проспект Достык', 'пр-т Достык', 'Достык', 'Достық даңғылы', 'Dostyk Avenue', 'Dostyq Avenue',
+      street('Dostyk Avenue', [
+        'проспект Достык', 'Проспект Достык', 'пр-т Достык', 'Достык', 'Достық даңғылы', 'Dostyq Avenue',
       ]),
       street('Проспект Рыскулова', [
         'проспект Рыскулова', 'пр-т Рыскулова', 'Рыскулова', 'Рысқұлов даңғылы',
         'Ryskulov Avenue', 'Rysqulov Avenue',
       ]),
-      street('Улица Абдуллы Розыбакиева', [
-        'улица Абдуллы Розыбакиева', 'ул. Розыбакиева', 'Розыбакиева', 'Розыбакиев көшесі',
-        'Abdulla Rozybakiev Street', 'Rozybakiev Street',
+      street('Rozybakiev Street', [
+        'Улица Абдуллы Розыбакиева', 'улица Абдуллы Розыбакиева', 'улица Розыбакиева', 'ул. Розыбакиева',
+        'Розыбакиева', 'Розыбакиев көшесі', 'Abdulla Rozybakiev Street',
       ]),
       street('Улица Басенова', [
         'улица Басенова', 'ул. Басенова', 'Басенова', 'Басенов көшесі', 'Basenov Street',
@@ -159,19 +159,19 @@ export const KZ_PRIMARY_ADDRESS_EXTENSIONS = Object.freeze({
         'улица Рыскулбекова', 'ул. Рыскулбекова', 'Рыскулбекова', 'Рысқұлбеков көшесі',
         'Ryskulbekov Street', 'Rysqulbekov Street',
       ]),
-      street('Улица Сатпаева', [
-        'улица Сатпаева', 'ул. Сатпаева', 'Сатпаева', 'Қаныш Сәтбаев көшесі', 'Сәтбаев көшесі',
-        'Kanysh Satpayev Street', 'Satpayev Street',
+      street('Satpayev Street', [
+        'Улица Сатпаева', 'улица Сатпаева', 'ул. Сатпаева', 'Сатпаева', 'Қаныш Сәтбаев көшесі', 'Сәтбаев көшесі',
+        'Kanysh Satpayev Street',
       ]),
       street('Улица Токсына Кулыбекова', [
         'улица Токсына Кулыбекова', 'ул. Токсына Кулыбекова', 'Токсына Кулыбекова',
         'Тоқсын Құлыбеков көшесі', 'Toksyn Kulybekov Street', 'Toqsyn Qulybekov Street',
       ]),
-      street('Улица Толе Би', [
-        'улица Толе Би', 'ул. Толе Би', 'Толе Би', 'Төле би көшесі', 'Tole Bi Street', 'Töle Bi Street',
+      street('Tole Bi Street', [
+        'Улица Толе Би', 'улица Толе Би', 'улица Толе би', 'ул. Толе Би', 'Толе Би', 'Төле би көшесі', 'Töle Bi Street',
       ]),
       street('Улица Шакарима', [
-        'улица Шакарима', 'ул. Шакарима', 'Шакарима', 'Шәкәрім көшесі', 'Shakarim Street', 'Shakarim Street',
+        'улица Шакарима', 'ул. Шакарима', 'Шакарима', 'Шәкәрім көшесі', 'Shakarim Street',
       ]),
     ]),
   }),
