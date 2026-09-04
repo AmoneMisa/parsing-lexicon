@@ -14,6 +14,7 @@ import { KZ_SCRAPED_LOCATION_EXTENSIONS } from './kz-scraped-location-extensions
 import { KZ_SCRAPED_SECONDARY_LOCATION_EXTENSIONS } from './kz-scraped-location-extensions-secondary.js';
 import { UA_CLEANED_SCRAPE_EXTENSIONS } from './ua-cleaned-scrape-extensions.js';
 import { UZ_TASHKENT_CONTEXT_EXTENSIONS } from './uz-tashkent-context-extensions.js';
+import { UZ_SAMARKAND_CONTEXT_EXTENSIONS } from './uz-samarkand-context-extensions.js';
 
 export { UA_REGION_ENTRIES, UA_SECONDARY_CITIES, matchUkraineRegion, matchUkraineSecondaryCity };
 
@@ -26,6 +27,7 @@ export const LOCATION_DICTIONARIES = Object.freeze({
   UZ: mergeLocationCountries(
     BASE_LOCATION_DICTIONARIES.UZ || {},
     UZ_TASHKENT_CONTEXT_EXTENSIONS,
+    UZ_SAMARKAND_CONTEXT_EXTENSIONS,
   ),
   KZ: mergeLocationCountries(
     BASE_LOCATION_DICTIONARIES.KZ || {},
