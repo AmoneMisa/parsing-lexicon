@@ -186,4 +186,8 @@ export const HOUSING_POI_EXTENSIONS = Object.freeze([
     uk: ['Автовокзал «Автоекспрес»', 'АС «АВТОЕКСПРЕС-ЧЕРКАСИ»', 'Автовокзал «Автоекспрес» Черкаси'],
     en: ['Cherkasy Autoexpress Bus Station'],
   }, { category: 'bus_station', country: 'UA', city: 'Cherkasy', display: { uk: 'Автовокзал «Автоекспрес»', en: 'Cherkasy Autoexpress Bus Station' } }),
+  group('Dnipro Plaza', {
+    uk: ['ТРЦ «Дніпро-Плаза»', 'ТРЦ Дніпро Плаза', 'Дніпро Плаза'],
+    en: ['Dnipro Plaza'],
+  }, { category: 'shopping_mall', country: 'UA', city: 'Cherkasy', display: { uk: 'ТРЦ «Дніпро-Плаза»', en: 'Dnipro Plaza' } }),
 ]);
