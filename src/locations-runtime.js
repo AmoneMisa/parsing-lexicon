@@ -13,6 +13,7 @@ import { KG_OSH_LOCATION_EXTENSIONS } from './kg-osh-location-extensions.js';
 import { KG_KARAKOL_LOCATION_EXTENSIONS } from './kg-karakol-location-extensions.js';
 import { KZ_DISTRICT_EXTENSIONS } from './kz-district-extensions.js';
 import { KZ_SCRAPED_ADDRESS_EXTENSIONS as KZ_ADDRESS_EXTENSIONS } from './kz-address-extensions.js';
+import { KZ_PRIMARY_ADDRESS_EXTENSIONS } from './kz-primary-address-extensions.js';
 import { KZ_SCRAPED_TAIL_ADDRESS_EXTENSIONS as KZ_REGIONAL_ADDRESS_EXTENSIONS } from './kz-regional-address-extensions.js';
 import { KZ_SCRAPED_LOCATION_EXTENSIONS as KZ_RESIDENTIAL_EXTENSIONS } from './kz-residential-extensions.js';
 import { KZ_SCRAPED_SECONDARY_LOCATION_EXTENSIONS as KZ_REGIONAL_RESIDENTIAL_EXTENSIONS } from './kz-regional-residential-extensions.js';
@@ -61,6 +62,7 @@ export const LOCATION_DICTIONARIES = Object.freeze({
     KZ_RESIDENTIAL_EXTENSIONS,
     KZ_REGIONAL_RESIDENTIAL_EXTENSIONS,
     KZ_ADDRESS_EXTENSIONS,
+    KZ_PRIMARY_ADDRESS_EXTENSIONS,
     KZ_REGIONAL_ADDRESS_EXTENSIONS,
     KZ_KOSTANAY_LOCATION_EXTENSIONS,
     KZ_PAVLODAR_LOCATION_EXTENSIONS,
