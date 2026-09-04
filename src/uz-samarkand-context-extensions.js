@@ -37,6 +37,19 @@ export const UZ_SAMARKAND_CONTEXT_EXTENSIONS = Object.freeze({
         'Sattepo mahallasi', 'Sartepa mahallasi', 'махалля Саттепо', 'махалля Сартепа',
         'микрорайон Сартепа', 'мкр Сартепа',
       ], { en: 'Sattepo', uz: 'Sattepo', ru: 'Саттепо' }),
+      entry("Do'stlik", 'mahalla', [
+        'Dostlik', 'Do‘stlik', "Do'stlik mahallasi", 'Do‘stlik mahallasi',
+        'Дустлик', 'Дўстлик', 'махалля Дустлик', 'махалля Дўстлик',
+      ], { en: "Do'stlik", uz: "Do'stlik", ru: 'Дустлик' }),
+      entry('Yangi Hayot', 'mahalla', [
+        'Yangihayot', 'Yangi Hayot mahallasi', 'Yangihayot mahallasi',
+        'Янги Хаёт', 'Янги Ҳаёт', 'Янгихаёт', 'махалля Янги Хаёт', 'махалля Янгихаёт',
+      ], { en: 'Yangi Hayot', uz: 'Yangi Hayot', ru: 'Янги Хаёт' }),
+      entry("O'rta Xo'jasoat", 'mahalla', [
+        'O‘rta Xo‘jasoat', "O'rta Xo'ja Soat", 'Orta Xojasoat', 'Orta Khojasoat',
+        "O'rta Xo'jasoat mahallasi", 'Урта Хужасоат', 'Урта Хужасахат',
+        'Ўрта Хўжасоат', 'махалля Урта Хужасоат',
+      ], { en: "O'rta Xo'jasoat", uz: "O'rta Xo'jasoat", ru: 'Урта Хужасоат' }),
     ]),
     residentialComplexes: Object.freeze([
       residential('Afrosiyob Residence', [
