@@ -10,10 +10,10 @@ import { KG_LOCATION_EXTENSIONS } from './kg-location-extensions.js';
 import { KG_OSH_LOCATION_EXTENSIONS } from './kg-osh-location-extensions.js';
 import { KG_KARAKOL_LOCATION_EXTENSIONS } from './kg-karakol-location-extensions.js';
 import { KZ_DISTRICT_EXTENSIONS } from './kz-district-extensions.js';
-import { KZ_SCRAPED_ADDRESS_EXTENSIONS } from './kz-scraped-address-extensions.js';
-import { KZ_SCRAPED_TAIL_ADDRESS_EXTENSIONS } from './kz-scraped-address-extensions-tail.js';
-import { KZ_SCRAPED_LOCATION_EXTENSIONS } from './kz-scraped-location-extensions.js';
-import { KZ_SCRAPED_SECONDARY_LOCATION_EXTENSIONS } from './kz-scraped-location-extensions-secondary.js';
+import { KZ_SCRAPED_ADDRESS_EXTENSIONS as KZ_ADDRESS_EXTENSIONS } from './kz-address-extensions.js';
+import { KZ_SCRAPED_TAIL_ADDRESS_EXTENSIONS as KZ_REGIONAL_ADDRESS_EXTENSIONS } from './kz-regional-address-extensions.js';
+import { KZ_SCRAPED_LOCATION_EXTENSIONS as KZ_RESIDENTIAL_EXTENSIONS } from './kz-residential-extensions.js';
+import { KZ_SCRAPED_SECONDARY_LOCATION_EXTENSIONS as KZ_REGIONAL_RESIDENTIAL_EXTENSIONS } from './kz-regional-residential-extensions.js';
 import { UA_RESIDENTIAL_EXTENSIONS } from './ua-residential-extensions.js';
 import { UZ_TASHKENT_CONTEXT_EXTENSIONS } from './uz-tashkent-context-extensions.js';
 import { UZ_SAMARKAND_CONTEXT_EXTENSIONS } from './uz-samarkand-context-extensions.js';
@@ -34,10 +34,10 @@ export const LOCATION_DICTIONARIES = Object.freeze({
   KZ: mergeLocationCountries(
     BASE_LOCATION_DICTIONARIES.KZ || {},
     KZ_DISTRICT_EXTENSIONS,
-    KZ_SCRAPED_LOCATION_EXTENSIONS,
-    KZ_SCRAPED_SECONDARY_LOCATION_EXTENSIONS,
-    KZ_SCRAPED_ADDRESS_EXTENSIONS,
-    KZ_SCRAPED_TAIL_ADDRESS_EXTENSIONS,
+    KZ_RESIDENTIAL_EXTENSIONS,
+    KZ_REGIONAL_RESIDENTIAL_EXTENSIONS,
+    KZ_ADDRESS_EXTENSIONS,
+    KZ_REGIONAL_ADDRESS_EXTENSIONS,
   ),
   KG: mergeLocationCountries(
     BASE_LOCATION_DICTIONARIES.KG || {},
