@@ -14,6 +14,7 @@ export const KG_OSH_LOCATION_EXTENSIONS = Object.freeze({
       ['Пятилетка', 'Pyatiletka', 'Пятилетка айылы', 'село Пятилетка'],
       ['Тээке', 'Teeke', 'Тээке айылы', 'село Тээке'],
       ['Учар', 'Uchar', 'Учар айылы', 'село Учар'],
+      ['Ак-Буура-2', 'Ак Буура 2', 'Ак-Бура-2', 'Ак Бура 2', 'Ak-Buura-2', 'Ak Buura 2', 'Ак-Буура-2 айылы', 'село Ак-Буура-2'],
     ]),
     residentialComplexes: locationEntries([
       ['Asman Residence 1', 'Asman Residence-1', 'ASMAN RESIDENCE 1', 'Асман Резиденс 1', 'Асман Резиденс-1', 'ЖК Asman Residence 1', 'ЖК Асман Резиденс 1', 'Asman Residence 1 турак жай комплекси'],
