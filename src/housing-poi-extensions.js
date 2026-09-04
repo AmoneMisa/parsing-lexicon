@@ -169,4 +169,9 @@ export const HOUSING_POI_EXTENSIONS = Object.freeze([
     ru: ['железнодорожный вокзал Черкассы'],
     en: ['Cherkasy railway station'],
   }, { category: 'transport', country: 'UA', city: 'Cherkasy', display: { uk: 'Залізничний вокзал Черкаси', en: 'Cherkasy Railway Station' } }),
+  group('Cherkasy Bus Station No. 1', {
+    uk: ['Автовокзал «Черкаси»', 'Автовокзал №1', 'Новий автовокзал', 'Автовокзал «Новий»', 'автостанція №1'],
+    ru: ['автовокзал Черкассы'],
+    en: ['Cherkasy Bus Station No. 1'],
+  }, { category: 'bus_station', country: 'UA', city: 'Cherkasy', display: { uk: 'Автовокзал «Черкаси»', en: 'Cherkasy Bus Station No. 1' } }),
 ]);
