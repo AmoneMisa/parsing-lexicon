@@ -2,13 +2,16 @@ import { locationEntries } from './location-merge.js';
 
 export const KG_OSH_LOCATION_EXTENSIONS = Object.freeze({
   Osh: Object.freeze({
+    districts: locationEntries([
+      ['Керме-Тоо', 'Керме Тоо', 'Kerme-Too', 'Kerme Too', 'МТУ Керме-Тоо', 'МАБ Керме-Тоо', 'Керме-Тоо муниципалдык аймагы'],
+    ]),
     microdistricts: locationEntries([
       ['Anar', 'Анар', 'микрорайон Анар', 'мкр Анар', 'Анар микрорайон', 'Anar microdistrict'],
       ['Tuleyken', 'Тулейкен', 'Толойкон', 'Төлөйкөн', 'микрорайон Тулейкен', 'микрорайон Толойкон', 'мкр Тулейкен', 'Tuleyken microdistrict', 'Toloikon microdistrict'],
+      ['Кулатов', 'Т. Кулатова', 'Кулатова', 'микрорайон Кулатов', 'микрорайон Т. Кулатова', 'мкр Кулатов', 'Кулатов микрорайон', 'Кулатов кичи району'],
     ]),
     settlements: locationEntries([
       ['Кеңеш', 'Кенеш', 'Kenesh', 'Кеңеш айылы', 'село Кеңеш', 'село Кенеш'],
-      ['Керме-Тоо', 'Керме Тоо', 'Kerme-Too', 'Kerme Too', 'Керме-Тоо айылы', 'село Керме-Тоо'],
       ['Озгур', 'Ozgur', 'Озгур айылы', 'село Озгур'],
       ['Орке', 'Orke', 'Орке айылы', 'село Орке'],
       ['Пятилетка', 'Pyatiletka', 'Пятилетка айылы', 'село Пятилетка'],

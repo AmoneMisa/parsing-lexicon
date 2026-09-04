@@ -6,7 +6,6 @@ import { LOCATION_DICTIONARIES, matchDictionaryLocation } from '../src/locations
 test('Osh settlement aliases resolve through the city dictionary', () => {
   const expected = new Map([
     ['Кенеш', 'Кеңеш'],
-    ['Kerme Too', 'Керме-Тоо'],
     ['Озгур айылы', 'Озгур'],
     ['село Орке', 'Орке'],
     ['Pyatiletka', 'Пятилетка'],
@@ -21,6 +20,20 @@ test('Osh settlement aliases resolve through the city dictionary', () => {
     assert.equal(match?.type, 'settlements', input);
     assert.equal(match?.name, canonical, input);
   }
+});
+
+test('Osh Kerme-Too municipal territory and Kulatov microdistrict keep separate semantics', () => {
+  const kermeToo = matchDictionaryLocation('МТУ Керме-Тоо', 'KG', 'Osh');
+  assert.equal(kermeToo?.type, 'districts');
+  assert.equal(kermeToo?.name, 'Керме-Тоо');
+
+  const kulatov = matchDictionaryLocation('микрорайон Т. Кулатова', 'KG', 'Osh');
+  assert.equal(kulatov?.type, 'microdistricts');
+  assert.equal(kulatov?.name, 'Кулатов');
+
+  const osh = LOCATION_DICTIONARIES.KG.Osh;
+  assert.equal(osh.settlements.some(({ name }) => name === 'Керме-Тоо'), false);
+  assert.equal(osh.districts.some(({ name }) => name === 'Керме-Тоо'), true);
 });
 
 test('Osh residential aliases resolve through the city dictionary', () => {
