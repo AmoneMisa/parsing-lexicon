@@ -96,6 +96,18 @@ export const UZ_TASHKENT_CONTEXT_EXTENSIONS = Object.freeze({
         'ЖК Olmos Residence', 'Olmos Residence TJM', 'Olmos Residence turar joy majmuasi',
         'Олмос Резиденс', 'ЖК Олмос Резиденс',
       ]),
+      residentialEntry('Yangi Shahar', [
+        'ЖК Yangi Shahar', 'Yangi Shahar TJM', 'Yangi Shahar turar joy majmuasi', 'Yangi Shahar turar-joy majmuasi',
+        'Янги Шахар', 'ЖК Янги Шахар',
+      ]),
+      residentialEntry('Yashnabod', [
+        'Yashnobod', 'ЖК Yashnabod', 'ЖК Yashnobod', 'Yashnabod TJM', 'Yashnobod turar joy majmuasi',
+        'Яшнабад', 'Яшнобод', 'ЖК Яшнабад', 'ЖК Яшнобод',
+      ]),
+      residentialEntry('Turkiston', [
+        'Turkiston Avenue', 'TJM Turkiston', 'ЖК Turkiston', 'Turkiston TJM', 'Turkiston turar joy majmuasi',
+        'Туркистон', 'ЖК Туркистон', 'Туркистон Авеню',
+      ]),
     ]),
   }),
 });
