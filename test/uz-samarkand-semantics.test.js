@@ -16,6 +16,8 @@ test('Samarkand semantic duplicates have one canonical owner', () => {
 
   assert.equal(samarkand.residentialComplexes.some(({ name }) => name === 'Samarkand City'), true);
   assert.equal(samarkand.landmarks.some(({ name }) => name === 'Samarkand City'), false);
+  assert.equal(samarkand.mahallas.filter(({ name }) => name === 'Sattepo').length, 1);
+  assert.equal(samarkand.microdistricts?.some(({ name }) => name === 'Sartepa'), false);
 });
 
 test('Samarkand Russian and Uzbek aliases resolve through corrected semantics', () => {
@@ -26,11 +28,30 @@ test('Samarkand Russian and Uzbek aliases resolve through corrected semantics', 
     ['Siyob bozori', ['landmarks', 'Siyob Bazaar']],
     ['Университетский бульвар', ['streets', 'University Boulevard']],
     ['Universitet xiyoboni', ['streets', 'University Boulevard']],
+    ['улица Гагарина', ['streets', 'Gagarin Street']],
+    ["Spitamen shoh ko'chasi", ['streets', 'Spitamen Avenue']],
+    ['микрорайон Сартепа', ['mahallas', 'Sattepo']],
   ]);
 
   for (const [input, [type, canonical]] of expected) {
     const match = matchDictionaryLocation(input, 'UZ', 'Samarkand');
     assert.equal(match?.type, type, input);
+    assert.equal(match?.name, canonical, input);
+  }
+});
+
+test('Samarkand residential complexes resolve from RU and UZ listing forms', () => {
+  const expected = new Map([
+    ['ЖК Афросиёб Резиденс', 'Afrosiyob Residence'],
+    ['Shahriston by TXT Group TJM', 'Shahriston by TXT Group'],
+    ["Bog'ishamol City", 'Bagishamal City'],
+    ['ЖК Азия Таун', 'Asia Town'],
+    ['Бунёдкор турар жой мажмуаси', 'Bunyodkor'],
+  ]);
+
+  for (const [input, canonical] of expected) {
+    const match = matchDictionaryLocation(input, 'UZ', 'Samarkand');
+    assert.equal(match?.type, 'residentialComplexes', input);
     assert.equal(match?.name, canonical, input);
   }
 });
