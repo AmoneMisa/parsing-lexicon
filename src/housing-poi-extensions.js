@@ -178,4 +178,8 @@ export const HOUSING_POI_EXTENSIONS = Object.freeze([
     uk: ['Автостанція «Черкаси-2»', 'Черкаси АС-2', 'Автовокзал-2', 'Автовокзал №2', 'автостанція №2'],
     en: ['Cherkasy Bus Station No. 2'],
   }, { category: 'bus_station', country: 'UA', city: 'Cherkasy', display: { uk: 'Автостанція «Черкаси-2»', en: 'Cherkasy Bus Station No. 2' } }),
+  group('Cherkasy Bus Station No. 3', {
+    uk: ['Автостанція «Черкаси-3»', 'Черкаси АС-3', 'Черкаси АС3', 'автостанція №3'],
+    en: ['Cherkasy Bus Station No. 3'],
+  }, { category: 'bus_station', country: 'UA', city: 'Cherkasy', display: { uk: 'Автостанція «Черкаси-3»', en: 'Cherkasy Bus Station No. 3' } }),
 ]);
