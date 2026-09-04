@@ -26,6 +26,20 @@ import { UZ_BUKHARA_LOCATION_EXTENSIONS } from './uz-bukhara-location-extensions
 
 export { UA_REGION_ENTRIES, UA_SECONDARY_CITIES, matchUkraineRegion, matchUkraineSecondaryCity };
 
+// Sattepo is a mahalla in the canonical Samarkand layer. The legacy base seed
+// also exposes the same physical place as the Sartepa microdistrict; remove
+// that duplicate owner before runtime extensions are merged.
+const UZ_RUNTIME_BASE_LOCATION_DICTIONARIES = Object.freeze({
+  ...(BASE_LOCATION_DICTIONARIES.UZ || {}),
+  Samarkand: Object.freeze({
+    ...(BASE_LOCATION_DICTIONARIES.UZ?.Samarkand || {}),
+    microdistricts: Object.freeze(
+      (BASE_LOCATION_DICTIONARIES.UZ?.Samarkand?.microdistricts || [])
+        .filter(({ name }) => name !== 'Sartepa'),
+    ),
+  }),
+});
+
 export const LOCATION_DICTIONARIES = Object.freeze({
   ...BASE_LOCATION_DICTIONARIES,
   UA: mergeLocationCountries(
@@ -33,7 +47,7 @@ export const LOCATION_DICTIONARIES = Object.freeze({
     UA_RESIDENTIAL_EXTENSIONS,
   ),
   UZ: mergeLocationCountries(
-    BASE_LOCATION_DICTIONARIES.UZ || {},
+    UZ_RUNTIME_BASE_LOCATION_DICTIONARIES,
     UZ_TASHKENT_CONTEXT_EXTENSIONS,
     UZ_SAMARKAND_CONTEXT_EXTENSIONS,
     UZ_BUKHARA_LOCATION_EXTENSIONS,
