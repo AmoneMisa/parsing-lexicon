@@ -15,6 +15,14 @@ test('Astana and Almaty scrape-backed address canonicals are registered', () => 
   for (const name of ['Samal-1', 'Aksai-3A', 'Koktem-2', 'Zhetysu-1', 'Nur Alatau']) {
     assert.ok(almatyMicrodistricts.has(name), `Almaty should contain ${name}`);
   }
+
+  const almatyStreets = names('Almaty', 'streets');
+  for (const name of ['Al-Farabi Avenue', 'Dostyk Avenue', 'Rozybakiev Street', 'Satpayev Street', 'Tole Bi Street']) {
+    assert.ok(almatyStreets.has(name), `Almaty should reuse existing canonical ${name}`);
+  }
+  for (const duplicate of ['проспект Аль-Фараби', 'проспект Достык', 'Улица Абдуллы Розыбакиева', 'Улица Сатпаева', 'Улица Толе Би']) {
+    assert.equal(almatyStreets.has(duplicate), false, `Almaty should not create duplicate canonical ${duplicate}`);
+  }
 });
 
 test('Astana Kazakh and Latin address forms resolve to one canonical', () => {
@@ -38,10 +46,13 @@ test('Almaty Russian, Kazakh and Latin address forms resolve to one canonical', 
     ['Ақсай-3А шағын ауданы', 'microdistricts', 'Aksai-3A'],
     ['Жетісу-1 шағын ауданы', 'microdistricts', 'Zhetysu-1'],
     ['Көктем-2 шағын ауданы', 'microdistricts', 'Koktem-2'],
-    ['Достық даңғылы', 'streets', 'проспект Достык'],
+    ['Әл-Фараби даңғылы', 'streets', 'Al-Farabi Avenue'],
+    ['Достық даңғылы', 'streets', 'Dostyk Avenue'],
+    ['улица Абдуллы Розыбакиева', 'streets', 'Rozybakiev Street'],
     ['Бөгенбай батыр көшесі', 'streets', 'Улица Богенбай батыра'],
     ['Нұртас Оңдасынов көшесі', 'streets', 'Улица Нуртаса Ондасынова'],
-    ['Töle Bi Street', 'streets', 'Улица Толе Би'],
+    ['Қаныш Сәтбаев көшесі', 'streets', 'Satpayev Street'],
+    ['Töle Bi Street', 'streets', 'Tole Bi Street'],
   ];
 
   for (const [text, type, expected] of cases) {
