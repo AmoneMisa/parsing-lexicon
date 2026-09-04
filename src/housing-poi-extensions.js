@@ -190,4 +190,9 @@ export const HOUSING_POI_EXTENSIONS = Object.freeze([
     uk: ['ТРЦ «Дніпро-Плаза»', 'ТРЦ Дніпро Плаза', 'Дніпро Плаза'],
     en: ['Dnipro Plaza'],
   }, { category: 'shopping_mall', country: 'UA', city: 'Cherkasy', display: { uk: 'ТРЦ «Дніпро-Плаза»', en: 'Dnipro Plaza' } }),
+  group('LUBAVA', {
+    uk: ['ТРЦ «LUBAVA»', 'ТРЦ LUBAVA', 'ТРЦ «Любава»', 'ТРЦ Любава'],
+    ru: ['ТРЦ «LUBAVA»', 'ТРЦ Любава'],
+    en: ['LUBAVA', 'Lubava'],
+  }, { category: 'shopping_mall', country: 'UA', city: 'Cherkasy', display: { uk: 'ТРЦ «LUBAVA»', en: 'LUBAVA' } }),
 ]);
