@@ -69,6 +69,7 @@ export const KZ_ALMATY_CLEANED_RESIDENTIAL_EXTENSIONS = Object.freeze({
       row('Шахристан', 'Shakhristan', 'Shahristan'),
       row('Шугыла', 'Шұғыла', 'Shugyla', 'Shughyla', 'ЖК Шұғыла'),
       row('Юбилейный', 'Yubileinyi', 'Yubileynyi'),
+      row('Премьера', 'Premiera', 'Премьера ЖК', 'ЖК Премьера'),
     ]),
   }),
 });

@@ -8,7 +8,7 @@ const names = () => new Set((dictionaryFor('KZ', 'Almaty')?.residentialComplexes
 
 test('remaining cleaned Almaty residential batch is complete', () => {
   const imported = KZ_ALMATY_CLEANED_RESIDENTIAL_EXTENSIONS.Almaty.residentialComplexes;
-  assert.equal(imported.length, 41);
+  assert.equal(imported.length, 42);
 
   const almaty = names();
   for (const name of [
