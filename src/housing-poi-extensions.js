@@ -164,4 +164,9 @@ export const HOUSING_POI_EXTENSIONS = Object.freeze([
     uk: ['Сумський державний університет', 'СумДУ'],
     en: ['SumDU'],
   }, { category: 'university', country: 'UA', city: 'Sumy', display: { uk: 'Сумський державний університет', en: 'Sumy State University' } }),
+  group('Cherkasy Railway Station', {
+    uk: ['залізничний вокзал Черкаси', 'вокзал Черкаси', 'станція Черкаси'],
+    ru: ['железнодорожный вокзал Черкассы'],
+    en: ['Cherkasy railway station'],
+  }, { category: 'transport', country: 'UA', city: 'Cherkasy', display: { uk: 'Залізничний вокзал Черкаси', en: 'Cherkasy Railway Station' } }),
 ]);
