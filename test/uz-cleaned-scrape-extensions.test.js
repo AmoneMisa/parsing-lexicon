@@ -49,6 +49,16 @@ test('Tashkent cleaned residential aliases retain Latin, Russian and Uzbek listi
   assert.ok(olmos);
   assert.ok(olmos.aliases.includes('Олмос Резиденс'));
   assert.ok(olmos.aliases.includes('Olmos Residence TJM'));
+
+  const yashnabod = byName('Yashnabod');
+  assert.ok(yashnabod);
+  assert.ok(yashnabod.aliases.includes('Yashnobod'));
+  assert.ok(yashnabod.aliases.includes('Яшнобод'));
+
+  const turkiston = byName('Turkiston');
+  assert.ok(turkiston);
+  assert.ok(turkiston.aliases.includes('Turkiston Avenue'));
+  assert.ok(turkiston.aliases.includes('Туркистон'));
 });
 
 test('runtime matcher resolves cleaned Tashkent residential translations', () => {
@@ -63,4 +73,7 @@ test('runtime matcher resolves cleaned Tashkent residential translations', () =>
   assert.equal(matchDictionaryLocation('ЖК Шохсарой Резиденс', 'UZ', 'Tashkent')?.name, 'Shoxsaroy Residence');
   assert.equal(matchDictionaryLocation('ЖК Яккасарай Палас', 'UZ', 'Tashkent')?.name, 'Yakkasaroy Palace');
   assert.equal(matchDictionaryLocation('ЖК Олмос Резиденс', 'UZ', 'Tashkent')?.name, 'Olmos Residence');
+  assert.equal(matchDictionaryLocation('ЖК Янги Шахар', 'UZ', 'Tashkent')?.name, 'Yangi Shahar');
+  assert.equal(matchDictionaryLocation('ЖК Яшнобод', 'UZ', 'Tashkent')?.name, 'Yashnabod');
+  assert.equal(matchDictionaryLocation('Туркистон Авеню', 'UZ', 'Tashkent')?.name, 'Turkiston');
 });
