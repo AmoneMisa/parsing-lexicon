@@ -11,6 +11,7 @@ import { KG_BISHKEK_STREET_EXTENSIONS } from './kg-bishkek-street-extensions.js'
 import { KG_BISHKEK_RESIDENTIAL_EXTENSIONS } from './kg-bishkek-residential-extensions.js';
 import { KG_OSH_LOCATION_EXTENSIONS } from './kg-osh-location-extensions.js';
 import { KG_KARAKOL_LOCATION_EXTENSIONS } from './kg-karakol-location-extensions.js';
+import { KG_JALAL_ABAD_LOCATION_EXTENSIONS } from './kg-jalal-abad-location-extensions.js';
 import { KZ_DISTRICT_EXTENSIONS } from './kz-district-extensions.js';
 import { KZ_SCRAPED_ADDRESS_EXTENSIONS as KZ_ADDRESS_EXTENSIONS } from './kz-address-extensions.js';
 import { KZ_PRIMARY_ADDRESS_EXTENSIONS } from './kz-primary-address-extensions.js';
@@ -86,6 +87,7 @@ export const LOCATION_DICTIONARIES = Object.freeze({
     KG_BISHKEK_RESIDENTIAL_EXTENSIONS,
     KG_OSH_LOCATION_EXTENSIONS,
     KG_KARAKOL_LOCATION_EXTENSIONS,
+    KG_JALAL_ABAD_LOCATION_EXTENSIONS,
   ),
 });
 
