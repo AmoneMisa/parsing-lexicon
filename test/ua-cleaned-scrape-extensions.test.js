@@ -3,12 +3,30 @@ import assert from 'node:assert/strict';
 
 import { LOCATION_DICTIONARIES, matchDictionaryLocation } from '../src/locations-runtime.js';
 
+const kyivResidentials = LOCATION_DICTIONARIES.UA.Kyiv.residentialComplexes;
 const dniproResidentials = LOCATION_DICTIONARIES.UA.Dnipro.residentialComplexes;
 const odesaResidentials = LOCATION_DICTIONARIES.UA.Odesa.residentialComplexes;
 
 function byName(items, name) {
   return items.find((entry) => entry.name === name);
 }
+
+test('Kyiv cleaned residential aliases keep Ukrainian, Russian and Latin forms', () => {
+  const krister = byName(kyivResidentials, 'Krister Hrad');
+  assert.ok(krister);
+  assert.ok(krister.aliases.includes('ЖК Крістер Град'));
+  assert.ok(krister.aliases.includes('ЖК Кристер Град'));
+
+  const stolychni = byName(kyivResidentials, 'Stolychni Kashtany');
+  assert.ok(stolychni);
+  assert.ok(stolychni.aliases.includes('Столичні каштани'));
+  assert.ok(stolychni.aliases.includes('Столичные каштаны'));
+
+  const hillside = byName(kyivResidentials, 'HillSide');
+  assert.ok(hillside);
+  assert.ok(hillside.aliases.includes('Клубний будинок ХіллСайд'));
+  assert.ok(hillside.aliases.includes('Клубный дом ХиллСайд'));
+});
 
 test('Dnipro cleaned residential aliases keep Ukrainian, Russian and Latin forms', () => {
   const pikhtovyi = byName(dniproResidentials, 'Pikhtovyi');
@@ -40,6 +58,11 @@ test('Odesa cleaned residential aliases keep Ukrainian, Russian and Latin forms'
 });
 
 test('cleaned scrape aliases are resolved by the runtime dictionary matcher', () => {
+  assert.equal(matchDictionaryLocation('оренда у ЖК Крістер Град', 'UA', 'Kyiv')?.name, 'Krister Hrad');
+  assert.equal(matchDictionaryLocation('квартира в ЖК Столичные каштаны', 'UA', 'Kyiv')?.name, 'Stolychni Kashtany');
+  assert.equal(matchDictionaryLocation('Клубний будинок ХіллСайд, Київ', 'UA', 'Kyiv')?.name, 'HillSide');
+  assert.equal(matchDictionaryLocation('ЖК Паркова Вежа', 'UA', 'Kyiv')?.name, 'Parkova Vezha');
+
   assert.equal(matchDictionaryLocation('квартира у ЖК Ялицевий', 'UA', 'Dnipro')?.name, 'Pikhtovyi');
   assert.equal(matchDictionaryLocation('продаж в ЖК Лайтхаус', 'UA', 'Dnipro')?.name, 'Lighthouse');
   assert.equal(matchDictionaryLocation('apartment in Palermo residential complex', 'UA', 'Dnipro')?.name, 'Palermo');
