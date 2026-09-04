@@ -21,6 +21,57 @@ const residentialEntries = (rows = []) => Object.freeze(rows.map(([name, ...alia
  * canonicals compatible with the rest of the Ukraine location dictionaries.
  */
 export const UA_CLEANED_SCRAPE_EXTENSIONS = Object.freeze({
+  Kyiv: Object.freeze({
+    residentialComplexes: residentialEntries([
+      [
+        'Krister Hrad',
+        'Krister Grad',
+        'Крістер Град', 'ЖК Крістер Град', 'житловий комплекс Крістер Град',
+        'Кристер Град', 'ЖК Кристер Град', 'жилой комплекс Кристер Град',
+      ],
+      [
+        'Edelweiss House',
+        'EDELWEISS HOUSE', 'ЖК Edelweiss House',
+        'Едельвейс Хаус', 'ЖК Едельвейс Хаус', 'житловий комплекс Едельвейс Хаус',
+        'Эдельвейс Хаус', 'ЖК Эдельвейс Хаус', 'жилой комплекс Эдельвейс Хаус',
+      ],
+      [
+        'Nyvky Plaza',
+        'Nivki Plaza', 'ЖК Nyvky Plaza',
+        'Нивки Плаза', 'ЖК Нивки Плаза', 'житловий комплекс Нивки Плаза', 'жилой комплекс Нивки Плаза',
+      ],
+      [
+        'Stolychni Kashtany',
+        'Stolichni Kashtany',
+        'Столичні каштани', 'ЖК Столичні каштани', 'житловий комплекс Столичні каштани',
+        'Столичные каштаны', 'ЖК Столичные каштаны', 'жилой комплекс Столичные каштаны',
+      ],
+      [
+        'SmartHouse',
+        'Smart House', 'ЖК SmartHouse', 'ЖК Smart House',
+        'Смарт Хаус', 'Смартхаус', 'ЖК Смарт Хаус', 'ЖК Смартхаус',
+      ],
+      [
+        'Parkova Vezha',
+        'Parkova Vezha Kyiv',
+        'Паркова Вежа', 'ЖК Паркова Вежа', 'житловий комплекс Паркова Вежа',
+        'Парковая башня', 'ЖК Парковая башня', 'жилой комплекс Парковая башня',
+      ],
+      [
+        'HillSide',
+        'Hill Side', 'HillSide Kyiv', 'КБ HillSide',
+        'ХіллСайд', 'Хілл Сайд', 'Клубний будинок HillSide', 'Клубний будинок ХіллСайд',
+        'ХиллСайд', 'Хилл Сайд', 'Клубный дом HillSide', 'Клубный дом ХиллСайд',
+      ],
+      [
+        'Struetinsky',
+        'Struetinsky Residence',
+        'Струтинський', 'Клубний будинок Струтинський', 'Клубний будинок Struetinsky',
+        'Струтинский', 'Клубный дом Струтинский', 'Клубный дом Struetinsky',
+      ],
+    ]),
+  }),
+
   Dnipro: Object.freeze({
     residentialComplexes: residentialEntries([
       [
