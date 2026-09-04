@@ -12,7 +12,7 @@ import { KZ_SCRAPED_ADDRESS_EXTENSIONS } from './kz-scraped-address-extensions.j
 import { KZ_SCRAPED_TAIL_ADDRESS_EXTENSIONS } from './kz-scraped-address-extensions-tail.js';
 import { KZ_SCRAPED_LOCATION_EXTENSIONS } from './kz-scraped-location-extensions.js';
 import { KZ_SCRAPED_SECONDARY_LOCATION_EXTENSIONS } from './kz-scraped-location-extensions-secondary.js';
-import { UA_CLEANED_SCRAPE_EXTENSIONS } from './ua-cleaned-scrape-extensions.js';
+import { UA_RESIDENTIAL_EXTENSIONS } from './ua-residential-extensions.js';
 import { UZ_TASHKENT_CONTEXT_EXTENSIONS } from './uz-tashkent-context-extensions.js';
 import { UZ_SAMARKAND_CONTEXT_EXTENSIONS } from './uz-samarkand-context-extensions.js';
 
@@ -22,7 +22,7 @@ export const LOCATION_DICTIONARIES = Object.freeze({
   ...BASE_LOCATION_DICTIONARIES,
   UA: mergeLocationCountries(
     BASE_LOCATION_DICTIONARIES.UA || {},
-    UA_CLEANED_SCRAPE_EXTENSIONS,
+    UA_RESIDENTIAL_EXTENSIONS,
   ),
   UZ: mergeLocationCountries(
     BASE_LOCATION_DICTIONARIES.UZ || {},
