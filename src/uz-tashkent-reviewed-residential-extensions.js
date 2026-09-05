@@ -8,6 +8,8 @@ import { locationEntries } from './location-merge.js';
 export const UZ_TASHKENT_REVIEWED_RESIDENTIAL_EXTENSIONS = Object.freeze({
   Tashkent: Object.freeze({
     residentialComplexes: locationEntries([
+      ['ЖК "Актепа Сохил буйи"', 'ЖК Актепа Сохил буйи', 'Актепа Сохил буйи'],
+      ['ЖК "Бтги Шамол"', 'ЖК Бтги Шамол', 'Бтги Шамол'],
       ['Жилой комплекс Elegant', 'ЖК Elegant', 'Elegant'],
       ['ЖК "Грин Сити" (Дровосеки)', 'ЖК Грин Сити (Дровосеки)', 'Грин Сити (Дровосеки)', 'Грин Сити'],
       ['жилой комплекс Гульсарай', 'ЖК Гульсарай', 'Гульсарай'],
