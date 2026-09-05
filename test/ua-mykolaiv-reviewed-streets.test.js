@@ -43,8 +43,11 @@ test('reviewed Mykolaiv aliases resolve with explicit street qualifiers', () => 
   assertStreetMatch('Бугский бульвар', 'Бузький бульвар');
 });
 
-test('existing Flotskyi Boulevard remains a single independent canonical owner', () => {
+test('reviewed Mykolaiv aliases do not absorb the independent Flotskyi boulevard', () => {
   const city = dictionaryFor('UA', 'Mykolaiv');
   const owners = (city.streets || []).filter((entry) => entry.name === 'Flotskyi Boulevard');
-  assert.equal(owners.length, 1);
+  assert.equal(owners.length, 0);
+
+  const match = matchDictionaryLocation('Флотский бульвар', 'UA', 'Mykolaiv');
+  assert.notEqual(match?.name, 'Бузький бульвар');
 });
