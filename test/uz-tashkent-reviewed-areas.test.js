@@ -15,22 +15,25 @@ const assertMatch = (text, type, name) => {
 test('reviewed Tashkent area candidates resolve to their semantic owners', () => {
   const tashkent = dictionaryFor('UZ', 'Tashkent');
 
-  for (const name of ['Abu Ali ibn Sina-2', 'Guliston', 'Ahmad Yugnakiy', 'Aviasozlar-2', 'Aviasozlar-3', 'Feruza-3', 'Humoyun', 'Tuzel-2', 'Yalangach', "Yo'ldosh-2", "Yo'ldosh-9", "Yo'ldosh-16", "Yo'ldosh-17", "Yo'ldosh-C2", 'Beltepa']) {
+  for (const name of ['Ibn Sino-2', 'Guliston', 'Ahmad Yugnakiy', 'Aviasozlar-2', 'Aviasozlar-3', 'Feruza-3', 'Humoyun', 'Tuzel-2', 'Yalangach', "Yo'ldosh-2", "Yo'ldosh-9", "Yo'ldosh-16", "Yo'ldosh-17", "Yo'ldosh-C2", 'Beltepa']) {
     assert.ok(byName(tashkent.localAreas, name), name);
   }
   for (const name of ['Chilanzar-6', 'Chilanzar-7', 'Chilanzar-8', 'Chilanzar-14', 'Chilanzar-20', 'Chilanzar-21', 'Chilanzar-22', 'Dilbulok']) {
     assert.ok(byName(tashkent.microdistricts, name), name);
   }
   assert.ok(byName(tashkent.mahallas, 'Yangi Tashkent'));
-  assert.ok(byName(tashkent.mahallas, 'Toshkent mahallasi'));
+  assert.equal(byName(tashkent.localAreas, 'Abu Ali ibn Sina-2'), undefined);
+  assert.equal(byName(tashkent.mahallas, 'Toshkent mahallasi'), undefined);
 
-  assertMatch('квартира, Абу Али ибн Сина-2', 'localAreas', 'Abu Ali ibn Sina-2');
+  assertMatch('квартира, Абу Али ибн Сина-2', 'localAreas', 'Ibn Sino-2');
   assertMatch('квартира в жилмассиве Гулистон', 'localAreas', 'Guliston');
   assertMatch('квартира в 21-mavze', 'microdistricts', 'Chilanzar-21');
   assertMatch('квартира в Чиланзар 22-й квартал', 'microdistricts', 'Chilanzar-22');
   assertMatch('квартира, Микрорайон Дилбулок', 'microdistricts', 'Dilbulok');
-  assertMatch("Toshkent mahalla fuqarolar yig'ini", 'mahallas', 'Toshkent mahallasi');
   assertMatch('Махалля Янги Тошкент', 'mahallas', 'Yangi Tashkent');
+
+  const invalidMahalla = matchDictionaryLocation("Toshkent mahalla fuqarolar yig'ini", 'UZ', 'Tashkent');
+  assert.notEqual(invalidMahalla?.name, 'Toshkent mahallasi');
 });
 
 test('reviewed Tashkent district noise does not become district owners', () => {
