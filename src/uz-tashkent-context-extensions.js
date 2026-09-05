@@ -46,7 +46,7 @@ function residentialEntry(canonical, aliases = []) {
 const C1 = legacyAreaEntry('Mirzo Ulugbek', 'Buyuk Ipak Yuli');
 
 const REVIEWED_LOCAL_AREAS = locationEntries([
-  ['Abu Ali ibn Sina-2', 'Абу Али ибн Сина-2', 'Abu Ali ibn Sino-2', 'Абу Али ибн Сино-2', 'Abu Ali ibn Sino-2 dahasi', 'Массив Калинина 2'],
+  ['Ibn Sino-2', 'Abu Ali ibn Sina-2', 'Абу Али ибн Сина-2', 'Abu Ali ibn Sino-2', 'Абу Али ибн Сино-2', 'Abu Ali ibn Sino-2 dahasi', 'Массив Калинина 2'],
   ['Ahmad Yugnakiy', 'Ахмада Югнаки', 'Ахмада Югнаки (Солнечный)', 'Ahmad Yugnakiy (Solnechnyy)'],
   ['Aviasozlar-2', 'Авиасозлар-2', 'Авиасозлар 2', 'Aviasozlar 2'],
   ['Aviasozlar-3', 'Авиасозлар-3', 'Авиасозлар 3', 'Aviasozlar 3'],
@@ -76,7 +76,6 @@ const REVIEWED_MICRODISTRICTS = locationEntries([
 
 const REVIEWED_MAHALLAS = locationEntries([
   ['Yangi Tashkent', 'Махалля Янги Тошкент', 'Янги Тошкент махалля', 'Yangi Toshkent mahallasi'],
-  ['Toshkent mahallasi', 'Махалля Ташкент', 'Махалля Тошкент', 'Тошкент махалла', "Toshkent mahalla fuqarolar yig'ini", 'Toshkent mahalla fuqarolar yigʻini'],
 ]);
 
 export const UZ_TASHKENT_CONTEXT_EXTENSIONS = Object.freeze({
