@@ -4,6 +4,11 @@ export const KG_KARAKOL_LOCATION_EXTENSIONS = Object.freeze({
   Karakol: Object.freeze({
     microdistricts: locationEntries([
       ['Voshod', 'Восход', 'микрорайон Восход', 'мкр Восход', 'Восход микрорайон', 'Voshod microdistrict'],
+      ['Кашка-Суу', 'Кашка Суу', 'Kashka-Suu', 'Kashka Suu', 'микрорайон Кашка-Суу', 'мкр Кашка-Суу', 'Кашка-Суу м-н'],
+      ['Хан-Теңири', 'Хан Теңири', 'Хан-Тенгри', 'Хан Тенгри', 'Khan-Tengri', 'Khan Tengri', 'Khan Tengiri', 'микрорайон Хан-Теңири', 'микрорайон Хан-Тенгри', 'мкр Хан-Теңири', 'мкр Хан-Тенгри'],
+    ]),
+    residentialComplexes: locationEntries([
+      ['Karakol Residence', 'KARAKOL RESIDENCE', 'Karakol residence', 'ЖК Karakol Residence', 'жилой комплекс Karakol Residence', 'Karakol Residence турак жай комплекси'],
     ]),
     streets: locationEntries([
       ['Улица Алдашева', 'Алдашева', 'ул. Алдашева', 'Aldasheva Street'],
