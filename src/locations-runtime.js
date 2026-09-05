@@ -31,6 +31,7 @@ import { KZ_CITY_RESIDENTIAL_EXTENSIONS } from './kz-city-residential-extensions
 import { UA_RESIDENTIAL_EXTENSIONS } from './ua-residential-extensions.js';
 import { UA_CHERNIHIV_RESIDENTIAL_EXTENSIONS } from './ua-chernihiv-residential-extensions.js';
 import { UA_KHARKIV_MICRODISTRICT_EXTENSIONS } from './ua-kharkiv-microdistrict-extensions.js';
+import { UA_KYIV_STREET_EXTENSIONS } from './ua-kyiv-street-extensions.js';
 import { UZ_TASHKENT_CONTEXT_EXTENSIONS } from './uz-tashkent-context-extensions.js';
 import { UZ_TASHKENT_REVIEWED_RESIDENTIAL_EXTENSIONS } from './uz-tashkent-reviewed-residential-extensions.js';
 import { UZ_TASHKENT_REVIEWED_STREET_EXTENSIONS } from './uz-tashkent-reviewed-street-extensions.js';
@@ -84,6 +85,7 @@ export const LOCATION_DICTIONARIES = Object.freeze({
     UA_RESIDENTIAL_EXTENSIONS,
     UA_CHERNIHIV_RESIDENTIAL_EXTENSIONS,
     UA_KHARKIV_MICRODISTRICT_EXTENSIONS,
+    UA_KYIV_STREET_EXTENSIONS,
   ),
   UZ: mergeLocationCountries(
     UZ_RUNTIME_BASE_LOCATION_DICTIONARIES,
