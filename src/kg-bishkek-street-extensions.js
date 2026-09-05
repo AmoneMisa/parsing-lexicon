@@ -9,7 +9,7 @@ export const KG_BISHKEK_STREET_EXTENSIONS = Object.freeze({
       ['Chui Avenue', 'Chuy Avenue', 'Chui avenue', 'Чуйский проспект', 'проспект Чуй', 'проспект Чүй', 'Чүй проспекти'],
       ['Baitik Baatyr Street', 'Baitik baatyr Street', 'Baytik Baatyr Street', 'улица Байтик-Баатыра', 'улица Байтик Баатыра', 'ул. Байтик-Баатыра', 'Байтик Баатыр көчөсү'],
       ['Nasirdin Isanov Street', 'Isanov Street', 'улица Исанова', 'улица Насирдина Исанова', 'ул. Исанова', 'Насирдин Исанов көчөсү'],
-      ['Ibraimov Street', 'Ibragimov Street', 'улица Ибраимова', 'ул. Ибраимова', 'Ибраимов көчөсү'],
+      ['Ibraimov Street', 'Ibragimov Street', 'улица Ибраимова', 'улице Ибраимова', 'ул. Ибраимова', 'Ибраимов көчөсү'],
       ['Toktogul Street', 'Toktogul Satylganov Street', 'улица Токтогула', 'улица Токтогула Сатылганова', 'ул. Токтогула', 'Токтогул көчөсү', 'Токтогул Сатылганов көчөсү'],
       ['Joomart Bokonbayev Street', 'Joomart Bokonbaev Street', 'Bokonbayev Street', 'Bokonbaev Street', 'улица Боконбаева', 'улица Жоомарта Боконбаева', 'ул. Боконбаева', 'Жоомарт Бөкөнбаев көчөсү'],
       ['Jusup Abdrakhmanov Street', 'Yusup Abdrakhmanov Street', 'Abdrakhmanov Street', 'улица Юсупа Абдрахманова', 'улица Жусупа Абдрахманова', 'ул. Абдрахманова', 'Жусуп Абдрахманов көчөсү'],
