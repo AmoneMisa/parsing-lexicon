@@ -8,7 +8,7 @@ import { LOCATION_DICTIONARIES, matchDictionaryLocation } from '../src/locations
 const crawlerCities = Object.freeze([
   'Bishkek',
   'Osh',
-  'Jalal-Abad',
+  'Manas',
   'Karakol',
   'Tokmok',
   'Naryn',
@@ -24,7 +24,8 @@ const crawlerCities = Object.freeze([
 test('KG canonical city lexicon covers country-wide crawler cities', () => {
   assert.equal(canonicalCity('Бишкек', 'KG'), 'Bishkek');
   assert.equal(canonicalCity('Ош', 'KG'), 'Osh');
-  assert.equal(canonicalCity('Жалал-Абад', 'KG'), 'Jalal-Abad');
+  assert.equal(canonicalCity('Манас', 'KG'), 'Manas');
+  assert.equal(canonicalCity('Жалал-Абад', 'KG'), 'Manas');
   assert.equal(canonicalCity('Өзгөн', 'KG'), 'Uzgen');
   assert.equal(canonicalKyrgyzstanCity('Кара-Балта'), 'Kara-Balta');
   assert.equal(canonicalCentralAsiaCity('Кызыл-Кыя', 'KG'), 'Kyzyl-Kiya');

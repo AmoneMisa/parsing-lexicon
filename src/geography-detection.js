@@ -33,14 +33,25 @@ const COUNTRY_MATCHERS = COUNTRIES.map((item) => {
 });
 
 const US_STATE_RE = /\b[A-Z][A-Za-z.'-]+(?:\s+[A-Z][A-Za-z.'-]+){0,3}\s*,?\s+(?:AL|AK|AZ|AR|CA|CO|CT|DE|FL|GA|HI|ID|IL|IN|IA|KS|KY|LA|ME|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VT|VA|WA|WV|WI|WY|DC)\b/;
-const CITY_CONTEXT_RE = /(?:shahr(?:i)?|город(?:а|е|у|ом)?|city|viloyat(?:i)?|област\p{L}{0,4})/iu;
+const CITY_CONTEXT_RE = /(?:shahr(?:i)?|шаар(?:ы|ында|ына|ынан)?|город(?:а|е|у|ом)?|city|viloyat(?:i)?|област\p{L}{0,4})/iu;
+
+function matchedAliasNeedsContext(item, matchedText) {
+  if (item.contextRequired === true) return true;
+  const guarded = item.contextRequiredAliases || [];
+  if (!guarded.length) return false;
+  const matched = normalizeForMatch(matchedText);
+  return guarded.some((alias) => {
+    const normalized = normalizeForMatch(alias);
+    return normalized && (matched === normalized || matched.startsWith(normalized));
+  });
+}
 
 function cityTextMatch(text, matcher) {
   const exact = text.match(matcher.exact);
   const inflected = exact || !matcher.inflected ? null : text.match(matcher.inflected);
   const match = exact || inflected;
   if (!match) return null;
-  if (!matcher.item.contextRequired) return match;
+  if (!matchedAliasNeedsContext(matcher.item, match[0])) return match;
 
   const start = match.index ?? 0;
   const end = start + match[0].length;

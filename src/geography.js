@@ -59,7 +59,7 @@ export const RO_CITIES = Object.freeze([...RO_CITIES_BASE, ...RO_CITY_EXTENSIONS
 export const KG_CITIES = Object.freeze([
   entity('Bishkek', { ky: ['Бишкек'], ru: ['Бишкек'], en: ['Bishkek'], kk: ['Бішкек'], uzLatn: ['Bishkek'] }, { country: 'KG', type: 'city' }),
   entity('Osh', { ky: ['Ош'], ru: ['Ош'], en: ['Osh'], kk: ['Ош'], uzLatn: ['Osh'] }, { country: 'KG', type: 'city' }),
-  entity('Jalal-Abad', { ky: ['Жалал-Абад', 'Жалал Абад'], ru: ['Джалал-Абад', 'Джалал Абад'], en: ['Jalal-Abad', 'Jalalabad'] }, { country: 'KG', type: 'city' }),
+  entity('Manas', { ky: ['Манас', 'Манас шаары', 'Жалал-Абад', 'Жалал Абад'], ru: ['Манас', 'город Манас', 'Джалал-Абад', 'Джалал Абад'], en: ['Manas', 'Manas city', 'Jalal-Abad', 'Jalalabad'] }, { country: 'KG', type: 'city', contextRequiredAliases: ['Manas', 'Манас'] }),
   entity('Karakol', { ky: ['Каракол'], ru: ['Каракол', 'Пржевальск'], en: ['Karakol', 'Przhevalsk'], kk: ['Қаракөл'], uzLatn: ['Karakol'] }, { country: 'KG', type: 'city' }),
   entity('Tokmok', { ky: ['Токмок'], ru: ['Токмок'], en: ['Tokmok'] }, { country: 'KG', type: 'city' }),
   entity('Naryn', { ky: ['Нарын'], ru: ['Нарын'], en: ['Naryn'] }, { country: 'KG', type: 'city' }),

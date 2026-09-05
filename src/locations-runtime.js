@@ -6,6 +6,7 @@ import {
   matchUkraineSecondaryCity,
 } from './locations.js';
 import { LOCATION_LIST_KEYS, mergeLocationCountries } from './location-merge.js';
+import { canonicalCity } from './geography.js';
 import { KG_LOCATION_EXTENSIONS } from './kg-location-extensions.js';
 import { KG_BISHKEK_STREET_EXTENSIONS } from './kg-bishkek-street-extensions.js';
 import { KG_BISHKEK_RESIDENTIAL_EXTENSIONS } from './kg-bishkek-residential-extensions.js';
@@ -49,6 +50,24 @@ const UZ_RUNTIME_BASE_LOCATION_DICTIONARIES = Object.freeze({
   }),
 });
 
+const KG_LEGACY_LOCATION_DICTIONARIES = mergeLocationCountries(
+  BASE_LOCATION_DICTIONARIES.KG || {},
+  KG_LOCATION_EXTENSIONS,
+  KG_BISHKEK_STREET_EXTENSIONS,
+  KG_BISHKEK_RESIDENTIAL_EXTENSIONS,
+  KG_OSH_LOCATION_EXTENSIONS,
+  KG_KARAKOL_LOCATION_EXTENSIONS,
+  KG_JALAL_ABAD_LOCATION_EXTENSIONS,
+);
+const {
+  'Jalal-Abad': legacyJalalAbadLocations,
+  ...KG_CANONICAL_LOCATION_DICTIONARIES
+} = KG_LEGACY_LOCATION_DICTIONARIES;
+const KG_RUNTIME_LOCATION_DICTIONARIES = Object.freeze({
+  ...KG_CANONICAL_LOCATION_DICTIONARIES,
+  Manas: KG_CANONICAL_LOCATION_DICTIONARIES.Manas || legacyJalalAbadLocations || Object.freeze({}),
+});
+
 export const LOCATION_DICTIONARIES = Object.freeze({
   ...BASE_LOCATION_DICTIONARIES,
   UA: mergeLocationCountries(
@@ -80,19 +99,17 @@ export const LOCATION_DICTIONARIES = Object.freeze({
     KZ_MICRODISTRICT_EXTENSIONS,
     KZ_CITY_RESIDENTIAL_EXTENSIONS,
   ),
-  KG: mergeLocationCountries(
-    BASE_LOCATION_DICTIONARIES.KG || {},
-    KG_LOCATION_EXTENSIONS,
-    KG_BISHKEK_STREET_EXTENSIONS,
-    KG_BISHKEK_RESIDENTIAL_EXTENSIONS,
-    KG_OSH_LOCATION_EXTENSIONS,
-    KG_KARAKOL_LOCATION_EXTENSIONS,
-    KG_JALAL_ABAD_LOCATION_EXTENSIONS,
-  ),
+  KG: KG_RUNTIME_LOCATION_DICTIONARIES,
 });
 
+function canonicalDictionaryCity(countryCode, city) {
+  if (!city) return null;
+  return canonicalCity(city, countryCode) || city;
+}
+
 export function dictionaryFor(countryCode, city) {
-  return LOCATION_DICTIONARIES[countryCode]?.[city] || null;
+  const canonical = canonicalDictionaryCity(countryCode, city);
+  return canonical ? LOCATION_DICTIONARIES[countryCode]?.[canonical] || null : null;
 }
 
 export function locationCities(countryCode) {
@@ -101,7 +118,8 @@ export function locationCities(countryCode) {
 
 export function matchDictionaryLocation(text, countryCode, city = null) {
   const country = locationCities(countryCode);
-  const cities = city && country[city] ? [[city, country[city]]] : Object.entries(country);
+  const canonical = canonicalDictionaryCity(countryCode, city);
+  const cities = canonical && country[canonical] ? [[canonical, country[canonical]]] : Object.entries(country);
   const value = String(text || '');
   let best = null;
 
