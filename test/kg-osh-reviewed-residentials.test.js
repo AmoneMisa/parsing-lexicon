@@ -20,7 +20,7 @@ test('reviewed Osh residential complexes resolve through clean canonicals', () =
     ['Ак-Бата', 'квартира в ЖК Ак-Бата'],
     ['Ак-Бата 2', 'квартира в ЖК Ак-Бата 2'],
     ['Манас', 'квартира в ЖК Манас'],
-    ['Сулайман Тоо', 'квартира в ЖК Сулайман Тоо'],
+    ['ЖК Сулайман Тоо', 'квартира в ЖК Сулайман Тоо'],
     ['Таберик', 'квартира в ЖК Таберик'],
     ['Юджин', 'квартира в ЖК Юджин'],
   ];
@@ -47,4 +47,10 @@ test('Ikhlas Osh reuses the existing Mon Paris residential owner', () => {
   assert.equal(match.type, 'residentialComplexes');
   assert.equal(match.name, 'Mon Paris');
   assert.equal(byName(osh.residentialComplexes, 'Ихлас Ош'), undefined);
+});
+
+test('Sulayman-Too landmark keeps bare-name ownership', () => {
+  const match = matchDictionaryLocation('рядом с Сулайман-Тоо', 'KG', 'Osh');
+  assert.ok(match);
+  assert.equal(match.name, 'Sulayman-Too');
 });
