@@ -33,6 +33,7 @@ import { UA_CHERNIHIV_RESIDENTIAL_EXTENSIONS } from './ua-chernihiv-residential-
 import { UA_KHARKIV_MICRODISTRICT_EXTENSIONS } from './ua-kharkiv-microdistrict-extensions.js';
 import { UA_KYIV_STREET_EXTENSIONS } from './ua-kyiv-street-extensions.js';
 import { UA_KHARKIV_STREET_EXTENSIONS } from './ua-kharkiv-street-extensions.js';
+import { UA_DNIPRO_STREET_EXTENSIONS } from './ua-dnipro-street-extensions.js';
 import { UZ_TASHKENT_CONTEXT_EXTENSIONS } from './uz-tashkent-context-extensions.js';
 import { UZ_TASHKENT_REVIEWED_RESIDENTIAL_EXTENSIONS } from './uz-tashkent-reviewed-residential-extensions.js';
 import { UZ_TASHKENT_REVIEWED_STREET_EXTENSIONS } from './uz-tashkent-reviewed-street-extensions.js';
@@ -46,9 +47,6 @@ import { UZ_QARSHI_STREET_EXTENSIONS } from './uz-qarshi-street-extensions.js';
 
 export { UA_REGION_ENTRIES, UA_SECONDARY_CITIES, matchUkraineRegion, matchUkraineSecondaryCity };
 
-// Sattepo is a mahalla in the canonical Samarkand layer. The legacy base seed
-// also exposes the same physical place as the Sartepa microdistrict; remove
-// that duplicate owner before runtime extensions are merged.
 const UZ_RUNTIME_BASE_LOCATION_DICTIONARIES = Object.freeze({
   ...(BASE_LOCATION_DICTIONARIES.UZ || {}),
   Samarkand: Object.freeze({
@@ -88,6 +86,7 @@ export const LOCATION_DICTIONARIES = Object.freeze({
     UA_KHARKIV_MICRODISTRICT_EXTENSIONS,
     UA_KYIV_STREET_EXTENSIONS,
     UA_KHARKIV_STREET_EXTENSIONS,
+    UA_DNIPRO_STREET_EXTENSIONS,
   ),
   UZ: mergeLocationCountries(
     UZ_RUNTIME_BASE_LOCATION_DICTIONARIES,
