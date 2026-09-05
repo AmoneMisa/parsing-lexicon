@@ -43,6 +43,10 @@ const EXPECTED_STREETS = Object.freeze([
   ['улица Тараса Шевченко', 'Taras Shevchenko Street'],
   ['Islom Karimov ko‘chasi', 'Islam Karimov Street'],
   ['Ислом Каримов кўчаси', 'Islam Karimov Street'],
+  ["Shifokorlar ko'chasi", 'Shifokorlar Street'],
+  ['улица Шифокорлар', 'Shifokorlar Street'],
+  ["Shimoliy Olmazor ko'chasi", 'Shimoliy Olmazor Street'],
+  ['улица Шимолий Олмазор', 'Shimoliy Olmazor Street'],
 ]);
 
 const EXPECTED_CANONICALS = Object.freeze([
@@ -66,6 +70,8 @@ const EXPECTED_CANONICALS = Object.freeze([
   'Beruniy Avenue',
   'Taras Shevchenko Street',
   'Islam Karimov Street',
+  'Shifokorlar Street',
+  'Shimoliy Olmazor Street',
 ]);
 
 test('Tashkent streets stay in the canonical UZ registry', () => {
@@ -79,6 +85,19 @@ test('Tashkent streets stay in the canonical UZ registry', () => {
 
 test('existing Russian and Uzbek street translations resolve to stable canonicals', () => {
   for (const [input, canonical] of EXPECTED_STREETS) {
+    const match = matchDictionaryLocation(input, 'UZ', 'Tashkent');
+    assert.equal(match?.type, 'streets', input);
+    assert.equal(match?.name, canonical, input);
+  }
+});
+
+test('address-shaped Shifokorlar and Shimoliy Olmazor text resolves as streets', () => {
+  const cases = [
+    ['улица Шифокорлар, 6', 'Shifokorlar Street'],
+    ['Улица Шимолий Олмазор, 1', 'Shimoliy Olmazor Street'],
+  ];
+
+  for (const [input, canonical] of cases) {
     const match = matchDictionaryLocation(input, 'UZ', 'Tashkent');
     assert.equal(match?.type, 'streets', input);
     assert.equal(match?.name, canonical, input);
