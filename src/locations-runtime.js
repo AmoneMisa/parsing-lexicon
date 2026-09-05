@@ -38,6 +38,7 @@ import { UZ_SAMARKAND_CONTEXT_EXTENSIONS } from './uz-samarkand-context-extensio
 import { UZ_BUKHARA_LOCATION_EXTENSIONS } from './uz-bukhara-location-extensions.js';
 import { UZ_NUKUS_STREET_EXTENSIONS } from './uz-nukus-street-extensions.js';
 import { UZ_NAMANGAN_STREET_EXTENSIONS } from './uz-namangan-street-extensions.js';
+import { UZ_FERGANA_STREET_EXTENSIONS } from './uz-fergana-street-extensions.js';
 
 export { UA_REGION_ENTRIES, UA_SECONDARY_CITIES, matchUkraineRegion, matchUkraineSecondaryCity };
 
@@ -91,6 +92,7 @@ export const LOCATION_DICTIONARIES = Object.freeze({
     UZ_BUKHARA_LOCATION_EXTENSIONS,
     UZ_NUKUS_STREET_EXTENSIONS,
     UZ_NAMANGAN_STREET_EXTENSIONS,
+    UZ_FERGANA_STREET_EXTENSIONS,
   ),
   KZ: mergeLocationCountries(
     BASE_LOCATION_DICTIONARIES.KZ || {},
