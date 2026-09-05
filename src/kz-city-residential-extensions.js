@@ -22,4 +22,11 @@ export const KZ_CITY_RESIDENTIAL_EXTENSIONS = Object.freeze({
       ['Атшабар', 'Atshabar', 'ЖК Атшабар', 'жилой комплекс Атшабар'],
     ]),
   }),
+  Oskemen: Object.freeze({
+    residentialComplexes: locationEntries([
+      ['Оазис', 'ЖК Оазис', 'Жилой комплекс Оазис', 'Жилой Комплекс "Оазис"', 'Оазис жилой комплекс'],
+      ['Рахат', 'ЖК Рахат', 'Рахат жилой комплекс'],
+      ['Renesans', 'ЖК Renesans', 'ЖК "Renesans"', 'Жилой комплекс Renesans'],
+    ]),
+  }),
 });
