@@ -1,4 +1,5 @@
 import { TASHKENT_AREAS } from './geo.js';
+import { locationEntries } from './location-merge.js';
 import { aliasesToRegex } from './normalization.js';
 
 function legacyAreaEntry(district, canonical) {
@@ -44,9 +45,45 @@ function residentialEntry(canonical, aliases = []) {
 // a second C-1 canonical or consumer-local regex.
 const C1 = legacyAreaEntry('Mirzo Ulugbek', 'Buyuk Ipak Yuli');
 
+const REVIEWED_LOCAL_AREAS = locationEntries([
+  ['Abu Ali ibn Sina-2', 'Абу Али ибн Сина-2', 'Abu Ali ibn Sino-2', 'Абу Али ибн Сино-2', 'Abu Ali ibn Sino-2 dahasi', 'Массив Калинина 2'],
+  ['Ahmad Yugnakiy', 'Ахмада Югнаки', 'Ахмада Югнаки (Солнечный)', 'Ahmad Yugnakiy (Solnechnyy)'],
+  ['Aviasozlar-2', 'Авиасозлар-2', 'Авиасозлар 2', 'Aviasozlar 2'],
+  ['Aviasozlar-3', 'Авиасозлар-3', 'Авиасозлар 3', 'Aviasozlar 3'],
+  ['Beltepa', 'Белтепа', 'Белтепа массив', 'Beltepa massiv', 'Beltepa massivi'],
+  ['Feruza-3', 'Феруза-3', 'Феруза 3', 'Feruza 3'],
+  ['Guliston', 'Гулистон', 'Гулистан', 'Жилмассив Гулистон', 'Guliston massivi', 'массив Гулистан'],
+  ['Humoyun', 'Хумаюн', 'Хумаюн (Ясный)', 'Humoyun (Yasnyy)'],
+  ['Tuzel-2', 'Тузель-2', 'Тузель 2', 'Tuzel 2'],
+  ['Yalangach', 'Ялангач', 'Ялангач (Высоковольтный)', 'Yalangach (Vysokovoltnyy)'],
+  ["Yo'ldosh-2", 'Йулдош 2', 'Йулдош (Спутник) 2', 'Спутник 2', 'Yoldosh-2'],
+  ["Yo'ldosh-9", 'Йулдош 9', 'Йулдош (Спутник) 9', 'Спутник 9', 'Yoldosh-9'],
+  ["Yo'ldosh-16", 'Йулдош 16', 'Йулдош (Спутник) 16', 'Спутник 16', 'Yoldosh-16'],
+  ["Yo'ldosh-17", 'Йулдош 17', 'Йулдош (Спутник) 17', 'Спутник 17', 'Yoldosh-17'],
+  ["Yo'ldosh-C2", 'Йулдош Ц2', 'Йулдош (Спутник) Ц2', 'Спутник Ц2', 'Yoldosh-C2'],
+]);
+
+const REVIEWED_MICRODISTRICTS = locationEntries([
+  ['Chilanzar-6', 'Чиланзар-6', 'Чиланзар 6', 'Chilonzor-6', 'Chilonzor 6 mavzesi', '6-mavze'],
+  ['Chilanzar-7', 'Чиланзар-7', 'Чиланзар 7', 'Chilonzor-7', 'Chilonzor 7 mavzesi', '7-mavze'],
+  ['Chilanzar-8', 'Чиланзар-8', 'Чиланзар 8', 'Chilonzor-8', 'Chilonzor 8 mavzesi', '8-mavze'],
+  ['Chilanzar-14', 'Чиланзар-14', 'Чиланзар 14', 'Chilonzor-14', 'Chilonzor 14 mavzesi', '14-mavze'],
+  ['Chilanzar-20', 'Чиланзар-20', 'Чиланзар 20', 'Chilonzor-20', 'Chilonzor 20 mavzesi', '20-mavze'],
+  ['Chilanzar-21', 'Чиланзар-21', 'Чиланзар 21', 'Chilonzor-21', 'Chilonzor 21 mavzesi', '21-mavze', 'Чиланзар 21-й квартал'],
+  ['Chilanzar-22', 'Чиланзар-22', 'Чиланзар 22', 'Chilonzor-22', 'Chilonzor 22 mavzesi', '22-mavze', 'Чиланзар 22-й квартал'],
+  ['Dilbulok', 'Дилбулок', 'Микрорайон Дилбулок', 'Dilbuloq', 'Dilbuloq mikrohududi'],
+]);
+
+const REVIEWED_MAHALLAS = locationEntries([
+  ['Yangi Tashkent', 'Махалля Янги Тошкент', 'Янги Тошкент махалля', 'Yangi Toshkent mahallasi'],
+  ['Toshkent mahallasi', 'Махалля Ташкент', 'Махалля Тошкент', 'Тошкент махалла', "Toshkent mahalla fuqarolar yig'ini", 'Toshkent mahalla fuqarolar yigʻini'],
+]);
+
 export const UZ_TASHKENT_CONTEXT_EXTENSIONS = Object.freeze({
   Tashkent: Object.freeze({
-    localAreas: Object.freeze([C1]),
+    mahallas: REVIEWED_MAHALLAS,
+    microdistricts: REVIEWED_MICRODISTRICTS,
+    localAreas: Object.freeze([C1, ...REVIEWED_LOCAL_AREAS]),
     residentialComplexes: Object.freeze([
       residentialEntry('Eco Dream', [
         'ЖК Eco Dream', 'Eco Dream TJM', 'Eco Dream turar joy majmuasi', 'Eco Dream turar-joy majmuasi',
