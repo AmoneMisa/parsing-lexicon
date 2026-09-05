@@ -6,6 +6,8 @@ import { dictionaryFor, matchDictionaryLocation } from '../src/locations-runtime
 const byName = (group, name) => (group || []).find((entry) => entry.name === name);
 
 const names = Object.freeze([
+  'ЖК "Актепа Сохил буйи"',
+  'ЖК "Бтги Шамол"',
   'Жилой комплекс Elegant',
   'ЖК "Грин Сити" (Дровосеки)',
   'жилой комплекс Гульсарай',
@@ -36,6 +38,8 @@ test('reviewed Tashkent residential batch is exposed as residential-complex owne
 });
 
 test('reviewed Tashkent residential aliases resolve to the same canonical owners', () => {
+  assertMatch('квартира в Актепа Сохил буйи', 'ЖК "Актепа Сохил буйи"');
+  assertMatch('квартира в ЖК Бтги Шамол', 'ЖК "Бтги Шамол"');
   assertMatch('квартира в ЖК Elegant', 'Жилой комплекс Elegant');
   assertMatch('продаётся в Грин Сити (Дровосеки)', 'ЖК "Грин Сити" (Дровосеки)');
   assertMatch('квартира Гульсарай', 'жилой комплекс Гульсарай');
