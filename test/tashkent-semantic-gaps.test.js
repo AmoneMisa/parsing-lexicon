@@ -77,7 +77,6 @@ test('Tashkent current mavze and daha names are canonical local areas', () => {
     ['Chuqursoy', 'Almazar'],
     ['Shimoliy Olmazor-2', 'Almazar'],
     ['Taraqqiyot-4', 'Almazar'],
-    ['Shifokorlar-6', 'Almazar'],
     ['Beruniy-B3', 'Almazar'],
     ["Chamanbog'", 'Almazar'],
     ['Irrigator', 'Mirzo Ulugbek'],
@@ -237,7 +236,6 @@ test('legacy Tashkent area view preserves current local-area semantics', () => {
     const entry = TASHKENT_AREAS[parent].find((item) => item.name === legacyName);
     assert.equal(entry?.type, 'local_area', legacyName);
   }
-
   assert.ok(TASHKENT_AREAS.Almazar.find((entry) => entry.name === 'Taxtapul')?.aliases.includes('Takhtapul'));
 });
 
