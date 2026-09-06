@@ -93,6 +93,9 @@ test('existing Russian and Uzbek street translations resolve to stable canonical
 
 test('address-shaped Shifokorlar and Shimoliy Olmazor text resolves as streets', () => {
   const cases = [
+    ['Шифокорлар-5', 'Shifokorlar Street'],
+    ['Шифокорлар-6', 'Shifokorlar Street'],
+    ['улица Шифокорлар, 5', 'Shifokorlar Street'],
     ['улица Шифокорлар, 6', 'Shifokorlar Street'],
     ['Улица Шимолий Олмазор, 1', 'Shimoliy Olmazor Street'],
   ];
@@ -102,4 +105,13 @@ test('address-shaped Shifokorlar and Shimoliy Olmazor text resolves as streets',
     assert.equal(match?.type, 'streets', input);
     assert.equal(match?.name, canonical, input);
   }
+});
+
+test('Shifokorlar 5 and 6 are not exposed as local areas', () => {
+  const localAreaNames = new Set(
+    (LOCATION_DICTIONARIES.UZ.Tashkent.localAreas || []).map(({ name }) => name),
+  );
+
+  assert.equal(localAreaNames.has('Shifokorlar-5'), false);
+  assert.equal(localAreaNames.has('Shifokorlar-6'), false);
 });
