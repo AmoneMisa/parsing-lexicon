@@ -52,11 +52,25 @@ import { UZ_QARSHI_STREET_EXTENSIONS } from './uz-qarshi-street-extensions.js';
 
 export { UA_REGION_ENTRIES, UA_SECONDARY_CITIES, matchUkraineRegion, matchUkraineSecondaryCity };
 
+const TASHKENT_SHIFOKORLAR_STREET_ADDRESS_FORMS = new Set([
+  'Shifokorlar-5',
+  'Shifokorlar-6',
+]);
+
 // Sattepo is a mahalla in the canonical Samarkand layer. The legacy base seed
 // also exposes the same physical place as the Sartepa microdistrict; remove
-// that duplicate owner before runtime extensions are merged.
+// that duplicate owner before runtime extensions are merged. Shifokorlar-5/6
+// are street/address forms, not standalone Tashkent local areas, so remove the
+// stale local-area owners before the reviewed street extension is merged.
 const UZ_RUNTIME_BASE_LOCATION_DICTIONARIES = Object.freeze({
   ...(BASE_LOCATION_DICTIONARIES.UZ || {}),
+  Tashkent: Object.freeze({
+    ...(BASE_LOCATION_DICTIONARIES.UZ?.Tashkent || {}),
+    localAreas: Object.freeze(
+      (BASE_LOCATION_DICTIONARIES.UZ?.Tashkent?.localAreas || [])
+        .filter(({ name }) => !TASHKENT_SHIFOKORLAR_STREET_ADDRESS_FORMS.has(name)),
+    ),
+  }),
   Samarkand: Object.freeze({
     ...(BASE_LOCATION_DICTIONARIES.UZ?.Samarkand || {}),
     microdistricts: Object.freeze(
