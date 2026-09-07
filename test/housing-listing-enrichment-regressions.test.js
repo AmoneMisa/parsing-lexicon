@@ -127,6 +127,27 @@ test('housing enrichment keeps Kuylyuk massif distinct from Qoyliq metro', () =>
   assert.equal(metro.metro, 'Qoyliq');
 });
 
+test('housing enrichment returns catalog IDs for independently parsed geo components', () => {
+  const enrichment = parseHousingListingEnrichment('Сдам квартиру, Яшнабадский район, метро Олмос, ЖК Assalom Jomiy', {
+    country: 'UZ',
+    city: 'Tashkent',
+    resolveGeoEntity({ type, canonical }) {
+      const ids = {
+        'district:Yashnobod': 'uz:tashkent:district:yashnobod',
+        'metro:Olmos': 'uz:tashkent:metro:olmos',
+        'residential_complex:Assalom Jomiy': 'uz:tashkent:residential:assalom-jomiy',
+      };
+      const id = ids[`${type}:${canonical}`];
+      return id ? { id, canonicalName: canonical, type, country: 'UZ', parentId: 'uz:tashkent' } : null;
+    },
+  });
+
+  assert.equal(enrichment.geoEntities?.district?.id, 'uz:tashkent:district:yashnobod');
+  assert.equal(enrichment.geoEntities?.metro?.id, 'uz:tashkent:metro:olmos');
+  assert.equal(enrichment.geoEntities?.residentialComplex?.id, 'uz:tashkent:residential:assalom-jomiy');
+  assert.equal('coordinates' in (enrichment.geoEntities?.metro || {}), false);
+});
+
 const LISTING_BUKHARA_450 = '8 каватли янги гиштли лифтли домнинг 4 Чи каватидаги 2 хонали люкс квартира ижарага берилади. Ориентир Крытий рынок Давр банк. 2 та смарт ТВ 2 та кондиционер холодильник WF бор. Нархи:450 $';
 
 test('Bukhara OLX listing: parses Cyrillic Uzbek floor prose, Wi-Fi typo and core fields', () => {

@@ -7,7 +7,7 @@ import { TASHKENT_RESIDENTIAL_COMPLEXES, matchTashkentResidentialComplex } from 
 import { parseHousingRoomCount, parseHousingFloor, parseHousingAreas } from './housing-structured.js';
 import { parseHousingListingFields } from './housing-listing-fields.js';
 import { parseHousingResidentialComplex } from './housing-text.js';
-import { parseHousingAddress } from './housing-address.js';
+import { parseHousingAddress, resolveHousingAddressGeoEntities } from './housing-address.js';
 import { HOUSING_LANDMARK_EXTENSIONS, HOUSING_POI_EXTENSIONS } from './housing-poi-extensions.js';
 import { resolveHousingIntent } from './housing-intent.js';
 
@@ -230,7 +230,7 @@ function walkMinutes(text) {
   return Number.isInteger(value) && value > 0 && value <= 180 ? value : null;
 }
 
-export function parseHousingListingEnrichment(value, { country = '', dealType = null } = {}) {
+export function parseHousingListingEnrichment(value, { country = '', city = '', dealType = null, resolveGeoEntity } = {}) {
   const text = normalizeUnicode(value ?? '');
   if (!text) return deepFreeze({});
   const resolvedDealType = dealType || resolveHousingIntent(text)?.dealType || null;
@@ -249,7 +249,16 @@ export function parseHousingListingEnrichment(value, { country = '', dealType = 
     || parseHousingResidentialComplex(primaryResidentialText);
   const commission = parseHousingCommission(text);
   const commissionAmount = parseHousingCommissionAmount(text);
+  // Resolve once below after combining address and listing-level components.
+  // This avoids repeated bridge lookups for a metro or district recognized by
+  // both parsers.
   const address = parseHousingAddress(text);
+  const geoEntities = resolveHousingAddressGeoEntities({
+    ...address,
+    district: district || address.district,
+    metro: metro || address.metro,
+    residentialComplex: parsedRc || null,
+  }, { country, city, resolveGeoEntity });
 
   return deepFreeze({
     rooms: parseHousingRoomCount(text),
@@ -309,5 +318,6 @@ export function parseHousingListingEnrichment(value, { country = '', dealType = 
     addressStreet: address.street,
     addressHouseNumber: address.houseNumber,
     addressBuilding: address.building,
+    ...(Object.keys(geoEntities).length ? { geoEntities } : {}),
   });
 }

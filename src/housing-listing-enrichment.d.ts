@@ -59,6 +59,13 @@ export interface HousingListingEnrichment {
   addressStreet?: string | null;
   addressHouseNumber?: string | null;
   addressBuilding?: string | null;
+  geoEntities?: Readonly<Partial<Record<'street' | 'district' | 'metro' | 'mahalla' | 'residentialComplex', Readonly<{
+    id: string;
+    canonical: string;
+    type: string;
+    country: string;
+    parentId?: string;
+  }>>>>;
 }
 
 export function parseHousingNearby(value: unknown): readonly string[];
@@ -73,5 +80,17 @@ export function parseHousingTransitRoutes(value: unknown): readonly string[];
 export function parseHousingObservedAmenities(value: unknown): readonly string[];
 export function parseHousingListingEnrichment(
   value: unknown,
-  options?: { country?: string; dealType?: 'sale' | 'longRent' | 'shortRent' | null },
+  options?: {
+    country?: string;
+    city?: string;
+    dealType?: 'sale' | 'longRent' | 'shortRent' | null;
+    resolveGeoEntity?: ((input: Readonly<{ country: string; city?: string; type: string; canonical: string }>) => Readonly<{
+      id: string;
+      canonicalName?: string;
+      canonical?: string;
+      type?: string;
+      country?: string;
+      parentId?: string;
+    }> | null | undefined);
+  },
 ): Readonly<HousingListingEnrichment>;
