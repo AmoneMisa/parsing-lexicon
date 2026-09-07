@@ -51,3 +51,10 @@ test('a housing class is not a nearby shop', () => {
   assert.deepEqual(parseHousingNearbyShops('рядом магазин Класс'), ['Klass']);
   assert.deepEqual(parseHousingNearbyShops('Klass рядом'), ['Klass']);
 });
+
+test('removes source quotation marks from nearby-place labels', () => {
+  assert.deepEqual(
+    parseHousingNearbyMentions('Рядом " АТБ" , " Десятка", " Посад" , " Буфет".'),
+    ['АТБ', 'Десятка', 'Посад', 'Буфет'],
+  );
+});

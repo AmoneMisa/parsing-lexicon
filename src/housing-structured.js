@@ -430,6 +430,12 @@ export function parseHousingStructured(value, options = {}) {
   const country = String(options.country || '').trim();
   const fallbackCurrency = options.fallbackCurrency || countryCurrency(country) || '';
   const phoneCountry = options.phoneCountry || countryPhoneHint(country) || null;
+  const intent = resolveHousingIntent(text);
+  const listingFields = parseHousingListingFields(text, { country, dealType: intent?.dealType || null });
+  const parsedPayments = parseHousingPaymentDetails(text);
+  const payments = intent?.dealType === 'sale'
+    ? deepFreeze({ ...parsedPayments, utilities: null })
+    : parsedPayments;
 
   return deepFreeze({
     text,
@@ -437,7 +443,7 @@ export function parseHousingStructured(value, options = {}) {
       platform: sourcePost.source,
       contact: sourcePost.contact,
     },
-    intent: resolveHousingIntent(text),
+    intent,
     context: parseHousingContext(text),
     rooms: parseHousingRoomCount(text),
     floor: parseHousingFloor(text),
@@ -450,8 +456,8 @@ export function parseHousingStructured(value, options = {}) {
     }),
     residentialComplex: parseHousingResidentialComplex(text),
     amenities: parseHousingAmenities(text),
-    listingFields: parseHousingListingFields(text, { country }),
-    payments: parseHousingPaymentDetails(text),
+    listingFields,
+    payments,
     seller: parseHousingSeller(text),
     infrastructure: parseHousingInfrastructure(text),
     contacts: parseHousingContacts(text, { countryHint: phoneCountry, sourcePost }),

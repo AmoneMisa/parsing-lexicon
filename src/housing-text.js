@@ -33,6 +33,7 @@ const RC_ATTRIBUTE_TOKEN_RE = /^\d|^[\d/]+$|^[a-zа-яё]?\d+(?:[а-яёa-z]{1,4
 const RC_LATIN_NOISE_RE = /^(?:vip|lux|luxe|elite|premium|euro|evro|new|top|super|best|hot|urgent|srochno|arenda|ijara|sotiladi|sale|rent|for|home|house|flat|apartment|apartments|kvartira|tashkent|toshkent|wifi|wi|fi|tv|ac|internet|telegram|yandex|google|instagram|whatsapp|iphone|samsung|lg|bosch|artel|km|km2|m2|sqm|usd|uzs|eur)$/iu;
 const RC_LATIN_WORD_RE = /^[A-Za-z][A-Za-z'’\-]{1,}$/u;
 const RC_DISTRICT_MARKER_RE = /^(?:район|районе|районы|туман|тумани|tumani|district)$/iu;
+const RC_ADDRESS_INTRO_RE = /^(?:за|адрес(?:ою|у|ом)?|вул(?:иця)?|улица)$/iu;
 const RC_MARKER_RE = /(?:жк|жм|ж\/к|residential complex|ansamblu(?: rezidential)?|turar[- ]?joy majmuasi)\s*/i;
 
 function leadingLatinName(text) {
@@ -65,7 +66,7 @@ export function parseHousingResidentialComplex(value) {
   const parsed = String(candidate).trim().replace(/([\p{Ll}\d])(\p{Lu})/gu, '$1 $2').replace(/\s{2,}/g, ' ').split(/\s+/).reduce((words, token) => {
     if (words.stopped || words.list.length >= 4) return { ...words, stopped: true };
     const clean = token.replace(/^[«»"'„“]+|[«»"'„“!|,]+$/g, '');
-    if (!clean || RC_STOP_WORD_RE.test(clean) || RC_ATTRIBUTE_TOKEN_RE.test(clean)) return { ...words, stopped: true, by: clean };
+    if (!clean || RC_STOP_WORD_RE.test(clean) || RC_ADDRESS_INTRO_RE.test(clean) || RC_ATTRIBUTE_TOKEN_RE.test(clean)) return { ...words, stopped: true, by: clean };
     return { list: [...words.list, clean], stopped: false, by: words.by };
   }, { list: [], stopped: false, by: '' });
   const words = RC_DISTRICT_MARKER_RE.test(parsed.by) ? parsed.list.slice(0, -1) : parsed.list;

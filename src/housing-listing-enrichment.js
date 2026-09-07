@@ -9,6 +9,7 @@ import { parseHousingListingFields } from './housing-listing-fields.js';
 import { parseHousingResidentialComplex } from './housing-text.js';
 import { parseHousingAddress } from './housing-address.js';
 import { HOUSING_LANDMARK_EXTENSIONS, HOUSING_POI_EXTENSIONS } from './housing-poi-extensions.js';
+import { resolveHousingIntent } from './housing-intent.js';
 
 const GENERIC_CATEGORY = Object.freeze({
   Park: 'park', Metro: 'metro', 'Bus stop': 'transport', 'Public transport': 'transport', 'Main road': 'transport',
@@ -229,10 +230,11 @@ function walkMinutes(text) {
   return Number.isInteger(value) && value > 0 && value <= 180 ? value : null;
 }
 
-export function parseHousingListingEnrichment(value, { country = '' } = {}) {
+export function parseHousingListingEnrichment(value, { country = '', dealType = null } = {}) {
   const text = normalizeUnicode(value ?? '');
   if (!text) return deepFreeze({});
-  const listingFields = parseHousingListingFields(text, { country });
+  const resolvedDealType = dealType || resolveHousingIntent(text)?.dealType || null;
+  const listingFields = parseHousingListingFields(text, { country, dealType: resolvedDealType });
   const floor = parseHousingFloor(text);
   const areas = parseHousingAreas(text);
   const audience = parseHousingAudience(text);
@@ -271,7 +273,7 @@ export function parseHousingListingEnrichment(value, { country = '' } = {}) {
     euroLayout: listingFields.euroLayout ?? null,
     gas: listingFields.gas ?? null,
     newBuilding: listingFields.newBuilding ?? null,
-    communalSeparated: listingFields.communalSeparated ?? null,
+    communalSeparated: resolvedDealType === 'sale' ? null : (listingFields.communalSeparated ?? null),
     parking: listingFields.parking ?? null,
     elevator: listingFields.elevator ?? null,
     heating: listingFields.heating ?? null,
@@ -284,7 +286,7 @@ export function parseHousingListingEnrichment(value, { country = '' } = {}) {
     furnished: listingFields.furnished ?? null,
     deposit: listingFields.depositRequired ?? null,
     firstRental: firstRental(text, listingFields),
-    utilitiesAmount: listingFields.utilitiesAmount ?? null,
+    utilitiesAmount: resolvedDealType === 'sale' ? null : (listingFields.utilitiesAmount ?? null),
     commission,
     commissionPercent: commission === false ? 0 : null,
     commissionAmount,

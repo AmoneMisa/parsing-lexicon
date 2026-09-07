@@ -242,8 +242,17 @@ export function parseHousingPrice(value, fallbackCurrency = '') {
     // `500 m2` and `5 minut` cannot be promoted to 500 million / 5 million.
     const match = priceText.match(new RegExp(`(\\d+(?:[.,]\\d+)?)\\s*(${SCALE_PATTERN})(?=$|[^\\p{L}\\p{N}_])`, 'iu'));
     if (match) {
+      // Ukrainian listings abbreviate a microdistrict as “531 м/р”. The
+      // one-letter million scale is otherwise valid, but this trailing
+      // “/р” makes the token an area identifier, never a price.
+      const tail = priceText.slice((match.index ?? 0) + match[0].length);
+      if (/^\s*\/\s*[рr](?=$|[^\p{L}\p{N}_])/iu.test(tail)) {
+        // Fall through to the ordinary bare-number pass, which can still
+        // recover a genuine rent amount later in the listing.
+      } else {
       const amount = parseScaledAmount(match[1], match[2]);
       if (amount != null && amount >= 1000 && amount <= 5_000_000_000) price = Math.round(amount);
+      }
     }
   }
 

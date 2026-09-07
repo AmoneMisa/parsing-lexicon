@@ -57,6 +57,13 @@ test('housing text amenities cover common sale listing features', () => {
   ]);
 });
 
+test('residential complex extraction stops before a Ukrainian address clause', () => {
+  assert.equal(
+    parseHousingResidentialComplex('ЖК Крокус за адресою вул. Холодногірська, 18'),
+    'Крокус',
+  );
+});
+
 test('housing text parsers cover the supplied Cyrillic Uzbek room form', () => {
   assert.equal(parseHousingRoomsFromText('1- хоналик квартира'), 1);
   assert.equal(parseHousingRoomsFromText('2 хона'), 2);

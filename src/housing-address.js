@@ -39,6 +39,12 @@ function compactStreet(value) {
     // "проживания" -> "оживания").
     .replace(new RegExp(`^${PREFIX_STREET_MARKER}(?!\\p{L})\\s*`, 'iu'), '')
     .replace(new RegExp(`\\s+${POSTFIX_STREET_MARKER}$`, 'iu'), '')
+    // OCR frequently substitutes “оя” for the Ukrainian/Russian “ля” in
+    // “шлях”; correct the street-token typo before canonical lookup.
+    .replace(/(?<!\p{L})шоях(?!\p{L})/giu, 'шлях')
+    // Listings commonly abbreviate this Kharkiv street to an initial and
+    // surname; expand it so address-only consumers do not retain just “Л”.
+    .replace(/(?<!\p{L})л\s*\.\s*малой(?!\p{L})/giu, 'Любови Малой')
     .replace(/[\s,;:.\-–—]+$/gu, '')
     .trim() || null;
 }

@@ -53,5 +53,5 @@ export type HousingListingFields = Readonly<{
  */
 export function parseHousingListingFields(
   value: unknown,
-  options?: { country?: string },
+  options?: { country?: string; dealType?: 'sale' | 'longRent' | 'shortRent' | null },
 ): Readonly<Partial<HousingListingFields>>;

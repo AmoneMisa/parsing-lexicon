@@ -14,6 +14,11 @@ test('housing multipliers do not match measurement or word prefixes', () => {
     currency: 'UZS',
     approximate: false,
   });
+  assert.deepEqual(parseHousingPrice('Сдам 1-к кв на Салтовке, 531 м/р, 7000+коммун.', 'UAH'), {
+    amount: 7000,
+    currency: 'UAH',
+    approximate: false,
+  });
 });
 
 test('housing multipliers still parse complete scale words', () => {

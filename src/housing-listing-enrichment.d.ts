@@ -71,4 +71,7 @@ export function parseHousingCommissionAmount(value: unknown): HousingCommissionA
 export function parseHousingPerPersonPrice(value: unknown, options?: { country?: string }): HousingPerPersonPrice | null;
 export function parseHousingTransitRoutes(value: unknown): readonly string[];
 export function parseHousingObservedAmenities(value: unknown): readonly string[];
-export function parseHousingListingEnrichment(value: unknown, options?: { country?: string }): Readonly<HousingListingEnrichment>;
+export function parseHousingListingEnrichment(
+  value: unknown,
+  options?: { country?: string; dealType?: 'sale' | 'longRent' | 'shortRent' | null },
+): Readonly<HousingListingEnrichment>;

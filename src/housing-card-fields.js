@@ -51,7 +51,7 @@ function enumeratedNearby(text) {
   const items = [];
   for (const item of blocks.join(', ').split(/[,;•·|]+/).map((part) => part
     .replace(/\s{2,}/g, ' ')
-    .replace(/^[\s\-–—.]+|[\s\-–—.!]+$/g, '')
+    .replace(/^[\s\-–—."'«»“”„]+|[\s\-–—.!"'«»“”„]+$/g, '')
     .trim())) {
     if (item.length < 3 || item.length > 45 || NEARBY_NOISE_RE.test(item) || NEARBY_FILLER_RE.test(item)) continue;
     if (!/\p{L}{3,}/u.test(item)) continue;

@@ -86,6 +86,16 @@ test('parses Uzbek and Romanian explicit address markers', () => {
   assert.equal(ro.building, '3');
 });
 
+test('normalizes the common Kharkiv Poltavskyi Shliakh OCR typo before parsing its house number', () => {
+  assert.deepEqual(parseHousingAddress('улица Полтавский шоях 171'), {
+    address: 'Полтавский шлях 171',
+    street: 'Полтавский шлях',
+    houseNumber: '171',
+    building: null,
+    confidence: 1,
+  });
+});
+
 test('parses a Tashkent mavze address into district, quarter and house fields', () => {
   assert.deepEqual(
     parseHousingAddress('Chilonzor 10 mavze 11 a dom 9 etashka 4 etajda 2 honali'),

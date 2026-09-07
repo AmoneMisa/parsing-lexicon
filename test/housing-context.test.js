@@ -9,6 +9,9 @@ test('housing action stays orthogonal to rent duration', () => {
   assert.deepEqual(resolveHousingIntent('Сниму квартиру'), {
     action: 'rentIn', listingKind: 'propertyWanted', dealType: 'longRent',
   });
+  assert.deepEqual(resolveHousingIntent('Продажа, Харьков. Сдам 1-к квартиру, 531 м/р.'), {
+    action: 'rentOut', listingKind: 'propertyOffer', dealType: 'longRent',
+  });
 });
 
 test('Uzbek per-day operating costs do not turn a sale into short rent', () => {

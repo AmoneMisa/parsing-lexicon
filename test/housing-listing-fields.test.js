@@ -1,6 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { parseHousingListingFields } from '../src/index.js';
+import { parseHousingListingEnrichment } from '../src/housing-listing-enrichment.js';
+import { parseHousingStructured } from '../src/housing-structured.js';
+import { matchDictionaryLocation } from '../src/locations-runtime.js';
 
 test('centralized housing field parser covers listing table semantics', () => {
   const result = parseHousingListingFields(`
@@ -61,4 +64,37 @@ test('keeps common Dream House listing booleans in the listing field parser', ()
   assert.equal(result.depositRequired, true);
   assert.equal(result.parking, true);
   assert.equal(result.furnished, true);
+});
+
+test('does not retain rental-only utility payments for a Ukrainian sale listing', () => {
+  const text = `
+    Продажа. Продам 4-комнатную квартиру в Харькове за 55 000 USD.
+    Коммунальные оплачиваются отдельно, около 2500 грн.
+  `;
+
+  const fields = parseHousingListingFields(text, { country: 'UA' });
+  const structured = parseHousingStructured(text, { country: 'UA' });
+  const enrichment = parseHousingListingEnrichment(text, { country: 'UA' });
+
+  assert.equal(fields.communalSeparated, null);
+  assert.equal(fields.utilitiesAmount, null);
+  assert.equal(structured.intent?.dealType, 'sale');
+  assert.equal(structured.payments.utilities, null);
+  assert.equal(enrichment.communalSeparated, null);
+  assert.equal(enrichment.utilitiesAmount, null);
+});
+
+test('parses Ukrainian move-in availability and keeps the Kharkiv area ahead of nearby supermarkets', () => {
+  const text = `
+    Довгострокова оренда 1-к кв. (ст. м. Хол. Гора — 4 хв. пішки).
+    Поруч супермаркети Рост, Класс, АТБ. Перегляд і заселення можливі лише з 12 вересня.
+  `;
+
+  assert.equal(parseHousingListingFields(text, { country: 'UA' }).availableFrom, '12 вересня');
+  assert.equal(matchDictionaryLocation(text, 'UA', 'Kharkiv')?.name, 'Kholodna Hora');
+});
+
+test('does not turn a phone prefix after utilities into a utility amount', () => {
+  const result = parseHousingListingFields('Цена 6000 грн плюс коммунальные. Тел. 0612345671', { country: 'UA' });
+  assert.equal(result.utilitiesAmount, null);
 });

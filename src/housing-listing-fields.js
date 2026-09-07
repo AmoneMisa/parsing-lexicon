@@ -2,6 +2,7 @@ import { deepFreeze } from './lexicon-core.js';
 import { normalizeUnicode } from './normalization.js';
 import { parseHousingContext } from './housing-context.js';
 import { parseHousingFeatures } from './housing-features.js';
+import { resolveHousingIntent } from './housing-intent.js';
 
 const bool = (text, positive, negative = null) => {
   if (negative?.test(text)) return false;
@@ -69,6 +70,11 @@ function parseAvailableFrom(text) {
   const match = text.match(/(?:доступн\p{L}*\s+с|свободн\p{L}*\s+с|заселени\p{L}*\s+с|заезд\s+с|available\s+from|move[- ]?in\s+from)\s*[:\-]?\s*((?:\d{1,2}[./-]\d{1,2}(?:[./-]\d{2,4})?)|(?:\d{1,2}\s+[\p{L}]{3,12}(?:\s+\d{4})?))/iu);
   if (match?.[1]) return match[1].trim();
 
+  // Ukrainian listings commonly phrase this as “move-in is possible only
+  // from …”, rather than using the shorter “available from …” form.
+  const ukrainianMoveIn = text.match(/(?:перегляд\s+(?:і|та)\s+)?заселен\p{L}*\s+можлив\p{L}*(?:\s+лише)?\s+з\s*((?:\d{1,2}[./-]\d{1,2}(?:[./-]\d{2,4})?)|(?:\d{1,2}\s+[\p{L}]{3,12}(?:\s+\d{4})?))/iu);
+  if (ukrainianMoveIn?.[1]) return ukrainianMoveIn[1].trim();
+
   // Uzbek listings commonly attach the ablative suffix directly to the month:
   // "1-sentyabrdan beriladi" / "1-сентябрдан берилади".
   const uzbek = text.match(/(\d{1,2}\s*[-./]?\s*[\p{L}]{3,12})(?:dan|дан)(?=$|[^\p{L}\p{N}_])[^.\r\n]{0,32}(?:beriladi|берилади|bo['’]?sh|бўш)/iu);
@@ -76,7 +82,9 @@ function parseAvailableFrom(text) {
 }
 
 function parseUtilitiesAmount(text) {
-  const match = text.match(/(?:коммунальн\p{L}*|коммуналк\p{L}*|ком\.?\s*услуг\p{L}*|utilities?|bills?)\D{0,24}(?:около|примерно|~|≈)?\s*(\d{2,8}(?:[.,]\d{1,2})?)\s*(₴|грн|uah|\$|usd|€|eur|сум|uzs|тг|kzt|lei|ron|руб|rub)?/iu);
+  // Do not bridge a sentence boundary. Otherwise “plus utilities. Tel. 06…”
+  // turns the first phone digits into a fictitious utility bill.
+  const match = text.match(/(?:коммунальн\p{L}*|коммуналк\p{L}*|ком\.?\s*услуг\p{L}*|utilities?|bills?)[^\d.;!?…\r\n]{0,24}(?:около|примерно|~|≈)?\s*(\d{2,8}(?:[.,]\d{1,2})?)\s*(₴|грн|uah|\$|usd|€|eur|сум|uzs|тг|kzt|lei|ron|руб|rub)?/iu);
   if (!match) return null;
   const amount = Number(match[1].replace(',', '.'));
   if (!Number.isFinite(amount) || amount <= 0) return null;
@@ -103,11 +111,16 @@ function parseDepositRequired(text) {
   return null;
 }
 
-export function parseHousingListingFields(value, { country = '' } = {}) {
+export function parseHousingListingFields(value, { country = '', dealType = null } = {}) {
   const text = normalizeUnicode(value ?? '');
   const context = parseHousingContext(text);
   const features = parseHousingFeatures(text);
   if (!text) return deepFreeze({});
+  // Utility billing is a rental-only concept. A source may carry a generic
+  // payment-table value on every listing, including sales, so never let that
+  // value become a persisted housing attribute for a sale.
+  const resolvedDealType = dealType || resolveHousingIntent(text)?.dealType || null;
+  const isSale = resolvedDealType === 'sale';
 
   const gas = bool(text,
     /(?:^|[^\p{L}\p{N}_])(?:газ|gaz|gas)(?=$|[^\p{L}\p{N}_])|метан|aragaz|gaz\s+ta['’]?min/iu,
@@ -211,7 +224,7 @@ export function parseHousingListingFields(value, { country = '' } = {}) {
     ),
     gas,
     newBuilding: bool(text, /новостро|новобуд|новый\s+дом|novast(?:royka|iroyka)|navast(?:royka|iroyka)|new\s*build|newly\s+built|yangi\s+(?:bino|qurilgan|uy)|bloc\s+nou/iu),
-    communalSeparated: parseCommunalSeparated(text, country),
+    communalSeparated: isSale ? null : parseCommunalSeparated(text, country),
     parking: bool(
       text,
       /паркинг|парков|машино[- ]?мест|parking|avtoturargoh|mashina\s*joyi/iu,
@@ -239,6 +252,6 @@ export function parseHousingListingFields(value, { country = '' } = {}) {
     firstRent,
     minRentTerm: parseMinRentTerm(text),
     availableFrom: parseAvailableFrom(text),
-    utilitiesAmount: parseUtilitiesAmount(text),
+    utilitiesAmount: isSale ? null : parseUtilitiesAmount(text),
   });
 }
