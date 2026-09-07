@@ -9,6 +9,7 @@ import {
 } from './money-core.js';
 import { maskPhoneLikeSpans } from './contact.js';
 import { DEPOSIT_TERMS, SELLER_TERMS } from './housing.js';
+import { COUNTRIES, canonicalCountryCode, countryByCode } from './countries.js';
 
 const PRICE_KEYWORD = '(?:цена|ціна|нарх(?:и)?|narx(?:i)?|price|стоимост[ьи]|аренд(?:а|ная\\s+плата)?|rent)';
 // moneyCurrencyPattern() includes short codes (cad, ron, aed...) with no
@@ -30,7 +31,13 @@ function escapeRegex(value) {
   return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
+// A one-letter `m` is an unsafe million alias in housing: the same token is
+// routinely a metre (`80 m`, `606 m/r`). Keep the global money lexicon intact
+// for non-housing consumers, but require housing listings to spell million as
+// `mln`, `million`, `млн`, etc. This makes the shared housing core precision-
+// first without duplicating the money vocabulary by country.
 const SCALE_PATTERN = [...new Set(NUMBER_MULTIPLIERS.flatMap((entry) => aliasesOf(entry)).filter(Boolean))]
+  .filter((alias) => !/^[mм]$/iu.test(String(alias)))
   .sort((a, b) => String(b).length - String(a).length)
   .map(escapeRegex)
   .join('|');
@@ -50,6 +57,42 @@ const PER_SQM_BEFORE_AMOUNT_RE = new RegExp(
   `(?:за\\s*(?:1\\s*)?|по\\s*|per\\s+)${PER_SQM_UNIT}\\s*[:=\\-–—]?\\s*${PER_SQM_NUMBER}${PER_SQM_CURRENCY}(?=$|[^\\p{L}\\p{N}_])`,
   'igu',
 );
+
+const COMMON_HOUSING_STRUCTURE_PATTERNS = Object.freeze([
+  /(?:^|[^\p{L}\p{N}_])\d{1,5}(?:[.,]\d{1,2})?\s*(?:м(?:2|²)|m(?:2|²)|sqm|sq\.?\s*m|м\s*кв\.?)\s*(?=$|[^\p{L}\p{N}_])/giu,
+]);
+
+// Only notation whose semantics genuinely vary by country belongs here. The
+// parser algorithm stays shared; profiles merely identify spans that cannot be
+// money in that country's housing classifieds.
+const COUNTRY_HOUSING_STRUCTURE_PATTERNS = Object.freeze({
+  UA: Object.freeze([
+    // Ukrainian classifieds use `531 м/р`, `606м/р` for microdistricts.
+    /(?:^|[^\p{L}\p{N}_])\d{1,4}\s*[mм]\s*\/\s*[rр](?=$|[^\p{L}\p{N}_])/giu,
+    // `общ.пл.80 м`, `загальна площа 80 м` are area measurements even when
+    // the author omitted the squared sign.
+    /(?:общ(?:ая)?\.?\s*пл(?:ощад[ьи])?\.?|загальн\p{L}*\s+площ\p{L}*|площа|площадь)\s*[:=\-–—]?\s*\d{1,5}(?:[.,]\d{1,2})?\s*[mм](?=$|[^\p{L}\p{N}_])/giu,
+  ]),
+});
+
+function moneyParsingContext(value = '') {
+  if (value && typeof value === 'object' && !Array.isArray(value)) {
+    const country = canonicalCountryCode(value.country) || '';
+    const currency = String(value.currency || value.fallbackCurrency || countryByCode(country)?.currency || '')
+      .trim()
+      .toUpperCase();
+    return { country, currency };
+  }
+
+  const currency = String(value || '').trim().toUpperCase();
+  const countryMatches = currency
+    ? COUNTRIES.filter((item) => item.currency === currency)
+    : [];
+  return {
+    country: countryMatches.length === 1 ? countryMatches[0].code : '',
+    currency,
+  };
+}
 
 function parsedMoneyAmount(numberValue, scaleValue) {
   const amount = scaleValue
@@ -99,6 +142,20 @@ function maskRanges(text, ranges) {
   return masked;
 }
 
+function maskPatternMatches(text, patterns) {
+  let masked = text;
+  for (const pattern of patterns) {
+    pattern.lastIndex = 0;
+    masked = masked.replace(pattern, (match) => ' '.repeat(match.length));
+  }
+  return masked;
+}
+
+function maskHousingStructuralSpans(text, country) {
+  const countryPatterns = COUNTRY_HOUSING_STRUCTURE_PATTERNS[country] || [];
+  return maskPatternMatches(text, [...COMMON_HOUSING_STRUCTURE_PATTERNS, ...countryPatterns]);
+}
+
 function isPaymentScopedAmount(text, start, end) {
   const left = text
     .slice(Math.max(0, start - 56), start)
@@ -117,7 +174,8 @@ function isPaymentScopedAmount(text, start, end) {
     && Boolean(findCanonical(right, PAYMENT_AMOUNT_TERMS, { partial: true }));
 }
 
-export function parseHousingPricePerSqm(value, fallbackCurrency = '') {
+export function parseHousingPricePerSqm(value, context = '') {
+  const { currency: fallbackCurrency } = moneyParsingContext(context);
   const original = String(value || '');
   if (!original) return Object.freeze({ amount: null, currency: fallbackCurrency || '', approximate: false });
 
@@ -135,7 +193,8 @@ export function parseHousingPricePerSqm(value, fallbackCurrency = '') {
   });
 }
 
-export function parseHousingPrice(value, fallbackCurrency = '') {
+export function parseHousingPrice(value, context = '') {
+  const { country, currency: fallbackCurrency } = moneyParsingContext(context);
   const original = String(value || '');
   if (!original) return Object.freeze({ amount: null, currency: fallbackCurrency || '', approximate: false });
 
@@ -143,10 +202,11 @@ export function parseHousingPrice(value, fallbackCurrency = '') {
   // therefore never win as a labelled, currency-tagged or fallback amount.
   const text = maskPhoneLikeSpans(original);
   // Unit prices are not listing totals. Mask their exact spans before running
-  // the ordinary total-price parser so "От 13 млн за м2" cannot become a
-  // 13,000,000 UZS apartment price. The dedicated parser above still exposes
-  // the unit price to consumers that need it.
-  const priceText = maskRanges(text, perSquareMeterMatches(text, fallbackCurrency));
+  // the ordinary total-price parser so "От 13 млн за m2" cannot become a
+  // 13,000,000 UZS apartment price. Country-aware structural masking then
+  // removes local area/microdistrict notation before any money fallback sees it.
+  const withoutUnitPrices = maskRanges(text, perSquareMeterMatches(text, fallbackCurrency));
+  const priceText = maskHousingStructuralSpans(withoutUnitPrices, country);
   let currency = moneyCurrencyFromText(priceText, fallbackCurrency || '')
     || moneyCurrencyFromText(text, fallbackCurrency || '')
     || '';
@@ -237,22 +297,13 @@ export function parseHousingPrice(value, fallbackCurrency = '') {
   }
 
   if (price == null) {
-    // Multiplier aliases include useful one-letter forms such as `m` and `k`.
-    // Require the alias to end at a token boundary so measurements/words like
-    // `500 m2` and `5 minut` cannot be promoted to 500 million / 5 million.
+    // Only unambiguous scale aliases participate in an unlabeled fallback.
+    // Single-letter `m` is deliberately excluded above because in housing it
+    // is overwhelmingly a metre/microdistrict token rather than a million.
     const match = priceText.match(new RegExp(`(\\d+(?:[.,]\\d+)?)\\s*(${SCALE_PATTERN})(?=$|[^\\p{L}\\p{N}_])`, 'iu'));
     if (match) {
-      // Ukrainian listings abbreviate a microdistrict as “531 м/р”. The
-      // one-letter million scale is otherwise valid, but this trailing
-      // “/р” makes the token an area identifier, never a price.
-      const tail = priceText.slice((match.index ?? 0) + match[0].length);
-      if (/^\s*\/\s*[рr](?=$|[^\p{L}\p{N}_])/iu.test(tail)) {
-        // Fall through to the ordinary bare-number pass, which can still
-        // recover a genuine rent amount later in the listing.
-      } else {
       const amount = parseScaledAmount(match[1], match[2]);
       if (amount != null && amount >= 1000 && amount <= 5_000_000_000) price = Math.round(amount);
-      }
     }
   }
 
