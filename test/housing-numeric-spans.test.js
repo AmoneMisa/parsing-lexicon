@@ -11,13 +11,24 @@ import { parseHousingStructured } from '../src/housing-structured.js';
 const types = (text, options) => classifyHousingSingleMSpans(text, options).map((span) => span.type);
 
 test('single-m spans are typed before money parsing', () => {
-  assert.deepEqual(types('metro 800m', { country: 'UZ', dealType: 'sale' }), [
-    HOUSING_NUMERIC_SPAN_TYPES.DISTANCE,
-  ]);
-  assert.deepEqual(types('800m metro', { country: 'UZ', dealType: 'sale' }), [
-    HOUSING_NUMERIC_SPAN_TYPES.DISTANCE,
-  ]);
+  for (const text of [
+    'metro 800m',
+    'metro - 800m',
+    '800m metro',
+    '800m, metro',
+    '800m до метро',
+    '800m от метро',
+    'metroga 800m',
+    '800m metroga',
+  ]) {
+    assert.deepEqual(types(text, { country: 'UZ', dealType: 'sale' }), [
+      HOUSING_NUMERIC_SPAN_TYPES.DISTANCE,
+    ], text);
+  }
   assert.deepEqual(types('umumiy maydon 80m', { country: 'UZ', dealType: 'sale' }), [
+    HOUSING_NUMERIC_SPAN_TYPES.AREA,
+  ]);
+  assert.deepEqual(types('80m общая площадь', { country: 'UA' }), [
     HOUSING_NUMERIC_SPAN_TYPES.AREA,
   ]);
   assert.deepEqual(types('606m/r', { country: 'UA' }), [
@@ -45,21 +56,20 @@ test('Uzbek sale price parser keeps distance spans out of bare-number fallback',
     currency: 'UZS',
     approximate: false,
   });
-  assert.deepEqual(parseHousingPrice('metro 800m', { country: 'UZ', dealType: 'sale' }), {
-    amount: null,
-    currency: 'UZS',
-    approximate: false,
-  });
-  assert.deepEqual(parseHousingPrice('800m metro', { country: 'UZ', dealType: 'sale' }), {
-    amount: null,
-    currency: 'UZS',
-    approximate: false,
-  });
-  assert.deepEqual(parseHousingPrice('1200m metro', { country: 'UZ', dealType: 'sale' }), {
-    amount: null,
-    currency: 'UZS',
-    approximate: false,
-  });
+  for (const text of [
+    'metro 800m',
+    '800m metro',
+    '800m, metro',
+    '800m до метро',
+    '800m от метро',
+    '1200m metro',
+  ]) {
+    assert.deepEqual(parseHousingPrice(text, { country: 'UZ', dealType: 'sale' }), {
+      amount: null,
+      currency: 'UZS',
+      approximate: false,
+    }, text);
+  }
   assert.deepEqual(parseHousingPrice('800m metro, 950m', { country: 'UZ', dealType: 'sale' }), {
     amount: 950_000_000,
     currency: 'UZS',
