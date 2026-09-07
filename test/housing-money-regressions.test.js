@@ -61,6 +61,34 @@ test('one-letter million shorthand cannot outrank housing measurements', () => {
   });
 });
 
+test('Uzbek sale context restores compact m as million without weakening measurement guards', () => {
+  assert.deepEqual(parseHousingPrice('800m', {country: 'UZ', dealType: 'sale'}), {
+    amount: 800_000_000,
+    currency: 'UZS',
+    approximate: false,
+  });
+  assert.deepEqual(parseHousingPrice("80m uzbek so'm", {country: 'UZ'}), {
+    amount: 80_000_000,
+    currency: 'UZS',
+    approximate: false,
+  });
+  assert.deepEqual(parseHousingPrice('Narxi 950 m', {country: 'UZ'}), {
+    amount: 950_000_000,
+    currency: 'UZS',
+    approximate: false,
+  });
+  assert.deepEqual(parseHousingPrice('metro 800m, kvartira sotiladi', {country: 'UZ', dealType: 'sale'}), {
+    amount: null,
+    currency: 'UZS',
+    approximate: false,
+  });
+  assert.deepEqual(parseHousingPrice('umumiy maydon 80m, narxi 800m', {country: 'UZ', dealType: 'sale'}), {
+    amount: 800_000_000,
+    currency: 'UZS',
+    approximate: false,
+  });
+});
+
 test('structured Ukrainian parsing keeps rental price, deposit and phone domains separate', () => {
   const text = 'Сдам свою 2х кімнатну квартиру, в довгострокову аренду, Салтівка, 606м/р, разв’язка транспорта хороша, поблизу базар та супермаркети, школа, садочок, 4/5, 6000грн+комуналка+6000(залог), 0971698824';
   const parsed = parseHousingStructured(text, {country: 'UA'});
