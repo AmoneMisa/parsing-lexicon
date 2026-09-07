@@ -21,12 +21,13 @@ const AREA_BEFORE_RE = /(?:общ(?:ая)?\.?\s*пл(?:ощад[ьи])?\.?|за�
 const AREA_AFTER_RE = /^[\s,;:()\-–—]*(?:общ(?:ая)?\.?\s*пл(?:ощад[ьи])?\.?|загальн\p{L}*\s+площ\p{L}*|площа|площадь|kv\.?\s*m|sqm|sq\.?\s*m|umumiy\s+maydon|maydon|area|surface|suprafa(?:ță|ta))\b/iu;
 
 const DISTANCE_OBJECT = String.raw`(?:metro(?:ga|dan|gacha)?|метро|maktab(?:ga|dan|gacha)?|school|школ\p{L}*|bozor(?:ga|dan|gacha)?|market|рынок\p{L}*|bekat(?:ga|dan|gacha)?|stop|station|остановк\p{L}*|park(?:ga|dan|gacha)?|парк\p{L}*|aeroport(?:ga|dan|gacha)?|airport|аэропорт\p{L}*|do['’ʻʼ]?kon(?:ga|dan|gacha)?|магазин\p{L}*)`;
+const UNICODE_TOKEN_END = String.raw`(?![\p{L}\p{N}_])`;
 const DISTANCE_BEFORE_RE = new RegExp(
   `(?:${DISTANCE_OBJECT}|masofa|distance|(?:до|от|to|from)\\s+${DISTANCE_OBJECT})[^\\r\\n,;]{0,14}$`,
   'iu',
 );
 const DISTANCE_AFTER_RE = new RegExp(
-  `^[\\s,;:()\\-–—]*(?:(?:gacha|гача|masofa|distance|metr\\p{L}*|метр\\p{L}*)\\b|(?:до|от|to|from)\\s+${DISTANCE_OBJECT}\\b|${DISTANCE_OBJECT}\\b|(?:walk(?:ing)?|piyoda)\\s+(?:to\\s+)?${DISTANCE_OBJECT}\\b)`,
+  `^[\\s,;:()\\-–—]*(?:(?:gacha|гача|masofa|distance|metr\\p{L}*|метр\\p{L}*)${UNICODE_TOKEN_END}|(?:до|от|to|from)\\s+${DISTANCE_OBJECT}${UNICODE_TOKEN_END}|${DISTANCE_OBJECT}${UNICODE_TOKEN_END}|(?:walk(?:ing)?|piyoda)\\s+(?:to\\s+)?${DISTANCE_OBJECT}${UNICODE_TOKEN_END})`,
   'iu',
 );
 
