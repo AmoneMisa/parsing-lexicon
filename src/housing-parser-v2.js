@@ -1,4 +1,5 @@
 import { extractHousingMoneyCandidates, rankHousingPriceCandidates } from './housing-money.js';
+import { parseHousingAddress } from './housing-address.js';
 import { createParseCandidate, normalizeParserText, resolveParseCandidates } from './parser-core.js';
 import { extractTemporalCandidates } from './temporal.js';
 
@@ -10,6 +11,87 @@ const DISTANCE_RE = /(?:(?:метро|м\.|metro|станц\p{L}*|bekat)[^\r\n\d
 function candidate(id, entityType, value, match, parser, confidence, evidence, metadata = {}) {
   const start = match?.index ?? 0; const raw = match?.[0] || '';
   return createParseCandidate({ id, entityType, value, raw, start, end: start + raw.length, parser, confidence, evidence, metadata });
+}
+
+function oneEditApart(left, right) {
+  if (Math.abs(left.length - right.length) > 1) return false;
+  let leftIndex = 0; let rightIndex = 0; let edits = 0;
+  while (leftIndex < left.length && rightIndex < right.length) {
+    if (left[leftIndex] === right[rightIndex]) { leftIndex += 1; rightIndex += 1; continue; }
+    edits += 1;
+    if (edits > 1) return false;
+    if (left.length > right.length) leftIndex += 1;
+    else if (right.length > left.length) rightIndex += 1;
+    else { leftIndex += 1; rightIndex += 1; }
+  }
+  return true;
+}
+
+function componentRange(text, value) {
+  const source = String(text ?? '');
+  const needle = String(value ?? '').trim();
+  if (!needle) return { start: 0, end: 0, raw: '' };
+  const start = source.toLocaleLowerCase().indexOf(needle.toLocaleLowerCase());
+  if (start >= 0) return { start, end: start + needle.length, raw: source.slice(start, start + needle.length) };
+
+  // This only maps a source span after the lexical parser has already made a
+  // deterministic canonical decision. It never makes a geo match itself; it
+  // merely preserves the original range for one-character marketplace typos
+  // such as Yashnobot -> Yashnobod.
+  const normalizedNeedle = needle.toLocaleLowerCase();
+  if (normalizedNeedle.length < 5 || /\s/u.test(normalizedNeedle)) return { start: 0, end: 0, raw: '' };
+  for (const match of source.matchAll(/\p{L}[\p{L}'’ʼ-]{3,}/gu)) {
+    if (!oneEditApart(match[0].toLocaleLowerCase(), normalizedNeedle)) continue;
+    const offset = match.index ?? 0;
+    return { start: offset, end: offset + match[0].length, raw: match[0] };
+  }
+  return { start: 0, end: 0, raw: '' };
+}
+
+function addressCandidate(id, entityType, value, text, confidence, evidence, metadata = {}, sourceValue = value) {
+  const range = componentRange(text, sourceValue);
+  if (!range.raw) return null;
+  return createParseCandidate({ id, entityType, value, ...range, parser: 'housing.address.components', confidence, evidence, metadata });
+}
+
+/** Extract structured address and geo references without performing geocoding. */
+export function extractHousingAddressCandidates(value, context = {}) {
+  const text = String(value ?? '');
+  if (!text) return Object.freeze([]);
+  const address = parseHousingAddress(text, {
+    country: context.country,
+    city: context.city,
+    resolveGeoEntity: context.resolveGeoEntity,
+    knownStreet: context.knownStreet,
+    knownStreets: context.knownStreets,
+  });
+  const confidence = address.confidence || 0.5;
+  const candidates = [];
+  const components = Object.freeze({
+    address: address.address,
+    street: address.street,
+    houseNumber: address.houseNumber,
+    building: address.building,
+    unit: address.unit,
+    level: address.level,
+    entrance: address.entrance,
+    staircase: address.staircase,
+  });
+  for (const [component, item] of Object.entries(components)) {
+    if (!item) continue;
+    const extracted = addressCandidate(`housing.address.${component}`, `address.${component}`, item, text, confidence, [{ type: 'address-component', value: component }]);
+    if (extracted) candidates.push(extracted);
+  }
+  for (const component of ['district', 'metro', 'mahalla']) {
+    if (!address[component]) continue;
+    const extracted = addressCandidate(`housing.geo.${component}`, `geo.${component}`, address[component], text, confidence, [{ type: 'lexicon-geo', value: component }]);
+    if (extracted) candidates.push(extracted);
+  }
+  for (const [component, reference] of Object.entries(address.geoEntities || {})) {
+    const extracted = addressCandidate(`housing.geo-reference.${component}`, `geoReference.${component}`, reference, text, Math.max(confidence, 0.9), [{ type: 'geo-catalog-id', value: reference.id }], { component }, reference.canonical);
+    if (extracted) candidates.push(extracted);
+  }
+  return Object.freeze(candidates);
 }
 
 /** Native candidate-based numeric housing vertical slice. */
@@ -39,8 +121,12 @@ export function parseHousingV2(value, context = {}) {
   const normalized = normalizeParserText(value);
   // Temporal extraction shares the same candidate resolver as numeric housing
   // entities, so one deterministic conflict policy covers the whole result.
-  const candidates = Object.freeze([...extractHousingNumericCandidates(normalized.originalText, context), ...extractTemporalCandidates(normalized.originalText, { ...context, domain: 'real-estate' })]); const resolved = resolveParseCandidates(candidates);
+  const candidates = Object.freeze([
+    ...extractHousingNumericCandidates(normalized.originalText, context),
+    ...extractHousingAddressCandidates(normalized.originalText, context),
+    ...extractTemporalCandidates(normalized.originalText, { ...context, domain: 'real-estate' }),
+  ]); const resolved = resolveParseCandidates(candidates);
   const data = {}; const confidence = {};
   for (const item of resolved.selected) { const key = item.entityType.replace(/^area\./u, 'area.'); data[key] = item.value; confidence[key] = item.confidence; }
-  return Object.freeze({ data: Object.freeze(data), confidence: Object.freeze(confidence), debug: Object.freeze({ candidates, discardedCandidates: resolved.discarded, refinersApplied: Object.freeze(['numeric-context', 'money-ranking', 'temporal-context', 'conflict-resolver']) }) });
+  return Object.freeze({ data: Object.freeze(data), confidence: Object.freeze(confidence), debug: Object.freeze({ candidates, discardedCandidates: resolved.discarded, refinersApplied: Object.freeze(['numeric-context', 'address-components', 'geo-catalog-reference', 'money-ranking', 'temporal-context', 'conflict-resolver']) }) });
 }
