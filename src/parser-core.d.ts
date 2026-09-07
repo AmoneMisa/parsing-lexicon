@@ -1,0 +1,11 @@
+export type TextRange = Readonly<{ start: number; end: number }>;
+export type ParserToken = Readonly<{ index: number; raw: string; normalized: string; start: number; end: number; kind: 'word' | 'number' | 'currency' | 'punctuation' | 'symbol' }>;
+export type ParserSpan = Readonly<{ tokenStart: number; tokenEnd: number; start: number; end: number; raw: string; normalized: string }>;
+export type ParserEvidence = Readonly<{ type: string; [key: string]: unknown }>;
+export type ParseCandidate<T = unknown> = Readonly<{ id: string; entityType: string; value?: T; raw?: string; start: number; end: number; confidence: number; parser?: string; evidence: readonly ParserEvidence[]; metadata: Readonly<Record<string, unknown>> }>;
+export function normalizeParserText(value: unknown): Readonly<{ originalText: string; normalizedText: string; mapping: readonly number[]; toOriginalRange(start: number, end: number): TextRange }>;
+export function tokenizeParserText(value: string | ReturnType<typeof normalizeParserText>): readonly ParserToken[];
+export function generateParserSpans(tokens: readonly ParserToken[], options?: { maxTokens?: number }): readonly ParserSpan[];
+export function createParseCandidate<T = unknown>(input: Partial<ParseCandidate<T>> & Pick<ParseCandidate<T>, 'id' | 'entityType' | 'start' | 'end'>): ParseCandidate<T>;
+export function resolveParseCandidates(candidates: readonly ParseCandidate[], options?: { compatible?: (left: ParseCandidate, right: ParseCandidate) => boolean }): Readonly<{ selected: readonly ParseCandidate[]; discarded: readonly ParseCandidate[] }>;
+export function runCandidatePipeline(value: unknown, options?: { parsers?: readonly Function[]; refiners?: readonly Function[]; resolver?: Function; context?: Record<string, unknown>; debug?: boolean }): Readonly<{ data: readonly ParseCandidate[]; debug?: Readonly<Record<string, unknown>> }>;

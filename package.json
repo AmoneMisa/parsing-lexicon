@@ -1,6 +1,6 @@
 {
   "name": "@whiteslove/parsing-lexicon",
-  "version": "0.6.20",
+  "version": "0.6.21",
   "description": "Shared deterministic multilingual parsing lexicon for WhitesLove housing and hiring services",
   "repository": {
     "type": "git",
@@ -16,6 +16,10 @@
     },
     "./lexicon-core": "./src/lexicon-core.js",
     "./normalization": "./src/normalization.js",
+    "./parser-core": {
+      "types": "./src/parser-core.d.ts",
+      "import": "./src/parser-core.js"
+    },
     "./countries": "./src/countries.js",
     "./country-context": {
       "types": "./src/country-context.d.ts",
