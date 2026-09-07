@@ -13,6 +13,10 @@ import { parseHousingListingFields } from './housing-listing-fields.js';
 import { parseHousingPrice } from './housing-money.js';
 import { parseHousingAmenities, parseHousingResidentialComplex } from './housing-text.js';
 import { parseHousingSourcePost } from './housing-source-aliases.js';
+import {
+  classifyHousingSingleMSpans,
+  HOUSING_NUMERIC_SPAN_TYPES,
+} from './housing-numeric-spans.js';
 
 const NUMBER_WORDS = Object.freeze([
   [/(?<![\p{L}\p{N}_])(?:однушк\p{L}*|однокомнатн\p{L}*|bir\s+xona(?:li)?|бир\s+хона(?:ли|лик)?|1\s*(?:-\s*)?к(?:омн\p{L}*)?|1\s*(?:-\s*)?xona(?:li)?|1\s*(?:-\s*)?хона(?:лик|ли)?|1\s*бөлмелі|one[- ]bedroom|one[- ]room)(?![\p{L}\p{N}_])/iu, 1],
@@ -63,11 +67,6 @@ function parseCompactSpec(text) {
 }
 
 function currencyNear(text) {
-  // findCanonical's partial match requires the alias to be its own
-  // space-delimited token, so a currency symbol glued directly to its
-  // number with no space ("500.$", "350$") never matches. Fall back to
-  // moneyCurrencyFromText, which detects symbols and codes independent of
-  // surrounding whitespace (used by parseHousingPrice for the same reason).
   return findCanonical(text, CURRENCY_TERMS, { partial: true })?.canonical
     || moneyCurrencyFromText(text) || null;
 }
@@ -76,11 +75,6 @@ export function parseHousingRoomCount(value) {
   const text = normalizeUnicode(value ?? '');
   if (!text) return null;
 
-  // Uzbek market shorthand: a unit formally registered as N rooms that was
-  // physically converted into a different count ("1 xonali ... 2 xona
-  // qilingan" — nominally 1-room, made into 2). The converted count is the
-  // one that matters and must win over the nominal count mentioned earlier
-  // in the same text.
   const converted = text.match(/(\d{1,2})\s*(?:ta\s*)?xona(?:ga)?\s+(?:qilingan|aylantirilgan|bo['’ʻʼ‘`]?lingan)(?=$|[^\p{L}\p{N}_])/iu);
   if (converted) {
     const rooms = toNumber(converted[1]);
@@ -99,14 +93,10 @@ export function parseHousingRoomCount(value) {
     if (rooms != null && rooms >= 1 && rooms <= 20) return rooms;
   }
 
-  // Structured "Label - Value" reposts (Telegram channel copies of OLX ads)
-  // put the label before the number: "Комнат - 4" instead of "4 комнаты".
   const reversed = text.match(/(?:комнат\p{L}*|xona(?:lar)?(?:i)?|хона(?:лар)?(?:и|лик|ли)?|rooms?)\s*[-:–—]\s*(\d{1,2})(?=$|[^\p{L}\p{N}])/iu);
   const reversedRooms = toNumber(reversed?.[1]);
   if (reversedRooms != null && reversedRooms >= 1 && reversedRooms <= 20) return reversedRooms;
 
-  // Listings that only carry the compact "1/5/12-50m" shorthand state the room
-  // count in its first number.
   return parseCompactSpec(text)?.rooms ?? null;
 }
 
@@ -114,17 +104,11 @@ export function parseHousingFloor(value) {
   const text = normalizeUnicode(value ?? '');
   if (!text) return deepFreeze({ floor: null, totalFloors: null });
 
-  // The rooms/floor/total shorthand must be read before the generic
-  // floor/total fraction parser or its first two numbers would incorrectly
-  // become floor=2, totalFloors=10 for "2/10/16".
   const compactSpec = parseCompactSpec(text);
   if (compactSpec) {
     return deepFreeze({ floor: compactSpec.floor, totalFloors: compactSpec.totalFloors });
   }
 
-  // Skip a pair that is merely the head of a rooms/floor/total triple the
-  // shorthand parser above rejected: there the floor and the total floors are
-  // the second and third numbers, never the first two.
   const fraction = text.match(/(?:^|[^\d])(\d{1,3})\s*[\/\\]\s*(\d{1,3})(?!\s*[\/\\]\s*\d)(?=$|[^\d])/u);
   if (fraction) {
     const floor = toNumber(fraction[1]);
@@ -143,9 +127,6 @@ export function parseHousingFloor(value) {
     }
   }
 
-  // Prefer the common "7 этаж" form before trying "этаж 7". Otherwise the
-  // marker-first parser can consume the next unrelated number (for example
-  // "7 этаж 44м²") and report floor 44.
   const beforeMarker = text.match(/(?:^|[^\d])(\d{1,3})\s*-?\s*(?:(?:chi|чи)\s*)?(?:этаж(?:да)?|поверх|floor|etaj|qavat(?:i(?:da(?:gi)?)?|da)?|қабат(?:ы(?:нда(?:ғы)?)?|та)?|кават(?:и(?:да(?:ги)?)?|да)?|қават(?:и(?:да(?:ги)?)?|да)?)(?=$|[^\p{L}\p{N}_])/iu);
   let floor = toNumber(beforeMarker?.[1]);
   let totalFloors = null;
@@ -164,7 +145,6 @@ export function parseHousingFloor(value) {
   }
 
   if (totalFloors == null) {
-    // Structured "Label - Value" reposts: "Этажность - 5" instead of "5 этажей".
     const reversedTotal = text.match(/(?:этажность|поверховість|qavatlilik|қабаттылық)\s*[-:–—]\s*(\d{1,3})(?=$|[^\p{L}\p{N}])/iu);
     totalFloors = toNumber(reversedTotal?.[1]);
   }
@@ -180,17 +160,18 @@ const AREA_LABELS = Object.freeze([
   ['kitchen', /(?:площадь\s+кухни|кухня|kitchen(?:\s+area)?|bucătărie|bucatarie|oshxona|асүй)/iu],
   ['balcony', /(?:балкон|лоджия|balcony|loggia|balcon|balkon)/iu],
   ['terrace', /(?:терраса|terrace|teras(?:ă|a)|terrasa)/iu],
-  ['total', /(?:общая\s+площадь|площадь|total\s+area|surface\s+area|suprafa(?:ță|ta)(?:\s+total(?:ă|a))?|umumiy\s+maydon|жалпы\s+аудан)/iu],
+  ['total', /(?:общ(?:ая)?\.?\s*пл(?:ощад[ьи])?\.?|общая\s+площадь|загальн\p{L}*\s+площ\p{L}*|площа|площадь|total\s+area|surface\s+area|suprafa(?:ță|ta)(?:\s+total(?:ă|a))?|umumiy\s+maydon|жалпы\s+аудан)/iu],
 ]);
 
 const AREA_UNIT_RE = String.raw`(?:м²|м2|m²|m2|sqm|sq\.?\s*m|mp|кв\.?\s*м|кв2|квадрат\p{L}*)`;
+const AREA_UNIT_AFTER_LABEL_RE = String.raw`(?:${AREA_UNIT_RE}|[mм])`;
 
 function areaAfterLabel(text, labelRe) {
-  const re = new RegExp(`${labelRe.source}\\s*[:=-]?\\s*(\\d{1,4}(?:[.,]\\d{1,2})?)\\s*${AREA_UNIT_RE}`, 'iu');
+  const re = new RegExp(`${labelRe.source}\\s*[:=-]?\\s*(\\d{1,4}(?:[.,]\\d{1,2})?)\\s*${AREA_UNIT_AFTER_LABEL_RE}(?=$|[^\\p{L}\\p{N}_])`, 'iu');
   return toNumber(text.match(re)?.[1]);
 }
 
-export function parseHousingAreas(value) {
+export function parseHousingAreas(value, options = {}) {
   const text = normalizeUnicode(value ?? '');
   const result = { total: null, living: null, kitchen: null, balcony: null, terrace: null };
   if (!text) return deepFreeze(result);
@@ -200,8 +181,11 @@ export function parseHousingAreas(value) {
     const generic = text.match(new RegExp(`(?:^|[^\\d])(\\d{1,4}(?:[.,]\\d{1,2})?)\\s*${AREA_UNIT_RE}(?=$|[^\\p{L}\\p{N}])`, 'iu'));
     result.total = toNumber(generic?.[1]);
   }
-  // The compact "1/5/12-50m" shorthand glues the area to the floor block, where
-  // the unit is often a bare "m" the generic area matcher cannot trust alone.
+  if (result.total == null) {
+    const typedArea = classifyHousingSingleMSpans(text, options)
+      .find((span) => span.type === HOUSING_NUMERIC_SPAN_TYPES.AREA);
+    result.total = typedArea?.amount ?? null;
+  }
   if (result.total == null) result.total = parseCompactSpec(text)?.areaSqm ?? null;
   for (const key of Object.keys(result)) {
     const number = result[key];
@@ -319,7 +303,7 @@ function distanceFromWindow(window, entityOffset = 0) {
       : /(?:на\s+машине|by\s+car|drive|mashinada|көлікпен)/iu.test(local) ? 'drive' : null;
     candidates.push({ distance: Math.abs(index - entityOffset), value: Number(match[1]), unit: 'minute', mode });
   }
-  const metricRe = /(\d{1,4}(?:[.,]\d+)?)\s*(км|km|километр\p{L}*|м|meter(?:s)?|метр\p{L}*)/giu;
+  const metricRe = /(\d{1,4}(?:[.,]\d+)?)\s*(км|km|километр\p{L}*|м|m(?![\p{L}\p{N}_])|meter(?:s)?|метр\p{L}*)/giu;
   for (const match of window.matchAll(metricRe)) {
     const index = match.index ?? 0;
     const rawUnit = match[2].toLocaleLowerCase();
@@ -431,11 +415,16 @@ export function parseHousingStructured(value, options = {}) {
   const fallbackCurrency = options.fallbackCurrency || countryCurrency(country) || '';
   const phoneCountry = options.phoneCountry || countryPhoneHint(country) || null;
   const intent = resolveHousingIntent(text);
-  const listingFields = parseHousingListingFields(text, { country, dealType: intent?.dealType || null });
+  const sourceDealType = ['sale', 'longRent', 'shortRent'].includes(String(options.dealType || ''))
+    ? String(options.dealType)
+    : null;
+  const effectiveDealType = intent?.dealType || sourceDealType || null;
+  const listingFields = parseHousingListingFields(text, { country, dealType: effectiveDealType });
   const parsedPayments = parseHousingPaymentDetails(text);
-  const payments = intent?.dealType === 'sale'
+  const payments = effectiveDealType === 'sale'
     ? deepFreeze({ ...parsedPayments, utilities: null })
     : parsedPayments;
+  const numericOptions = { country, dealType: effectiveDealType };
 
   return deepFreeze({
     text,
@@ -447,8 +436,12 @@ export function parseHousingStructured(value, options = {}) {
     context: parseHousingContext(text),
     rooms: parseHousingRoomCount(text),
     floor: parseHousingFloor(text),
-    area: parseHousingAreas(text),
-    price: parseHousingPrice(text, fallbackCurrency),
+    area: parseHousingAreas(text, numericOptions),
+    price: parseHousingPrice(text, {
+      country,
+      currency: fallbackCurrency,
+      dealType: effectiveDealType,
+    }),
     address: parseHousingAddress(text, {
       knownStreet: options.knownStreet || null,
       allowDelimitedBare: options.allowDelimitedBareAddress === true,

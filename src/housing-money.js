@@ -9,6 +9,11 @@ import {
 } from './money-core.js';
 import { maskPhoneLikeSpans } from './contact.js';
 import { DEPOSIT_TERMS, SELLER_TERMS } from './housing.js';
+import { COUNTRIES, canonicalCountryCode, countryByCode } from './countries.js';
+import {
+  classifyHousingSingleMSpans,
+  HOUSING_NUMERIC_SPAN_TYPES,
+} from './housing-numeric-spans.js';
 
 const PRICE_KEYWORD = '(?:цена|ціна|нарх(?:и)?|narx(?:i)?|price|стоимост[ьи]|аренд(?:а|ная\\s+плата)?|rent)';
 // moneyCurrencyPattern() includes short codes (cad, ron, aed...) with no
@@ -30,7 +35,12 @@ function escapeRegex(value) {
   return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
+// One-letter `m/м` is deliberately excluded from the generic multiplier set.
+// Its meaning is resolved by housing-numeric-spans.js first, so area/distance/
+// microdistrict notation cannot leak into money parsing while explicit price
+// contexts can still use compact million shorthand.
 const SCALE_PATTERN = [...new Set(NUMBER_MULTIPLIERS.flatMap((entry) => aliasesOf(entry)).filter(Boolean))]
+  .filter((alias) => !/^[mм]$/iu.test(String(alias)))
   .sort((a, b) => String(b).length - String(a).length)
   .map(escapeRegex)
   .join('|');
@@ -50,6 +60,32 @@ const PER_SQM_BEFORE_AMOUNT_RE = new RegExp(
   `(?:за\\s*(?:1\\s*)?|по\\s*|per\\s+)${PER_SQM_UNIT}\\s*[:=\\-–—]?\\s*${PER_SQM_NUMBER}${PER_SQM_CURRENCY}(?=$|[^\\p{L}\\p{N}_])`,
   'igu',
 );
+
+const COMMON_HOUSING_STRUCTURE_PATTERNS = Object.freeze([
+  /(?:^|[^\p{L}\p{N}_])\d{1,5}(?:[.,]\d{1,2})?\s*(?:м(?:2|²)|m(?:2|²)|sqm|sq\.?\s*m|м\s*кв\.?)\s*(?=$|[^\p{L}\p{N}_])/giu,
+]);
+
+function moneyParsingContext(value = '') {
+  if (value && typeof value === 'object' && !Array.isArray(value)) {
+    const country = canonicalCountryCode(value.country) || '';
+    const currency = String(value.currency || value.fallbackCurrency || countryByCode(country)?.currency || '')
+      .trim()
+      .toUpperCase();
+    const rawDealType = String(value.dealType || '').trim();
+    const dealType = ['sale', 'longRent', 'shortRent'].includes(rawDealType) ? rawDealType : null;
+    return { country, currency, dealType };
+  }
+
+  const currency = String(value || '').trim().toUpperCase();
+  const countryMatches = currency
+    ? COUNTRIES.filter((item) => item.currency === currency)
+    : [];
+  return {
+    country: countryMatches.length === 1 ? countryMatches[0].code : '',
+    currency,
+    dealType: null,
+  };
+}
 
 function parsedMoneyAmount(numberValue, scaleValue) {
   const amount = scaleValue
@@ -99,6 +135,22 @@ function maskRanges(text, ranges) {
   return masked;
 }
 
+function maskPatternMatches(text, patterns) {
+  let masked = text;
+  for (const pattern of patterns) {
+    pattern.lastIndex = 0;
+    masked = masked.replace(pattern, (match) => ' '.repeat(match.length));
+  }
+  return masked;
+}
+
+function maskHousingStructuralSpans(text, context) {
+  const strictMasked = maskPatternMatches(text, COMMON_HOUSING_STRUCTURE_PATTERNS);
+  const nonMoneySpans = classifyHousingSingleMSpans(strictMasked, context)
+    .filter((span) => span.type !== HOUSING_NUMERIC_SPAN_TYPES.MONEY);
+  return maskRanges(strictMasked, nonMoneySpans);
+}
+
 function isPaymentScopedAmount(text, start, end) {
   const left = text
     .slice(Math.max(0, start - 56), start)
@@ -108,16 +160,31 @@ function isPaymentScopedAmount(text, start, end) {
     .slice(end, Math.min(text.length, end + 28))
     .split(/[\r\n.;!?]/u)[0] || '';
 
-  // "deposit 500$" / "commission 100$" are payment details, not the
-  // listing price. For the reverse form ("500$ deposit"), only suppress the
-  // amount when there is no explicit price/rent label immediately to its left;
-  // this preserves text such as "rent 800$, deposit 500$".
+  // Prefix payment labels bind to the amount on their right: "deposit 500$".
   if (findCanonical(left, PAYMENT_AMOUNT_TERMS, { partial: true })) return true;
+
+  // A suffix label binds only when it appears before another numeric token.
+  // This prevents the listing price in "6000грн+комуналка+6000(залог)" from
+  // being suppressed merely because the later deposit keyword is nearby, while
+  // still excluding direct suffix forms such as "500$ deposit".
+  const nextDigit = right.search(/\d/u);
+  const suffixScope = nextDigit === -1 ? right : right.slice(0, nextDigit);
   return !PRICE_KEYWORD_RE.test(left)
-    && Boolean(findCanonical(right, PAYMENT_AMOUNT_TERMS, { partial: true }));
+    && Boolean(findCanonical(suffixScope, PAYMENT_AMOUNT_TERMS, { partial: true }));
 }
 
-export function parseHousingPricePerSqm(value, fallbackCurrency = '') {
+function parseContextualSingleLetterMillion(text, context) {
+  for (const span of classifyHousingSingleMSpans(text, context)) {
+    if (span.type !== HOUSING_NUMERIC_SPAN_TYPES.MONEY) continue;
+    if (isPaymentScopedAmount(text, span.start, span.end)) continue;
+    const amount = span.amount * 1_000_000;
+    if (amount >= 1_000_000 && amount <= 5_000_000_000) return Math.round(amount);
+  }
+  return null;
+}
+
+export function parseHousingPricePerSqm(value, context = '') {
+  const { currency: fallbackCurrency } = moneyParsingContext(context);
   const original = String(value || '');
   if (!original) return Object.freeze({ amount: null, currency: fallbackCurrency || '', approximate: false });
 
@@ -135,18 +202,21 @@ export function parseHousingPricePerSqm(value, fallbackCurrency = '') {
   });
 }
 
-export function parseHousingPrice(value, fallbackCurrency = '') {
+export function parseHousingPrice(value, context = '') {
+  const { country, currency: fallbackCurrency, dealType } = moneyParsingContext(context);
   const original = String(value || '');
   if (!original) return Object.freeze({ amount: null, currency: fallbackCurrency || '', approximate: false });
 
   // Contact spans are removed once, before every money branch. A phone can
   // therefore never win as a labelled, currency-tagged or fallback amount.
   const text = maskPhoneLikeSpans(original);
-  // Unit prices are not listing totals. Mask their exact spans before running
-  // the ordinary total-price parser so "От 13 млн за м2" cannot become a
-  // 13,000,000 UZS apartment price. The dedicated parser above still exposes
-  // the unit price to consumers that need it.
-  const priceText = maskRanges(text, perSquareMeterMatches(text, fallbackCurrency));
+  // Unit prices are not listing totals. Mask their exact spans first. Then the
+  // shared numeric-span classifier masks all N m/Nм spans that resolve to area,
+  // distance, microdistrict or unknown; only positively classified money spans
+  // remain visible to the price parser.
+  const withoutUnitPrices = maskRanges(text, perSquareMeterMatches(text, fallbackCurrency));
+  const numericContext = { country, dealType };
+  const priceText = maskHousingStructuralSpans(withoutUnitPrices, numericContext);
   let currency = moneyCurrencyFromText(priceText, fallbackCurrency || '')
     || moneyCurrencyFromText(text, fallbackCurrency || '')
     || '';
@@ -195,6 +265,17 @@ export function parseHousingPrice(value, fallbackCurrency = '') {
     }
   }
 
+  // Single-letter million shorthand is accepted only when the numeric-span
+  // classifier resolves the span as money. This supports explicit "price 2m"
+  // / "2m USD" everywhere and bare compact "800m" only for Uzbek sale context.
+  if (price == null) {
+    const contextualMillion = parseContextualSingleLetterMillion(priceText, numericContext);
+    if (contextualMillion != null) {
+      price = contextualMillion;
+      currency = moneyCurrencyFromText(priceText, fallbackCurrency || '') || fallbackCurrency || '';
+    }
+  }
+
   const labelled = priceText.match(new RegExp(
     `${PRICE_KEYWORD}\\s*[:\\-–—]?\\s*(${MONEY_NUMBER_PATTERN})(?:\\s*(${SCALE_PATTERN})(?=$|[^\\p{L}\\p{N}_]))?`,
     'iu',
@@ -237,22 +318,10 @@ export function parseHousingPrice(value, fallbackCurrency = '') {
   }
 
   if (price == null) {
-    // Multiplier aliases include useful one-letter forms such as `m` and `k`.
-    // Require the alias to end at a token boundary so measurements/words like
-    // `500 m2` and `5 minut` cannot be promoted to 500 million / 5 million.
     const match = priceText.match(new RegExp(`(\\d+(?:[.,]\\d+)?)\\s*(${SCALE_PATTERN})(?=$|[^\\p{L}\\p{N}_])`, 'iu'));
     if (match) {
-      // Ukrainian listings abbreviate a microdistrict as “531 м/р”. The
-      // one-letter million scale is otherwise valid, but this trailing
-      // “/р” makes the token an area identifier, never a price.
-      const tail = priceText.slice((match.index ?? 0) + match[0].length);
-      if (/^\s*\/\s*[рr](?=$|[^\p{L}\p{N}_])/iu.test(tail)) {
-        // Fall through to the ordinary bare-number pass, which can still
-        // recover a genuine rent amount later in the listing.
-      } else {
       const amount = parseScaledAmount(match[1], match[2]);
       if (amount != null && amount >= 1000 && amount <= 5_000_000_000) price = Math.round(amount);
-      }
     }
   }
 

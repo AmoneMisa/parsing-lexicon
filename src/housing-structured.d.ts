@@ -65,6 +65,7 @@ export type HousingStructuredOptions = Readonly<{
   country?: string;
   fallbackCurrency?: string;
   phoneCountry?: string;
+  dealType?: 'sale' | 'longRent' | 'shortRent' | string | null;
   source?: string;
   knownStreet?: string | null;
   allowBareAddress?: boolean;
@@ -92,7 +93,10 @@ export type HousingStructuredResult = Readonly<{
 
 export function parseHousingRoomCount(value: unknown): number | null;
 export function parseHousingFloor(value: unknown): Readonly<{ floor: number | null; totalFloors: number | null }>;
-export function parseHousingAreas(value: unknown): HousingAreaDetails;
+export function parseHousingAreas(
+  value: unknown,
+  options?: Pick<HousingStructuredOptions, 'country' | 'dealType'>,
+): HousingAreaDetails;
 export function parseHousingPayments(value: unknown): HousingPaymentContext;
 export function parseHousingSeller(value: unknown): Readonly<{ type: 'owner' | 'agency' | null; confidence: number }>;
 export function parseHousingInfrastructure(value: unknown): readonly HousingInfrastructureMatch[];

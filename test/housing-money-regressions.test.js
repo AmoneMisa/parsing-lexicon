@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import {parseHousingPrice, parseHousingPricePerSqm} from '../src/housing-money.js';
+import {parseHousingStructured} from '../src/housing-structured.js';
 
 test('housing multipliers do not match measurement or word prefixes', () => {
   assert.deepEqual(parseHousingPrice('Yunusobod 500 m2 hovli sotiladi', 'UZS'), {
@@ -19,6 +20,86 @@ test('housing multipliers do not match measurement or word prefixes', () => {
     currency: 'UAH',
     approximate: false,
   });
+});
+
+test('country-aware housing parsing masks Ukrainian area and microdistrict notation', () => {
+  const aerokosmichnyi = 'Сдам 3-к кв в Новострое на Аэрокосмическом пр.41,м.Спортивная 7 мин,11/12,кирпич,общ.пл.80 м,кухня-гостинная+2 разд.комнаты,евроремонт,мебель,2-спальная кровать+диван+2-ярусная детская кровать,кондиционер,посудомойка,холод,индукц.плита,духовка,СВЧ,стиралка,бойлер 22000+коммун.Без животных. 0956183826, 0679396050';
+  const saltivka = 'Сдам свою 2х кімнатну квартиру, в довгострокову аренду, Салтівка, 606м/р, разв’язка транспорта хороша, поблизу базар та супермаркети, школа, садочок, 4/5, 6000грн+комуналка+6000(залог), 0971698824';
+
+  assert.deepEqual(parseHousingPrice(aerokosmichnyi, {country: 'UA'}), {
+    amount: 22000,
+    currency: 'UAH',
+    approximate: false,
+  });
+  assert.deepEqual(parseHousingPrice(saltivka, {country: 'UA'}), {
+    amount: 6000,
+    currency: 'UAH',
+    approximate: false,
+  });
+
+  // Legacy callers still pass the country's fallback currency. That path is
+  // kept compatible and resolves unique default currencies back to a country.
+  assert.equal(parseHousingPrice(aerokosmichnyi, 'UAH').amount, 22000);
+  assert.equal(parseHousingPrice(saltivka, 'UAH').amount, 6000);
+});
+
+test('one-letter million shorthand cannot outrank housing measurements', () => {
+  assert.deepEqual(parseHousingPrice('общ.пл.80 m, аренда 22000', {country: 'UA'}), {
+    amount: 22000,
+    currency: 'UAH',
+    approximate: false,
+  });
+  assert.deepEqual(parseHousingPrice('606m/r, rent 6000', {country: 'UA'}), {
+    amount: 6000,
+    currency: 'UAH',
+    approximate: false,
+  });
+  assert.deepEqual(parseHousingPrice('80m'), {
+    amount: null,
+    currency: '',
+    approximate: false,
+  });
+});
+
+test('Uzbek sale context restores compact m as million without weakening measurement guards', () => {
+  assert.deepEqual(parseHousingPrice('800m', {country: 'UZ', dealType: 'sale'}), {
+    amount: 800_000_000,
+    currency: 'UZS',
+    approximate: false,
+  });
+  assert.deepEqual(parseHousingPrice("80m uzbek so'm", {country: 'UZ'}), {
+    amount: 80_000_000,
+    currency: 'UZS',
+    approximate: false,
+  });
+  assert.deepEqual(parseHousingPrice('Narxi 950 m', {country: 'UZ'}), {
+    amount: 950_000_000,
+    currency: 'UZS',
+    approximate: false,
+  });
+  assert.deepEqual(parseHousingPrice('metro 800m, kvartira sotiladi', {country: 'UZ', dealType: 'sale'}), {
+    amount: null,
+    currency: 'UZS',
+    approximate: false,
+  });
+  assert.deepEqual(parseHousingPrice('umumiy maydon 80m, narxi 800m', {country: 'UZ', dealType: 'sale'}), {
+    amount: 800_000_000,
+    currency: 'UZS',
+    approximate: false,
+  });
+});
+
+test('structured Ukrainian parsing keeps rental price, deposit and phone domains separate', () => {
+  const text = 'Сдам свою 2х кімнатну квартиру, в довгострокову аренду, Салтівка, 606м/р, разв’язка транспорта хороша, поблизу базар та супермаркети, школа, садочок, 4/5, 6000грн+комуналка+6000(залог), 0971698824';
+  const parsed = parseHousingStructured(text, {country: 'UA'});
+
+  assert.equal(parsed.intent?.dealType, 'longRent');
+  assert.equal(parsed.price.amount, 6000);
+  assert.equal(parsed.price.currency, 'UAH');
+  assert.equal(parsed.payments.deposit.required, true);
+  assert.equal(parsed.payments.deposit.amount, 6000);
+  assert.notEqual(parsed.payments.deposit.amount, 97169882);
+  assert.ok(parsed.contacts.phones.some((phone) => phone.raw.includes('0971698824')));
 });
 
 test('housing multipliers still parse complete scale words', () => {
