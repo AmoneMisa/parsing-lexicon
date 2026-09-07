@@ -96,7 +96,7 @@ test('normalizes the common Kharkiv Poltavskyi Shliakh OCR typo before parsing i
   });
 });
 
-test('parses a Tashkent mavze address into district, quarter and house fields', () => {
+test('parses a Tashkent mavze address into district, quarter, house and floor fields', () => {
   assert.deepEqual(
     parseHousingAddress('Chilonzor 10 mavze 11 a dom 9 etashka 4 etajda 2 honali'),
     {
@@ -107,6 +107,7 @@ test('parses a Tashkent mavze address into district, quarter and house fields', 
       confidence: 1,
       district: 'Chilanzar',
       quarter: { number: 10, suffix: '' },
+      level: '4',
     },
   );
 });
@@ -126,6 +127,16 @@ test('known canonical street extracts only an adjacent house number from prose',
   assert.equal(noAdjacentNumber.houseNumber, null);
 });
 
+test('prefers the longest supplied canonical street candidate', () => {
+  const parsed = parseHousingAddress('ул. Алишера Навои 17', {
+    knownStreets: ['Навои', 'Алишера Навои'],
+  });
+  assert.equal(parsed.street, 'Алишера Навои');
+  assert.equal(parsed.houseNumber, '17');
+  assert.equal(parsed.address, 'Алишера Навои 17');
+  assert.equal(parsed.confidence, 0.98);
+});
+
 test('allowBare is reserved for source-provided address fields', () => {
   const parsed = parseHousingAddress('Воробкевича 12', { allowBare: true });
   assert.equal(parsed.street, 'Воробкевича');
@@ -141,6 +152,44 @@ test('allowDelimitedBare extracts street and house from city-scoped comma prose'
   assert.equal(parsed.street, 'Метростроителей');
   assert.equal(parsed.houseNumber, '3');
   assert.equal(parsed.address, 'Метростроителей 3');
+});
+
+test('extracts secondary address components without changing canonical building address', () => {
+  const parsed = parseHousingAddress('ул. Мукими 17, корп. 2, кв. 34, 5 этаж, подъезд 3');
+  assert.equal(parsed.street, 'Мукими');
+  assert.equal(parsed.houseNumber, '17');
+  assert.equal(parsed.building, '2');
+  assert.equal(parsed.address, 'Мукими 17 корп. 2');
+  assert.equal(parsed.unit, '34');
+  assert.equal(parsed.level, '5');
+  assert.equal(parsed.entrance, '3');
+  assert.equal(parsed.confidence, 1);
+
+  const ro = parseHousingAddress('Strada Lujerului 42, bloc 3, ap. 18, scara B, etaj 4');
+  assert.equal(ro.street, 'Lujerului');
+  assert.equal(ro.houseNumber, '42');
+  assert.equal(ro.building, '3');
+  assert.equal(ro.unit, '18');
+  assert.equal(ro.staircase, 'B');
+  assert.equal(ro.level, '4');
+});
+
+test('does not expose secondary components without a valid address', () => {
+  assert.deepEqual(parseHousingAddress('кв. 34, 5 этаж, подъезд 3'), {
+    address: null,
+    street: null,
+    houseNumber: null,
+    building: null,
+    confidence: 0,
+  });
+
+  assert.deepEqual(parseHousingAddress('Сдам квартиру 2 комнаты, 5 этаж'), {
+    address: null,
+    street: null,
+    houseNumber: null,
+    building: null,
+    confidence: 0,
+  });
 });
 
 test('composeHousingAddress produces a stable canonical query string', () => {
