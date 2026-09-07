@@ -375,6 +375,7 @@ export * from './src/parser-core.js';
 export * from './src/hiring-context.js';
 export * from './src/housing-intent.js';
 export * from './src/housing-structured.js';
+export * from './src/housing-parser-v2.js';
 export * from './src/housing-safety.js';
 export * from './src/housing-title.js';
 export * from './src/housing-language.js';

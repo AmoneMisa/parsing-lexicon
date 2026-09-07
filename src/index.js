@@ -45,6 +45,7 @@ export * from './housing-safety.js';
 export * from './housing-title.js';
 export * from './housing-language.js';
 export * from './housing-structured.js';
+export * from './housing-parser-v2.js';
 export * from './housing-source-aliases.js';
 export * from './housing-text.js';
 export * from './housing-poi-extensions.js';
