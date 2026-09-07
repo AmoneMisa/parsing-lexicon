@@ -160,13 +160,17 @@ function isPaymentScopedAmount(text, start, end) {
     .slice(end, Math.min(text.length, end + 28))
     .split(/[\r\n.;!?]/u)[0] || '';
 
-  // "deposit 500$" / "commission 100$" are payment details, not the
-  // listing price. For the reverse form ("500$ deposit"), only suppress the
-  // amount when there is no explicit price/rent label immediately to its left;
-  // this preserves text such as "rent 800$, deposit 500$".
+  // Prefix payment labels bind to the amount on their right: "deposit 500$".
   if (findCanonical(left, PAYMENT_AMOUNT_TERMS, { partial: true })) return true;
+
+  // A suffix label binds only when it appears before another numeric token.
+  // This prevents the listing price in "6000грн+комуналка+6000(залог)" from
+  // being suppressed merely because the later deposit keyword is nearby, while
+  // still excluding direct suffix forms such as "500$ deposit".
+  const nextDigit = right.search(/\d/u);
+  const suffixScope = nextDigit === -1 ? right : right.slice(0, nextDigit);
   return !PRICE_KEYWORD_RE.test(left)
-    && Boolean(findCanonical(right, PAYMENT_AMOUNT_TERMS, { partial: true }));
+    && Boolean(findCanonical(suffixScope, PAYMENT_AMOUNT_TERMS, { partial: true }));
 }
 
 function parseContextualSingleLetterMillion(text, context) {
