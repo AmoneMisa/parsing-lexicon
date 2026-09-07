@@ -22,7 +22,7 @@ const residential = (canonical, aliases, labels) => entry(
   labels,
 );
 
-const street = (canonical, aliases, labels) => entry(
+const street = (canonical, aliases = [], labels = null) => entry(
   canonical,
   'street',
   aliases,
@@ -100,6 +100,15 @@ export const UZ_SAMARKAND_CONTEXT_EXTENSIONS = Object.freeze({
       street('Buyuk Ipak Yuli Street', [
         'Buyuk Ipak yo‘li ko‘chasi', "Buyuk Ipak yo'li ko'chasi", 'улица Буюк Ипак Йули', 'улица Великий Шёлковый путь',
       ], { en: 'Buyuk Ipak Yuli Street', uz: "Buyuk Ipak yo'li ko'chasi", ru: 'улица Буюк Ипак Йули' }),
+      street('2-я Кызылкумская'),
+      street('1-я Самарканд улица'),
+      street('2-я Самарканд улица'),
+      street('Халила Султана улица'),
+      street('Улица Махорат', ['ул. Махорат']),
+      street('Намазгох переулок', ['пер. Намазгох']),
+      street('Улица Расадхона', ['ул. Расадхона']),
+      street('Улица Шахмурада', ['ул. Шахмурада']),
+      street('Улица Устозлар', ['ул. Устозлар']),
     ]),
   }),
 });

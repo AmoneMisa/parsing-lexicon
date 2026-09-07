@@ -8,6 +8,7 @@ import {
 import { LOCATION_LIST_KEYS, mergeLocationCountries } from './location-merge.js';
 import { canonicalCity } from './geography.js';
 import { KG_LOCATION_EXTENSIONS } from './kg-location-extensions.js';
+import { KG_BISHKEK_AREA_EXTENSIONS } from './kg-bishkek-area-extensions.js';
 import { KG_BISHKEK_STREET_EXTENSIONS } from './kg-bishkek-street-extensions.js';
 import { KG_BISHKEK_RESIDENTIAL_EXTENSIONS } from './kg-bishkek-residential-extensions.js';
 import { KG_OSH_LOCATION_EXTENSIONS } from './kg-osh-location-extensions.js';
@@ -30,17 +31,46 @@ import { KZ_CITY_RESIDENTIAL_EXTENSIONS } from './kz-city-residential-extensions
 import { UA_RESIDENTIAL_EXTENSIONS } from './ua-residential-extensions.js';
 import { UA_CHERNIHIV_RESIDENTIAL_EXTENSIONS } from './ua-chernihiv-residential-extensions.js';
 import { UA_KHARKIV_MICRODISTRICT_EXTENSIONS } from './ua-kharkiv-microdistrict-extensions.js';
+import { UA_KYIV_STREET_EXTENSIONS } from './ua-kyiv-street-extensions.js';
+import { UA_KHARKIV_STREET_EXTENSIONS } from './ua-kharkiv-street-extensions.js';
+import { UA_DNIPRO_STREET_EXTENSIONS } from './ua-dnipro-street-extensions.js';
+import { UA_ZAPORIZHZHIA_STREET_EXTENSIONS } from './ua-zaporizhzhia-street-extensions.js';
+import { UA_KRYVYI_RIH_STREET_EXTENSIONS } from './ua-kryvyi-rih-street-extensions.js';
+import { UA_MYKOLAIV_STREET_EXTENSIONS } from './ua-mykolaiv-street-extensions.js';
+import { UA_VINNYTSIA_STREET_EXTENSIONS } from './ua-vinnytsia-street-extensions.js';
+import { UA_CHERNIHIV_STREET_EXTENSIONS } from './ua-chernihiv-street-extensions.js';
 import { UZ_TASHKENT_CONTEXT_EXTENSIONS } from './uz-tashkent-context-extensions.js';
+import { UZ_TASHKENT_REVIEWED_RESIDENTIAL_EXTENSIONS } from './uz-tashkent-reviewed-residential-extensions.js';
+import { UZ_TASHKENT_REVIEWED_STREET_EXTENSIONS } from './uz-tashkent-reviewed-street-extensions.js';
 import { UZ_SAMARKAND_CONTEXT_EXTENSIONS } from './uz-samarkand-context-extensions.js';
 import { UZ_BUKHARA_LOCATION_EXTENSIONS } from './uz-bukhara-location-extensions.js';
+import { UZ_NUKUS_STREET_EXTENSIONS } from './uz-nukus-street-extensions.js';
+import { UZ_NAMANGAN_STREET_EXTENSIONS } from './uz-namangan-street-extensions.js';
+import { UZ_FERGANA_STREET_EXTENSIONS } from './uz-fergana-street-extensions.js';
+import { UZ_ANDIJAN_STREET_EXTENSIONS } from './uz-andijan-street-extensions.js';
+import { UZ_QARSHI_STREET_EXTENSIONS } from './uz-qarshi-street-extensions.js';
 
 export { UA_REGION_ENTRIES, UA_SECONDARY_CITIES, matchUkraineRegion, matchUkraineSecondaryCity };
 
+const TASHKENT_SHIFOKORLAR_STREET_ADDRESS_FORMS = new Set([
+  'Shifokorlar-5',
+  'Shifokorlar-6',
+]);
+
 // Sattepo is a mahalla in the canonical Samarkand layer. The legacy base seed
 // also exposes the same physical place as the Sartepa microdistrict; remove
-// that duplicate owner before runtime extensions are merged.
+// that duplicate owner before runtime extensions are merged. Shifokorlar-5/6
+// are street/address forms, not standalone Tashkent local areas, so remove the
+// stale local-area owners before the reviewed street extension is merged.
 const UZ_RUNTIME_BASE_LOCATION_DICTIONARIES = Object.freeze({
   ...(BASE_LOCATION_DICTIONARIES.UZ || {}),
+  Tashkent: Object.freeze({
+    ...(BASE_LOCATION_DICTIONARIES.UZ?.Tashkent || {}),
+    localAreas: Object.freeze(
+      (BASE_LOCATION_DICTIONARIES.UZ?.Tashkent?.localAreas || [])
+        .filter(({ name }) => !TASHKENT_SHIFOKORLAR_STREET_ADDRESS_FORMS.has(name)),
+    ),
+  }),
   Samarkand: Object.freeze({
     ...(BASE_LOCATION_DICTIONARIES.UZ?.Samarkand || {}),
     microdistricts: Object.freeze(
@@ -53,6 +83,7 @@ const UZ_RUNTIME_BASE_LOCATION_DICTIONARIES = Object.freeze({
 const KG_LEGACY_LOCATION_DICTIONARIES = mergeLocationCountries(
   BASE_LOCATION_DICTIONARIES.KG || {},
   KG_LOCATION_EXTENSIONS,
+  KG_BISHKEK_AREA_EXTENSIONS,
   KG_BISHKEK_STREET_EXTENSIONS,
   KG_BISHKEK_RESIDENTIAL_EXTENSIONS,
   KG_OSH_LOCATION_EXTENSIONS,
@@ -75,12 +106,27 @@ export const LOCATION_DICTIONARIES = Object.freeze({
     UA_RESIDENTIAL_EXTENSIONS,
     UA_CHERNIHIV_RESIDENTIAL_EXTENSIONS,
     UA_KHARKIV_MICRODISTRICT_EXTENSIONS,
+    UA_KYIV_STREET_EXTENSIONS,
+    UA_KHARKIV_STREET_EXTENSIONS,
+    UA_DNIPRO_STREET_EXTENSIONS,
+    UA_ZAPORIZHZHIA_STREET_EXTENSIONS,
+    UA_KRYVYI_RIH_STREET_EXTENSIONS,
+    UA_MYKOLAIV_STREET_EXTENSIONS,
+    UA_VINNYTSIA_STREET_EXTENSIONS,
+    UA_CHERNIHIV_STREET_EXTENSIONS,
   ),
   UZ: mergeLocationCountries(
     UZ_RUNTIME_BASE_LOCATION_DICTIONARIES,
     UZ_TASHKENT_CONTEXT_EXTENSIONS,
+    UZ_TASHKENT_REVIEWED_RESIDENTIAL_EXTENSIONS,
+    UZ_TASHKENT_REVIEWED_STREET_EXTENSIONS,
     UZ_SAMARKAND_CONTEXT_EXTENSIONS,
     UZ_BUKHARA_LOCATION_EXTENSIONS,
+    UZ_NUKUS_STREET_EXTENSIONS,
+    UZ_NAMANGAN_STREET_EXTENSIONS,
+    UZ_FERGANA_STREET_EXTENSIONS,
+    UZ_ANDIJAN_STREET_EXTENSIONS,
+    UZ_QARSHI_STREET_EXTENSIONS,
   ),
   KZ: mergeLocationCountries(
     BASE_LOCATION_DICTIONARIES.KZ || {},
