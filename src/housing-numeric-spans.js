@@ -20,7 +20,7 @@ const MICRODISTRICT_AFTER_RE = /^\s*\/\s*[rр](?=$|[^\p{L}\p{N}_])/iu;
 const AREA_BEFORE_RE = /(?:общ(?:ая)?\.?\s*пл(?:ощад[ьи])?\.?|загальн\p{L}*\s+площ\p{L}*|площа|площадь|umumiy\s+maydon|maydon|area|surface|suprafa(?:ță|ta))[^\r\n,;]{0,12}$/iu;
 const AREA_AFTER_RE = /^\s*(?:kv\.?\s*m|sqm|sq\.?\s*m|umumiy\s+maydon|maydon|area|surface|suprafa(?:ță|ta))\b/iu;
 
-const DISTANCE_OBJECT = String.raw`(?:metro(?:ga|dan|gacha)?|метро|maktab(?:ga|dan|gacha)?|school|школ\p{L}*|bozor(?:ga|dan|gacha)?|market|рынок\p{L}*|bekat(?:ga|dan|gacha)?|stop|station|остановк\p{L}*|park(?:ga|dan|gacha)?|парк\p{L}*|aeroport(?:ga|dan|gacha)?|airport|аэропорт\p{L}*|do['’ʻʼ]?kon(?:ga|dan|gacha)?|магазин\p{L}*)`;
+const DISTANCE_OBJECT = String.raw`(?:metro(?:ga|dan|gacha)?|метро|maktab(?:ga|dan|gacha)?|school|школ\p{L}*|bozor(?:ga|dan|gacha)?|market|рынок\p{L}*|bekat(?:ga|dan|gacha)?|stop|station|остановк\p{L}*|park(?:ga|dan|gacha)?|парк\p{L}*|aeroport(?:ga|dan|gacha)?|airport|аэропорт\p{L}*|do['’ʻʼ]?kon(?:ga|dan|gacha)?|магазин\p{L}*)`.replaceAll('\\\\p', '\\p');
 const DISTANCE_BEFORE_RE = new RegExp(
   `(?:${DISTANCE_OBJECT}|masofa|distance|до\\s+${DISTANCE_OBJECT}|to\\s+${DISTANCE_OBJECT})[^\\r\\n,;]{0,14}$`,
   'iu',
