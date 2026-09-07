@@ -26,16 +26,16 @@ const PAYMENT_AMOUNT_TERMS = Object.freeze([
   SELLER_TERMS.commission,
 ].filter(Boolean));
 const PRICE_KEYWORD_RE = new RegExp(PRICE_KEYWORD, 'iu');
+const PRICE_KEYWORD_NEAR_END_RE = new RegExp(`${PRICE_KEYWORD}[^\\r\\n]{0,16}$`, 'iu');
 
 function escapeRegex(value) {
   return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-// A one-letter `m` is an unsafe million alias in housing: the same token is
-// routinely a metre (`80 m`, `606 m/r`). Keep the global money lexicon intact
-// for non-housing consumers, but require housing listings to spell million as
-// `mln`, `million`, `млн`, etc. This makes the shared housing core precision-
-// first without duplicating the money vocabulary by country.
+// A one-letter `m` is too ambiguous for the generic housing multiplier path:
+// the same token is routinely a metre (`80 m`, `606 m/r`). Keep it out of the
+// shared fallback and re-enable it only in a country/intent-aware branch where
+// the surrounding evidence is strong enough (currently Uzbek sale shorthand).
 const SCALE_PATTERN = [...new Set(NUMBER_MULTIPLIERS.flatMap((entry) => aliasesOf(entry)).filter(Boolean))]
   .filter((alias) => !/^[mм]$/iu.test(String(alias)))
   .sort((a, b) => String(b).length - String(a).length)
@@ -75,13 +75,20 @@ const COUNTRY_HOUSING_STRUCTURE_PATTERNS = Object.freeze({
   ]),
 });
 
+const UZ_SINGLE_MILLION_CURRENCY_AFTER_RE = /^\s*(?:uzbek(?:istan)?\s+)?(?:s[ʻʼ'‘’]?o[ʻʼ'‘’]?m|som|sum|с[ўу]м|uzs)(?=$|[^\p{L}\p{N}_])/iu;
+const UZ_SINGLE_MILLION_SALE_RE = /(?:sotiladi|sotuv(?:da)?|прода[её]тся|продаж[аеи]|for\s+sale|sale)/iu;
+const UZ_SINGLE_MILLION_STRUCTURAL_BEFORE_RE = /(?:площад\p{L}*|площа|майдон|maydon|area|masofa|distance|метро\p{L}*|metro\p{L}*|maktab\p{L}*|school\p{L}*|bozor\p{L}*|рынок\p{L}*)[^\r\n]{0,8}$/iu;
+const UZ_SINGLE_MILLION_STRUCTURAL_AFTER_RE = /^\s*(?:gacha|гача|masofa|distance|metr\p{L}*|метр\p{L}*)\b/iu;
+
 function moneyParsingContext(value = '') {
   if (value && typeof value === 'object' && !Array.isArray(value)) {
     const country = canonicalCountryCode(value.country) || '';
     const currency = String(value.currency || value.fallbackCurrency || countryByCode(country)?.currency || '')
       .trim()
       .toUpperCase();
-    return { country, currency };
+    const rawDealType = String(value.dealType || '').trim();
+    const dealType = ['sale', 'longRent', 'shortRent'].includes(rawDealType) ? rawDealType : null;
+    return { country, currency, dealType };
   }
 
   const currency = String(value || '').trim().toUpperCase();
@@ -91,6 +98,7 @@ function moneyParsingContext(value = '') {
   return {
     country: countryMatches.length === 1 ? countryMatches[0].code : '',
     currency,
+    dealType: null,
   };
 }
 
@@ -174,6 +182,42 @@ function isPaymentScopedAmount(text, start, end) {
     && Boolean(findCanonical(right, PAYMENT_AMOUNT_TERMS, { partial: true }));
 }
 
+function parseUzbekSingleLetterMillion(text, { country, dealType }) {
+  if (country !== 'UZ') return null;
+
+  const candidateRe = /(?<![\p{L}\p{N}_])(\d{1,4}(?:[.,]\d{1,2})?)([ \u00A0]*)([mм])(?![\p{L}\p{N}_])/giu;
+  let match;
+  while ((match = candidateRe.exec(text)) !== null) {
+    const start = match.index ?? 0;
+    const end = candidateRe.lastIndex;
+    if (isPaymentScopedAmount(text, start, end)) continue;
+
+    const before = text.slice(Math.max(0, start - 48), start);
+    const after = text.slice(end, Math.min(text.length, end + 48));
+    const explicitlyPriceLabelled = PRICE_KEYWORD_NEAR_END_RE.test(before);
+    const explicitlyUzs = UZ_SINGLE_MILLION_CURRENCY_AFTER_RE.test(after);
+    const compact = match[2].length === 0;
+    const localSaleSignal = UZ_SINGLE_MILLION_SALE_RE.test(`${before} ${after}`);
+
+    // Strong price/currency evidence wins. Otherwise a bare compact `800m`
+    // is accepted only for an Uzbek sale and only if its immediate context
+    // does not identify a measurement/distance such as `metro 800m`.
+    if (!explicitlyPriceLabelled && !explicitlyUzs) {
+      if (UZ_SINGLE_MILLION_STRUCTURAL_BEFORE_RE.test(before)
+        || UZ_SINGLE_MILLION_STRUCTURAL_AFTER_RE.test(after)) continue;
+      if (!(compact && (dealType === 'sale' || localSaleSignal))) continue;
+    }
+
+    const baseAmount = parseNumericAmount(match[1]);
+    const amount = baseAmount == null ? null : baseAmount * 1_000_000;
+    if (amount != null && amount >= 1_000_000 && amount <= 5_000_000_000) {
+      return Math.round(amount);
+    }
+  }
+
+  return null;
+}
+
 export function parseHousingPricePerSqm(value, context = '') {
   const { currency: fallbackCurrency } = moneyParsingContext(context);
   const original = String(value || '');
@@ -194,7 +238,7 @@ export function parseHousingPricePerSqm(value, context = '') {
 }
 
 export function parseHousingPrice(value, context = '') {
-  const { country, currency: fallbackCurrency } = moneyParsingContext(context);
+  const { country, currency: fallbackCurrency, dealType } = moneyParsingContext(context);
   const original = String(value || '');
   if (!original) return Object.freeze({ amount: null, currency: fallbackCurrency || '', approximate: false });
 
@@ -252,6 +296,18 @@ export function parseHousingPrice(value, context = '') {
       const thousands = Number(splitMillion[2]);
       const amount = millions * 1_000_000 + thousands * 1_000;
       if (amount >= 1_000_000 && amount <= 5_000_000_000) price = amount;
+    }
+  }
+
+  // Uzbekistan uses compact `m/м` for million in sale ads. Do not put that
+  // alias back into the generic multiplier vocabulary: it is accepted here
+  // only with country plus sale/price/currency evidence, after structural
+  // spans and phone numbers have already been removed.
+  if (price == null) {
+    const uzbekSingleMillion = parseUzbekSingleLetterMillion(priceText, { country, dealType });
+    if (uzbekSingleMillion != null) {
+      price = uzbekSingleMillion;
+      currency = moneyCurrencyFromText(priceText, fallbackCurrency || '') || fallbackCurrency || 'UZS';
     }
   }
 
