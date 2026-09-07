@@ -1,6 +1,7 @@
 export * from './lexicon-core.js';
 export * from './normalization.js';
 export * from './parser-core.js';
+export * from './temporal.js';
 export * from './countries.js';
 export {
   TASHKENT_DISTRICTS,
