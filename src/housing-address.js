@@ -12,10 +12,41 @@ const HOUSE_MARKER = String.raw`(?:дом|д\.|будинок|буд\.|house|h\.
 const BUILDING_MARKER = String.raw`(?:корп(?:ус)?\.?|к\.|строен(?:ие)?|стр\.|будова|секц(?:ия|ія)?|bloc|corp|building|bldg\.?|korpus)`;
 const NUMBER_TOKEN = String.raw`\d{1,5}(?:[-\/]?[\p{L}])?(?:[\/-]\d{1,4}(?:[-\/]?[\p{L}])?)?`;
 const STREET_WORD = String.raw`[\p{L}'’.-]{2,48}`;
+const SECONDARY_TOKEN = String.raw`(?:${NUMBER_TOKEN}|[\p{L}])`;
+const LEVEL_NUMBER_TOKEN = String.raw`\d{1,3}(?:[-–—]?(?:й|ый|ий|st|nd|rd|th))?`;
+const LEVEL_MARKER = String.raw`(?:этаж(?:е|у|ом)?|поверх(?:у|е|ом)?|floor|qavat(?:da)?|қабат(?:та)?|кават|қават|etaj(?:da|ul)?)`;
+const ENTRANCE_MARKER = String.raw`(?:подъезд|під['’ʼ\u02bc]?їзд|entrance|intrare|kirish)`;
+const STAIRCASE_MARKER = String.raw`(?:лестниц(?:а|ы)?|сходи|staircase|scara)`;
 const ADDRESS_FIELD_STOP_RE = /\s+(?:цена|ціна|нарх(?:и)?|narx|price|стоимост[ьи]|этаж(?:ность)?|поверх|qavat|қабат|кават|қават|комнат(?:ы|а)?|кімнат(?:и|а)?|xona|хона|площадь|площа|maydon|тел(?:ефон)?|phone|комисси\p{L}*|депозит|deposit|ориентир\p{L}*|ор[-–—]?р\.?)(?=$|[\s:№#-])/iu;
 const PROPERTY_AREA_LINE_RE = /(?:^|[^\p{L}\p{N}_])(?:(?:общая|жилая|полезная|кухонная)\s+площадь|площадь\s+(?:квартиры|дома|комнаты))(?=$|[^\p{L}\p{N}_])/iu;
 const NON_ADDRESS_BARE_RE = /^(?:(?:(?:перш(?:ий|ому)|перв(?:ый|ом)|друг(?:ий|ому)|втор(?:ой|ом)|трет(?:ій|ьем|ий)|\d{1,3}(?:-?й)?)\s+(?:поверх|этаж|floor|qavat|қабат))|(?:поверх|этаж|floor|qavat|қабат)(?:\s|$)|(?:район|р-н|рн|мікрорайон|микрорайон|мкр\.?|жк|ж\.к\.|жилой\s+комплекс|житловий\s+комплекс|residential\s+complex)(?:\s|$)|(?:недалеко|поруч|рядом|біля|около|возле)(?=$|[^\p{L}\p{N}_])|(?:зупинка|остановка|станція|станция)(?:\s|$))/iu;
 const DELIMITED_STREET_REJECT_RE = /(?:^|\s)(?:город|місто|city|район|р-н|рн|мікрорайон|микрорайон|мкр|жк|метро|поверх|этаж|floor|qavat|кімнат\p{L}*|комнат\p{L}*|квартира|квартири|квартиры|оренда|аренда|продаж\p{L}*|цена|ціна|площад\p{L}*|площа|зупинка|остановка|ориентир\p{L}*|ор[-–—]?р\.?)(?:\s|$)/iu;
+const UNIT_COMPONENT_PATTERNS = Object.freeze([
+  String.raw`(?:^|[\s,;])(?:кв\.?|кв-ра)(?!\p{L})\s*(?:№|#)?\s*(${SECONDARY_TOKEN})(?=$|[^\p{L}\p{N}])`,
+  String.raw`(?:^|[\s,;])квартира\s*(?:№|#)\s*(${SECONDARY_TOKEN})(?=$|[^\p{L}\p{N}])`,
+  String.raw`(?:^|[\s,;])(?:apt\.?|ap\.?|unit)(?!\p{L})\s*(?:no\.?|nr\.?|№|#)?\s*(${SECONDARY_TOKEN})(?=$|[^\p{L}\p{N}])`,
+  String.raw`(?:^|[\s,;])apartament(?:ul)?\s*(?:nr\.?|№|#)\s*(${SECONDARY_TOKEN})(?=$|[^\p{L}\p{N}])`,
+  String.raw`(?:^|[\s,;])xonadon\s*(?:№|#)\s*(${SECONDARY_TOKEN})(?=$|[^\p{L}\p{N}])`,
+]);
+const LEVEL_COMPONENT_PATTERNS = Object.freeze([
+  String.raw`(?:^|[\s,;])${LEVEL_MARKER}(?!\p{L})\s*(${LEVEL_NUMBER_TOKEN})(?=$|[^\p{L}\p{N}])`,
+  String.raw`(?:^|[\s,;])(${LEVEL_NUMBER_TOKEN})\s+${LEVEL_MARKER}(?!\p{L})(?=$|[^\p{L}\p{N}])`,
+]);
+const ENTRANCE_COMPONENT_PATTERNS = Object.freeze([
+  String.raw`(?:^|[\s,;])${ENTRANCE_MARKER}(?!\p{L})\s*(?:№|#)?\s*(${SECONDARY_TOKEN})(?=$|[^\p{L}\p{N}])`,
+  String.raw`(?:^|[\s,;])(${SECONDARY_TOKEN})\s+${ENTRANCE_MARKER}(?!\p{L})(?=$|[^\p{L}\p{N}])`,
+]);
+const STAIRCASE_COMPONENT_PATTERNS = Object.freeze([
+  String.raw`(?:^|[\s,;])${STAIRCASE_MARKER}(?!\p{L})\s*(?:№|#)?\s*(${SECONDARY_TOKEN})(?=$|[^\p{L}\p{N}])`,
+  String.raw`(?:^|[\s,;])(${SECONDARY_TOKEN})\s+${STAIRCASE_MARKER}(?!\p{L})(?=$|[^\p{L}\p{N}])`,
+]);
+const SECONDARY_COMPONENT_PATTERNS = Object.freeze([
+  ...UNIT_COMPONENT_PATTERNS,
+  ...LEVEL_COMPONENT_PATTERNS,
+  ...ENTRANCE_COMPONENT_PATTERNS,
+  ...STAIRCASE_COMPONENT_PATTERNS,
+]);
+const ADDRESS_TOKEN_RE = /\r\n|\r|\n|\d+(?:[\/-]\d+)?(?:[-\/]?[\p{L}])?|[\p{L}]+(?:['’ʼ\u02bc.-][\p{L}]+)*|[,;:#№()]|[^\s]/gu;
 
 function clean(value) {
   return String(value ?? '')
@@ -54,14 +85,119 @@ function normalizeNumber(value) {
   return result || null;
 }
 
-function result(address, street = null, houseNumber = null, building = null, confidence = 0) {
+function normalizeLevel(value) {
+  return normalizeNumber(value)?.replace(/[-–—]?(?:й|ый|ий|st|nd|rd|th)$/iu, '') || null;
+}
+
+function tokenizeAddress(value) {
+  const text = String(value ?? '').normalize('NFKC');
+  const tokens = [];
+  for (const match of text.matchAll(ADDRESS_TOKEN_RE)) {
+    const raw = match[0];
+    const type = /^[\r\n]+$/u.test(raw)
+      ? 'newline'
+      : /^[,;:#№()]$/u.test(raw)
+        ? 'delimiter'
+        : /^\d/u.test(raw)
+          ? 'number'
+          : /^\p{L}/u.test(raw)
+            ? 'word'
+            : 'symbol';
+    tokens.push(Object.freeze({ type, value: raw, index: match.index ?? 0 }));
+  }
+  return Object.freeze(tokens);
+}
+
+function componentMatch(value, patterns, normalize = normalizeNumber) {
+  const text = String(value ?? '').normalize('NFKC');
+  for (const pattern of patterns) {
+    const match = text.match(new RegExp(pattern, 'iu'));
+    if (match?.[1]) return normalize(match[1]);
+  }
+  return null;
+}
+
+function extractSecondaryComponents(value) {
+  const components = {
+    unit: componentMatch(value, UNIT_COMPONENT_PATTERNS),
+    level: componentMatch(value, LEVEL_COMPONENT_PATTERNS, normalizeLevel),
+    entrance: componentMatch(value, ENTRANCE_COMPONENT_PATTERNS),
+    staircase: componentMatch(value, STAIRCASE_COMPONENT_PATTERNS),
+  };
+  return Object.freeze(components);
+}
+
+function stripSecondaryComponents(value) {
+  let text = String(value ?? '').normalize('NFKC');
+  for (const pattern of SECONDARY_COMPONENT_PATTERNS) {
+    text = text.replace(new RegExp(pattern, 'giu'), ' ');
+  }
+  return clean(text);
+}
+
+function normalizedSecondaryComponents(components = {}) {
+  const result = {};
+  const unit = normalizeNumber(components.unit);
+  const level = normalizeLevel(components.level);
+  const entrance = normalizeNumber(components.entrance);
+  const staircase = normalizeNumber(components.staircase);
+  if (unit) result.unit = unit;
+  if (level) result.level = level;
+  if (entrance) result.entrance = entrance;
+  if (staircase) result.staircase = staircase;
+  return result;
+}
+
+function scoreAddressConfidence(value, evidence = {}) {
+  const tokens = tokenizeAddress(value);
+  const hasDelimiter = tokens.some((token) => token.type === 'delimiter' || token.type === 'newline');
+  let score = 0;
+
+  switch (evidence.source) {
+    case 'structured':
+      score = 0.9;
+      if (evidence.hasHouse) score += 0.1;
+      break;
+    case 'known':
+      score = 0.78;
+      if (evidence.hasKnownStreet) score += 0.12;
+      if (evidence.hasHouse) score += 0.08;
+      break;
+    case 'delimited':
+      score = 0.78;
+      if (hasDelimiter) score += 0.06;
+      if (evidence.hasHouse) score += 0.08;
+      break;
+    case 'bare':
+      score = 0.55;
+      if (evidence.hasHouse) score += 0.3;
+      break;
+    default:
+      score = 0.78;
+      if (evidence.hasStreetMarker) score += 0.12;
+      if (evidence.hasHouse) score += 0.1;
+      break;
+  }
+
+  return Math.min(1, Math.max(0, Number(score.toFixed(2))));
+}
+
+function result(address, street = null, houseNumber = null, building = null, confidence = 0, components = null) {
   return Object.freeze({
     address: clean(address) || null,
     street: compactStreet(street),
     houseNumber: normalizeNumber(houseNumber),
     building: normalizeNumber(building),
     confidence,
+    ...normalizedSecondaryComponents(components || {}),
   });
+}
+
+function attachSecondaryComponents(parsed, components) {
+  if (!parsed || (!parsed.address && !parsed.street && !parsed.houseNumber && !parsed.district)) return parsed;
+  const normalized = normalizedSecondaryComponents(components);
+  if (Object.keys(normalized).length === 0) return parsed;
+  return Object.freeze({ ...parsed, ...normalized });
 }
 
 function tashkentMassifHouseAddress(value) {
@@ -81,7 +217,13 @@ function tashkentMassifHouseAddress(value) {
   const quarterMatch = matchTashkentNumberedArea(text, district);
   const suffix = match[3] ? String(match[3]).toUpperCase() : '';
   return Object.freeze({
-    ...result(null, null, `${Number(match[2])}${suffix}`, null, 1),
+    ...result(
+      null,
+      null,
+      `${Number(match[2])}${suffix}`,
+      null,
+      scoreAddressConfidence(text, { source: 'structured', hasHouse: true }),
+    ),
     district,
     quarter: Object.freeze({
       number: quarterNumber,
@@ -128,7 +270,13 @@ function postfixTypedStreetAddress(line) {
   const houseNumber = suffix[2];
   const building = suffix[3] || null;
   const address = composeHousingAddress({ street, houseNumber, building });
-  return result(address, street, houseNumber, building, 1);
+  return result(
+    address,
+    street,
+    houseNumber,
+    building,
+    scoreAddressConfidence(line, { source: 'explicit', hasStreetMarker: true, hasHouse: true }),
+  );
 }
 
 function prefixTypedStreetAddress(line) {
@@ -146,7 +294,13 @@ function prefixTypedStreetAddress(line) {
   const houseNumber = prefix[2];
   const building = prefix[3] || null;
   const address = composeHousingAddress({ street, houseNumber, building });
-  return result(address, street, houseNumber, building, 1);
+  return result(
+    address,
+    street,
+    houseNumber,
+    building,
+    scoreAddressConfidence(line, { source: 'explicit', hasStreetMarker: true, hasHouse: true }),
+  );
 }
 
 function addressCandidateLine(line) {
@@ -180,19 +334,51 @@ function explicitStreetAddress(text) {
       `(?:^|[\\s,;])${PREFIX_STREET_MARKER}(?!\\p{L})\\s*((?:${STREET_WORD}\\s+){0,3}${STREET_WORD})(?=$|[,;])`,
       'iu',
     ));
-    if (boundedPrefix) return result(boundedPrefix[0], boundedPrefix[1], null, null, 0.9);
+    if (boundedPrefix) {
+      return result(
+        boundedPrefix[0],
+        boundedPrefix[1],
+        null,
+        null,
+        scoreAddressConfidence(line, { source: 'explicit', hasStreetMarker: true, hasHouse: false }),
+      );
+    }
 
     const prefix = line.match(new RegExp(`(?:^|[\\s,;])(${PREFIX_STREET_MARKER})\\s+(.+)$`, 'iu'));
     if (prefix) {
       const tail = splitAddressTail(prefix[2]);
-      if (tail) return result(line, tail.street, tail.houseNumber, tail.building, tail.houseNumber ? 1 : 0.9);
+      if (tail) {
+        return result(
+          line,
+          tail.street,
+          tail.houseNumber,
+          tail.building,
+          scoreAddressConfidence(line, {
+            source: 'explicit',
+            hasStreetMarker: true,
+            hasHouse: Boolean(tail.houseNumber),
+          }),
+        );
+      }
     }
 
     const postfix = line.match(new RegExp(`^(.+?)\\s+(${POSTFIX_STREET_MARKER})(.*)$`, 'iu'));
     if (postfix) {
       const tailText = clean(`${postfix[1]} ${postfix[3]}`);
       const tail = splitAddressTail(tailText);
-      if (tail) return result(line, tail.street, tail.houseNumber, tail.building, tail.houseNumber ? 1 : 0.9);
+      if (tail) {
+        return result(
+          line,
+          tail.street,
+          tail.houseNumber,
+          tail.building,
+          scoreAddressConfidence(line, {
+            source: 'explicit',
+            hasStreetMarker: true,
+            hasHouse: Boolean(tail.houseNumber),
+          }),
+        );
+      }
     }
   }
 
@@ -215,7 +401,24 @@ function knownStreetAddress(text, knownStreet) {
   const houseNumber = match[2] || null;
   const building = match[3] || null;
   const address = composeHousingAddress({ street, houseNumber, building });
-  return result(address, street, houseNumber, building, houseNumber ? 0.98 : 0.9);
+  return result(
+    address,
+    street,
+    houseNumber,
+    building,
+    scoreAddressConfidence(text, {
+      source: 'known',
+      hasKnownStreet: true,
+      hasHouse: Boolean(houseNumber),
+    }),
+  );
+}
+
+function knownStreetCandidates(options = {}) {
+  const values = [options.knownStreet, ...(Array.isArray(options.knownStreets) ? options.knownStreets : [])]
+    .map(compactStreet)
+    .filter(Boolean);
+  return [...new Set(values)].sort((a, b) => b.length - a.length || a.localeCompare(b));
 }
 
 function labelledAddress(text, rawValue) {
@@ -262,7 +465,13 @@ function delimitedBareAddress(text) {
       const buildingMatch = next.match(new RegExp(`^${BUILDING_MARKER}\\s*(${NUMBER_TOKEN})$`, 'iu'));
       if (buildingMatch) building = buildingMatch[1];
       const address = composeHousingAddress({ street, houseNumber, building });
-      return result(address, street, houseNumber, building, 0.92);
+      return result(
+        address,
+        street,
+        houseNumber,
+        building,
+        scoreAddressConfidence(rawLine, { source: 'delimited', hasHouse: true }),
+      );
     }
   }
   return null;
@@ -277,8 +486,13 @@ function bareAddress(text) {
   const tail = splitAddressTail(truncated);
   if (!tail) return null;
   if (/^(?:центр|centre|center)$/iu.test(compactStreet(tail.street) || '')) return null;
-  const confidence = tail.houseNumber ? 0.85 : 0.55;
-  return result(truncated, tail.street, tail.houseNumber, tail.building, confidence);
+  return result(
+    truncated,
+    tail.street,
+    tail.houseNumber,
+    tail.building,
+    scoreAddressConfidence(truncated, { source: 'bare', hasHouse: Boolean(tail.houseNumber) }),
+  );
 }
 
 /**
@@ -286,8 +500,13 @@ function bareAddress(text) {
  * coordinates and performs no geocoding.
  *
  * `knownStreet` may be supplied when a location dictionary has already
- * canonicalized the street. In that mode the parser only accepts a house/building
- * number immediately adjacent to that exact street mention.
+ * canonicalized one street. `knownStreets` accepts several candidates and the
+ * parser tests the longest canonical name first, preventing shorter aliases
+ * from stealing an overlapping match.
+ *
+ * Secondary address components (unit, level, entrance and staircase) are
+ * extracted only when a valid address is found. They are omitted otherwise so
+ * legacy result shapes remain stable.
  *
  * `allowDelimitedBare` accepts only a short `street, house-number` pair and is
  * intended for consumers that already have strong city/area context.
@@ -300,26 +519,32 @@ export function parseHousingAddress(value, options = {}) {
   const text = clean(value);
   if (!text) return result(null);
 
-  const tashkentMassifHouse = tashkentMassifHouseAddress(text);
-  if (tashkentMassifHouse) return tashkentMassifHouse;
+  const components = extractSecondaryComponents(value);
+  const addressText = stripSecondaryComponents(text) || text;
 
-  const labelled = labelledAddress(text, value);
-  if (labelled) return labelled;
+  const tashkentMassifHouse = tashkentMassifHouseAddress(addressText);
+  if (tashkentMassifHouse) return attachSecondaryComponents(tashkentMassifHouse, components);
 
-  if (options.knownStreet) {
-    const known = knownStreetAddress(text, options.knownStreet);
-    if (known) return known;
+  const labelled = labelledAddress(addressText, value);
+  if (labelled) return attachSecondaryComponents(labelled, components);
+
+  for (const knownStreet of knownStreetCandidates(options)) {
+    const known = knownStreetAddress(addressText, knownStreet);
+    if (known) return attachSecondaryComponents(known, components);
   }
 
-  const explicit = explicitStreetAddress(text);
-  if (explicit) return explicit;
+  const explicit = explicitStreetAddress(addressText);
+  if (explicit) return attachSecondaryComponents(explicit, components);
 
   if (options.allowDelimitedBare === true) {
-    const delimited = delimitedBareAddress(text);
-    if (delimited) return delimited;
+    const delimited = delimitedBareAddress(addressText);
+    if (delimited) return attachSecondaryComponents(delimited, components);
   }
 
-  if (options.allowBare === true) return bareAddress(text) || result(null);
+  if (options.allowBare === true) {
+    const bare = bareAddress(addressText);
+    return bare ? attachSecondaryComponents(bare, components) : result(null);
+  }
   return result(null);
 }
 
