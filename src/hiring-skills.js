@@ -279,6 +279,83 @@ for (const { name, aliases } of SKILL_CATALOG) {
   for (const alias of aliases) CANONICAL_BY_ALIAS.set(normalizeSkillText(alias), name)
 }
 
+function levenshtein(left, right) {
+  const a = String(left); const b = String(right);
+  const row = Array.from({ length: b.length + 1 }, (_, index) => index);
+  for (let i = 1; i <= a.length; i += 1) {
+    let previous = row[0]; row[0] = i;
+    for (let j = 1; j <= b.length; j += 1) {
+      const saved = row[j];
+      row[j] = Math.min(row[j] + 1, row[j - 1] + 1, previous + (a[i - 1] === b[j - 1] ? 0 : 1));
+      previous = saved;
+    }
+  }
+  return row[b.length];
+}
+
+function fuzzyDistanceLimit(token) {
+  if (token.length < 5) return 0;
+  if (token.length <= 7) return 1;
+  if (token.length <= 12) return 2;
+  return 3;
+}
+
+/**
+ * Resolve one deliberately bounded hiring skill candidate. Fuzzy matching is
+ * opt-in and compares complete tokens only; it never changes generic lexicon
+ * lookup or performs substring matching in ordinary prose.
+ */
+export function matchSkill(value, options = {}) {
+  const raw = String(value ?? '').trim();
+  if (!raw) return null;
+  const normalized = normalizeSkillText(raw);
+  const canonical = CANONICAL_BY_ALIAS.get(normalized);
+  if (canonical) {
+    const definition = SKILL_CATALOG.find((entry) => entry.name === canonical);
+    const type = normalizeSkillText(definition.name) === normalized ? 'exact' : 'alias';
+    return Object.freeze({ canonical, matched: raw, matchType: type, confidence: type === 'exact' ? 1 : 0.97 });
+  }
+  if (options.fuzzy !== true || /\s/u.test(normalized) || !/^[a-z][a-z0-9+#.-]*$/iu.test(normalized)) return null;
+
+  const candidates = [];
+  for (const { name, aliases } of SKILL_CATALOG) {
+    if (AMBIGUOUS_CANONICALS.has(name)) continue;
+    for (const term of [name, ...aliases]) {
+      const candidate = normalizeSkillText(term);
+      // Short terms have a very high collision rate (Go/good, C/CSS, REST/
+      // restaurant). They are exact-or-alias only.
+      if (candidate.length < 5 || /\s/u.test(candidate)) continue;
+      const limit = fuzzyDistanceLimit(candidate);
+      const distance = levenshtein(normalized, candidate);
+      if (distance <= limit) candidates.push({ canonical: name, distance, candidate });
+    }
+  }
+  candidates.sort((a, b) => a.distance - b.distance || a.candidate.length - b.candidate.length || a.canonical.localeCompare(b.canonical));
+  const best = candidates[0];
+  if (!best) return null;
+  return Object.freeze({
+    canonical: best.canonical,
+    matched: raw,
+    matchType: 'fuzzy',
+    confidence: Number((1 - best.distance / Math.max(normalized.length, best.candidate.length)).toFixed(2)),
+  });
+}
+
+/** Match a bounded list or a tokenized skills field, preserving evidence. */
+export function matchSkillCandidates(value, options = {}) {
+  const values = Array.isArray(value)
+    ? value
+    : String(value ?? '').split(/[\s,;|/]+/u);
+  const byCanonical = new Map();
+  for (const candidate of values.slice(0, options.limit ?? 128)) {
+    const match = matchSkill(candidate, options);
+    if (!match) continue;
+    const previous = byCanonical.get(match.canonical);
+    if (!previous || match.confidence > previous.confidence) byCanonical.set(match.canonical, match);
+  }
+  return Object.freeze([...byCanonical.values()].sort((a, b) => b.confidence - a.confidence || a.canonical.localeCompare(b.canonical)));
+}
+
 export function canonicalSkillName(value) {
   const normalized = normalizeSkillText(value)
   return CANONICAL_BY_ALIAS.get(normalized) ?? extractSkillNames(normalized)[0]

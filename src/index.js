@@ -58,3 +58,4 @@ export * from './hiring-salary-context.js';
 export * from './money.js';
 export * from './hiring-professions.js';
 export * from './hiring-advanced.js';
+export * from './hiring-skills.js';

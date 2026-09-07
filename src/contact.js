@@ -28,8 +28,9 @@ function splitPhoneExtension(raw) {
   };
 }
 
-export function findPhoneLikeSpans(value) {
+export function findPhoneLikeSpans(value, options = {}) {
   const text = String(value || '');
+  const countryHint = normalizedCountryHint(options.country || options.countryHint);
   const spans = [];
   for (const match of text.matchAll(PHONE_LIKE_RE)) {
     const raw = match[0];
@@ -43,12 +44,38 @@ export function findPhoneLikeSpans(value) {
       digits,
     }));
   }
-  return Object.freeze(spans);
+
+  // Uzbekistan's ordinary national presentation is nine digits (for example
+  // 99 188 19 19).  It is too short for the deliberately country-neutral
+  // broad mask above, but libphonenumber can validate/identify it when the
+  // caller has already established UZ context.  Do not generalize this to all
+  // countries: a bare nine digit number is often a price or a house number.
+  if (countryHint === 'UZ') {
+    for (const candidate of parsePhoneNumbers(text, { countryHint, includePossible: true })) {
+      // The short masking exception is intentionally narrow. `99` is a
+      // common Uzbekistan mobile prefix in listings; accepting every possible
+      // nine-digit national number would hide legitimate UZS sale prices.
+      if (candidate.digits.length !== 9 || !candidate.digits.startsWith('99') || !candidate.possible) continue;
+      if (spans.some((span) => span.start <= candidate.start && span.end >= candidate.end)) continue;
+      spans.push(Object.freeze({
+        start: candidate.start,
+        end: candidate.end,
+        raw: candidate.raw,
+        digits: candidate.digits,
+      }));
+    }
+  }
+  return Object.freeze(spans.sort((a, b) => a.start - b.start || b.end - a.end));
 }
 
-export function maskPhoneLikeSpans(value, replacement = ' ') {
+export function maskPhoneLikeSpans(value, replacement = ' ', options = {}) {
+  // Backward-compatible convenience: maskPhoneLikeSpans(value, { country }).
+  if (replacement && typeof replacement === 'object') {
+    options = replacement;
+    replacement = ' ';
+  }
   const text = String(value || '');
-  const spans = findPhoneLikeSpans(text);
+  const spans = findPhoneLikeSpans(text, options);
   if (!spans.length) return text;
 
   let out = '';

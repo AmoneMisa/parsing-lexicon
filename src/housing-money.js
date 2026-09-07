@@ -184,11 +184,11 @@ function parseContextualSingleLetterMillion(text, context) {
 }
 
 export function parseHousingPricePerSqm(value, context = '') {
-  const { currency: fallbackCurrency } = moneyParsingContext(context);
+  const { country, currency: fallbackCurrency } = moneyParsingContext(context);
   const original = String(value || '');
   if (!original) return Object.freeze({ amount: null, currency: fallbackCurrency || '', approximate: false });
 
-  const text = maskPhoneLikeSpans(original);
+  const text = maskPhoneLikeSpans(original, ' ', { country });
   const candidates = perSquareMeterMatches(text, fallbackCurrency);
   if (!candidates.length) {
     return Object.freeze({ amount: null, currency: fallbackCurrency || '', approximate: false });
@@ -209,7 +209,7 @@ export function parseHousingPrice(value, context = '') {
 
   // Contact spans are removed once, before every money branch. A phone can
   // therefore never win as a labelled, currency-tagged or fallback amount.
-  const text = maskPhoneLikeSpans(original);
+  const text = maskPhoneLikeSpans(original, ' ', { country });
   // Unit prices are not listing totals. Mask their exact spans first. Then the
   // shared numeric-span classifier masks all N m/Nм spans that resolve to area,
   // distance, microdistrict or unknown; only positively classified money spans
@@ -222,6 +222,18 @@ export function parseHousingPrice(value, context = '') {
     || '';
   const explicit = Boolean(findCanonical(priceText, CURRENCY_TERMS, { partial: true }));
   let price = null;
+
+  // Price changes name both values, so textual order and the change verb are
+  // evidence of role.  This runs before the legacy branches below; those
+  // branches continue to cover specialised regional notations.
+  const reduced = priceText.match(/(?:old\s+price|was|from|с\s*|стар(?:ая|ый)\s+цен[аы]?|\d+\s+dan)\s*(\d+(?:[.,]\d+)?)\s*(?:\$|usd)?\s*(?:to|now|ga|до|на|-|–|—|,)?\s*(\d+(?:[.,]\d+)?)\s*(?:\$|usd)?\s*(?:tush(?:di|irilgan)?|reduc(?:ed|tion)?|now|yangi\s+narx|new\s+price)/iu);
+  if (reduced) {
+    const amount = parseNumericAmount(reduced[2]);
+    if (amount != null && amount >= 50) {
+      price = amount;
+      if (/\$|usd/iu.test(reduced[0])) currency = 'USD';
+    }
+  }
 
   // Common Ukrainian/Russian classifieds shorthand: "10 т грн" / "10 т гр".
   // Keep this housing-specific instead of adding globally ambiguous aliases
@@ -293,11 +305,16 @@ export function parseHousingPrice(value, context = '') {
     const amount = labelled[2] && !ignoreRepeatedUzbekThousand
       ? parseScaledAmount(labelled[1], labelled[2])
       : baseAmount;
-    if (amount != null && amount >= 50 && amount <= 5_000_000_000) price = Math.round(amount);
+    if (amount != null && amount >= 50 && amount <= 5_000_000_000) {
+      price = Math.round(amount);
+      // `ming` is an explicit Uzbek amount scale, not an unlabelled amount
+      // awaiting the historical UZS/USD fallback heuristic.
+      if (/^(?:ming|минг)$/iu.test(labelled[2] || '') && country === 'UZ') currency = 'UZS';
+    }
   }
 
   if (price == null) {
-    let tagged = null;
+    const tagged = [];
     // 'u' is required for the \p{L}/\p{N} boundary escapes to work as
     // Unicode property classes — without it they silently match nothing,
     // which had made the boundary guard a no-op.
@@ -311,10 +328,21 @@ export function parseHousingPrice(value, context = '') {
       while ((match = regex.exec(priceText)) !== null) {
         if (isPaymentScopedAmount(priceText, match.index ?? 0, regex.lastIndex)) continue;
         const amount = parseNumericAmount(match[1]);
-        if (amount != null && amount >= 50 && amount <= 5_000_000_000 && (tagged == null || amount > tagged)) tagged = amount;
+        if (amount == null || amount < 50 || amount > 5_000_000_000) continue;
+        const start = match.index ?? 0;
+        const end = regex.lastIndex;
+        const around = priceText.slice(Math.max(0, start - 36), Math.min(priceText.length, end + 56));
+        let score = 50;
+        if (PRICE_KEYWORD_RE.test(around)) score += 40;
+        if (/(?:tushirilgan|tushdi|reduced|new\s+price|now)/iu.test(priceText.slice(end, end + 32))) score += 80;
+        // The amount before a stated replacement is the old price, even if it
+        // is numerically larger than the current price.
+        if (/(?:\$|usd)?\s*(?:\.\.\.|dan|from|was|old\s+price)[^\d]{0,16}\d+(?:[.,]\d+)?\s*(?:\$|usd)?\s*(?:tushirilgan|tushdi|reduced|now)/iu.test(priceText.slice(start, start + 90))) score -= 90;
+        tagged.push({ amount, score, start });
       }
     }
-    price = tagged;
+    tagged.sort((a, b) => b.score - a.score || b.start - a.start || a.amount - b.amount);
+    price = tagged[0]?.amount ?? null;
   }
 
   if (price == null) {
@@ -340,7 +368,8 @@ export function parseHousingPrice(value, context = '') {
     price = best;
   }
 
-  if (!explicit && fallbackCurrency === 'UZS' && price != null) {
+  const hasExplicitUzbekThousandScale = country === 'UZ' && /\b(?:ming|минг)\b/iu.test(priceText);
+  if (!explicit && !hasExplicitUzbekThousandScale && fallbackCurrency === 'UZS' && price != null) {
     const dailyUzbek = /(?:kunlik|sutkaga|kecha[- ]?kunduz|посуточн|суточн)/i.test(priceText);
     currency = price >= 1_000_000 || (dailyUzbek && price >= 10_000) ? 'UZS' : 'USD';
   }
