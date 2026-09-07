@@ -59,3 +59,4 @@ export * from './money.js';
 export * from './hiring-professions.js';
 export * from './hiring-advanced.js';
 export * from './hiring-skills.js';
+export * from './hiring-ats.js';

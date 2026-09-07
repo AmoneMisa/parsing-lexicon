@@ -1,5 +1,7 @@
 import {
   TASHKENT_NUMBERED_AREA_ALIASES,
+  matchTashkentHousingDistrict,
+  matchTashkentHousingMetro,
   matchTashkentNumberedArea,
 } from './tashkent-housing-geography.js';
 
@@ -198,6 +200,20 @@ function attachSecondaryComponents(parsed, components) {
   const normalized = normalizedSecondaryComponents(components);
   if (Object.keys(normalized).length === 0) return parsed;
   return Object.freeze({ ...parsed, ...normalized });
+}
+
+function tashkentGeoComponents(value) {
+  const text = String(value ?? '');
+  const district = matchTashkentHousingDistrict(text)?.name || null;
+  const metro = matchTashkentHousingMetro(text)?.name || null;
+  const mahalla = text.match(/(?:^|[^\p{L}])(\p{L}[\p{L}'’ʼ-]{1,48})\s+(?:mahalla(?:si)?|маҳалла(?:си)?|махалл[ая]|mfy)(?=$|[^\p{L}])/iu)?.[1] || null;
+  return Object.freeze({ district, metro, mahalla: compactStreet(mahalla) });
+}
+
+function attachGeoComponents(parsed, value) {
+  const geo = tashkentGeoComponents(value);
+  if (!geo.district && !geo.metro && !geo.mahalla) return parsed;
+  return Object.freeze({ ...parsed, ...Object.fromEntries(Object.entries(geo).filter(([, item]) => item)) });
 }
 
 function tashkentMassifHouseAddress(value) {
@@ -523,27 +539,36 @@ export function parseHousingAddress(value, options = {}) {
   const addressText = stripSecondaryComponents(text) || text;
 
   const tashkentMassifHouse = tashkentMassifHouseAddress(addressText);
-  if (tashkentMassifHouse) return attachSecondaryComponents(tashkentMassifHouse, components);
+  if (tashkentMassifHouse) return attachGeoComponents(attachSecondaryComponents(tashkentMassifHouse, components), value);
 
   const labelled = labelledAddress(addressText, value);
-  if (labelled) return attachSecondaryComponents(labelled, components);
+  if (labelled) return attachGeoComponents(attachSecondaryComponents(labelled, components), value);
 
   for (const knownStreet of knownStreetCandidates(options)) {
     const known = knownStreetAddress(addressText, knownStreet);
-    if (known) return attachSecondaryComponents(known, components);
+    if (known) return attachGeoComponents(attachSecondaryComponents(known, components), value);
   }
 
   const explicit = explicitStreetAddress(addressText);
-  if (explicit) return attachSecondaryComponents(explicit, components);
+  if (explicit) return attachGeoComponents(attachSecondaryComponents(explicit, components), value);
 
   if (options.allowDelimitedBare === true) {
     const delimited = delimitedBareAddress(addressText);
-    if (delimited) return attachSecondaryComponents(delimited, components);
+    if (delimited) return attachGeoComponents(attachSecondaryComponents(delimited, components), value);
   }
 
   if (options.allowBare === true) {
     const bare = bareAddress(addressText);
-    return bare ? attachSecondaryComponents(bare, components) : result(null);
+    return bare ? attachGeoComponents(attachSecondaryComponents(bare, components), value) : result(null);
+  }
+  const geo = tashkentGeoComponents(value);
+  // A bare slash-number can also be floor notation in listing prose. Keep it
+  // as a house component only when the same compact geo block names a mahalla.
+  const compactHouse = geo.mahalla
+    ? String(value ?? '').match(/(?:^|\s)(\d{1,5}(?:\/\d{1,5}){1,2})(?=$|[^\d/])/u)?.[1] || null
+    : null;
+  if (geo.district || geo.metro || geo.mahalla) {
+    return Object.freeze({ ...result(null, null, compactHouse, null, compactHouse ? 0.45 : 0), ...Object.fromEntries(Object.entries(geo).filter(([, item]) => item)) });
   }
   return result(null);
 }

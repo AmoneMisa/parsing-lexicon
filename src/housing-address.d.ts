@@ -9,6 +9,8 @@ export type HousingAddressParts = Readonly<{
   entrance?: string;
   staircase?: string;
   district?: string;
+  metro?: string;
+  mahalla?: string;
   quarter?: Readonly<{
     number: number;
     suffix: string;

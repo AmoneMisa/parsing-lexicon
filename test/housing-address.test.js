@@ -112,6 +112,15 @@ test('parses a Tashkent mavze address into district, quarter, house and floor fi
   );
 });
 
+test('keeps Tashkent district, metro, mahalla and compact house components separate', () => {
+  const parsed = parseHousingAddress('Yashnobot tuman Olmos metrosi Olmos mahalla 3/11/16');
+  assert.equal(parsed.street, null);
+  assert.equal(parsed.district, 'Yashnobod');
+  assert.equal(parsed.metro, 'Olmos');
+  assert.equal(parsed.mahalla, 'Olmos');
+  assert.equal(parsed.houseNumber, '3/11/16');
+});
+
 test('known canonical street extracts only an adjacent house number from prose', () => {
   const ua = parseHousingAddress('Світла квартира, Воробкевича 12, поруч парк', { knownStreet: 'Воробкевича' });
   assert.equal(ua.street, 'Воробкевича');

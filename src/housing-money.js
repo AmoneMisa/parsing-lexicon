@@ -183,6 +183,60 @@ function parseContextualSingleLetterMillion(text, context) {
   return null;
 }
 
+function candidatePaymentRole(text, start, end) {
+  if (isPaymentScopedAmount(text, start, end)) return 'depositOrCommission';
+  const around = text.slice(Math.max(0, start - 48), Math.min(text.length, end + 48));
+  if (/(?:коммун|utilities?|utility|per\s*(?:sqm|m2|м2)|за\s*м[²2])/iu.test(around)) return 'nonListingPayment';
+  if (/(?:new\s+price|now|yangi\s+narx)/iu.test(text.slice(Math.max(0, start - 28), start))) return 'currentPrice';
+  if (/(?:old\s+price|was|from|стар(?:ая|ый)\s+цен[аы]?|\d+\s+dan)/iu.test(text.slice(Math.max(0, start - 20), start))) return 'oldPrice';
+  if (/(?:tushirilgan|tushdi|reduced|new\s+price|now)/iu.test(text.slice(end, end + 32))) return 'currentPrice';
+  return 'listing';
+}
+
+/**
+ * Extract monetary spans without deciding which one is the listing price.
+ * The public parse result remains backward-compatible; this richer primitive
+ * lets callers audit deterministic ranking evidence when needed.
+ */
+export function extractHousingMoneyCandidates(value, context = '') {
+  const { country, currency: fallbackCurrency } = moneyParsingContext(context);
+  const text = maskPhoneLikeSpans(String(value || ''), ' ', { country });
+  const candidates = [];
+  const seen = new Set();
+  for (const regex of [
+    new RegExp(`(${MONEY_NUMBER_PATTERN})\\s*[.]?\\s*${PRICE_CURRENCY_AFTER_NUMBER}`, 'igu'),
+    new RegExp(`${PRICE_CURRENCY_BEFORE_NUMBER}\\s*(${MONEY_NUMBER_PATTERN})`, 'igu'),
+  ]) {
+    for (const match of text.matchAll(regex)) {
+      const amount = parseNumericAmount(match[1]);
+      const start = match.index ?? 0; const end = start + match[0].length;
+      if (amount == null || amount < 1 || amount > 5_000_000_000 || seen.has(`${start}:${end}`)) continue;
+      seen.add(`${start}:${end}`);
+      const before = text.slice(Math.max(0, start - 42), start);
+      const role = candidatePaymentRole(text, start, end);
+      candidates.push(Object.freeze({
+        amount, currency: moneyCurrencyFromText(match[0], fallbackCurrency || '') || fallbackCurrency || '', start, end,
+        explicitCurrency: true, scale: null, priceKeyword: PRICE_KEYWORD_RE.test(before), paymentRole: role,
+        approximate: APPROXIMATE_RE.test(text.slice(Math.max(0, start - 12), end)),
+        confidence: 0,
+      }));
+    }
+  }
+  return Object.freeze(candidates);
+}
+
+/** Rank candidate semantics; this intentionally never uses amount magnitude. */
+export function rankHousingPriceCandidates(candidates) {
+  return Object.freeze([...candidates].map((candidate) => {
+    let confidence = candidate.explicitCurrency ? 0.6 : 0.3;
+    if (candidate.priceKeyword) confidence += 0.2;
+    if (candidate.paymentRole === 'currentPrice') confidence += 0.25;
+    if (candidate.paymentRole === 'oldPrice') confidence -= 0.35;
+    if (candidate.paymentRole === 'depositOrCommission' || candidate.paymentRole === 'nonListingPayment') confidence -= 0.7;
+    return Object.freeze({ ...candidate, confidence: Math.max(0, Math.min(1, Number(confidence.toFixed(2)))) });
+  }).sort((a, b) => b.confidence - a.confidence || b.start - a.start));
+}
+
 export function parseHousingPricePerSqm(value, context = '') {
   const { country, currency: fallbackCurrency } = moneyParsingContext(context);
   const original = String(value || '');

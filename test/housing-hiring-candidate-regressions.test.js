@@ -4,7 +4,7 @@ import { maskPhoneLikeSpans } from '../src/contact.js';
 import { canonicalTashkentDistrict } from '../src/geo.js';
 import { matchSkill, matchSkillCandidates } from '../src/hiring-skills.js';
 import { classifyHousingCommercialAdvertisement } from '../src/housing-commercial.js';
-import { parseHousingPrice } from '../src/housing-money.js';
+import { extractHousingMoneyCandidates, parseHousingPrice, rankHousingPriceCandidates } from '../src/housing-money.js';
 import { matchTashkentHousingMetro } from '../src/tashkent-housing-geography.js';
 
 test('housing price ranks the replacement price above an old price and deposit', () => {
@@ -14,6 +14,13 @@ test('housing price ranks the replacement price above an old price and deposit',
   assert.deepEqual(parseHousingPrice('price reduced from 400 to 350 USD', 'USD'), {
     amount: 350, currency: 'USD', approximate: false,
   });
+});
+
+test('money candidates retain ranking evidence rather than selecting by magnitude', () => {
+  const ranked = rankHousingPriceCandidates(extractHousingMoneyCandidates('old price 400$, new price 350$', { country: 'UZ' }));
+  assert.equal(ranked[0].amount, 350);
+  assert.equal(ranked[0].paymentRole, 'currentPrice');
+  assert.equal(ranked.at(-1).amount, 400);
 });
 
 test('explicit Uzbek thousand scale owns its UZS currency and UZ phones are masked', () => {
