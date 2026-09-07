@@ -65,6 +65,7 @@ export type HousingStructuredOptions = Readonly<{
   country?: string;
   fallbackCurrency?: string;
   phoneCountry?: string;
+  dealType?: 'sale' | 'longRent' | 'shortRent' | string | null;
   source?: string;
   knownStreet?: string | null;
   allowBareAddress?: boolean;
