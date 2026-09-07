@@ -121,6 +121,34 @@ test('keeps Tashkent district, metro, mahalla and compact house components separ
   assert.equal(parsed.houseNumber, '3/11/16');
 });
 
+test('returns stable geo-catalog references through an injected, city-scoped resolver', () => {
+  const calls = [];
+  const parsed = parseHousingAddress('Yashnobot tuman Olmos metrosi Olmos mahalla 3/11/16', {
+    country: 'UZ',
+    city: 'Tashkent',
+    resolveGeoEntity(input) {
+      calls.push(input);
+      const ids = {
+        'district:Yashnobod': 'uz:tashkent:district:yashnobod',
+        'metro:Olmos': 'uz:tashkent:metro:olmos',
+      };
+      const id = ids[`${input.type}:${input.canonical}`];
+      return id ? { id, canonicalName: input.canonical, type: input.type, country: input.country, parentId: 'uz:tashkent:city:tashkent' } : null;
+    },
+  });
+
+  assert.deepEqual(parsed.geoEntities, {
+    district: {
+      id: 'uz:tashkent:district:yashnobod', canonical: 'Yashnobod', type: 'district', country: 'UZ', parentId: 'uz:tashkent:city:tashkent',
+    },
+    metro: {
+      id: 'uz:tashkent:metro:olmos', canonical: 'Olmos', type: 'metro', country: 'UZ', parentId: 'uz:tashkent:city:tashkent',
+    },
+  });
+  assert.ok(calls.every((call) => call.country === 'UZ' && call.city === 'Tashkent'));
+  assert.equal('coordinates' in parsed.geoEntities.metro, false);
+});
+
 test('known canonical street extracts only an adjacent house number from prose', () => {
   const ua = parseHousingAddress('Світла квартира, Воробкевича 12, поруч парк', { knownStreet: 'Воробкевича' });
   assert.equal(ua.street, 'Воробкевича');

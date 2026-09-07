@@ -203,6 +203,49 @@ export function extractHousingMoneyCandidates(value, context = '') {
   const text = maskPhoneLikeSpans(String(value || ''), ' ', { country });
   const candidates = [];
   const seen = new Set();
+  const addCandidate = ({ amount, currency, start, end, explicitCurrency, scale = null, priceKeyword = false }) => {
+    if (amount == null || amount < 1 || amount > 5_000_000_000 || seen.has(`${start}:${end}`)) return;
+    seen.add(`${start}:${end}`);
+    candidates.push(Object.freeze({
+      amount,
+      currency,
+      start,
+      end,
+      explicitCurrency,
+      scale,
+      priceKeyword,
+      paymentRole: candidatePaymentRole(text, start, end),
+      approximate: APPROXIMATE_RE.test(text.slice(Math.max(0, start - 12), end)),
+      confidence: 0,
+    }));
+  };
+
+  // A labelled scale is an explicit monetary signal even without a currency
+  // glyph. In Uzbek listing prose, "narxi 850 ming" conventionally means
+  // 850,000 UZS; retaining `scale` prevents a later generic fallback from
+  // mistaking the base number for USD.
+  const labelledScaleRe = new RegExp(
+    `${PRICE_KEYWORD}\\s*[:=\\-–—]?\\s*(${MONEY_NUMBER_PATTERN})\\s*(${SCALE_PATTERN})(?=$|[^\\p{L}\\p{N}_])`,
+    'igu',
+  );
+  for (const match of text.matchAll(labelledScaleRe)) {
+    const start = match.index ?? 0;
+    const end = start + match[0].length;
+    const scale = match[2];
+    const amount = parsedMoneyAmount(match[1], scale);
+    const currency = moneyCurrencyFromText(match[0], '')
+      || (country === 'UZ' && /^(?:ming|минг)$/iu.test(scale) ? 'UZS' : fallbackCurrency || '');
+    addCandidate({
+      amount,
+      currency,
+      start,
+      end,
+      explicitCurrency: Boolean(moneyCurrencyFromText(match[0], '')),
+      scale,
+      priceKeyword: true,
+    });
+  }
+
   for (const regex of [
     new RegExp(`(${MONEY_NUMBER_PATTERN})\\s*[.]?\\s*${PRICE_CURRENCY_AFTER_NUMBER}`, 'igu'),
     new RegExp(`${PRICE_CURRENCY_BEFORE_NUMBER}\\s*(${MONEY_NUMBER_PATTERN})`, 'igu'),
@@ -210,16 +253,15 @@ export function extractHousingMoneyCandidates(value, context = '') {
     for (const match of text.matchAll(regex)) {
       const amount = parseNumericAmount(match[1]);
       const start = match.index ?? 0; const end = start + match[0].length;
-      if (amount == null || amount < 1 || amount > 5_000_000_000 || seen.has(`${start}:${end}`)) continue;
-      seen.add(`${start}:${end}`);
       const before = text.slice(Math.max(0, start - 42), start);
-      const role = candidatePaymentRole(text, start, end);
-      candidates.push(Object.freeze({
-        amount, currency: moneyCurrencyFromText(match[0], fallbackCurrency || '') || fallbackCurrency || '', start, end,
-        explicitCurrency: true, scale: null, priceKeyword: PRICE_KEYWORD_RE.test(before), paymentRole: role,
-        approximate: APPROXIMATE_RE.test(text.slice(Math.max(0, start - 12), end)),
-        confidence: 0,
-      }));
+      addCandidate({
+        amount,
+        currency: moneyCurrencyFromText(match[0], fallbackCurrency || '') || fallbackCurrency || '',
+        start,
+        end,
+        explicitCurrency: true,
+        priceKeyword: PRICE_KEYWORD_RE.test(before),
+      });
     }
   }
   return Object.freeze(candidates);
@@ -230,6 +272,7 @@ export function rankHousingPriceCandidates(candidates) {
   return Object.freeze([...candidates].map((candidate) => {
     let confidence = candidate.explicitCurrency ? 0.6 : 0.3;
     if (candidate.priceKeyword) confidence += 0.2;
+    if (candidate.scale) confidence += 0.15;
     if (candidate.paymentRole === 'currentPrice') confidence += 0.25;
     if (candidate.paymentRole === 'oldPrice') confidence -= 0.35;
     if (candidate.paymentRole === 'depositOrCommission' || candidate.paymentRole === 'nonListingPayment') confidence -= 0.7;

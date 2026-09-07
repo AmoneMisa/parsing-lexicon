@@ -11,6 +11,13 @@ export type HousingAddressParts = Readonly<{
   district?: string;
   metro?: string;
   mahalla?: string;
+  geoEntities?: Readonly<Partial<Record<'street' | 'district' | 'metro' | 'mahalla' | 'residentialComplex', Readonly<{
+    id: string;
+    canonical: string;
+    type: string;
+    country: string;
+    parentId?: string;
+  }>>>>;
   quarter?: Readonly<{
     number: number;
     suffix: string;
@@ -24,8 +31,40 @@ export function parseHousingAddress(
     allowDelimitedBare?: boolean;
     knownStreet?: string | null;
     knownStreets?: readonly string[];
+    country?: string | null;
+    city?: string | null;
+    resolveGeoEntity?: ((input: Readonly<{ country: string; city?: string; type: string; canonical: string }>) => Readonly<{
+      id: string;
+      canonicalName?: string;
+      canonical?: string;
+      type?: string;
+      country?: string;
+      parentId?: string;
+    }> | null | undefined);
   }>,
 ): HousingAddressParts;
+
+export function resolveHousingAddressGeoEntities(
+  parts: HousingAddressParts | null | undefined,
+  options: Readonly<{
+    country?: string | null;
+    city?: string | null;
+    resolveGeoEntity?: ((input: Readonly<{ country: string; city?: string; type: string; canonical: string }>) => Readonly<{
+      id: string;
+      canonicalName?: string;
+      canonical?: string;
+      type?: string;
+      country?: string;
+      parentId?: string;
+    }> | null | undefined);
+  }>,
+): Readonly<Partial<Record<'street' | 'district' | 'metro' | 'mahalla' | 'residentialComplex', Readonly<{
+  id: string;
+  canonical: string;
+  type: string;
+  country: string;
+  parentId?: string;
+}>>>>;
 
 export function composeHousingAddress(parts?: Readonly<{
   street?: unknown;

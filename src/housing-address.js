@@ -216,6 +216,53 @@ function attachGeoComponents(parsed, value) {
   return Object.freeze({ ...parsed, ...Object.fromEntries(Object.entries(geo).filter(([, item]) => item)) });
 }
 
+const GEO_COMPONENT_TYPES = Object.freeze({
+  district: 'district',
+  metro: 'metro',
+  mahalla: 'mahalla',
+  street: 'street',
+  residentialComplex: 'residential_complex',
+});
+
+function geoCatalogReference(entity, fallback) {
+  if (!entity || typeof entity !== 'object' || !entity.id) return null;
+  return Object.freeze({
+    id: String(entity.id),
+    canonical: String(entity.canonicalName || entity.canonical || fallback.canonical),
+    type: String(entity.type || fallback.type),
+    country: String(entity.country || fallback.country),
+    ...(entity.parentId ? { parentId: String(entity.parentId) } : {}),
+  });
+}
+
+/**
+ * Resolve already-parsed address components through a caller-supplied geo
+ * catalog bridge. The lexicon deliberately returns only stable entity
+ * references: the catalog remains the sole owner of coordinates and source
+ * metadata.
+ */
+export function resolveHousingAddressGeoEntities(parts, options = {}) {
+  const resolveGeoEntity = options.resolveGeoEntity;
+  const country = String(options.country || '').trim().toUpperCase();
+  const city = String(options.city || '').trim();
+  if (!parts || typeof resolveGeoEntity !== 'function' || !country) return Object.freeze({});
+
+  const resolved = {};
+  for (const [component, type] of Object.entries(GEO_COMPONENT_TYPES)) {
+    const canonical = parts[component];
+    if (!canonical) continue;
+    const input = Object.freeze({ country, ...(city ? { city } : {}), type, canonical: String(canonical) });
+    const reference = geoCatalogReference(resolveGeoEntity(input), input);
+    if (reference) resolved[component] = reference;
+  }
+  return Object.freeze(resolved);
+}
+
+function attachCatalogReferences(parsed, options) {
+  const geoEntities = resolveHousingAddressGeoEntities(parsed, options);
+  return Object.keys(geoEntities).length ? Object.freeze({ ...parsed, geoEntities }) : parsed;
+}
+
 function tashkentMassifHouseAddress(value) {
   const text = String(value ?? '');
   const match = text.match(
@@ -539,27 +586,27 @@ export function parseHousingAddress(value, options = {}) {
   const addressText = stripSecondaryComponents(text) || text;
 
   const tashkentMassifHouse = tashkentMassifHouseAddress(addressText);
-  if (tashkentMassifHouse) return attachGeoComponents(attachSecondaryComponents(tashkentMassifHouse, components), value);
+  if (tashkentMassifHouse) return attachCatalogReferences(attachGeoComponents(attachSecondaryComponents(tashkentMassifHouse, components), value), options);
 
   const labelled = labelledAddress(addressText, value);
-  if (labelled) return attachGeoComponents(attachSecondaryComponents(labelled, components), value);
+  if (labelled) return attachCatalogReferences(attachGeoComponents(attachSecondaryComponents(labelled, components), value), options);
 
   for (const knownStreet of knownStreetCandidates(options)) {
     const known = knownStreetAddress(addressText, knownStreet);
-    if (known) return attachGeoComponents(attachSecondaryComponents(known, components), value);
+    if (known) return attachCatalogReferences(attachGeoComponents(attachSecondaryComponents(known, components), value), options);
   }
 
   const explicit = explicitStreetAddress(addressText);
-  if (explicit) return attachGeoComponents(attachSecondaryComponents(explicit, components), value);
+  if (explicit) return attachCatalogReferences(attachGeoComponents(attachSecondaryComponents(explicit, components), value), options);
 
   if (options.allowDelimitedBare === true) {
     const delimited = delimitedBareAddress(addressText);
-    if (delimited) return attachGeoComponents(attachSecondaryComponents(delimited, components), value);
+    if (delimited) return attachCatalogReferences(attachGeoComponents(attachSecondaryComponents(delimited, components), value), options);
   }
 
   if (options.allowBare === true) {
     const bare = bareAddress(addressText);
-    return bare ? attachGeoComponents(attachSecondaryComponents(bare, components), value) : result(null);
+    return bare ? attachCatalogReferences(attachGeoComponents(attachSecondaryComponents(bare, components), value), options) : result(null);
   }
   const geo = tashkentGeoComponents(value);
   // A bare slash-number can also be floor notation in listing prose. Keep it
@@ -568,7 +615,7 @@ export function parseHousingAddress(value, options = {}) {
     ? String(value ?? '').match(/(?:^|\s)(\d{1,5}(?:\/\d{1,5}){1,2})(?=$|[^\d/])/u)?.[1] || null
     : null;
   if (geo.district || geo.metro || geo.mahalla) {
-    return Object.freeze({ ...result(null, null, compactHouse, null, compactHouse ? 0.45 : 0), ...Object.fromEntries(Object.entries(geo).filter(([, item]) => item)) });
+    return attachCatalogReferences(Object.freeze({ ...result(null, null, compactHouse, null, compactHouse ? 0.45 : 0), ...Object.fromEntries(Object.entries(geo).filter(([, item]) => item)) }), options);
   }
   return result(null);
 }
