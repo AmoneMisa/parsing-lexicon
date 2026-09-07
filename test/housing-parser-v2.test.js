@@ -19,3 +19,10 @@ test('housing V2 comparison keeps legacy available during migration', () => {
   assert.equal(compared.v2.data.money.amount, 850000);
   assert.ok(Array.isArray(compared.differences));
 });
+
+test('housing V2 resolves temporal availability and minimum rental duration through the shared engine', () => {
+  const parsed = parseHousingV2('Квартира свободна с 12 января, сдаётся от 3 месяцев', { publishedAt: '2026-12-20T12:00:00Z' });
+  assert.deepEqual(parsed.data.availabilityDate, { year: 2027, month: 1, day: 12 });
+  assert.deepEqual(parsed.data.minimumRentalDuration, { value: 3, unit: 'month', bound: 'min' });
+  assert.ok(parsed.debug.refinersApplied.includes('temporal-context'));
+});

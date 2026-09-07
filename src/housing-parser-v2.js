@@ -1,6 +1,7 @@
 import { parseHousingAreas, parseHousingFloor, parseHousingRoomCount } from './housing-structured.js';
 import { extractHousingMoneyCandidates, parseHousingPrice, rankHousingPriceCandidates } from './housing-money.js';
 import { createParseCandidate, normalizeParserText, resolveParseCandidates } from './parser-core.js';
+import { extractTemporalCandidates } from './temporal.js';
 
 const ROOM_RE = /(?<![\p{L}\p{N}_])(\d{1,2})\s*(?:-?\s*(?:к(?:омн\p{L}*)?|xona(?:li)?|хона(?:ли|лик)?|rooms?)|ta\s+xona)(?![\p{L}\p{N}_])/iu;
 const FLOOR_RE = /(?<!\d)(\d{1,3})\s*[/\\]\s*(\d{1,3})(?!\s*[/\\]\s*\d)/u;
@@ -35,10 +36,13 @@ export function extractHousingNumericCandidates(value, context = {}) {
 }
 
 export function parseHousingV2(value, context = {}) {
-  const normalized = normalizeParserText(value); const candidates = extractHousingNumericCandidates(normalized.originalText, context); const resolved = resolveParseCandidates(candidates);
+  const normalized = normalizeParserText(value);
+  // Temporal extraction shares the same candidate resolver as numeric housing
+  // entities. The legacy structured result remains untouched during migration.
+  const candidates = Object.freeze([...extractHousingNumericCandidates(normalized.originalText, context), ...extractTemporalCandidates(normalized.originalText, { ...context, domain: 'real-estate' })]); const resolved = resolveParseCandidates(candidates);
   const data = {}; const confidence = {};
   for (const item of resolved.selected) { const key = item.entityType.replace(/^area\./u, 'area.'); data[key] = item.value; confidence[key] = item.confidence; }
-  return Object.freeze({ data: Object.freeze(data), confidence: Object.freeze(confidence), debug: Object.freeze({ candidates, discardedCandidates: resolved.discarded, refinersApplied: Object.freeze(['numeric-context', 'money-ranking', 'conflict-resolver']) }) });
+  return Object.freeze({ data: Object.freeze(data), confidence: Object.freeze(confidence), debug: Object.freeze({ candidates, discardedCandidates: resolved.discarded, refinersApplied: Object.freeze(['numeric-context', 'money-ranking', 'temporal-context', 'conflict-resolver']) }) });
 }
 
 export function compareHousingParsers(value, context = {}) {
