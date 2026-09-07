@@ -29,8 +29,8 @@ const UNIT_COMPONENT_PATTERNS = Object.freeze([
   String.raw`(?:^|[\s,;])xonadon\s*(?:№|#)\s*(${SECONDARY_TOKEN})(?=$|[^\p{L}\p{N}])`,
 ]);
 const LEVEL_COMPONENT_PATTERNS = Object.freeze([
-  String.raw`(?:^|[\s,;])${LEVEL_MARKER}(?!\p{L})\s*(${LEVEL_NUMBER_TOKEN})(?=$|[^\p{L}\p{N}])`,
   String.raw`(?:^|[\s,;])(${LEVEL_NUMBER_TOKEN})\s+${LEVEL_MARKER}(?!\p{L})(?=$|[^\p{L}\p{N}])`,
+  String.raw`(?:^|[\s,;])${LEVEL_MARKER}(?!\p{L})\s*(${LEVEL_NUMBER_TOKEN})(?=$|[^\p{L}\p{N}])`,
 ]);
 const ENTRANCE_COMPONENT_PATTERNS = Object.freeze([
   String.raw`(?:^|[\s,;])${ENTRANCE_MARKER}(?!\p{L})\s*(?:№|#)?\s*(${SECONDARY_TOKEN})(?=$|[^\p{L}\p{N}])`,
