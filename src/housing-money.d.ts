@@ -8,6 +8,7 @@ export type HousingMoneyParseContext = Readonly<{
   country?: string;
   currency?: string;
   fallbackCurrency?: string;
+  dealType?: 'sale' | 'longRent' | 'shortRent' | string | null;
 }>;
 
 export function parseHousingPrice(
