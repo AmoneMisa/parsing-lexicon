@@ -230,8 +230,34 @@ const GEO_COMPONENT_TYPES = Object.freeze({
   residentialComplex: 'residential_complex',
 });
 
+function geoScopeSlug(value) {
+  return String(value || '')
+    .normalize('NFKC')
+    .trim()
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}]+/gu, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+function isCompatibleGeoCatalogEntity(entity, fallback) {
+  const country = String(entity.country || fallback.country || '').trim().toUpperCase();
+  if (country !== fallback.country) return false;
+
+  const entityType = String(entity.type || fallback.type || '').trim();
+  if (entityType !== fallback.type) return false;
+
+  // Geo-catalog IDs are stable country:city:type:slug references. Require the
+  // returned entity to stay in the caller's city scope when one was supplied;
+  // this prevents an otherwise-valid homonym from another city being attached
+  // to a parsed address. The catalog, not the lexicon, remains authoritative
+  // for the underlying hierarchy and coordinates.
+  if (!fallback.city) return true;
+  const [, entityCity] = String(entity.id || '').split(':');
+  return !entityCity || entityCity === geoScopeSlug(fallback.city);
+}
+
 function geoCatalogReference(entity, fallback) {
-  if (!entity || typeof entity !== 'object' || !entity.id) return null;
+  if (!entity || typeof entity !== 'object' || !entity.id || !isCompatibleGeoCatalogEntity(entity, fallback)) return null;
   return Object.freeze({
     id: String(entity.id),
     canonical: String(entity.canonicalName || entity.canonical || fallback.canonical),

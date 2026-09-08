@@ -149,6 +149,25 @@ test('returns stable geo-catalog references through an injected, city-scoped res
   assert.equal('coordinates' in parsed.geoEntities.metro, false);
 });
 
+test('does not attach an out-of-scope geo-catalog entity from a resolver', () => {
+  const parsed = parseHousingAddress('Olmos metrosi', {
+    country: 'UZ',
+    city: 'Tashkent',
+    resolveGeoEntity() {
+      return {
+        id: 'kz:almaty:metro:olmos',
+        canonicalName: 'Olmos',
+        type: 'metro',
+        country: 'KZ',
+        parentId: 'kz:almaty:city:almaty',
+      };
+    },
+  });
+
+  assert.equal(parsed.metro, 'Olmos');
+  assert.equal(parsed.geoEntities, undefined);
+});
+
 test('known canonical street extracts only an adjacent house number from prose', () => {
   const ua = parseHousingAddress('Світла квартира, Воробкевича 12, поруч парк', { knownStreet: 'Воробкевича' });
   assert.equal(ua.street, 'Воробкевича');
