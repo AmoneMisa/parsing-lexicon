@@ -12,7 +12,7 @@ export interface SkillDetail extends SkillMeta {
 export interface SkillMatch {
   canonical: string;
   matched: string;
-  matchType: 'exact' | 'alias' | 'fuzzy';
+  matchType: 'exact' | 'alias' | 'normalized' | 'fuzzy';
   confidence: number;
 }
 export const SKILL_CATALOG: SkillDefinition[];
@@ -24,6 +24,6 @@ export function buildSkillRegex(alias: string): RegExp;
 export function canonicalSkillName(value: string): string | undefined;
 export function extractSkillDetails(text: string): SkillDetail[];
 export function extractSkillNames(text: string): string[];
-export function matchSkill(value: unknown, options?: { fuzzy?: boolean }): SkillMatch | null;
-export function matchSkillCandidates(value: unknown | readonly unknown[], options?: { fuzzy?: boolean; limit?: number }): readonly SkillMatch[];
+export function matchSkill(value: unknown, options?: { fuzzy?: boolean; allowAmbiguousExact?: boolean }): SkillMatch | null;
+export function matchSkillCandidates(value: unknown | readonly unknown[], options?: { fuzzy?: boolean; allowAmbiguousExact?: boolean; limit?: number }): readonly SkillMatch[];
 export function getSkillMeta(name: string): SkillMeta | undefined;

@@ -49,6 +49,10 @@ test('bounded hiring fuzzy matching is opt-in and protects ambiguous short skill
   assert.equal(matchSkill('reactive', { fuzzy: true }), null);
   assert.equal(matchSkill('good', { fuzzy: true }), null);
   assert.equal(matchSkill('restaurant', { fuzzy: true }), null);
+  assert.equal(matchSkill('Spring'), null);
+  assert.equal(matchSkillCandidates('spring season', { fuzzy: true }).some((match) => match.canonical === 'Spring'), false);
+  assert.equal(matchSkill('Typescript')?.matchType, 'normalized');
+  assert.equal(matchSkill('Spring', { allowAmbiguousExact: true })?.matchType, 'exact');
   assert.equal(matchSkill('Postgress'), null);
   assert.equal(matchSkillCandidates(['Postgress', 'PostgreSQL'], { fuzzy: true })[0].matchType, 'exact');
 });

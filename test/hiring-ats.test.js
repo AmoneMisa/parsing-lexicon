@@ -17,3 +17,20 @@ test('package ATS discounts fuzzy CV skill evidence below exact evidence', () =>
   assert.ok(fuzzy.breakdown.skills < exact.breakdown.skills);
   assert.ok(fuzzy.breakdown.skills > 0);
 });
+
+test('package ATS keeps server-only skills as contextual evidence', () => {
+  const result = scoreHiringAts('Skills\nDocker', {
+    title: 'Backend Engineer',
+    skills: ['Docker', 'PostgreSQL'],
+  }, { fuzzySkills: true });
+  assert.ok(result.matched.includes('Docker'));
+  assert.equal(result.missing.includes('PostgreSQL'), false);
+  assert.ok(result.breakdown.skills > 0);
+});
+
+test('package ATS only permits ambiguous bare skills in an explicit skills section', () => {
+  const prose = buildHiringAtsProfile('I enjoy spring season and good weather.', { fuzzySkills: true });
+  const skills = buildHiringAtsProfile('Skills\nSpring', { fuzzySkills: true });
+  assert.equal(prose.skills.has('Spring'), false);
+  assert.equal(skills.skills.has('Spring'), true);
+});

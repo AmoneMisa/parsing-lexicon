@@ -312,8 +312,13 @@ export function matchSkill(value, options = {}) {
   const canonical = CANONICAL_BY_ALIAS.get(normalized);
   if (canonical) {
     const definition = SKILL_CATALOG.find((entry) => entry.name === canonical);
-    const type = normalizeSkillText(definition.name) === normalized ? 'exact' : 'alias';
-    return Object.freeze({ canonical, matched: raw, matchType: type, confidence: type === 'exact' ? 1 : 0.97 });
+    const canonicalNormalized = normalizeSkillText(definition.name);
+    // Bare ordinary words are unsafe in free prose. A caller that already has
+    // a bounded skills field can opt in explicitly, while generic CV text
+    // still requires an unambiguous alias such as `spring framework`.
+    if (AMBIGUOUS_CANONICALS.has(canonical) && normalized === canonicalNormalized && options.allowAmbiguousExact !== true) return null;
+    const type = raw === definition.name ? 'exact' : canonicalNormalized === normalized ? 'normalized' : 'alias';
+    return Object.freeze({ canonical, matched: raw, matchType: type, confidence: type === 'exact' ? 1 : type === 'normalized' ? 0.99 : 0.97 });
   }
   if (options.fuzzy !== true || /\s/u.test(normalized) || !/^[a-z][a-z0-9+#.-]*$/iu.test(normalized)) return null;
 
