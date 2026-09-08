@@ -34,3 +34,12 @@ test('package ATS only permits ambiguous bare skills in an explicit skills secti
   assert.equal(prose.skills.has('Spring'), false);
   assert.equal(skills.skills.has('Spring'), true);
 });
+
+test('package ATS evaluates source sponsorship evidence without consumer parsing', () => {
+  const result = scoreHiringAts('I require visa sponsorship to work in the United States.', {
+    title: 'Software Engineer', country: 'US',
+    sponsorshipEvidence: ['This employer does not offer visa sponsorship.'],
+  }, { fuzzySkills: true });
+  assert.equal(result.eligible, false);
+  assert.equal(result.blockers[0]?.code, 'visa_sponsorship');
+});
