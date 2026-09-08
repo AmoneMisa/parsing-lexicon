@@ -11,8 +11,8 @@ const PREFIX_STREET_MARKER = String.raw`(?:(?:ул(?:ица)?|вул(?:иця)?|
 const POSTFIX_STREET_MARKER = String.raw`(?:ko['’ʼ\u02bc]?cha(?:si)?|кўча(?:си)?|коча(?:си)?|kocha(?:si)?)`;
 const POSTFIX_STREET_TYPE = String.raw`(?:вулиця|улица|провулок|переулок|проспект|бульвар|набережна|набережная|шосе|шоссе|площа|площадь|узвіз|спуск|алея|аллея|дорога|тупик)`;
 const HOUSE_MARKER = String.raw`(?:дом|д\.|будинок|буд\.|house|h\.|uy|уй|үй|nr\.?|no\.?|№)`;
-const BUILDING_MARKER = String.raw`(?:корп(?:ус)?\.?|к\.|строен(?:ие)?|стр\.|будова|секц(?:ия|ія)?|bloc|corp|building|bldg\.?|korpus)`;
-const NUMBER_TOKEN = String.raw`\d{1,5}(?:[-\/]?[\p{L}])?(?:[\/-]\d{1,4}(?:[-\/]?[\p{L}])?)?`;
+const BUILDING_MARKER = String.raw`(?:корп(?:ус)?\.?|к\.|строен(?:ие)?|стр\.|будова|секц(?:ия|ія)?|bloc|corp|building|bldg\.?|korpus|bino|bina|бино)`;
+const NUMBER_TOKEN = String.raw`\d{1,5}(?:[-\/]?[\p{L}]\d{0,4})?(?:[\/-]\d{1,4}(?:[-\/]?[\p{L}]\d{0,4})?){0,2}`;
 const STREET_WORD = String.raw`[\p{L}'’.-]{2,48}`;
 const SECONDARY_TOKEN = String.raw`(?:${NUMBER_TOKEN}|[\p{L}])`;
 const LEVEL_NUMBER_TOKEN = String.raw`\d{1,3}(?:[-–—]?(?:й|ый|ий|st|nd|rd|th))?`;
@@ -153,43 +153,49 @@ function normalizedSecondaryComponents(components = {}) {
 function scoreAddressConfidence(value, evidence = {}) {
   const tokens = tokenizeAddress(value);
   const hasDelimiter = tokens.some((token) => token.type === 'delimiter' || token.type === 'newline');
-  let score = 0;
+  const sourceStrength = Object.freeze({ structured: 0.8, known: 0.6, delimited: 0.5, bare: 0.35 });
+  let score = sourceStrength[evidence.source] ?? 0.66;
 
-  switch (evidence.source) {
-    case 'structured':
-      score = 0.9;
-      if (evidence.hasHouse) score += 0.1;
-      break;
-    case 'known':
-      score = 0.78;
-      if (evidence.hasKnownStreet) score += 0.12;
-      if (evidence.hasHouse) score += 0.08;
-      break;
-    case 'delimited':
-      score = 0.78;
-      if (hasDelimiter) score += 0.06;
-      if (evidence.hasHouse) score += 0.08;
-      break;
-    case 'bare':
-      score = 0.55;
-      if (evidence.hasHouse) score += 0.3;
-      break;
-    default:
-      score = 0.78;
-      if (evidence.hasStreetMarker) score += 0.12;
-      if (evidence.hasHouse) score += 0.1;
-      break;
+  // Positive evidence accumulates independently. A parser path provides a
+  // useful prior, but it cannot by itself produce a high-confidence address.
+  if (evidence.hasStreetMarker) score += 0.22;
+  if (evidence.hasKnownStreet) score += 0.22;
+  if (evidence.hasHouse) score += evidence.source === 'bare' ? 0.5 : evidence.source === 'delimited' ? 0.3 : evidence.source === 'known' ? 0.16 : 0.2;
+  if (evidence.source === 'delimited' && hasDelimiter) score += 0.12;
+  if (evidence.hasGeo) score += 0.06;
+  if (evidence.hasAddressLabel) score += 0.12;
+
+  // Free-text candidates often contain an address-shaped numeric fragment in
+  // a price/contact/marketing sentence. Apply negative evidence only where a
+  // strong structural marker has not already established the address.
+  const requiresNoiseGuard = evidence.source === 'bare' || evidence.source === 'delimited'
+    || (!evidence.hasStreetMarker && !evidence.hasKnownStreet && evidence.source !== 'structured');
+  if (requiresNoiseGuard) {
+    const text = String(value ?? '');
+    if (/(?:цена|ціна|нарх(?:и)?|narx|price|стоимост|аренд|rent)/iu.test(text)) score -= 0.12;
+    if (/(?:тел(?:ефон)?|phone|contact|whatsapp|telegram)/iu.test(text)) score -= 0.18;
+    if (/(?:этаж|поверх|floor|qavat|қабат)/iu.test(text)) score -= 0.1;
+    if (/(?:комнат|кімнат|xona|хона|room)/iu.test(text)) score -= 0.08;
+    if (tokens.filter((token) => token.type === 'number').length > 4) score -= 0.08;
+    if (/(?:акция|скидк|sale|срочно|luxury|элит|новострой)/iu.test(text)) score -= 0.05;
   }
 
   return Math.min(1, Math.max(0, Number(score.toFixed(2))));
 }
 
 function result(address, street = null, houseNumber = null, building = null, confidence = 0, components = null) {
+  const normalizedStreet = compactStreet(street);
+  const normalizedHouseNumber = normalizeNumber(houseNumber);
+  const compactBuilding = normalizedHouseNumber?.match(/^(\d{1,5})(?:к|k)(\d{1,4})$/iu);
+  const normalizedBuilding = normalizeNumber(building) || compactBuilding?.[2] || null;
+  const canonicalAddress = normalizedStreet && normalizedHouseNumber
+    ? composeHousingAddress({ street: normalizedStreet, houseNumber: compactBuilding ? compactBuilding[1] : normalizedHouseNumber, building: normalizedBuilding })
+    : clean(address) || null;
   return Object.freeze({
-    address: clean(address) || null,
-    street: compactStreet(street),
-    houseNumber: normalizeNumber(houseNumber),
-    building: normalizeNumber(building),
+    address: canonicalAddress,
+    street: normalizedStreet,
+    houseNumber: compactBuilding ? compactBuilding[1] : normalizedHouseNumber,
+    building: normalizedBuilding,
     confidence,
     ...normalizedSecondaryComponents(components || {}),
   });
@@ -311,7 +317,10 @@ function splitAddressTail(raw) {
 
   const trailingHouse = withoutBuilding.match(new RegExp(`^(.*?\\p{L}.*?)\\s+(${NUMBER_TOKEN})\\s*$`, 'iu'));
   if (trailingHouse && /\p{L}{2,}/u.test(trailingHouse[1])) {
-    return { street: trailingHouse[1], houseNumber: trailingHouse[2], building };
+    const compactBuilding = trailingHouse[2].match(/^(\d{1,5})\s*(?:к|k)\s*(\d{1,4})$/iu);
+    return compactBuilding
+      ? { street: trailingHouse[1], houseNumber: compactBuilding[1], building: building || compactBuilding[2] }
+      : { street: trailingHouse[1], houseNumber: trailingHouse[2], building };
   }
 
   return /\p{L}{2,}/u.test(withoutBuilding)

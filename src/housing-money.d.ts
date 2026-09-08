@@ -10,7 +10,7 @@ export type HousingMoneyParseContext = Readonly<{
   fallbackCurrency?: string;
   dealType?: 'sale' | 'longRent' | 'shortRent' | string | null;
 }>;
-export type HousingMoneyCandidate = Readonly<{ amount: number; currency: string; start: number; end: number; explicitCurrency: boolean; scale: string | null; priceKeyword: boolean; paymentRole: string; approximate: boolean; confidence: number }>;
+export type HousingMoneyCandidate = Readonly<{ amount: number; currency: string; start: number; end: number; explicitCurrency: boolean; scale: string | null; priceKeyword: boolean; paymentRole: string; approximate: boolean; confidenceBoost: number; confidence: number }>;
 export function extractHousingMoneyCandidates(value: unknown, context?: string | HousingMoneyParseContext): readonly HousingMoneyCandidate[];
 export function rankHousingPriceCandidates(candidates: readonly HousingMoneyCandidate[]): readonly HousingMoneyCandidate[];
 

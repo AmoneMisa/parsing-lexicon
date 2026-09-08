@@ -186,7 +186,7 @@ function parseContextualSingleLetterMillion(text, context) {
 function candidatePaymentRole(text, start, end) {
   if (isPaymentScopedAmount(text, start, end)) return 'depositOrCommission';
   const around = text.slice(Math.max(0, start - 48), Math.min(text.length, end + 48));
-  if (/(?:коммун|utilities?|utility|per\s*(?:sqm|m2|м2)|за\s*м[²2])/iu.test(around)) return 'nonListingPayment';
+  if (/(?:коммун|utilities?|utility|per\s*(?:sqm|m2|м2)|\/\s*(?:sqm|m2|м2)|за\s*м[²2])/iu.test(around)) return 'nonListingPayment';
   if (/(?:new\s+price|now|yangi\s+narx)/iu.test(text.slice(Math.max(0, start - 28), start))) return 'currentPrice';
   if (/(?:old\s+price|was|from|стар(?:ая|ый)\s+цен[аы]?|\d+\s+dan)/iu.test(text.slice(Math.max(0, start - 20), start))) return 'oldPrice';
   if (/(?:tushirilgan|tushdi|reduced|new\s+price|now)/iu.test(text.slice(end, end + 32))) return 'currentPrice';
@@ -203,7 +203,7 @@ export function extractHousingMoneyCandidates(value, context = '') {
   const text = maskPhoneLikeSpans(String(value || ''), ' ', { country });
   const candidates = [];
   const seen = new Set();
-  const addCandidate = ({ amount, currency, start, end, explicitCurrency, scale = null, priceKeyword = false }) => {
+  const addCandidate = ({ amount, currency, start, end, explicitCurrency, scale = null, priceKeyword = false, confidenceBoost = 0 }) => {
     if (amount == null || amount < 1 || amount > 5_000_000_000 || seen.has(`${start}:${end}`)) return;
     seen.add(`${start}:${end}`);
     candidates.push(Object.freeze({
@@ -216,9 +216,50 @@ export function extractHousingMoneyCandidates(value, context = '') {
       priceKeyword,
       paymentRole: candidatePaymentRole(text, start, end),
       approximate: APPROXIMATE_RE.test(text.slice(Math.max(0, start - 12), end)),
+      confidenceBoost,
       confidence: 0,
     }));
   };
+
+  // Keep regional numeric conventions in the same candidate model as ordinary
+  // currency amounts.  In particular, `2500.000 sum` is a grouped Uzbek
+  // amount, while `2 million 500` is a single split-million amount rather
+  // than two competing prices.  These must be extracted before the shorter
+  // generic currency/scale candidates below.
+  const expandedUzbekThousandsRe = new RegExp(
+    `${PRICE_KEYWORD}[^\\d\\r\\n]{0,16}(\\d{4})[.]000\\s*(?:с[ўу]м|so['‘’ʻʼ]?m|som|sum|uzs)(?=$|[^\\p{L}\\p{N}_])`,
+    'igu',
+  );
+  for (const match of text.matchAll(expandedUzbekThousandsRe)) {
+    const start = match.index ?? 0;
+    addCandidate({
+      amount: Number(match[1]) * 1000,
+      currency: 'UZS',
+      start,
+      end: start + match[0].length,
+      explicitCurrency: true,
+      priceKeyword: true,
+      confidenceBoost: 0.1,
+    });
+  }
+
+  const splitMillionRe = /(?:^|[^\p{L}\p{N}_])(\d{1,3})\s*(?:млн\.?|mln\.?|миллион(?:а|ов)?|million(?:s)?)\s+(\d{1,3})(?=$|[^\p{L}\p{N}_])/giu;
+  for (const match of text.matchAll(splitMillionRe)) {
+    const start = match.index ?? 0;
+    const numberOffset = match[0].search(/\d/u);
+    const candidateStart = start + Math.max(0, numberOffset);
+    const before = text.slice(Math.max(0, candidateStart - 42), candidateStart);
+    addCandidate({
+      amount: Number(match[1]) * 1_000_000 + Number(match[2]) * 1000,
+      currency: moneyCurrencyFromText(match[0], fallbackCurrency || '') || fallbackCurrency || '',
+      start: candidateStart,
+      end: start + match[0].length,
+      explicitCurrency: Boolean(moneyCurrencyFromText(match[0], '')),
+      scale: 'million',
+      priceKeyword: PRICE_KEYWORD_RE.test(before),
+      confidenceBoost: 0.1,
+    });
+  }
 
   // A labelled scale is an explicit monetary signal even without a currency
   // glyph. In Uzbek listing prose, "narxi 850 ming" conventionally means
@@ -232,7 +273,14 @@ export function extractHousingMoneyCandidates(value, context = '') {
     const start = match.index ?? 0;
     const end = start + match[0].length;
     const scale = match[2];
-    const amount = parsedMoneyAmount(match[1], scale);
+    const baseAmount = parseNumericAmount(match[1]);
+    // A malformed but common marketplace form is `450000 ming som`: the
+    // number is already expanded, so applying `ming` a second time would
+    // produce a 450,000,000 false price.
+    const ignoreRepeatedUzbekThousand = /^(?:ming|минг)$/iu.test(scale)
+      && baseAmount != null
+      && baseAmount >= 10_000;
+    const amount = ignoreRepeatedUzbekThousand ? baseAmount : parsedMoneyAmount(match[1], scale);
     const currency = moneyCurrencyFromText(match[0], '')
       || (country === 'UZ' && /^(?:ming|минг)$/iu.test(scale) ? 'UZS' : fallbackCurrency || '');
     addCandidate({
@@ -276,6 +324,7 @@ export function rankHousingPriceCandidates(candidates) {
     if (candidate.paymentRole === 'currentPrice') confidence += 0.25;
     if (candidate.paymentRole === 'oldPrice') confidence -= 0.35;
     if (candidate.paymentRole === 'depositOrCommission' || candidate.paymentRole === 'nonListingPayment') confidence -= 0.7;
+    confidence += candidate.confidenceBoost || 0;
     return Object.freeze({ ...candidate, confidence: Math.max(0, Math.min(1, Number(confidence.toFixed(2)))) });
   }).sort((a, b) => b.confidence - a.confidence || b.start - a.start));
 }
@@ -314,6 +363,18 @@ export function parseHousingPrice(value, context = '') {
   const withoutUnitPrices = maskRanges(text, perSquareMeterMatches(text, fallbackCurrency));
   const numericContext = { country, dealType };
   const priceText = maskHousingStructuralSpans(withoutUnitPrices, numericContext);
+  const rankedCandidates = rankHousingPriceCandidates(extractHousingMoneyCandidates(priceText, { country, currency: fallbackCurrency, dealType }));
+  const preferredCandidate = rankedCandidates[0];
+  // Candidate ranking owns the ordinary explicit-price path. The specialised
+  // regional formats below remain as deterministic fallbacks until each is
+  // represented by a richer candidate extractor.
+  if (preferredCandidate && preferredCandidate.confidence >= 0.65) {
+    return Object.freeze({
+      amount: preferredCandidate.amount,
+      currency: preferredCandidate.currency || fallbackCurrency || '',
+      approximate: preferredCandidate.approximate,
+    });
+  }
   let currency = moneyCurrencyFromText(priceText, fallbackCurrency || '')
     || moneyCurrencyFromText(text, fallbackCurrency || '')
     || '';

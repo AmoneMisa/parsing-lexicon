@@ -191,6 +191,14 @@ test('allowDelimitedBare extracts street and house from city-scoped comma prose'
   assert.equal(parsed.address, 'Метростроителей 3');
 });
 
+test('address confidence uses contextual negative evidence for weak delimited prose', () => {
+  const clean = parseHousingAddress('Метростроителей, 3', { allowDelimitedBare: true });
+  const noisy = parseHousingAddress('Метростроителей, 3, телефон +998 90 123 45 67, цена 900$', { allowDelimitedBare: true });
+  assert.ok(clean.confidence > 0.7);
+  assert.equal(noisy.street, 'Метростроителей');
+  assert.ok(noisy.confidence < clean.confidence);
+});
+
 test('extracts secondary address components without changing canonical building address', () => {
   const parsed = parseHousingAddress('ул. Мукими 17, корп. 2, кв. 34, 5 этаж, подъезд 3');
   assert.equal(parsed.street, 'Мукими');
@@ -209,6 +217,21 @@ test('extracts secondary address components without changing canonical building 
   assert.equal(ro.unit, '18');
   assert.equal(ro.staircase, 'B');
   assert.equal(ro.level, '4');
+});
+
+test('parses compact and Uzbek building notation without collapsing components', () => {
+  const compact = parseHousingAddress('ул. Мукими 17к2');
+  assert.equal(compact.street, 'Мукими');
+  assert.equal(compact.houseNumber, '17');
+  assert.equal(compact.building, '2');
+
+  const uzbek = parseHousingAddress('Shota Rustaveli ko\'chasi 17 bino 2');
+  assert.equal(uzbek.street, 'Shota Rustaveli');
+  assert.equal(uzbek.houseNumber, '17');
+  assert.equal(uzbek.building, '2');
+
+  const multipart = parseHousingAddress('Yashnobot tuman Olmos mahalla 3/11/16');
+  assert.equal(multipart.houseNumber, '3/11/16');
 });
 
 test('does not expose secondary components without a valid address', () => {
