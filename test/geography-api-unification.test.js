@@ -14,10 +14,39 @@ test('one canonical city catalog covers all supported geography countries', () =
 
 test('country partitions use the canonical catalog', () => {
   assert.ok(api.CITIES_BY_COUNTRY.UA.some(({ canonical }) => canonical === 'Kyiv'));
+  assert.ok(api.CITIES_BY_COUNTRY.UA.some(({ canonical }) => canonical === 'Chuhuiv'));
   assert.ok(api.CITIES_BY_COUNTRY.UZ.some(({ canonical }) => canonical === 'Tashkent'));
   assert.ok(api.CITIES_BY_COUNTRY.KZ.some(({ canonical }) => canonical === 'Almaty'));
   assert.ok(api.CITIES_BY_COUNTRY.UZ.some(({ canonical }) => canonical === 'Kokand'));
   assert.ok(api.CITIES_BY_COUNTRY.KZ.some(({ canonical }) => canonical === 'Temirtau'));
+});
+
+test('Ukraine secondary city aliases use the same canonical identity in both APIs', () => {
+  const cases = [
+    ['Чугуїв', 'Chuhuiv'],
+    ['Каменское', 'Kamianske'],
+    ['Красноград', 'Berestyn'],
+    ['Ватутіне', 'Bahacheve'],
+    ['Першотравенськ', 'Shakhtarske'],
+    ['Южноукраїнськ', 'Pivdennoukrainsk'],
+    ['KryvyiRih', 'Kryvyi Rih'],
+    ['Рени', 'Reni'],
+    ['Стрый', 'Stryi'],
+    ['Сокиряни', 'Sokyriany'],
+  ];
+
+  for (const [input, canonical] of cases) {
+    assert.equal(api.canonicalUkraineCity(input), canonical);
+    assert.equal(api.canonicalCity(input, 'UA'), canonical);
+  }
+});
+
+test('Romania city catalog normalizes observed source spellings without promoting settlements', () => {
+  assert.equal(api.canonicalCity('Câmpina', 'RO'), 'Campina');
+  assert.equal(api.canonicalCity('Petroșani', 'RO'), 'Petrosani');
+  assert.equal(api.canonicalCity('Târnăveni', 'RO'), 'Tarnaveni');
+  assert.equal(api.canonicalCity('23 August', 'RO'), null);
+  assert.equal(api.canonicalCity('Eforie Nord', 'RO'), null);
 });
 
 test('Central Asia compatibility catalogs are the canonical country catalogs', () => {

@@ -3,6 +3,7 @@ import { findCanonical } from './normalization.js';
 import { canonicalCountryCode } from './countries.js';
 import { lexiconEntity } from './lexicon-core.js';
 import { RO_CITY_EXTENSIONS } from './romania-geography.js';
+import { UA_SECONDARY_CITY_NAMES } from './ua-secondary-cities.js';
 
 const entity = (canonical, aliases, extra = {}) => lexiconEntity(canonical, aliases, extra);
 
@@ -34,9 +35,10 @@ export const UA_CITIES = Object.freeze([
   entity('Bucha', { uk: ['Буча'], ru: ['Буча'], en: ['Bucha'], ro: ['Bucea'] }, { country: 'UA', type: 'city' }),
   entity('Brovary', { uk: ['Бровари'], ru: ['Бровары'], en: ['Brovary'], ro: ['Brovary'] }, { country: 'UA', type: 'city' }),
   entity('Bila Tserkva', { uk: ['Біла Церква'], ru: ['Белая Церковь'], en: ['Bila Tserkva'], ro: ['Bila Țerkva'] }, { country: 'UA', type: 'city' }),
-  entity('Kryvyi Rih', { uk: ['Кривий Ріг'], ru: ['Кривой Рог'], en: ['Kryvyi Rih', 'Krivoy Rog'], ro: ['Krîvîi Rih'] }, { country: 'UA', type: 'city' }),
+  entity('Kryvyi Rih', { uk: ['Кривий Ріг'], ru: ['Кривой Рог'], en: ['Kryvyi Rih', 'KryvyiRih', 'Krivoy Rog'], ro: ['Krîvîi Rih'] }, { country: 'UA', type: 'city' }),
   entity('Kremenchuk', { uk: ['Кременчук'], ru: ['Кременчуг'], en: ['Kremenchuk'], ro: ['Kremenciuk'] }, { country: 'UA', type: 'city' }),
   entity('Uman', { uk: ['Умань'], ru: ['Умань'], en: ['Uman'], ro: ['Uman'] }, { country: 'UA', type: 'city' }),
+  ...UA_SECONDARY_CITY_NAMES.map(([canonical, ...aliases]) => entity(canonical, { all: aliases }, { country: 'UA', type: 'city' })),
 ]);
 
 const RO_CITIES_BASE = Object.freeze([
