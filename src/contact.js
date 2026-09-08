@@ -8,6 +8,7 @@ const PHONE_LIKE_RE = /\+?\d(?:[\t \u00a0().-]*\d){9,}/g;
 // only returned after libphonenumber validation.
 const PHONE_CANDIDATE_RE = /\+?\d(?:[\t \u00a0().-]*\d){6,}(?:[\t \u00a0]*(?:ext\.?|extension|x|доб\.?|дод\.?)\s*\d{1,6})?/giu;
 const PHONE_EXTENSION_RE = /[\t \u00a0]*(?:ext\.?|extension|x|доб\.?|дод\.?)\s*(\d{1,6})$/iu;
+const DATE_LIKE_PHONE_RE = /^\d{1,2}[./-]\d{1,2}[./-](?:\d{2}|\d{4})(?:\s+\d{1,2})?$/u;
 
 const TELEGRAM_USERNAME_RE = /^[A-Za-z0-9_]{5,32}$/;
 const TELEGRAM_LINK_RE = /(?:https?:\/\/)?(?:t\.me|telegram\.me|telegram\.dog)\/([A-Za-z0-9_]{5,32})(?:\/[0-9]+)?(?:[/?#][^\s]*)?/giu;
@@ -97,6 +98,10 @@ export function parsePhoneNumbers(value, options = {}) {
 
   for (const match of text.matchAll(PHONE_CANDIDATE_RE)) {
     const raw = match[0].trim();
+    // Date stamps frequently contain enough digits to look phone-like before
+    // a following colon (for example "29.08.2026 10:15"). They are temporal
+    // evidence, never public contact details.
+    if (DATE_LIKE_PHONE_RE.test(raw)) continue;
     const { base, extension } = splitPhoneExtension(raw);
     const parsed = parsePhoneNumberFromString(base, countryHint);
     if (!parsed) continue;
