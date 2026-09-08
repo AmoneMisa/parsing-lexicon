@@ -2,6 +2,11 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as api from '../src/index.js';
 
+test('root package keeps normalization helpers unambiguous', () => {
+  assert.equal(typeof api.escapeRegex, 'function');
+  assert.equal(api.escapeRegex('a+b'), 'a\\+b');
+});
+
 test('deal type vocabulary no longer decides transaction side', () => {
   assert.equal(api.findCanonical('куплю квартиру', api.DEAL_TYPES, { partial: true }), null);
   assert.equal(api.findCanonical('сниму квартиру', api.DEAL_TYPES, { partial: true }), null);
