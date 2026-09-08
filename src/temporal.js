@@ -60,6 +60,11 @@ function dateEntityType(text, start, context, relation = relationNear(text, star
 }
 function inferredDateEvidence(inferred, context) { return inferred ? [{ type: 'inferred-year', reference: context.referenceDate ? 'referenceDate' : context.publishedAt ? 'publishedAt' : context.fetchedAt ? 'fetchedAt' : 'currentDate' }] : []; }
 const SCHEDULE_CONTEXT_RE = /(?:график|смен[аы]|режим\s+работы|work\s*schedule|shift|работ[аы]|job|графік|змін[аи]|program(?:ul)?\s+de\s+lucru|ish\s+grafigi|жұмыс\s+кестесі|жумуш\s+графиги)/iu;
+function scheduleDaysOffMode(text) {
+  if (/(?:плавающ|floating|flexible\s+days\s+off)/iu.test(text)) return 'floating';
+  if (/(?:скользящ|сменн|rotating\s+days\s+off|выходные\s+по\s+графику)/iu.test(text)) return 'rotating';
+  return 'fixed';
+}
 function isTimeRangeContextual(match, text) {
   if (/[.:]|\b(?:am|pm|утра|вечера|ранку|вечора|ertalab|kechqurun)\b/iu.test(match[0])) return true;
   if (/^\s*(?:с|from)\b/iu.test(match[0])) return true;
@@ -129,11 +134,13 @@ export function extractTemporalCandidates(value, context = {}) {
   const scheduleContext = SCHEDULE_CONTEXT_RE;
   for (const match of text.matchAll(/(?<![\d:.])(\d{1,2})\s*(?:\/|\\|через|-)\s*(\d{1,2})(?![\d:.])/giu)) {
     const around = text.slice(Math.max(0, (match.index ?? 0) - 32), (match.index ?? 0) + match[0].length + 32); if (!scheduleContext.test(around)) continue;
-    candidates.push(candidate('workSchedule', Object.freeze({ type: 'cycle', workDays: Number(match[1]), restDays: Number(match[2]), daysOffMode: /плавающ|скользящ|сменн/iu.test(around) ? 'rotating' : 'fixed' }), match, 'temporal.schedule-cycle', .99, [{ type: 'context', value: 'schedule' }, { type: 'range', value: 'cycle' }]));
+    const daysOffMode = scheduleDaysOffMode(around);
+    candidates.push(candidate('workSchedule', Object.freeze({ type: 'cycle', workDays: Number(match[1]), restDays: Number(match[2]), daysOffMode }), match, 'temporal.schedule-cycle', .99, [{ type: 'context', value: 'schedule' }, { type: 'range', value: 'cycle' }, { type: 'days-off-mode', value: daysOffMode }]));
   }
   for (const match of text.matchAll(/(?<![\p{L}\p{N}])два\s+через\s+два(?![\p{L}\p{N}])/giu)) {
     const around = text.slice(Math.max(0, (match.index ?? 0) - 32), (match.index ?? 0) + match[0].length + 32); if (!scheduleContext.test(around)) continue;
-    candidates.push(candidate('workSchedule', Object.freeze({ type: 'cycle', workDays: 2, restDays: 2, daysOffMode: /плавающ|скользящ|сменн/iu.test(around) ? 'rotating' : 'fixed' }), match, 'temporal.schedule-cycle.words', .97, [{ type: 'context', value: 'schedule' }, { type: 'range', value: 'cycle' }]));
+    const daysOffMode = scheduleDaysOffMode(around);
+    candidates.push(candidate('workSchedule', Object.freeze({ type: 'cycle', workDays: 2, restDays: 2, daysOffMode }), match, 'temporal.schedule-cycle.words', .97, [{ type: 'context', value: 'schedule' }, { type: 'range', value: 'cycle' }, { type: 'days-off-mode', value: daysOffMode }]));
   }
   for (const match of text.matchAll(WEEKDAY_RANGE_RE)) {
     const start = DAY_ALIASES[match[1].toLowerCase()]; const end = DAY_ALIASES[match[2].toLowerCase()];

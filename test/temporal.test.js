@@ -11,7 +11,8 @@ test('temporal API preserves inferred availability dates and rental duration evi
 
 test('temporal API resolves contextual schedules and overnight ranges without treating bare ratios as schedules', () => {
   const parsed = parseTemporal('График работы 2/2, выходные плавающие, с 07.00 до 19.00', { domain: 'vacancy' });
-  assert.deepEqual(parsed.data.workSchedule, { type: 'cycle', workDays: 2, restDays: 2, daysOffMode: 'rotating', workingHours: { start: { hour: 7, minute: 0 }, end: { hour: 19, minute: 0 }, crossesMidnight: false } });
+  assert.deepEqual(parsed.data.workSchedule, { type: 'cycle', workDays: 2, restDays: 2, daysOffMode: 'floating', workingHours: { start: { hour: 7, minute: 0 }, end: { hour: 19, minute: 0 }, crossesMidnight: false } });
+  assert.ok(parsed.debug.candidates.some((item) => item.evidence.some((evidence) => evidence.type === 'days-off-mode' && evidence.value === 'floating')));
   assert.deepEqual(parsed.data.timeRange, { start: { hour: 7, minute: 0 }, end: { hour: 19, minute: 0 }, crossesMidnight: false });
   assert.equal(parseTemporal('Планировка 2/2').data.workSchedule, undefined);
   assert.equal(parseTemporal('Смена 22:00-06:00').data.timeRange.crossesMidnight, true);
@@ -75,6 +76,8 @@ test('temporal API keeps one shared engine while accepting priority-country sche
   const uz = parseTemporal('Ish grafigi dushanba-juma 09:00-18:00. Kvartira kamida 3 oyga ijaraga beriladi.', {
     domain: 'real-estate',
   });
+
+  assert.equal(parseTemporal('Скользящий график 2/2').data.workSchedule.daysOffMode, 'rotating');
   assert.deepEqual(uz.data.workSchedule.workingDays, ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']);
   assert.deepEqual(uz.data.minimumRentalDuration, { value: 3, unit: 'month', bound: 'min' });
 
