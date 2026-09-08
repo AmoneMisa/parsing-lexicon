@@ -188,7 +188,6 @@ export const TASHKENT_RESIDENTIAL_COMPLEXES = Object.freeze([
   complex('Sayram Avenue'),
   complex('Sayram Plaza'),
   complex('Sayram Tower'),
-  complex('Seoul Mun', ['Сеул Мун']),
   complex('Seoul Riverside'),
   complex('Shahriabad'),
   complex('Shohsaroy Towers'),

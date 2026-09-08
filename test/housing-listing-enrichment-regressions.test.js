@@ -195,6 +195,8 @@ test('Yakkasaray listing accepts a family or a six-person student group', () => 
   assert.equal(enrichment.studentTarget, true);
   assert.equal(enrichment.address, null);
   assert.equal(enrichment.addressStreet, null);
+  assert.ok(enrichment.nearby.includes('Seoul Mun Mall'));
+  assert.ok(enrichment.nearby.includes('Magic City'));
 });
 
 const LISTING_YANGI_TASHKENT_8382612 = `
