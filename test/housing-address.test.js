@@ -86,6 +86,19 @@ test('parses Uzbek and Romanian explicit address markers', () => {
   assert.equal(ro.building, '3');
 });
 
+test('stops a marked street before ownership and marketing prose', () => {
+  assert.deepEqual(
+    parseHousingAddress('Здам 3-х кімнатну квартиру на вул.Воробкевича. ВЛАСНИК'),
+    {
+      address: 'Воробкевича',
+      street: 'Воробкевича',
+      houseNumber: null,
+      building: null,
+      confidence: 0.88,
+    },
+  );
+});
+
 test('shared address grammar accepts Kazakh and Kyrgyz postfix street forms', () => {
   const kz = parseHousingAddress('Абай көшесі 12-А, кіреберіс 3');
   assert.equal(kz.street, 'Абай');
