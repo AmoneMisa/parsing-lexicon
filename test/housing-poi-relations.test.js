@@ -32,3 +32,21 @@ test('uses metro marker to disambiguate an otherwise ambiguous name', () => {
   assert.equal(result.target.type, 'metro');
   assert.equal(result.durationMinutes, 10);
 });
+
+test('target-first Ukrainian travel time separates a concrete supermarket name from its duration', () => {
+  const result = extractHousingPoiRelations('Супермаркет Класс 5 хвилин, метро Героев праци', {
+    country: 'UA', city: 'Kharkiv',
+    resolveGeoCandidates({ query }) {
+      return query.toLowerCase() === 'класс'
+        ? [{ id: 'ua:kharkiv:supermarket:klass', canonical: 'Klass', type: 'supermarket', country: 'UA', parentId: 'ua:kharkiv:city:kharkiv' }]
+        : [];
+    },
+  });
+  assert.deepEqual(result, [{
+    relation: 'travel_time',
+    target: { id: 'ua:kharkiv:supermarket:klass', canonical: 'Klass', type: 'supermarket', country: 'UA', parentId: 'ua:kharkiv:city:kharkiv' },
+    confidence: 0.94,
+    durationMinutes: 5,
+    mode: 'unknown',
+  }]);
+});

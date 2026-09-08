@@ -87,4 +87,8 @@ test('temporal API keeps one shared engine while accepting priority-country sche
   const uk = parseTemporal('Графік роботи понеділок-п’ятниця 9 ранку-6 вечора');
   assert.deepEqual(uk.data.workSchedule.workingDays, ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']);
   assert.deepEqual(uk.data.timeRange, { start: { hour: 9, minute: 0 }, end: { hour: 18, minute: 0 }, crossesMidnight: false });
+
+  for (const value of ['Жұмыс кестесі дүйсенбі-жұма 09:00-18:00', 'Жумуш графиги дүйшөмбү-жума 09:00-18:00']) {
+    assert.deepEqual(parseTemporal(value).data.workSchedule.workingDays, ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']);
+  }
 });

@@ -12,13 +12,18 @@ const TYPE_MARKERS = Object.freeze([
   ['poi.bus_station', /(?:bus\s+station|coach\s+station|автовокзал|автостанция|bus\s+terminal)/iu],
   ['poi.parking', /(?:parking|парковк\p{L}*|паркинг|автостоянк\p{L}*)/iu],
   ['poi.shopping_mall', /(?:shopping\s+(?:mall|cent(?:er|re))|mall\b|т[цр]\b|savdo\s+markaz)/iu],
+  ['poi.supermarket', /(?:supermarket|супермаркет|гипермаркет|магазин)/iu],
   ['poi.market', /(?:market|bazaar|bozor|базар|рынок)/iu],
   ['poi.park', /(?:park|bog['’ʻʼ`]?|парк)/iu],
   ['metro', /(?:metro|metrosi|метро|м\.)/iu],
 ]);
 
 const RELATION_RE = /(?<relation>рядом\s+(?:с|со)|возле|около|недалеко\s+от|напротив|за|перед|near(?:by)?|close\s+to|next\s+to|opposite|behind|in\s+front\s+of|yaqin(?:ida)?|yonida|ro['’ʻʼ`]?parasida|орналасқан\s+жерде|поруч|біля|поблизу|lângă|aproape\s+de)\s+(?<target>[^,;.!?\r\n]{2,96})/giu;
-const DISTANCE_RE = /(?<amount>\d{1,3}(?:[.,]\d+)?)\s*(?<unit>km|км|min(?:ute)?s?|мин(?:ут(?:ы|а|ах)?)?|дақиқа|daqiqa|метр(?:а|ов)?|m)\s*(?<mode>пешком|пішки|walking?|yayov|piyoda|на\s+машине|by\s+car)?\s*(?:до|от|from|to|до\s+станции)\s+(?<target>[^,;.!?\r\n]{2,96})/giu;
+const POSTFIX_RELATION_RE = /(?<target>[^,;.!?\r\n]{2,96}?)\s+(?<relation>yonida|yaqin(?:ida)?|ro['’ʻʼ`]?parasida)(?=$|[,;.!?\r\n])/giu;
+const DISTANCE_UNIT = String.raw`(?:km|км|min(?:ute)?s?|мин(?:ут(?:ы|а|ах)?)?|хв(?:илин(?:и|у)?)?|дақиқа|daqiqa|метр(?:а|ов|ів)?|m)`;
+const DISTANCE_MODE = String.raw`(?:пешком|пішки|walking?|yayov|piyoda|на\s+машине|by\s+car)`;
+const DISTANCE_RE = new RegExp(String.raw`(?<amount>\d{1,3}(?:[.,]\d+)?)\s*(?<unit>${DISTANCE_UNIT})\s*(?<mode>${DISTANCE_MODE})?\s*(?:до|от|from|to|до\s+станции)\s+(?<target>[^,;.!?\r\n]{2,96})`, 'giu');
+const POSTFIX_DISTANCE_RE = new RegExp(String.raw`(?<target>[^,;.!?\r\n]{2,96}?)\s+(?<amount>\d{1,3}(?:[.,]\d+)?)\s*(?<unit>${DISTANCE_UNIT})(?:\s*(?<mode>${DISTANCE_MODE}))?(?=$|[,;.!?\r\n])`, 'giu');
 
 function cleanTarget(value) {
   return String(value || '')
@@ -38,6 +43,12 @@ function markerTypes(value) {
   return TYPE_MARKERS.filter(([, re]) => re.test(value)).map(([type]) => type);
 }
 
+function stripLeadingTypeMarker(value) {
+  return String(value || '')
+    .replace(/^(?:supermarket|супермаркет|гипермаркет|магазин|shopping\s+(?:mall|cent(?:er|re))|mall|т[цр]|savdo\s+markaz)\s+/iu, '')
+    .replace(/\s+/g, ' ').trim();
+}
+
 function normalizeReference(candidate, country, city) {
   if (!candidate?.id || !candidate?.canonicalName && !candidate?.canonical) return null;
   if (candidate.country && String(candidate.country).toUpperCase() !== country) return null;
@@ -55,7 +66,9 @@ function resolveTarget(target, context) {
   if (typeof context.resolveGeoCandidates !== 'function') return [];
   const types = markerTypes(target);
   const query = cleanTarget(target) || String(target).trim();
-  const bareQuery = types.includes('metro') ? query.replace(/\b(?:metrosi|metro|метро|м\.)\b/giu, ' ').replace(/\s+/g, ' ').trim() : query;
+  const bareQuery = types.includes('metro')
+    ? query.replace(/\b(?:metrosi|metro|метро|м\.)\b/giu, ' ').replace(/\s+/g, ' ').trim()
+    : stripLeadingTypeMarker(query);
   for (const currentQuery of [...new Set([query, bareQuery])].filter((item) => item.length >= 2)) {
     const resolved = context.resolveGeoCandidates(Object.freeze({
       country: context.country,
@@ -75,7 +88,7 @@ function distanceDetails(groups) {
   if (!Number.isFinite(amount) || amount <= 0) return {};
   const unit = String(groups.unit || '').toLowerCase();
   if (/^(?:km|км)$/u.test(unit)) return { distanceMeters: Math.round(amount * 1000) };
-  if (/^(?:min|мин|дақиқа|daqiqa)/u.test(unit)) {
+  if (/^(?:min|мин|хв|дақиқа|daqiqa)/u.test(unit)) {
     const mode = /пешком|пішки|walking|yayov|piyoda/iu.test(groups.mode || '') ? 'walk'
       : /машине|by\s+car/iu.test(groups.mode || '') ? 'drive' : 'unknown';
     return { durationMinutes: Math.round(amount), mode };
@@ -91,7 +104,7 @@ export function extractHousingPoiRelations(value, { country = '', city = '', res
   if (!text || !normalizedCountry || typeof resolveGeoCandidates !== 'function') return deepFreeze([]);
   const context = { country: normalizedCountry, city, resolveGeoCandidates };
   const relations = [];
-  for (const pattern of [RELATION_RE, DISTANCE_RE]) {
+  for (const pattern of [RELATION_RE, POSTFIX_RELATION_RE, DISTANCE_RE, POSTFIX_DISTANCE_RE]) {
     for (const match of text.matchAll(pattern)) {
       const groups = match.groups || {};
       const target = groups.target || '';

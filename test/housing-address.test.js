@@ -86,6 +86,18 @@ test('parses Uzbek and Romanian explicit address markers', () => {
   assert.equal(ro.building, '3');
 });
 
+test('shared address grammar accepts Kazakh and Kyrgyz postfix street forms', () => {
+  const kz = parseHousingAddress('Абай көшесі 12-А, кіреберіс 3');
+  assert.equal(kz.street, 'Абай');
+  assert.equal(kz.houseNumber, '12-А');
+  assert.equal(kz.entrance, '3');
+
+  const kg = parseHousingAddress('Чүй көчөсү 17 корпус 2');
+  assert.equal(kg.street, 'Чүй');
+  assert.equal(kg.houseNumber, '17');
+  assert.equal(kg.building, '2');
+});
+
 test('normalizes the common Kharkiv Poltavskyi Shliakh OCR typo before parsing its house number', () => {
   assert.deepEqual(parseHousingAddress('улица Полтавский шоях 171'), {
     address: 'Полтавский шлях 171',
