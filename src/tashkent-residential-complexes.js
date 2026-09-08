@@ -6,6 +6,7 @@ const AMBIGUOUS_TASHKENT_COMPLEXES = new Set([
   'City Mall',
   'Darhan',
   'Pushkin',
+  'Seoul Mun',
 ]);
 
 function complex(name, aliases = []) {
@@ -188,7 +189,10 @@ export const TASHKENT_RESIDENTIAL_COMPLEXES = Object.freeze([
   complex('Sayram Avenue'),
   complex('Sayram Plaza'),
   complex('Sayram Tower'),
-  complex('Seoul Mun', ['Сеул Мун']),
+  // The development contains both a residential complex and a commercial
+  // Seoul Mun destination.  Keep the housing entity, but require an explicit
+  // residential marker so a landmark mention is never promoted to an address.
+  complex('Seoul Mun', ['Seul Mun', 'Seoul Moon', 'Seul Moon', 'Сеул Мун']),
   complex('Seoul Riverside'),
   complex('Shahriabad'),
   complex('Shohsaroy Towers'),

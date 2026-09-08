@@ -11,6 +11,7 @@ import { parseHousingAddress, resolveHousingAddressGeoEntities } from './housing
 import { HOUSING_LANDMARK_EXTENSIONS, HOUSING_POI_EXTENSIONS } from './housing-poi-extensions.js';
 import { resolveHousingIntent } from './housing-intent.js';
 import { extractHousingPoiRelations } from './housing-poi-relations.js';
+import { dictionaryFor } from './locations-runtime.js';
 
 const GENERIC_CATEGORY = Object.freeze({
   Park: 'park', Metro: 'metro', 'Bus stop': 'transport', 'Public transport': 'transport', 'Main road': 'transport',
@@ -30,12 +31,12 @@ const APPLIANCE_PATTERNS = Object.freeze([
 
 const FIRST_RENT_UZ_RE = /(?:hali\s+hech\s+kim\s+(?:yashamagan|turmagan)|ҳали\s+ҳеч\s+ким\s+(?:яшамаган|турмаган))/iu;
 const LANDLORD_PRESENT_RE = /(?:xozaykali|hojaykali|xo['’]?jaykali|с\s+хозяйк(?:ой|ой\s+в\s+квартире)|хозяйк\p{L}*\s+(?:жив[её]т|прожива\p{L}*)|with\s+(?:the\s+)?(?:landlord|owner)\s+(?:present|living\s+in)|cu\s+proprietar(?:ul)?\s+în\s+cas(?:ă|a)|үй\s*иесі\s+(?:тұрады|бірге\s+тұрады))/iu;
-const STUDENT_RE = /(?:studentlar\s+uchun|talabalar\s+uchun|студент(?:ам|ы|ок|ов)?\s+(?:можно|для)|для\s+студент|students?\s+(?:only|welcome)|for\s+students|pentru\s+studen[țt]i|studen[țt]i(?:lor)?|студенттерге|студенттер\s+үшін)/iu;
+const STUDENT_RE = /(?:studentlar\s+uchun|talabalar\s+uchun|студент(?:ам|ы|ок|ов)?\s+(?:можно|для)|для\s+студент|students?\s+(?:only|welcome)|for\s+students|pentru\s+studen[țt]i|studen[țt]i(?:lor)?|студенттерге|студенттер\s+үшін|(?:oila|oyla)(?:ga|lar|li)?\s+yoki\s+\d{1,2}\s+ta\s+bola(?:lar)?(?:ga)?\s+(?:ijara(?:ga)?\s+)?(?:beril|topshiril))/iu;
 const NO_BROKER_RE = /(?:bez\s+makler|maklersiz|vositachisiz|без\s+(?:маклер|посредник|риелтор|риэлтор|комисси)|no\s+(?:broker|agent|commission|agency\s+fee)|f[ăa]r[ăa]\s+(?:comision|agen[țt]ie|intermediari)|делдалсыз|комиссиясыз)/iu;
 const BROKER_RE = /(?:makler|vositachi|макл(?:ер[а-яё]*)?|ри[еэ]лтор[а-яё]*|агентств[а-яё]*|комисси[а-яё]*|broker|realtor|commission|comision(?:ul)?|agen[țt]ie|delda[lл]\p{L}*|делдал\p{L}*)/iu;
 const MEN_RE = /(?:o['’ʻʼ‘`]?g['’ʻʼ‘`]?il\s+bola(?:lar)?(?:ga)?|ogil\s+bola(?:lar)?(?:ga)?|sherik\s+bola|эркак(?:лар)?|erkak(?:lar)?(?:ga)?|только\s+(?:мужчин|парн)|\bmen\s+only\b|b[ăa]rba[țt]i(?:lor)?|b[ăa]ie[țt]i(?:lor)?|жігіттерге|жігіттер(?:ге)?|хлопц(?:ям|і|ів)?|чоловік(?:ам|и)?)/iu;
 const WOMEN_RE = /(?:qiz(?:lar)?(?:ga)?|ayol(?:lar)?(?:ga|ni)?|киз(?:лар)?(?:га)?|аёл(?:лар)?(?:га|ни)?|девушк\p{L}*|женщин\p{L}*|girls?\s+only|women\s+only|fete(?:lor)?|femei(?:lor)?|қыздарға|қыздар(?:ға)?|дівчат(?:ам|а|ок)?|жінк(?:ам|и)?)/iu;
-const FAMILY_RE = /(?:семь\p{L}*|family|oila(?:ga|lar|li)?|oila\s+uchun|оилага|оелага|оилавий|oelaga|famil(?:ie|ia)|cuplu(?:ri)?|отбасына|отбасылы|жанұяға|сім['’ʼ]?[яїі](?:ям|ям[иі])?|сімейн\p{L}*)/iu;
+const FAMILY_RE = /(?:семь\p{L}*|family|oila(?:ga|lar|li)?|oyla(?:ga|lar|li)?|oila\s+uchun|оилага|оелага|оилавий|oelaga|famil(?:ie|ia)|cuplu(?:ri)?|отбасына|отбасылы|жанұяға|сім['’ʼ]?[яїі](?:ям|ям[иі])?|сімейн\p{L}*)/iu;
 const ROOM_SHARE_RE = /(?:sherik(?:ka|lik|likga)?|шерик(?:ка|лик)?|roommate|flatmate|подселени|койко[-\s]?мест|место\s+в\s+(?:комнат|квартир)|birga\s+yashash(?:ga)?|kvartira(?:ga|da)?[^\r\n.!?]{0,36}(?:\d+|bitta|1)\s*(?:ta\s*)?(?:qiz|ayol)[^\r\n.!?]{0,20}(?:ijarachi\s*)?(?:kerak|kere)|coleg\s+de\s+(?:apartament|camer[ăa])|bed\s+space|бөлмелес(?:\s+керек)?|көрші\s+керек)/iu;
 const AIR_CONDITIONER_RE = /(?:кондицион|air\s*con|konditsioner|kandit(?:s|c)?aner|kanditsaner|кандитсанер)/iu;
 const PER_PERSON_PRICE_RE = /(?:kishi\s+boshiga|киши\s+бошига)\s*(\d{1,3}(?:[\s.,]\d{3})*|\d+(?:[.,]\d+)?)\s*(ming|минг|million|mln|млн)?(?:dan|дан)?/iu;
@@ -44,6 +45,8 @@ const TRANSIT_ROUTES_RE = /(?:aftobuslar|avtobuslar|автобуслар|авт�
 const NEARBY_RELATION_TAIL_RE = /(?<!\p{L})(?:рядом\s+(?:с|со)|недалеко\s+от|возле|около|ориентир\s*[:—–-]?|ор[-–—]?р\.?\s*[:—–-]?|near(?:by)?|close\s+to|lângă|aproape\s+de)(?!\p{L})[^.!?\r\n;]*/giu;
 const NEARBY_TRAVEL_TAIL_RE = /(?<!\p{L})(?:до|până\s+la)(?!\p{L})[^.!?\r\n;]{0,96}(?<!\p{L})\d{1,3}\s*(?:мин(?:ут(?:ы|а|ах)?|\.?)?|min(?:ute)?s?|дақиқ\p{L}*|daqiqa|км|km|метр(?:а|ов)?|m)(?!\p{L})[^.!?\r\n;]*/giu;
 const RESIDENTIAL_CONTEXT_RE = /(?:ж\.?\s*к\.?|жил(?:ой|ого)\s+комплекс|новострой(?:ка|ки)?|residential\s+complex|residence|turar\s+joy|uy[-\s]?joy|majmua|массив)/iu;
+const METRO_PREFIX_RE = /(?:^|[^\p{L}])(?:metro|metrosi|метро|м\.)\s*$/iu;
+const SUPERMARKET_PREFIX_RE = /(?:^|[^\p{L}])(?:супермаркет|supermarket|магазин)\s*$/iu;
 
 function unique(values) {
   return [...new Set(values.filter(Boolean))];
@@ -122,6 +125,42 @@ function genericMatches(text) {
   }));
 }
 
+// A city dictionary is the canonical lexical source.  Collect every contextual
+// match here instead of using matchDictionaryLocation(), which intentionally
+// returns just one longest match for simple lookup callers.
+function contextualCityMatches(text, country, city, type, prefix) {
+  const dictionary = dictionaryFor(String(country || '').toUpperCase(), city);
+  if (!dictionary || !prefix) return [];
+  const matches = [];
+  for (const entry of dictionary[type] || []) {
+    if (!entry?.re) continue;
+    const flags = [...new Set(`${entry.re.flags.replace(/g/g, '')}g`)].join('');
+    const re = new RegExp(entry.re.source, flags);
+    for (const match of text.matchAll(re)) {
+      const start = match.index ?? 0;
+      const before = text.slice(Math.max(0, start - 40), start);
+      if (!prefix.test(before)) continue;
+      matches.push({ canonical: entry.name, start, length: match[0].length });
+    }
+  }
+  return matches.sort((a, b) => a.start - b.start || b.length - a.length || a.canonical.localeCompare(b.canonical));
+}
+
+function cityMetro(text, country, city) {
+  return contextualCityMatches(text, country, city, 'metro', METRO_PREFIX_RE)[0]?.canonical || null;
+}
+
+function contextualNearby(text, country, city, metro) {
+  const shops = contextualCityMatches(text, country, city, 'landmarks', SUPERMARKET_PREFIX_RE)
+    .map((match) => match.canonical);
+  const generic = parseHousingNearby(text).filter((name) => {
+    if (name === 'Metro' && metro) return false;
+    if (name === 'Supermarket' && shops.length) return false;
+    return true;
+  });
+  return deepFreeze(unique([...shops, ...generic]));
+}
+
 export function parseHousingNearby(value) {
   const text = normalizeUnicode(value ?? '');
   if (!text) return deepFreeze([]);
@@ -138,7 +177,10 @@ export function parseHousingAudience(value) {
   const family = FAMILY_RE.test(text);
   const women = WOMEN_RE.test(text);
   const men = MEN_RE.test(text);
+  const students = STUDENT_RE.test(text);
+  if (family && students) return deepFreeze({ primary: 'family', alternatives: ['family', 'students'] });
   if (family && women) return deepFreeze({ primary: 'family', alternatives: ['family', 'women'] });
+  if (students) return deepFreeze({ primary: 'students', alternatives: ['students'] });
   if (family) return deepFreeze({ primary: 'family', alternatives: ['family'] });
   if (women) return deepFreeze({ primary: 'women', alternatives: ['women'] });
   if (men) return deepFreeze({ primary: 'men', alternatives: ['men'] });
@@ -243,7 +285,7 @@ export function parseHousingListingEnrichment(value, { country = '', city = '', 
   const observedAmenities = parseHousingObservedAmenities(text);
   const quarter = matchTashkentHousingQuarter(text);
   const district = matchTashkentHousingDistrict(text)?.name || quarter?.district || null;
-  const metro = matchTashkentHousingMetro(text)?.name || null;
+  const metro = matchTashkentHousingMetro(text)?.name || cityMetro(text, country, city) || null;
   const primaryResidentialText = withoutNearbyLocationReferences(text);
   const parsedRc = specificResidentialComplex(primaryResidentialText)
     || matchTashkentResidentialComplex(primaryResidentialText)?.name
@@ -311,7 +353,7 @@ export function parseHousingListingEnrichment(value, { country = '', city = '', 
     perPersonPrice,
     transitRoutes: parseHousingTransitRoutes(text),
     walkMinutes: walkMinutes(text),
-    nearby: parseHousingNearby(text),
+    nearby: contextualNearby(text, country, city, metro),
     ...(poiRelations.length ? { poiRelations, nearbyEntities: deepFreeze(nearbyEntities) } : {}),
     amenities: observedAmenities,
     district: district || null,

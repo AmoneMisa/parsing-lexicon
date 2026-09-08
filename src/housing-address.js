@@ -188,9 +188,12 @@ function result(address, street = null, houseNumber = null, building = null, con
   const normalizedHouseNumber = normalizeNumber(houseNumber);
   const compactBuilding = normalizedHouseNumber?.match(/^(\d{1,5})(?:к|k)(\d{1,4})$/iu);
   const normalizedBuilding = normalizeNumber(building) || compactBuilding?.[2] || null;
-  const canonicalAddress = normalizedStreet && normalizedHouseNumber
+  // `address` is a geocoding-compatible street/house value, never a fallback
+  // copy of a whole labelled listing line.  Districts, metros and nearby POIs
+  // are preserved as independent components by the caller.
+  const canonicalAddress = normalizedStreet
     ? composeHousingAddress({ street: normalizedStreet, houseNumber: compactBuilding ? compactBuilding[1] : normalizedHouseNumber, building: normalizedBuilding })
-    : clean(address) || null;
+    : null;
   return Object.freeze({
     address: canonicalAddress,
     street: normalizedStreet,
@@ -536,7 +539,13 @@ function labelledAddress(text, rawValue) {
 
   const line = clean(rawLine).slice(0, 140);
   if (!line) return null;
-  return parseHousingAddress(line, { allowBare: true });
+  const delimited = parseHousingAddress(line, { allowDelimitedBare: true });
+  if (delimited.street) return delimited;
+  // A generic label such as "Manzil:" is often followed by district and POI
+  // prose.  Accept an unmarked bare form only when it has an actual house
+  // component; marker-based street forms were already handled above.
+  const bare = parseHousingAddress(line, { allowBare: true });
+  return bare.street && bare.houseNumber ? bare : null;
 }
 
 function plausibleDelimitedStreet(value) {

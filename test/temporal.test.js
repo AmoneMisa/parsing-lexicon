@@ -70,3 +70,21 @@ test('temporal API supports contextual partial and month-first calendar dates', 
   const nextMonday = parseTemporal('Можно заезжать со следующего понедельника', { domain: 'real-estate', referenceDate: '2026-09-09T12:00:00Z' });
   assert.deepEqual(nextMonday.data.availabilityDate, { year: 2026, month: 9, day: 14 });
 });
+
+test('temporal API keeps one shared engine while accepting priority-country schedule and duration vocabulary', () => {
+  const uz = parseTemporal('Ish grafigi dushanba-juma 09:00-18:00. Kvartira kamida 3 oyga ijaraga beriladi.', {
+    domain: 'real-estate',
+  });
+  assert.deepEqual(uz.data.workSchedule.workingDays, ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']);
+  assert.deepEqual(uz.data.minimumRentalDuration, { value: 3, unit: 'month', bound: 'min' });
+
+  const ro = parseTemporal('Program de lucru luni-vineri 09:00-18:00. Contract pe o perioadă de 1 an.', {
+    domain: 'vacancy',
+  });
+  assert.deepEqual(ro.data.workSchedule.workingDays, ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']);
+  assert.deepEqual(ro.data.contractDuration, { value: 1, unit: 'year', bound: 'exact' });
+
+  const uk = parseTemporal('Графік роботи понеділок-п’ятниця 9 ранку-6 вечора');
+  assert.deepEqual(uk.data.workSchedule.workingDays, ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']);
+  assert.deepEqual(uk.data.timeRange, { start: { hour: 9, minute: 0 }, end: { hour: 18, minute: 0 }, crossesMidnight: false });
+});

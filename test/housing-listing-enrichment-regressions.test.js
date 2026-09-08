@@ -185,6 +185,40 @@ test('Central House OLX listing: nearby categories are canonical and negated stu
   assert.equal(enrichment.commission, true);
 });
 
+test('Yakkasaray listing accepts a family or a six-person student group', () => {
+  const enrichment = parseHousingListingEnrichment(
+    'Manzil: Yakkasaroy, Seul Moon, Magic City Yonida, Narxozga Yaqin. Oyla yoki 6 ta bolaga beriladi',
+    { country: 'UZ', city: 'Tashkent' },
+  );
+  assert.equal(enrichment.audience, 'family');
+  assert.deepEqual(enrichment.audienceAlternatives, ['family', 'students']);
+  assert.equal(enrichment.studentTarget, true);
+  assert.equal(enrichment.address, null);
+  assert.equal(enrichment.addressStreet, null);
+  assert.ok(enrichment.nearby.includes('Seoul Mun Mall'));
+  assert.ok(enrichment.nearby.includes('Magic City'));
+});
+
+test('Kharkiv supermarket and metro mentions resolve to concrete entities, not an address', () => {
+  const enrichment = parseHousingListingEnrichment(
+    'здаю квартиру\nСупермаркет класс 5 Хвилин, метро Героев праци',
+    { country: 'UA', city: 'Kharkiv' },
+  );
+  assert.deepEqual(enrichment.nearby, ['Klass']);
+  assert.equal(enrichment.metro, 'Saltivska');
+  assert.equal(enrichment.address, null);
+  assert.equal(enrichment.addressStreet, null);
+  assert.equal(enrichment.addressHouseNumber, null);
+  assert.equal(enrichment.communalSeparated, null);
+});
+
+test('Seoul Mun separates an explicit residential-complex mention from the nearby mall', () => {
+  const enrichment = parseHousingListingEnrichment('ЖК Seul Moon, рядом Magic City', { country: 'UZ', city: 'Tashkent' });
+  assert.equal(enrichment.residenceComplex, 'Seoul Mun');
+  assert.ok(enrichment.nearby.includes('Seoul Mun Mall'));
+  assert.equal(enrichment.address, null);
+});
+
 const LISTING_YANGI_TASHKENT_8382612 = `
 Янги Ташкент продаётся срочно 2-комн 7 этаж 44м² КОРОБКА цена Гибрид!
 2-Х КОМНАТНАЯ КВАРТИРА

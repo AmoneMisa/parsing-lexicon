@@ -165,6 +165,7 @@ test('Kharkiv metro uses current canonicals and keeps historical aliases', () =>
   assert.equal(match('Kharkiv', 'metro', 'Zavod imeni Malysheva'), 'Zavodska');
   assert.equal(match('Kharkiv', 'metro', 'Заводська'), 'Zavodska');
   assert.equal(match('Kharkiv', 'metro', 'Героев Труда'), 'Saltivska');
+  assert.equal(match('Kharkiv', 'metro', 'Героев праци'), 'Saltivska');
   assert.equal(match('Kharkiv', 'metro', 'Heroiv Pratsi'), 'Saltivska');
   assert.equal(match('Kharkiv', 'metro', 'Салтівська'), 'Saltivska');
   assert.ok(!ua.Kharkiv.metro.some(({ name }) => name === 'Zavod imeni Malysheva'));

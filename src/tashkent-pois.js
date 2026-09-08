@@ -95,7 +95,7 @@ export const TASHKENT_MALLS = Object.freeze([
   poi('Poytaxt Mall', 'mall', ['Poytaxt', 'Пойтахт Молл', 'Пойтахт', 'Poytaxt Shopping Center', 'Poytaxt savdo markazi'], { contextRequired: true, context: MALL_CONTEXT }),
   poi('Alfraganus Mall', 'mall', ['Alfraganus', 'Альфраганус Молл', 'Alfraganus savdo markazi'], { contextRequired: true, context: MALL_CONTEXT }),
   poi('High Town Mall', 'mall', ['HT Mall', 'HT Молл', 'HT savdo markazi']),
-  poi('Seoul Mun Mall', 'mall', ['Seoul Mun', 'Сеул Мун Молл', 'Seoul Mun savdo markazi'], { contextRequired: true, context: MALL_CONTEXT }),
+  poi('Seoul Mun Mall', 'mall', ['Seoul Mun', 'Seul Mun', 'Seoul Moon', 'Seul Moon', 'Сеул Мун', 'Сеул Мун Молл', 'Seoul Mun savdo markazi']),
   poi('Ecobozor', 'mall', ['Eco Bozor', 'Ekobozor', 'Эко Бозор', 'Экобозор']),
   poi('Chimgan Shopping Center', 'mall', ['Chimgan', 'Chimgan Mall', 'ТРЦ Чимган', 'ТЦ Чимган', 'Chimgan savdo markazi'], { contextRequired: true, context: MALL_CONTEXT }),
   poi('Golden Life', 'mall', ['Golden Life Mall', 'Голден Лайф', 'ТРЦ Golden Life', 'ТЦ Golden Life']),
