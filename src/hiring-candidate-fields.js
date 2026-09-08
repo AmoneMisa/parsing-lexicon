@@ -1,4 +1,4 @@
-import { findPhoneLikeSpans, findTelegramContacts, parsePhoneNumbers } from './contact.js';
+import { findTelegramContacts, parsePhoneNumbers } from './contact.js';
 import { countryPhoneHint } from './country-context.js';
 
 const EXPLICIT_FEMALE_RE = /(?:^|[^\p{L}])(?:женщина|женский|девушка|female|ayol)(?=$|[^\p{L}])/iu;
@@ -91,9 +91,13 @@ export function extractCandidateExperienceYears(value) {
 export function extractCandidateContacts(value, country = '') {
   const text = String(value || '');
   const countryHint = countryPhoneHint(country) || undefined;
+  // Candidate profiles must only publish normalized, country-aware phone
+  // evidence. A broad numeric mask is useful to protect housing money parsing,
+  // but it is deliberately permissive and can include dates or identifiers.
+  // Falling back to it here turns harmless activity timestamps into direct CV
+  // contacts and changes an otherwise platform-only profile's contact type.
   const parsedPhone = parsePhoneNumbers(text, { countryHint, includePossible: true })[0];
-  const broadPhone = parsedPhone ? null : findPhoneLikeSpans(text)[0];
-  const phone = parsedPhone?.number || broadPhone?.raw || undefined;
+  const phone = parsedPhone?.number || undefined;
   const email = text.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/iu)?.[0];
   const telegram = findTelegramContacts(text)[0]?.handle;
   return Object.freeze({ ...(phone ? { phone } : {}), ...(email ? { email } : {}), ...(telegram ? { telegram } : {}) });
