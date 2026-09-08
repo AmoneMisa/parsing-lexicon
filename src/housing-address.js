@@ -419,6 +419,10 @@ function explicitStreetAddress(text) {
     .map((part) => clean(part).slice(0, 1200))
     .filter(Boolean)
     .slice(0, 12);
+  const candidates = [];
+  const add = (value) => {
+    if (value?.street) candidates.push(value);
+  };
 
   for (const rawLine of lines) {
     if (PROPERTY_AREA_LINE_RE.test(rawLine)) continue;
@@ -426,30 +430,37 @@ function explicitStreetAddress(text) {
     if (!line) continue;
 
     const postfixTyped = postfixTypedStreetAddress(line);
-    if (postfixTyped) return postfixTyped;
+    if (postfixTyped) {
+      add(postfixTyped);
+      continue;
+    }
 
     const prefixTyped = prefixTypedStreetAddress(line);
-    if (prefixTyped) return prefixTyped;
+    if (prefixTyped) {
+      add(prefixTyped);
+      continue;
+    }
 
     const boundedPrefix = line.match(new RegExp(
       `(?:^|[\\s,;])${PREFIX_STREET_MARKER}(?!\\p{L})\\s*((?:${STREET_WORD}\\s+){0,3}${STREET_WORD})(?=$|[,;])`,
       'iu',
     ));
     if (boundedPrefix) {
-      return result(
+      add(result(
         boundedPrefix[0],
         boundedPrefix[1],
         null,
         null,
         scoreAddressConfidence(line, { source: 'explicit', hasStreetMarker: true, hasHouse: false }),
-      );
+      ));
+      continue;
     }
 
     const prefix = line.match(new RegExp(`(?:^|[\\s,;])(${PREFIX_STREET_MARKER})\\s+(.+)$`, 'iu'));
     if (prefix) {
       const tail = splitAddressTail(prefix[2]);
       if (tail) {
-        return result(
+        add(result(
           line,
           tail.street,
           tail.houseNumber,
@@ -459,7 +470,8 @@ function explicitStreetAddress(text) {
             hasStreetMarker: true,
             hasHouse: Boolean(tail.houseNumber),
           }),
-        );
+        ));
+        continue;
       }
     }
 
@@ -468,7 +480,7 @@ function explicitStreetAddress(text) {
       const tailText = clean(`${postfix[1]} ${postfix[3]}`);
       const tail = splitAddressTail(tailText);
       if (tail) {
-        return result(
+        add(result(
           line,
           tail.street,
           tail.houseNumber,
@@ -478,12 +490,23 @@ function explicitStreetAddress(text) {
             hasStreetMarker: true,
             hasHouse: Boolean(tail.houseNumber),
           }),
-        );
+        ));
       }
     }
   }
 
-  return null;
+  // Listing text often names a nearby street before the actual postal
+  // address. Keep alternatives long enough to rank component evidence rather
+  // than returning whichever regex happened to run first.
+  return candidates
+    .map((value, index) => ({
+      value,
+      index,
+      score: (Number(value.confidence) || 0)
+        + (value.houseNumber ? 0.18 : 0)
+        + (value.building ? 0.03 : 0),
+    }))
+    .sort((a, b) => b.score - a.score || a.index - b.index)[0]?.value || null;
 }
 
 function knownStreetAddress(text, knownStreet) {

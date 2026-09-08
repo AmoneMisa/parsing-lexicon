@@ -99,6 +99,13 @@ test('stops a marked street before ownership and marketing prose', () => {
   );
 });
 
+test('ranks a complete marked address above an earlier street-only mention', () => {
+  const parsed = parseHousingAddress('Орієнтир: вул. Льва Толстого\nвул. Воробкевича 12');
+  assert.equal(parsed.address, 'Воробкевича 12');
+  assert.equal(parsed.street, 'Воробкевича');
+  assert.equal(parsed.houseNumber, '12');
+});
+
 test('shared address grammar accepts Kazakh and Kyrgyz postfix street forms', () => {
   const kz = parseHousingAddress('Абай көшесі 12-А, кіреберіс 3');
   assert.equal(kz.street, 'Абай');
