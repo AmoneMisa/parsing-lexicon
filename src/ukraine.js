@@ -15,7 +15,7 @@ const HISTORICAL_CITY_ALIASES = Object.freeze({
   Kyiv: ['Киев', 'Kiev'],
   Lviv: ['Львов', 'Lvov', 'Lwów', 'Lemberg'],
   Zaporizhzhia: ['Запорожье', 'Zaporozhye', 'Zaporozhie'],
-  'Kryvyi Rih': ['Кривой Рог', 'Krivoy Rog', 'Krivyi Rig'],
+  'Kryvyi Rih': ['Кривой Рог', 'Krivoy Rog', 'Krivyi Rig', 'KryvyiRih'],
   Chernivtsi: ['Черновцы', 'Chernovtsy', 'Czernowitz', 'Cernăuți'],
   Uzhhorod: ['Uzhgorod', 'Ungvar', 'Ungvár'],
   Ternopil: ['Тернополь', 'Tarnopol', 'Tarnopil'],
@@ -33,29 +33,20 @@ function cityEntry(canonical, aliases) {
   return Object.freeze({ canonical, aliases: Object.freeze({ all: Object.freeze([...new Set([canonical, ...aliases])]) }), country: 'UA' });
 }
 
-export const UA_ADDITIONAL_CITIES = Object.freeze([
-  cityEntry('Kamianske', ["Кам'янське", 'Каменское', 'Kamianske', 'Дніпродзержинськ', 'Днепродзержинск', 'Dniprodzerzhynsk']),
-  cityEntry('Vyshneve', ['Вишневе', 'Вишневое', 'Vyshneve']),
-  cityEntry('Boryspil', ['Бориспіль', 'Борисполь', 'Boryspil']),
-  cityEntry('Vyshhorod', ['Вишгород', 'Вышгород', 'Vyshhorod']),
-  cityEntry('Oleksandriia', ['Олександрія', 'Александрия', 'Oleksandriia', 'Alexandria Ukraine']),
-  cityEntry('Pavlohrad', ['Павлоград', 'Pavlohrad', 'Pavlograd']),
-  cityEntry('Nikopol', ['Нікополь', 'Никополь', 'Nikopol']),
-  cityEntry('Drohobych', ['Дрогобич', 'Дрогобыч', 'Drohobych']),
-  cityEntry('Stryi', ['Стрий', 'Stryi', 'Stryj']),
-  cityEntry('Kolomyia', ['Коломия', 'Коломыя', 'Kolomyia', 'Kolomea']),
-  cityEntry('Kalush', ['Калуш', 'Kalush']),
-  cityEntry('Kamianets-Podilskyi', ["Кам'янець-Подільський", 'Каменец-Подольский', 'Kamianets-Podilskyi', 'Kamenets-Podolsky']),
-  ...UA_SECONDARY_CITY_NAMES.map(([canonical, ...aliases]) => cityEntry(canonical, aliases)),
-]);
+// Secondary-city identity has one source of truth in ua-secondary-cities.js.
+// Keep this export for compatibility with consumers that imported the old name.
+export const UA_ADDITIONAL_CITIES = Object.freeze(
+  UA_SECONDARY_CITY_NAMES.map(([canonical, ...aliases]) => cityEntry(canonical, aliases)),
+);
 
-export const UA_CITY_CATALOG = Object.freeze([
-  ...UA_CITIES.map((item) => cityEntry(item.canonical, [
+// UA_CITIES already includes the secondary catalog. Rebuild only to append
+// historical aliases without duplicating secondary city entities.
+export const UA_CITY_CATALOG = Object.freeze(
+  UA_CITIES.map((item) => cityEntry(item.canonical, [
     ...flattenAliases(item),
     ...(HISTORICAL_CITY_ALIASES[item.canonical] || []),
   ])),
-  ...UA_ADDITIONAL_CITIES,
-]);
+);
 
 export const UA_CITY_HISTORICAL_ALIASES = HISTORICAL_CITY_ALIASES;
 
