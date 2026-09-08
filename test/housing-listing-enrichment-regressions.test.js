@@ -185,6 +185,18 @@ test('Central House OLX listing: nearby categories are canonical and negated stu
   assert.equal(enrichment.commission, true);
 });
 
+test('Yakkasaray listing accepts a family or a six-person student group', () => {
+  const enrichment = parseHousingListingEnrichment(
+    'Manzil: Yakkasaroy, Seul Moon, Magic City Yonida, Narxozga Yaqin. Oyla yoki 6 ta bolaga beriladi',
+    { country: 'UZ', city: 'Tashkent' },
+  );
+  assert.equal(enrichment.audience, 'family');
+  assert.deepEqual(enrichment.audienceAlternatives, ['family', 'students']);
+  assert.equal(enrichment.studentTarget, true);
+  assert.equal(enrichment.address, null);
+  assert.equal(enrichment.addressStreet, null);
+});
+
 const LISTING_YANGI_TASHKENT_8382612 = `
 Янги Ташкент продаётся срочно 2-комн 7 этаж 44м² КОРОБКА цена Гибрид!
 2-Х КОМНАТНАЯ КВАРТИРА

@@ -58,6 +58,14 @@ test('parses labelled bare address without treating arbitrary prose as address',
   });
 });
 
+test('does not turn a labelled district and landmark sentence into a street', () => {
+  const parsed = parseHousingAddress('Manzil: Yakkasaroy, Seul Moon, Magic City Yonida, Narxozga Yaqin');
+  assert.equal(parsed.address, null);
+  assert.equal(parsed.street, null);
+  assert.equal(parsed.houseNumber, null);
+  assert.equal(parsed.district, 'Yakkasaray');
+});
+
 test('source address guard rejects floors districts stops and residential complexes', () => {
   for (const value of [
     'Перший поверх',

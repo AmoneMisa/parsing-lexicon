@@ -32,3 +32,19 @@ test('uses metro marker to disambiguate an otherwise ambiguous name', () => {
   assert.equal(result.target.type, 'metro');
   assert.equal(result.durationMinutes, 10);
 });
+
+test('parses Uzbek landmark-first proximity phrases without polluting the target name', () => {
+  const uzResolver = ({ query }) => {
+    const known = {
+      'Magic City': { id: 'uz:tashkent:poi:magic-city', canonicalName: 'Magic City', type: 'poi.shopping_mall', country: 'UZ', parentId: 'uz:tashkent' },
+      Narxoz: { id: 'uz:tashkent:poi:narxoz', canonicalName: 'Narxoz', type: 'poi.university', country: 'UZ', parentId: 'uz:tashkent' },
+    };
+    return known[query] ? [known[query]] : [];
+  };
+  const result = extractHousingPoiRelations('Magic City yonida, Narxozga yaqin', {
+    country: 'UZ', city: 'Tashkent', resolveGeoCandidates: uzResolver,
+  });
+  assert.deepEqual(result.map((item) => [item.relation, item.target.canonical]), [
+    ['near', 'Magic City'], ['near', 'Narxoz'],
+  ]);
+});

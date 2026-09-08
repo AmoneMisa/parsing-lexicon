@@ -23,6 +23,7 @@ const ADDRESS_FIELD_STOP_RE = /\s+(?:цена|ціна|нарх(?:и)?|narx|pric
 const PROPERTY_AREA_LINE_RE = /(?:^|[^\p{L}\p{N}_])(?:(?:общая|жилая|полезная|кухонная)\s+площадь|площадь\s+(?:квартиры|дома|комнаты))(?=$|[^\p{L}\p{N}_])/iu;
 const NON_ADDRESS_BARE_RE = /^(?:(?:(?:перш(?:ий|ому)|перв(?:ый|ом)|друг(?:ий|ому)|втор(?:ой|ом)|трет(?:ій|ьем|ий)|\d{1,3}(?:-?й)?)\s+(?:поверх|этаж|floor|qavat|қабат))|(?:поверх|этаж|floor|qavat|қабат)(?:\s|$)|(?:район|р-н|рн|мікрорайон|микрорайон|мкр\.?|жк|ж\.к\.|жилой\s+комплекс|житловий\s+комплекс|residential\s+complex)(?:\s|$)|(?:недалеко|поруч|рядом|біля|около|возле)(?=$|[^\p{L}\p{N}_])|(?:зупинка|остановка|станція|станция)(?:\s|$))/iu;
 const DELIMITED_STREET_REJECT_RE = /(?:^|\s)(?:город|місто|city|район|р-н|рн|мікрорайон|микрорайон|мкр|жк|метро|поверх|этаж|floor|qavat|кімнат\p{L}*|комнат\p{L}*|квартира|квартири|квартиры|оренда|аренда|продаж\p{L}*|цена|ціна|площад\p{L}*|площа|зупинка|остановка|ориентир\p{L}*|ор[-–—]?р\.?)(?:\s|$)/iu;
+const LOCATION_RELATION_RE = /(?:yonida|yaqin(?:ida)?|ro['’ʻʼ`]?parasida|near(?:by)?|close\s+to|next\s+to|рядом|возле|около|недалеко|поруч|біля|lângă|aproape)/iu;
 const UNIT_COMPONENT_PATTERNS = Object.freeze([
   String.raw`(?:^|[\s,;])(?:кв\.?|кв-ра)(?!\p{L})\s*(?:№|#)?\s*(${SECONDARY_TOKEN})(?=$|[^\p{L}\p{N}])`,
   String.raw`(?:^|[\s,;])квартира\s*(?:№|#)\s*(${SECONDARY_TOKEN})(?=$|[^\p{L}\p{N}])`,
@@ -188,9 +189,12 @@ function result(address, street = null, houseNumber = null, building = null, con
   const normalizedHouseNumber = normalizeNumber(houseNumber);
   const compactBuilding = normalizedHouseNumber?.match(/^(\d{1,5})(?:к|k)(\d{1,4})$/iu);
   const normalizedBuilding = normalizeNumber(building) || compactBuilding?.[2] || null;
-  const canonicalAddress = normalizedStreet && normalizedHouseNumber
+  // The public address is always a verified street component, optionally
+  // followed by its house/building. Never preserve a source label's whole
+  // location sentence as an address just because it was parsed on that path.
+  const canonicalAddress = normalizedStreet
     ? composeHousingAddress({ street: normalizedStreet, houseNumber: compactBuilding ? compactBuilding[1] : normalizedHouseNumber, building: normalizedBuilding })
-    : clean(address) || null;
+    : null;
   return Object.freeze({
     address: canonicalAddress,
     street: normalizedStreet,
@@ -536,7 +540,22 @@ function labelledAddress(text, rawValue) {
 
   const line = clean(rawLine).slice(0, 140);
   if (!line) return null;
-  return parseHousingAddress(line, { allowBare: true });
+  const structured = parseHousingAddress(line, { allowDelimitedBare: true });
+  if (structured.street || structured.houseNumber) return structured;
+
+  // A label alone is not evidence that arbitrary prose is a street.  Accept
+  // an unmarked form only when it is a short street-plus-house expression;
+  // landmark lists such as "Yakkasaroy, Magic City yonida" remain geo data.
+  const tail = splitAddressTail(line);
+  const candidateStreet = compactStreet(tail?.street);
+  const safeBare = Boolean(
+    tail?.houseNumber
+    && candidateStreet
+    && !LOCATION_RELATION_RE.test(candidateStreet)
+    && candidateStreet.split(/\s+/u).length <= 5
+    && candidateStreet.split(/\s+/u).every((word) => /^[\p{L}'’.-]{2,48}$/u.test(word)),
+  );
+  return safeBare ? parseHousingAddress(line, { allowBare: true }) : structured;
 }
 
 function plausibleDelimitedStreet(value) {

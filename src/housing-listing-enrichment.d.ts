@@ -1,4 +1,4 @@
-export type HousingAudience = 'women' | 'men' | 'family';
+export type HousingAudience = 'women' | 'men' | 'family' | 'students';
 export interface HousingPerPersonPrice { amount: number; currency: string | null; approximate: boolean; scope: 'person' }
 export interface HousingCommissionAmount { amount: number; currency: string | null; approximate: boolean }
 export interface HousingListingEnrichment {

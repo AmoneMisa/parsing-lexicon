@@ -18,11 +18,16 @@ const TYPE_MARKERS = Object.freeze([
 ]);
 
 const RELATION_RE = /(?<relation>рядом\s+(?:с|со)|возле|около|недалеко\s+от|напротив|за|перед|near(?:by)?|close\s+to|next\s+to|opposite|behind|in\s+front\s+of|yaqin(?:ida)?|yonida|ro['’ʻʼ`]?parasida|орналасқан\s+жерде|поруч|біля|поблизу|lângă|aproape\s+de)\s+(?<target>[^,;.!?\r\n]{2,96})/giu;
+// Uzbek usually places the relation after the landmark: "Magic City yonida"
+// rather than "yonida Magic City". Keep its target span separate so it never
+// leaks into an address/street field.
+const POSTFIX_RELATION_RE = /(?<target>[^,;.!?\r\n]{2,96}?)\s+(?<relation>yonida|yaqin(?:ida)?|ro['’ʻʼ`]?parasida)(?=$|[,;.!?\r\n])/giu;
 const DISTANCE_RE = /(?<amount>\d{1,3}(?:[.,]\d+)?)\s*(?<unit>km|км|min(?:ute)?s?|мин(?:ут(?:ы|а|ах)?)?|дақиқа|daqiqa|метр(?:а|ов)?|m)\s*(?<mode>пешком|пішки|walking?|yayov|piyoda|на\s+машине|by\s+car)?\s*(?:до|от|from|to|до\s+станции)\s+(?<target>[^,;.!?\r\n]{2,96})/giu;
 
 function cleanTarget(value) {
   return String(value || '')
     .replace(/\b(?:на\s+машине|пешком|пішки|walking?|piyoda|yayov)\b/giu, ' ')
+    .replace(/(?<!\p{L})(\p{L}{3,})(?:ga|qa|ka)(?!\p{L})/giu, '$1')
     .replace(/\s+/g, ' ').trim();
 }
 
@@ -91,7 +96,7 @@ export function extractHousingPoiRelations(value, { country = '', city = '', res
   if (!text || !normalizedCountry || typeof resolveGeoCandidates !== 'function') return deepFreeze([]);
   const context = { country: normalizedCountry, city, resolveGeoCandidates };
   const relations = [];
-  for (const pattern of [RELATION_RE, DISTANCE_RE]) {
+  for (const pattern of [RELATION_RE, POSTFIX_RELATION_RE, DISTANCE_RE]) {
     for (const match of text.matchAll(pattern)) {
       const groups = match.groups || {};
       const target = groups.target || '';
