@@ -44,6 +44,26 @@ test('temporal API classifies compact rental, vacancy, and calendar-boundary ter
   assert.deepEqual(vacancy.data.startDate, { year: 2026, month: 9, day: 21 });
 });
 
+test('temporal API keeps rental duration bounds semantic and recognises priority-country availability language', () => {
+  const bounded = parseTemporal('Квартира сдаётся до 6 месяцев. Аренда на год.', {
+    domain: 'real-estate', referenceDate: '2026-01-10T12:00:00Z',
+  });
+  assert.deepEqual(bounded.data.maximumRentalDuration, { value: 6, unit: 'month', bound: 'max' });
+  assert.deepEqual(bounded.data.fixedRentalDuration, { value: 1, unit: 'year', bound: 'exact' });
+
+  const ukrainian = parseTemporal('Квартира вільна з 12 лютого, до кінця березня', {
+    domain: 'real-estate', referenceDate: '2026-01-10T12:00:00Z',
+  });
+  assert.deepEqual(ukrainian.data.availabilityDate, { year: 2026, month: 2, day: 12 });
+  assert.deepEqual(ukrainian.data.availabilityUntil, { year: 2026, month: 3, day: 31 });
+
+  const romanian = parseTemporal('Disponibilă din 12 februarie până la sfârșitul lunii martie', {
+    domain: 'real-estate', referenceDate: '2026-01-10T12:00:00Z',
+  });
+  assert.deepEqual(romanian.data.availabilityDate, { year: 2026, month: 2, day: 12 });
+  assert.deepEqual(romanian.data.availabilityUntil, { year: 2026, month: 3, day: 31 });
+});
+
 test('temporal API requires context for ambiguous clocks and schedule cycles', () => {
   assert.equal(parseTemporal('Цена 7.00').data.clockTime, undefined);
   assert.equal(parseTemporal('Планировка 2/2').data.workSchedule, undefined);

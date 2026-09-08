@@ -8,7 +8,7 @@ const DATE_NUMERIC_RE = /(?<!\d)(?:(20\d{2})-(\d{1,2})-(\d{1,2})|(\d{1,2})[./](\
 const DATE_NUMERIC_PARTIAL_RE = /(?<![\d.])(\d{1,2})[./](\d{1,2})(?![\d.])/u;
 const TIME_SUFFIX = String.raw`(?:am|pm|утра|вечера|ранку|вечора|ertalab|kechqurun)`;
 const TIME_RE = new RegExp(String.raw`(?<![\d.:])(\d{1,2})(?:[:.](\d{2}))?\s*(${TIME_SUFFIX})?(?![\d.:])`, 'iu');
-const TIME_RANGE_RE = new RegExp(String.raw`(?:с|from|dan)?\s*(\d{1,2}(?:[:.]\d{2})?\s*${TIME_SUFFIX}?)\s*(?:до|to|gacha|-|–|—)\s*(\d{1,2}(?:[:.]\d{2})?\s*${TIME_SUFFIX}?)`, 'iu');
+const TIME_RANGE_RE = new RegExp(String.raw`(?:с|з|from|dan)?\s*(\d{1,2}(?:[:.]\d{2})?\s*${TIME_SUFFIX}?)\s*(?:до|to|gacha|дейін|чейин|-|–|—)\s*(\d{1,2}(?:[:.]\d{2})?\s*${TIME_SUFFIX}?)`, 'iu');
 const DURATION_PREFIX = String.raw`(?:от|минимум|не\s+менее|kamida|eng\s+kam|кемінде|не\s+менш(?:е)?|at\s+least|до|не\s+более|ko'?pi\s+bilan|көп\s+емес|на|uchun|pe\s+o\s+perioadă\s+de)`;
 const DURATION_UNIT = String.raw`(?:полгода|год(?:а|ов)?|yil(?:ga)?|жыл(?:ға)?|рок(?:и|ів)?|an(?:i)?|месяц(?:а|ев)?|мес\.?|oy(?:ga)?|місяц(?:і|ів|я)?|luni?|недел[ьяи]|hafta(?:ga)?|апта(?:ға)?|тиж(?:день|ні|нів|ня)|săptămân\p{L}*|saptaman\p{L}*|дн(?:я|ей)?|день|kun(?:ga)?|күн(?:ге)?|день|днів|дні|zi(?:le)?|час(?:а|ов)?|soat(?:ga)?|сағат(?:қа)?|годин(?:а|и|у)?|ore?|мин(?:ут[аы]?|\.)?|daqiqa|минут\p{L}*|minute?)`;
 const DURATION_RE = new RegExp(String.raw`(?<![\p{L}\p{N}])(?:(` + DURATION_PREFIX + String.raw`)(?:\s+на)?\s*)?(` + DURATION_UNIT + String.raw`)(?:\s*)?(\d+(?:[.,]\d+)?)?(?![\p{L}\p{N}])`, 'iu');
@@ -23,39 +23,46 @@ const DAY_ALIASES = Object.freeze({
   сб: 5, суббота: 5, субботы: 5, субота: 5, sat: 5, saturday: 5, shanba: 5, сенбі: 5, ишемби: 5, sâmbătă: 5, sambata: 5,
   вс: 6, воскресенье: 6, воскресенья: 6, неділя: 6, неділю: 6, sun: 6, sunday: 6, yakshanba: 6, жексенбі: 6, жекшемби: 6, duminică: 6, duminica: 6,
 });
-const RELATIVE_RE = /(?<![\p{L}\p{N}])(?:с\s+)?(сегодня|завтра|послезавтра|сьогодні|завтра|післязавтра|bugun|ertaga|indin|today|tomorrow|day\s+after\s+tomorrow|через\s+(\d+|неделю|две\s+недели)\s*(?:дн(?:я|ей)?|день|недел[ьюи])?)(?![\p{L}\p{N}])/giu;
+const RELATIVE_RE = /(?<![\p{L}\p{N}])(?:с\s+|з\s+|dan\s+)?(сегодня|завтра|послезавтра|сьогодні|післязавтра|bugun|ertaga|indin|бүгін|ертең|бүрсігүні|бүгүн|эртең|бүрсүгүнү|astăzi|azi|mâine|maine|poimâine|poimaine|today|tomorrow|day\s+after\s+tomorrow|через\s+(\d+|неделю|две\s+недели)\s*(?:дн(?:я|ей)?|день|недел[ьюи])?)(?![\p{L}\p{N}])/giu;
 const DAY_PATTERN = Object.keys(DAY_ALIASES).sort((a, b) => b.length - a.length).join('|');
 const WEEKDAY_RANGE_RE = new RegExp(`(?<![\\p{L}\\p{N}])(${DAY_PATTERN})\\s*(?:-|–|—|до|to|по)\\s*(${DAY_PATTERN})(?![\\p{L}\\p{N}])`, 'giu');
-const NEXT_WEEKDAY_RE = new RegExp(`(?<![\\p{L}\\p{N}])(?:со?\\s+следующ(?:его|ей)\\s+|next\\s+)(${DAY_PATTERN})(?![\\p{L}\\p{N}])`, 'giu');
-const END_OF_MONTH_RE = new RegExp(`(?<![\\p{L}\\p{N}])(?:до|until|available\\s+until)\\s+(?:конца|end\\s+of)\\s+(${MONTH_NAMES})(?:\\s+(20\\d{2}))?(?![\\p{L}\\p{N}])`, 'giu');
-const START_OF_MONTH_RE = /(?<![\p{L}\p{N}])(?:с|from)\s+(?:начала\s+месяца|start\s+of\s+(?:the\s+)?month)(?![\p{L}\p{N}])/giu;
+const NEXT_WEEKDAY_RE = new RegExp(`(?<![\\p{L}\\p{N}])(?:со?\\s+следующ(?:его|ей)\\s+|з\\s+наступн(?:ого|ої)\\s+|next\\s+)(${DAY_PATTERN})(?![\\p{L}\\p{N}])`, 'giu');
+const END_OF_MONTH_RE = new RegExp(`(?<![\\p{L}\\p{N}])(?:до|until|p[âa]nă\\s+la|gacha|дейін|чейин|available\\s+until)\\s+(?:конца|кінця|sf[âa]rșit(?:ul)?(?:\\s+lunii)?|end\\s+of)\\s+(${MONTH_NAMES})(?:\\s+(20\\d{2}))?(?![\\p{L}\\p{N}])`, 'giu');
+const START_OF_MONTH_RE = /(?<![\p{L}\p{N}])(?:с|з|from|din|dan|бастап|баштап)\s+(?:начала\s+месяца|початку\s+місяця|începutul\s+lunii|start\s+of\s+(?:the\s+)?month)(?![\p{L}\p{N}])/giu;
 const SHIFT_RE = /(?<!\d)(\d{1,2})\s*(?:смен[аы]|shift)\s*(\d{1,2}(?:[:.]\d{2})?\s*(?:am|pm|утра|вечера)?)\s*(?:-|–|—|до|to)\s*(\d{1,2}(?:[:.]\d{2})?\s*(?:am|pm|утра|вечера)?)/giu;
 
 function referenceDate(context = {}) { return new Date(context.referenceDate || context.publishedAt || context.fetchedAt || Date.now()); }
 function dateValue(year, month, day) { return Object.freeze({ year, month, day }); }
 function validDate(value) { const date = new Date(Date.UTC(value.year, value.month - 1, value.day)); return date.getUTCFullYear() === value.year && date.getUTCMonth() === value.month - 1 && date.getUTCDate() === value.day; }
 function candidate(entityType, value, match, parser, confidence, evidence) { const start = match.index ?? 0; return createParseCandidate({ id: `${entityType}:${start}`, entityType, value, raw: match[0], start, end: start + match[0].length, parser, confidence, evidence }); }
-function relationNear(text, start) { const before = text.slice(Math.max(0, start - 32), start); return /(?:с|from|доступна\s+с|заезд\s+с)/iu.test(before) ? 'from' : /(?:до|until|не\s+позднее)/iu.test(before) ? 'until' : 'exact'; }
+function relationNear(text, start) { const before = text.slice(Math.max(0, start - 32), start); return /(?:с|з|from|din|dan|бастап|баштап|доступна\s+(?:с|з)|заезд\s+(?:с|з))/iu.test(before) ? 'from' : /(?:до|until|p[âa]nă\s+la|gacha|дейін|чейин|не\s+позднее)/iu.test(before) ? 'until' : 'exact'; }
 function inferYear(month, day, relation, context) { const reference = referenceDate(context); let year = reference.getUTCFullYear(); const candidateDate = Date.UTC(year, month - 1, day); if (relation === 'from' && candidateDate < reference.getTime() - 36 * 3_600_000) year += 1; if (relation === 'until' && candidateDate < reference.getTime() - 36 * 3_600_000) year += 1; return year; }
 function parseClock(raw) { const match = String(raw).trim().match(new RegExp(String.raw`^(\d{1,2})(?:[:.](\d{2}))?\s*(${TIME_SUFFIX})?$`, 'iu')); if (!match) return null; let hour = Number(match[1]); const minute = Number(match[2] || 0); const suffix = String(match[3] || '').toLowerCase(); if (suffix === 'pm' && hour < 12) hour += 12; if (suffix === 'am' && hour === 12) hour = 0; if (/(?:вечера|вечора|kechqurun)/u.test(suffix) && hour < 12) hour += 12; return hour < 24 && minute < 60 ? Object.freeze({ hour, minute }) : null; }
 function durationValue(prefix, amount, unit) { const normalized = String(unit).toLowerCase(); const value = normalized === 'полгода' ? .5 : Number(amount || 1); const canonicalUnit = /год|year|yil|жыл|рок|\ban/i.test(normalized) || normalized === 'полгода' ? 'year' : /месяц|мес|month|\boy|місяц|lun/i.test(normalized) ? 'month' : /нед|week|hafta|апта|тиж|săptăm|saptaman/i.test(normalized) ? 'week' : /дн|день|day|\bkun|күн|zi/i.test(normalized) ? 'day' : /мин|minute|daqiqa/i.test(normalized) ? 'minute' : 'hour'; const bound = /от|минимум|не\s+менее|kamida|eng\s+kam|кемінде|не\s+менш|at\s+least/iu.test(prefix || '') ? 'min' : /до|не\s+более|ko'?pi\s+bilan|көп\s+емес/iu.test(prefix || '') ? 'max' : 'exact'; return Object.freeze({ value, unit: canonicalUnit, bound }); }
-function semanticDurationType(text, start) {
+function semanticDurationType(text, start, duration) {
   const before = text.slice(Math.max(0, start - 56), start);
   const after = text.slice(start, Math.min(text.length, start + 56));
   if (/(?:испытательн(?:ый)?\s+срок|probation)[^.;\n]{0,30}$/iu.test(before)) return 'probationDuration';
   if (/(?:контракт|contract)[^.;\n]{0,30}$/iu.test(before)) return 'contractDuration';
-  if (/(?:сда[её]т|квартир|аренд|ijara|rent)[^.;\n]{0,45}$/iu.test(before) || /(?:сда[её]т|квартир|аренд|ijara|rent)/iu.test(after)) return 'minimumRentalDuration';
+  if (/(?:сда[её]т|квартир|аренд|ijara|rent|ijaraga\s+beril|оренд)[^.;\n]{0,45}$/iu.test(before) || /(?:сда[её]т|квартир|аренд|ijara|rent|ijaraga\s+beril|оренд)/iu.test(after)) {
+    if (duration?.bound === 'max') return 'maximumRentalDuration';
+    if (duration?.bound === 'exact') return 'fixedRentalDuration';
+    return 'minimumRentalDuration';
+  }
   return 'duration';
 }
 function addUtcDays(date, days) { const copy = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() + days)); return dateValue(copy.getUTCFullYear(), copy.getUTCMonth() + 1, copy.getUTCDate()); }
-function relativeDays(raw) { const lower = raw.toLowerCase(); if (/сегодня|сьогодні|bugun|today/u.test(lower)) return 0; if (/послезавтра|післязавтра|indin|day\s+after/u.test(lower)) return 2; if (/завтра|ertaga|tomorrow/u.test(lower)) return 1; if (/две\s+недели/u.test(lower)) return 14; if (/неделю/u.test(lower)) return 7; const numeric = Number(lower.match(/\d+/u)?.[0]); return Number.isFinite(numeric) ? numeric : null; }
-function temporalContextType(text, start, context) { const around = text.slice(Math.max(0, start - 48), Math.min(text.length, start + 48)); if (/(?:свобод|доступ|заезд|заезж|move[- ]?in|available)/iu.test(around)) return 'availabilityDate'; if ((context.domain === 'vacancy' || /(?:ваканс|работ|job)/iu.test(around)) && /(?:выход|start|приступ)/iu.test(around)) return 'startDate'; return 'relativeDate'; }
+function relativeDays(raw) { const lower = raw.toLowerCase(); if (/сегодня|сьогодні|bugun|бүгін|бүгүн|astăzi|azi|today/u.test(lower)) return 0; if (/послезавтра|післязавтра|indin|бүрсігүні|бүрсүгүнү|poimâine|poimaine|day\s+after/u.test(lower)) return 2; if (/завтра|ertaga|ертең|эртең|mâine|maine|tomorrow/u.test(lower)) return 1; if (/две\s+недели/u.test(lower)) return 14; if (/неделю/u.test(lower)) return 7; const numeric = Number(lower.match(/\d+/u)?.[0]); return Number.isFinite(numeric) ? numeric : null; }
+function temporalContextType(text, start, context) { const around = text.slice(Math.max(0, start - 48), Math.min(text.length, start + 48)); if (/(?:свобод|доступ|заезд|заезж|ijara|bo['’`]?sh|вільн|disponibil|move[- ]?in|available)/iu.test(around)) return 'availabilityDate'; if ((context.domain === 'vacancy' || /(?:ваканс|работ|job|ish\s+grafigi|графік)/iu.test(around)) && /(?:выход|start|приступ|boshlash)/iu.test(around)) return 'startDate'; return 'relativeDate'; }
 function dateEntityType(text, start, context, relation = relationNear(text, start)) {
   const around = text.slice(Math.max(0, start - 48), Math.min(text.length, start + 48));
   if (/(?:deadline|apply\s+by|closing\s+date|дедлайн|срок(?:\s+подачи)?|термін(?:\s+подання)?)/iu.test(around)) return 'deadline';
   if (/(?:published|publication|опубликован|опублікован)/iu.test(around)) return 'publicationDate';
-  if (relation === 'until' || /(?:свобод|доступ|заезд|заезж|move[- ]?in|available)/iu.test(around) && /(?:до|until)/iu.test(around)) return 'availabilityUntil';
-  if (relation === 'from' || (context.domain === 'real-estate' && /(?:свобод|доступ|заезд|заезж|move[- ]?in|available)/iu.test(around))) return 'availabilityDate';
+  // Direction must belong to this date's local left context. Looking ahead
+  // across a whole listing makes "available from 12 February, until March"
+  // incorrectly classify the February date as an end date.
+  if (relation === 'until') return 'availabilityUntil';
+  if (relation === 'from' || (context.domain === 'real-estate' && /(?:свобод|доступ|заезд|заезж|ijara|bo['’`]?sh|вільн|disponibil|move[- ]?in|available)/iu.test(around))) return 'availabilityDate';
   return 'calendarDate';
 }
 function inferredDateEvidence(inferred, context) { return inferred ? [{ type: 'inferred-year', reference: context.referenceDate ? 'referenceDate' : context.publishedAt ? 'publishedAt' : context.fetchedAt ? 'fetchedAt' : 'currentDate' }] : []; }
@@ -117,8 +124,8 @@ export function extractTemporalCandidates(value, context = {}) {
     candidates.push(candidate(temporalContextType(text, match.index ?? 0, context), nextWeekday(referenceDate(context), weekday), match, 'temporal.relative.next-weekday', .9, [{ type: 'dictionary', dictionary: 'weekdays', key: match[1] }, { type: 'reference-date', value: context.referenceDate ? 'referenceDate' : context.publishedAt ? 'publishedAt' : context.fetchedAt ? 'fetchedAt' : 'currentDate' }]));
   }
   for (const match of text.matchAll(RELATIVE_RE)) { const days = relativeDays(match[1]); if (days == null) continue; const type = temporalContextType(text, match.index ?? 0, context); candidates.push(candidate(type, addUtcDays(referenceDate(context), days), match, 'temporal.relative-date', .91, [{ type: 'context', value: `relative:${days}d` }, { type: 'reference-date', value: context.referenceDate ? 'referenceDate' : context.publishedAt ? 'publishedAt' : context.fetchedAt ? 'fetchedAt' : 'currentDate' }])); }
-  for (const match of text.matchAll(new RegExp(DURATION_NUMBER_FIRST_RE, 'giu'))) { const value = durationValue(match[1], match[2], match[3]); candidates.push(candidate(semanticDurationType(text, match.index ?? 0), value, match, 'temporal.duration.number-unit', .95, [{ type: 'unit', value: match[3] }, ...(match[1] ? [{ type: 'prefix', value: match[1] }] : [])])); }
-  for (const match of text.matchAll(new RegExp(DURATION_RE, 'giu'))) { if (match[3]) continue; const value = durationValue(match[1], match[3], match[2]); candidates.push(candidate(semanticDurationType(text, match.index ?? 0), value, match, 'temporal.duration.word-unit', .94, [{ type: 'unit', value: match[2] }, ...(match[1] ? [{ type: 'prefix', value: match[1] }] : [])])); }
+  for (const match of text.matchAll(new RegExp(DURATION_NUMBER_FIRST_RE, 'giu'))) { const value = durationValue(match[1], match[2], match[3]); candidates.push(candidate(semanticDurationType(text, match.index ?? 0, value), value, match, 'temporal.duration.number-unit', .95, [{ type: 'unit', value: match[3] }, ...(match[1] ? [{ type: 'prefix', value: match[1] }] : [])])); }
+  for (const match of text.matchAll(new RegExp(DURATION_RE, 'giu'))) { if (match[3]) continue; const value = durationValue(match[1], match[3], match[2]); candidates.push(candidate(semanticDurationType(text, match.index ?? 0, value), value, match, 'temporal.duration.word-unit', .94, [{ type: 'unit', value: match[2] }, ...(match[1] ? [{ type: 'prefix', value: match[1] }] : [])])); }
   const timeRangeSpans = [];
   for (const match of text.matchAll(new RegExp(TIME_RANGE_RE, 'giu'))) {
     const start = parseClock(match[1]); const end = parseClock(match[2]);
