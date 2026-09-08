@@ -1,6 +1,6 @@
 {
   "name": "@whiteslove/parsing-lexicon",
-  "version": "0.6.17",
+  "version": "0.7.0",
   "description": "Shared deterministic multilingual parsing lexicon for WhitesLove housing and hiring services",
   "repository": {
     "type": "git",
@@ -16,6 +16,14 @@
     },
     "./lexicon-core": "./src/lexicon-core.js",
     "./normalization": "./src/normalization.js",
+    "./parser-core": {
+      "types": "./src/parser-core.d.ts",
+      "import": "./src/parser-core.js"
+    },
+    "./temporal": {
+      "types": "./src/temporal.d.ts",
+      "import": "./src/temporal.js"
+    },
     "./countries": "./src/countries.js",
     "./country-context": {
       "types": "./src/country-context.d.ts",
@@ -37,18 +45,6 @@
     },
     "./central-asia": "./src/central-asia.js",
     "./ukraine": "./src/ukraine.js",
-    "./ua-geo-coordinates": {
-      "types": "./src/ua-geo-coordinates.d.ts",
-      "import": "./src/ua-geo-coordinates.js"
-    },
-    "./ua-geo-resolver": {
-      "types": "./src/ua-geo-resolver.d.ts",
-      "import": "./src/ua-geo-resolver.js"
-    },
-    "./uz-geo-coordinates": {
-      "types": "./src/uz-geo-coordinates.d.ts",
-      "import": "./src/uz-geo-coordinates.js"
-    },
     "./location-merge": "./src/location-merge.js",
     "./locations": "./src/locations-runtime.js",
     "./kg-location-extensions": "./src/kg-location-extensions.js",
@@ -118,6 +114,10 @@
       "import": "./src/housing-source-aliases.js"
     },
     "./housing-poi-extensions": "./src/housing-poi-extensions.js",
+    "./housing-poi-relations": {
+      "types": "./src/housing-poi-relations.d.ts",
+      "import": "./src/housing-poi-relations.js"
+    },
     "./housing-display": {
       "types": "./src/housing-display.d.ts",
       "import": "./src/housing-display.js"
@@ -203,6 +203,14 @@
       "import": "./src/hiring-skills.js"
     },
     "./hiring-advanced": "./src/hiring-advanced.js",
+    "./hiring-ats": {
+      "types": "./src/hiring-ats.d.ts",
+      "import": "./src/hiring-ats.js"
+    },
+    "./housing-parser-v2": {
+      "types": "./src/housing-parser-v2.d.ts",
+      "import": "./src/housing-parser-v2.js"
+    },
     "./hiring-safety": {
       "types": "./src/hiring-safety.d.ts",
       "import": "./src/hiring-safety.js"

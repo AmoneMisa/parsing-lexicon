@@ -50,6 +50,8 @@ export interface HousingListingEnrichment {
   transitRoutes?: readonly string[];
   walkMinutes?: number | null;
   nearby?: readonly string[];
+  nearbyEntities?: readonly GeoEntityReference[];
+  poiRelations?: readonly HousingPoiRelation[];
   amenities?: readonly string[];
   district?: string | null;
   quarter?: { number: number; suffix: string } | null;
@@ -59,9 +61,31 @@ export interface HousingListingEnrichment {
   addressStreet?: string | null;
   addressHouseNumber?: string | null;
   addressBuilding?: string | null;
+  geoEntities?: Readonly<Partial<Record<'street' | 'district' | 'metro' | 'mahalla' | 'residentialComplex', Readonly<{
+    id: string;
+    canonical: string;
+    type: string;
+    country: string;
+    parentId?: string;
+  }>>>>;
 }
 
+export interface GeoEntityReference { id: string; canonical: string; type: string; country: string; parentId?: string }
+export interface HousingPoiRelation {
+  relation: 'near' | 'opposite' | 'behind' | 'in_front_of' | 'travel_time';
+  target: GeoEntityReference;
+  confidence: number;
+  distanceMeters?: number;
+  durationMinutes?: number;
+  mode?: 'walk' | 'drive' | 'unknown';
+}
+export interface GeoCandidateResolverInput { country: string; city?: string; query: string; types?: readonly string[] }
+export type GeoCandidateResolver = (input: Readonly<GeoCandidateResolverInput>) => readonly Readonly<{
+  id: string; canonicalName?: string; canonical?: string; type?: string; country?: string; parentId?: string;
+}>[] | null | undefined;
+
 export function parseHousingNearby(value: unknown): readonly string[];
+export function extractHousingPoiRelations(value: unknown, options?: { country?: string; city?: string; resolveGeoCandidates?: GeoCandidateResolver }): readonly HousingPoiRelation[];
 export function parseHousingAudience(value: unknown): Readonly<{ primary: HousingAudience | null; alternatives: readonly HousingAudience[] }>;
 export function parseHousingRoomShare(value: unknown): boolean;
 export function parseHousingLandlordPresent(value: unknown): boolean;
@@ -73,5 +97,18 @@ export function parseHousingTransitRoutes(value: unknown): readonly string[];
 export function parseHousingObservedAmenities(value: unknown): readonly string[];
 export function parseHousingListingEnrichment(
   value: unknown,
-  options?: { country?: string; dealType?: 'sale' | 'longRent' | 'shortRent' | null },
+  options?: {
+    country?: string;
+    city?: string;
+    dealType?: 'sale' | 'longRent' | 'shortRent' | null;
+    resolveGeoEntity?: ((input: Readonly<{ country: string; city?: string; type: string; canonical: string }>) => Readonly<{
+      id: string;
+      canonicalName?: string;
+      canonical?: string;
+      type?: string;
+      country?: string;
+      parentId?: string;
+    }> | null | undefined);
+    resolveGeoCandidates?: GeoCandidateResolver;
+  },
 ): Readonly<HousingListingEnrichment>;

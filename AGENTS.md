@@ -69,7 +69,7 @@ Do not add latitude/longitude, bounding boxes, map points, geocoding coordinates
 
 Coordinates belong strictly in `AmoneMisa/geo-catalog`. Keep lexical aliases and parsing entities here; keep coordinate data there. Never duplicate coordinate data between packages.
 
-If a task requires both alias parsing and coordinates, add/resolve the canonical lexical entity in this package and connect it to `geo-catalog` at the consumer/application layer. Do not embed coordinates here as a shortcut.
+If a task requires both alias parsing and coordinates, add/resolve the canonical lexical entity in this package and connect it to `geo-catalog` at the consumer/application layer. Address parsers may accept a caller-supplied, city-scoped geo-catalog resolver and return stable entity references only (`id`, canonical, type, country, parent); they must never import, cache, or return coordinates. Do not embed coordinates here as a shortcut.
 
 ## Location ownership
 

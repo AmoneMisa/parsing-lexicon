@@ -122,9 +122,9 @@ const AREA_INSIDE_RE = /(?:массив(?:и)?|massiv(?:i)?|жилмассив|�
 const MAHALLA_BEFORE_RE = /(?:махалл(?:а|я)|маҳалла(?:си)?|mahalla(?:si)?|mfy|мфй)\s*[:\-–—]?\s*$/iu;
 const MAHALLA_AFTER_RE = /^\s*[:\-–—]?\s*(?:махалл(?:а|я)|маҳалла(?:си)?|mahalla(?:si)?|mfy|мфй)(?=$|[^\p{L}\p{N}_])/iu;
 const MAHALLA_INSIDE_RE = /(?:махалл(?:а|я)|маҳалла(?:си)?|mahalla(?:si)?|mfy|мфй)/iu;
-const LANDMARK_AFTER_RE = /^\s*[:\-–—]?\s*(?:базар|рынок|bozor(?:i)?|мечет\p{L}*|масжид|masjid|mosque|парк|park|mall|молл|вокзал|аэропорт|airport)(?=$|[^\p{L}\p{N}_])/iu;
-const LANDMARK_BEFORE_RE = /(?:базар|рынок|bozor(?:i)?|мечет\p{L}*|масжид|masjid|mosque|парк|park|mall|молл|вокзал|аэропорт|airport)\s*[:\-–—]?\s*$/iu;
-const LANDMARK_INSIDE_RE = /(?:базар|рынок|bozor(?:i)?|мечет\p{L}*|масжид|masjid|mosque|парк|park|mall|молл|вокзал|аэропорт|airport)/iu;
+const LANDMARK_AFTER_RE = /^\s*[:\-–—]?\s*(?:базар|рынок|bozor(?:i)?|to['’`]?yxona(?:si)?|toy\s*xonasi|restoran|restaurant|kafe|cafe|мечет\p{L}*|масжид|masjid|mosque|парк|park|mall|молл|savdo\s+markazi|klinika|clinic|maktab|школ[аы]?|вокзал|аэропорт|airport)(?=$|[^\p{L}\p{N}_])/iu;
+const LANDMARK_BEFORE_RE = /(?:базар|рынок|bozor(?:i)?|to['’`]?yxona(?:si)?|toy\s*xonasi|restoran|restaurant|kafe|cafe|мечет\p{L}*|масжид|masjid|mosque|парк|park|mall|молл|savdo\s+markazi|klinika|clinic|maktab|школ[аы]?|вокзал|аэропорт|airport)\s*[:\-–—]?\s*$/iu;
+const LANDMARK_INSIDE_RE = /(?:базар|рынок|bozor(?:i)?|to['’`]?yxona(?:si)?|toy\s*xonasi|restoran|restaurant|kafe|cafe|мечет\p{L}*|масжид|masjid|mosque|парк|park|mall|молл|savdo\s+markazi|klinika|clinic|maktab|школ[аы]?|вокзал|аэропорт|airport)/iu;
 
 function hasExplicitMetroContext(text, match) {
   return matchContext(text, match, METRO_BEFORE_RE, METRO_AFTER_RE, METRO_INSIDE_RE);

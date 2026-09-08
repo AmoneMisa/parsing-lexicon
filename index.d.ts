@@ -371,15 +371,21 @@ export function classifyHiringIntent(value: unknown): Readonly<{ intent: 'candid
 export function parseExperience(value: unknown): ExperienceParseResult | null;
 
 export * from './src/housing-context.js';
+export * from './src/housing-address.js';
+export * from './src/parser-core.js';
+export * from './src/temporal.js';
 export * from './src/hiring-context.js';
 export * from './src/housing-intent.js';
 export * from './src/housing-structured.js';
+export * from './src/housing-parser-v2.js';
 export * from './src/housing-safety.js';
 export * from './src/housing-title.js';
 export * from './src/housing-language.js';
 export * from './src/housing-features.js';
 export * from './src/housing-listing-fields.js';
 export * from './src/housing-card-fields.js';
+export * from './src/hiring-skills.js';
+export * from './src/hiring-ats.js';
 
 // housing semantic helper declarations added in 0.2.5
 export function resolveHousingOccupancy(value: unknown): 'wholeProperty' | 'room' | 'sharedRoom' | 'bedSpace' | null;

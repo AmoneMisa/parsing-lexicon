@@ -36,8 +36,8 @@ export type TelegramContact = Readonly<{
   source: 'mention' | 'url' | 'tg';
 }>;
 
-export function findPhoneLikeSpans(value: unknown): readonly PhoneLikeSpan[];
-export function maskPhoneLikeSpans(value: unknown, replacement?: string): string;
+export function findPhoneLikeSpans(value: unknown, options?: { country?: string | null; countryHint?: string | null }): readonly PhoneLikeSpan[];
+export function maskPhoneLikeSpans(value: unknown, replacement?: string | { country?: string | null; countryHint?: string | null }, options?: { country?: string | null; countryHint?: string | null }): string;
 export function parsePhoneNumbers(value: unknown, options?: ParsePhoneOptions): readonly ParsedPhoneNumber[];
 export function normalizePhone(value: unknown, options?: ParsePhoneOptions): ParsedPhoneNumber | null;
 export function findTelegramContacts(value: unknown): readonly TelegramContact[];

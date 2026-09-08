@@ -8,6 +8,26 @@ export function looksCommercialHousing(value) {
   return value ? COMMERCIAL_HOUSING_RE.test(String(value)) : false;
 }
 
+const GROUP_LODGING_RE = /(?:hotel|hostel|mehmonxona|гостиниц[аы]|отел[ьи]|хостел|booking|брон(?:ь|ировать)|rezervatsiya|номера\s+от|rooms?\s+from|сеть\s+(?:отел|гостиниц)|hotel\s+group|группа\s+отел)/iu;
+const GROUP_PROMOTION_RE = /(?:kanal(?:imiz|ga)?|канал(?:е|ымыз)?|group\s+of\s+(?:hotels?|properties)|bizning\s+(?:hotel|hostel)|our\s+(?:hotels?|properties)|catalog(?:ue)?|каталог)/iu;
+
+/** Evidence-based guard for hotel/hostel catalog promotions. */
+export function classifyHousingCommercialAdvertisement(value) {
+  const text = String(value || '');
+  if (!text.trim()) return Object.freeze({ commercial: false, confidence: 0, signals: Object.freeze([]) });
+  const signals = [];
+  if (COMMERCIAL_HOUSING_RE.test(text)) signals.push('commercialPremises');
+  if (GROUP_LODGING_RE.test(text)) signals.push('lodgingService');
+  if (GROUP_PROMOTION_RE.test(text)) signals.push('groupPromotion');
+  const properties = text.match(/(?:hotel|hostel|mehmonxona|гостиниc[аы]|гостиниц[аы]|отел[ьи]|хостел)\s*[«"']?[\p{L}\d-]+/giu) || [];
+  if (properties.length >= 2) signals.push('multipleProperties');
+  const contacts = text.match(/\+?\d(?:[\s().-]*\d){7,}/gu) || [];
+  if (contacts.length >= 3) signals.push('manyContacts');
+  const commercial = signals.includes('commercialPremises') ||
+    (signals.includes('lodgingService') && (signals.includes('groupPromotion') || signals.includes('multipleProperties') || signals.includes('manyContacts')));
+  return Object.freeze({ commercial, confidence: commercial ? Math.min(1, 0.45 + signals.length * 0.15) : 0, signals: Object.freeze(signals) });
+}
+
 // A "parking space" mention is only commercial when the same text does not
 // also name a residential unit (owners often list a parking spot alongside
 // the flat itself, e.g. "квартира с парковочным местом").
