@@ -114,6 +114,10 @@
       "import": "./src/housing-source-aliases.js"
     },
     "./housing-poi-extensions": "./src/housing-poi-extensions.js",
+    "./housing-poi-relations": {
+      "types": "./src/housing-poi-relations.d.ts",
+      "import": "./src/housing-poi-relations.js"
+    },
     "./housing-display": {
       "types": "./src/housing-display.d.ts",
       "import": "./src/housing-display.js"

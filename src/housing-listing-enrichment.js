@@ -10,6 +10,7 @@ import { parseHousingResidentialComplex } from './housing-text.js';
 import { parseHousingAddress, resolveHousingAddressGeoEntities } from './housing-address.js';
 import { HOUSING_LANDMARK_EXTENSIONS, HOUSING_POI_EXTENSIONS } from './housing-poi-extensions.js';
 import { resolveHousingIntent } from './housing-intent.js';
+import { extractHousingPoiRelations } from './housing-poi-relations.js';
 
 const GENERIC_CATEGORY = Object.freeze({
   Park: 'park', Metro: 'metro', 'Bus stop': 'transport', 'Public transport': 'transport', 'Main road': 'transport',
@@ -230,7 +231,7 @@ function walkMinutes(text) {
   return Number.isInteger(value) && value > 0 && value <= 180 ? value : null;
 }
 
-export function parseHousingListingEnrichment(value, { country = '', city = '', dealType = null, resolveGeoEntity } = {}) {
+export function parseHousingListingEnrichment(value, { country = '', city = '', dealType = null, resolveGeoEntity, resolveGeoCandidates } = {}) {
   const text = normalizeUnicode(value ?? '');
   if (!text) return deepFreeze({});
   const resolvedDealType = dealType || resolveHousingIntent(text)?.dealType || null;
@@ -259,6 +260,8 @@ export function parseHousingListingEnrichment(value, { country = '', city = '', 
     metro: metro || address.metro,
     residentialComplex: parsedRc || null,
   }, { country, city, resolveGeoEntity });
+  const poiRelations = extractHousingPoiRelations(text, { country, city, resolveGeoCandidates });
+  const nearbyEntities = [...new Map(poiRelations.map((item) => [item.target.id, item.target])).values()];
 
   return deepFreeze({
     rooms: parseHousingRoomCount(text),
@@ -309,6 +312,7 @@ export function parseHousingListingEnrichment(value, { country = '', city = '', 
     transitRoutes: parseHousingTransitRoutes(text),
     walkMinutes: walkMinutes(text),
     nearby: parseHousingNearby(text),
+    ...(poiRelations.length ? { poiRelations, nearbyEntities: deepFreeze(nearbyEntities) } : {}),
     amenities: observedAmenities,
     district: district || null,
     quarter: quarter ? { number: quarter.number, suffix: quarter.suffix } : null,

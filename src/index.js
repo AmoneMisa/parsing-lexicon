@@ -50,6 +50,7 @@ export * from './housing-parser-v2.js';
 export * from './housing-source-aliases.js';
 export * from './housing-text.js';
 export * from './housing-poi-extensions.js';
+export * from './housing-poi-relations.js';
 export * from './housing-display.js';
 export * from './housing-listing-enrichment.js';
 export * from './housing-card-fields.js';
