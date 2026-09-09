@@ -607,10 +607,72 @@ function normalizeUaSemanticLocations(country) {
   });
 }
 
+// UZ_MAP_DATA_LOCATION_EXTENSIONS is bulk auto-imported/transliterated data.
+// mergeLocationEntries() only dedupes entries that share the exact same
+// canonical `name`, so a handful of its entries create a second, competing
+// entity for a real street that already has a reviewed canonical under a
+// different (often English) name — one that already lists the map-data
+// entry's own transliteration as an alias. Whichever of the two entries a
+// lookup happens to match first then wins by array position, which is
+// fragile and can surface the auto-transliterated name instead of the
+// reviewed one.
+//
+// Exclude each known duplicate by city + canonical name rather than
+// changing the shared merge algorithm: a generic alias-overlap merge (and
+// a generic "drop any map-data entry whose canonical exactly matches an
+// existing alias anywhere in the reviewed data") were both tried and
+// reverted, since either one also affected genuinely distinct entries that
+// happen to share one incidental alias elsewhere in this large dataset —
+// this hand-verified list only touches the specific streets confirmed to
+// be pure duplicates.
+const UZ_MAP_DATA_KNOWN_DUPLICATES = Object.freeze({
+  // Duplicates the reviewed "Shimoliy Olmazor Street" (merged later, in
+  // locations-runtime.js's UZ_TASHKENT_REVIEWED_STREET_EXTENSIONS), which
+  // already lists this exact transliteration as an alias.
+  Tashkent: new Set(["Shimoliy Olmazor ko'chasi"]),
+  // Duplicates the reviewed "University Boulevard", "Gagarin Street",
+  // "Spitamen Avenue", "Rudakiy Street" and "Mirzo Ulugbek Street"
+  // (uz-samarkand-context-extensions.js).
+  Samarkand: new Set([
+    'Universitet bulvari',
+    "Gagarin ko'chasi",
+    "Spitamen shoh ko'chasi",
+    "Rudakiy ko'chasi",
+    "Mirzo Ulug'bek ko'chasi",
+  ]),
+  // Duplicates the reviewed "Amir Temur Street" and "Bunyodkor Street"
+  // (uz-location-extensions.js).
+  Angren: new Set(["Amir Temur ko'chasi", "Bunyodkor ko'chasi"]),
+});
+
+// A bare number ("2", "5", "9") is never a legitimate standalone street/POI
+// name on its own — these are OSM import artifacts (a house number or
+// building tag mistakenly carried through as the object's name) that
+// otherwise resolve as a "street" matching any bare house-number-shaped
+// text (e.g. the "5" in "..., дом 5"). Unlike the named-duplicate cases
+// above, this is safe to apply everywhere rather than per city: a real
+// street/POI canonical is never purely numeric.
+const BARE_NUMERIC_NAME_RE = /^\d+$/u;
+
+function withoutKnownMapDataDuplicates(extensions) {
+  return Object.freeze(Object.fromEntries(Object.entries(extensions).map(([city, data]) => {
+    const excluded = UZ_MAP_DATA_KNOWN_DUPLICATES[city];
+    return [city, Object.freeze(Object.fromEntries(Object.entries(data).map(([key, entries]) => [
+      key,
+      Array.isArray(entries)
+        ? Object.freeze(entries.filter((entry) => !BARE_NUMERIC_NAME_RE.test(String(entry?.name ?? '').trim())
+          && !(excluded && excluded.has(entry?.name))))
+        : entries,
+    ])))];
+  })));
+}
+
+const UZ_MAP_DATA_LOCATION_EXTENSIONS_CURATED = withoutKnownMapDataDuplicates(UZ_MAP_DATA_LOCATION_EXTENSIONS);
+
 const UZ_LOCATION_DICTIONARIES = normalizeUzSemanticLocations(mergeLocationCountries(
   UZ_BASE_LOCATION_DICTIONARIES,
   UZ_LOCATION_EXTENSIONS,
-  UZ_MAP_DATA_LOCATION_EXTENSIONS,
+  UZ_MAP_DATA_LOCATION_EXTENSIONS_CURATED,
 ));
 
 const UA_SEMANTIC_LOCATION_EXTENSIONS = normalizeUaSemanticLocations(UA_MAJOR_LOCATION_EXTENSIONS);
