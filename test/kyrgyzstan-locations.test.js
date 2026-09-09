@@ -21,6 +21,13 @@ const crawlerCities = Object.freeze([
   'Kyzyl-Kiya',
 ]);
 
+const officialCitiesAddedToTheCatalog = Object.freeze([
+  'Aydarken', 'Bazar-Korgon', 'Cholpon-Ata', 'Gulcho', 'Kadamjay',
+  'Kara-Kol', 'Kara-Suu', 'Kayyngdy', 'Kemin', 'Kerben', 'Kochkor-Ata',
+  'Kok-Janggak', 'Mayluu-Suu', 'Nookat', 'Orlovka', 'Razzakov', 'Shopokov',
+  'Suluktu', 'Tash-Kumur', 'Toktogul',
+]);
+
 test('KG canonical city lexicon covers country-wide crawler cities', () => {
   assert.equal(canonicalCity('Бишкек', 'KG'), 'Bishkek');
   assert.equal(canonicalCity('Ош', 'KG'), 'Osh');
@@ -29,11 +36,18 @@ test('KG canonical city lexicon covers country-wide crawler cities', () => {
   assert.equal(canonicalCity('Өзгөн', 'KG'), 'Uzgen');
   assert.equal(canonicalKyrgyzstanCity('Кара-Балта'), 'Kara-Balta');
   assert.equal(canonicalCentralAsiaCity('Кызыл-Кыя', 'KG'), 'Kyzyl-Kiya');
+  assert.equal(canonicalCity('Базар-Коргон', 'KG'), 'Bazar-Korgon');
+  assert.equal(canonicalCity('Кара-Куль', 'KG'), 'Kara-Kol');
+  assert.equal(canonicalCity('Исфана', 'KG'), 'Razzakov');
+  assert.equal(KG_CITY_CATALOG.length, 33);
   assert.ok(KG_LOCATION_TERMS.microdistrict.includes('кичирайон'));
 
   for (const city of crawlerCities) {
     assert.ok(KG_CITY_CATALOG.some(({ canonical }) => canonical === city), city);
     assert.ok(LOCATION_DICTIONARIES.KG?.[city], city);
+  }
+  for (const city of officialCitiesAddedToTheCatalog) {
+    assert.ok(KG_CITY_CATALOG.some(({ canonical }) => canonical === city), city);
   }
 });
 

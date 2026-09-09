@@ -159,6 +159,8 @@ test('current Tashkent administrative parents own moved neighborhood canonicals'
 });
 
 test('explicit Minor context chooses one semantic type', () => {
+  assert.equal(TASHKENT_AREAS.Yunusabad.find((entry) => entry.canonical === 'Minor')?.type, 'mahalla');
+
   const metro = matchCentralAsiaLocationEntities('метро Минор, Ташкент', 'UZ', 'Tashkent');
   assert.ok(metro.matches.some((entry) => entry.type === 'metro' && entry.name === 'Minor'));
   assert.equal(metro.matches.some((entry) => entry.type === 'mahalla' && entry.name === 'Minor'), false);

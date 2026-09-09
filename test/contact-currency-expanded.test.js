@@ -46,6 +46,7 @@ test('phone parser keeps extension and explicit validity metadata', () => {
 
 test('invalid numeric sequences are not promoted to normalized phones', () => {
   assert.deepEqual(parsePhoneNumbers('ID 123456789012345 and price 10000000'), []);
+  assert.deepEqual(parsePhoneNumbers('Updated 29.08.2026 10:15:00', { countryHint: 'UZ' }), []);
 });
 
 test('telegram contacts normalize mentions and public links without transport logic', () => {

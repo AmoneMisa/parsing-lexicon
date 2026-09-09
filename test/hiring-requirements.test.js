@@ -31,6 +31,7 @@ test('normalizes US work authorization and sponsorship evidence', () => {
   assert.equal(requiresUsSponsorship('Citizenship: Ukraine'), true);
   assert.equal(requiresUsSponsorship('US citizen'), false);
   assert.equal(isNoSponsorshipRequirement('We may not be able to provide future visa sponsorship for this role.'), true);
+  assert.equal(isNoSponsorshipRequirement('This employer does not offer visa sponsorship.'), true);
 });
 
 test('handles dotted abbreviations inside long sponsorship clauses', () => {

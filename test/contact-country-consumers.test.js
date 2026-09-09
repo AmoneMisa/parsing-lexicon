@@ -13,6 +13,10 @@ test('candidate contacts reuse normalized phone and Telegram parsers with countr
     extractCandidateContacts('Aloqa: 90 123 45 67 @dev_user', 'UZ'),
     { phone: '+998901234567', telegram: '@dev_user' },
   );
+  assert.deepEqual(
+    extractCandidateContacts('Updated 29.08.2026 10:15:00', 'UZ'),
+    {},
+  );
 });
 
 test('hiring default currency is derived from the shared country catalog', () => {

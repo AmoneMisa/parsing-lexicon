@@ -24,6 +24,7 @@ test('Tashkent expanded malls and parks resolve their current names', () => {
   assert.equal(matchTashkentPoi('HT Mall', 'malls')?.canonical, 'High Town Mall');
   assert.equal(matchTashkentPoi('ТРЦ Чимган', 'malls')?.canonical, 'Chimgan Shopping Center');
   assert.equal(matchTashkentPoi('Ботанический сад имени Фёдора Русанова', 'parks')?.canonical, 'Tashkent Botanical Garden');
+  assert.equal(matchTashkentPoi('Seul Moon', 'malls')?.canonical, 'Seoul Mun Mall');
 });
 
 test('supermarkets are not exposed as Tashkent mall canonicals', () => {
