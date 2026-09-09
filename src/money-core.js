@@ -1,4 +1,4 @@
-import { aliasesOf, findCanonical } from './normalization.js';
+import { aliasesOf, escapeRegex, findCanonical } from './normalization.js';
 import {
   CURRENCY_SYMBOL_CANDIDATES,
   CURRENCY_TERMS,
@@ -104,10 +104,6 @@ export function moneyCurrencyFromText(value, fallbackCurrency = null) {
   const fallback = String(fallbackCurrency || '').trim().toUpperCase();
   if (fallback && candidates.includes(fallback)) return fallback;
   return candidates[0];
-}
-
-function escapeRegex(value) {
-  return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
 export function moneyCurrencyPattern() {

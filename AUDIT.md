@@ -68,8 +68,8 @@ duplicated/over-complex patterns worth consolidating.
 - No ReDoS found — the digit-group/decimal-separator alternatives in
   `MONEY_NUMBER_PATTERN` never overlap, so there's exactly one way to
   tokenize any input.
-- Noted for awareness, not acted on: `escapeRegex()` is duplicated verbatim
-  across `normalization.js`, `money-core.js`, and `housing-money.js`.
+- `escapeRegex()` now has one canonical implementation in `normalization.js`;
+  money and geography consumers import it rather than maintaining local copies.
 
 ## Geography / locations (`src/geography*.js`, `geo.js`, `locations.js`,
 `landmarks.js`, `central-asia*.js`, `ua-*.js`, `kz-location-extensions.js`,
