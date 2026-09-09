@@ -296,7 +296,10 @@ export function parseHousingListingEnrichment(value, { country = '', city = '', 
   const areas = parseHousingAreas(text);
   const audience = parseHousingAudience(text);
   const perPersonPrice = parseHousingPerPersonPrice(text, { country });
-  const observedAmenities = parseHousingObservedAmenities(text);
+  const observedAmenities = parseHousingObservedAmenities(text).filter((amenity) =>
+    (amenity !== 'Washing machine' || listingFields.washingMachine !== false)
+    && (amenity !== 'Refrigerator' || listingFields.refrigerator !== false),
+  );
   const quarter = matchTashkentHousingQuarter(text);
   const district = matchTashkentHousingDistrict(text)?.name || quarter?.district || null;
   const metro = matchTashkentHousingMetro(text)?.name || cityMetro(text, country, city) || null;
@@ -331,6 +334,8 @@ export function parseHousingListingEnrichment(value, { country = '', city = '', 
     terrace: listingFields.terrace ?? null,
     privateYard: listingFields.privateYard ?? null,
     dishwasher: listingFields.dishwasher ?? null,
+    refrigerator: listingFields.refrigerator ?? null,
+    washingMachine: listingFields.washingMachine ?? null,
     airConditioner: listingFields.airConditioner ?? (AIR_CONDITIONER_RE.test(text) ? true : null),
     tv: listingFields.tv ?? null,
     microwave: listingFields.microwave ?? null,

@@ -9,6 +9,28 @@ const bool = (text, positive, negative = null) => {
   return positive.test(text) ? true : null;
 };
 
+const REFRIGERATOR_RE = /(?:холодильник\p{L}*|haladelnik|xolodilnik|muzlatgich|refrigerator|fridge)/iu;
+const WASHING_MACHINE_RE = /(?:кир\s*машин\p{L}*|кирмошин\p{L}*|стиральн\p{L}*\s+машин\p{L}*|washing\s+machine|kir\s*moshina|kirmoshina|kir\s*yuvish\s+mashin\p{L}*)/iu;
+
+function listedUzbekAbsence(text, appliance) {
+  // Marketplace Uzbek frequently puts a single "yo'q" after a short,
+  // separator-free appliance list: "haladelnik kir moshina gilam yo'q".
+  // Treat it as a list-level negative only inside the local clause and never
+  // across a positive "bor" assertion or a sentence boundary.
+  const clauses = String(text || '').matchAll(/([^.!?\r\n]{0,120})\b(?:yo['’ʻʼ`]?q|йўқ)(?=$|[^\p{L}\p{N}_])/giu);
+  for (const clause of clauses) {
+    const items = clause[1] || '';
+    if (/\bbor\b|мавжуд|есть|имеется|with\b/iu.test(items)) continue;
+    if (appliance.test(items)) return true;
+  }
+  return false;
+}
+
+function applianceState(text, appliance, directNegative) {
+  if (directNegative.test(text) || listedUzbekAbsence(text, appliance)) return false;
+  return appliance.test(text) ? true : null;
+}
+
 const number = (match, min, max) => {
   const value = match ? Number(match[1]) : null;
   return Number.isFinite(value) && value >= min && value <= max ? value : null;
@@ -143,6 +165,16 @@ export function parseHousingListingFields(value, { country = '', dealType = null
   const firstRent = bool(text,
     /первая\s+(?:сдача|аренда)|впервые\s+(?:сда[её]тся|сдается|в\s+аренду)|(?:ранее|раньше|до\s+этого)\s+никто\s+не\s+жил|никто\s+(?:ранее|раньше)\s+не\s+жил|first\s+(?:rental|letting)|never\s+(?:rented|lived\s+in|occupied)/iu,
   );
+  const refrigerator = applianceState(
+    text,
+    REFRIGERATOR_RE,
+    /(?:без|нет)\s+(?:холодильник\p{L}*|haladelnik|xolodilnik|muzlatgich)|(?:холодильник\p{L}*|haladelnik|xolodilnik|muzlatgich)\s+(?:нет|yo['’ʻʼ`]?q|йўқ)|no\s+(?:refrigerator|fridge)/iu,
+  );
+  const washingMachine = applianceState(
+    text,
+    WASHING_MACHINE_RE,
+    /(?:без|нет)\s+(?:кир\s*машин\p{L}*|кирмошин\p{L}*|стиральн\p{L}*\s+машин\p{L}*|kir\s*moshina|kirmoshina)|(?:кир\s*машин\p{L}*|кирмошин\p{L}*|стиральн\p{L}*\s+машин\p{L}*|kir\s*moshina|kirmoshina)\s+(?:нет|yo['’ʻʼ`]?q|йўқ)|no\s+washing\s+machine/iu,
+  );
 
   return deepFreeze({
     bedrooms: parseBedrooms(text),
@@ -166,6 +198,8 @@ export function parseHousingListingFields(value, { country = '', dealType = null
       /посудомоечн\p{L}*|посудомойк\p{L}*|dishwasher|mașin[ăa]\s+de\s+spălat\s+vase/iu,
       /без\s+посудомоечн\p{L}*(?:\s+машин\p{L}*)?|нет\s+посудомоечн\p{L}*(?:\s+машин\p{L}*)?|посудомоечн\p{L}*(?:\s+машин\p{L}*)?\s+нет|no\s+dishwasher/iu,
     ),
+    refrigerator,
+    washingMachine,
     airConditioner: bool(
       text,
       /кондицион|сплит[- ]?систем|konditsioner|kansaner|kandisaner|klimat|air\s*con|aer\s+condi[țt]ionat/iu,
