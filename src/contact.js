@@ -111,11 +111,19 @@ export function maskPhoneLikeSpans(value, replacement = ' ', options = {}) {
   const spans = findPhoneLikeSpans(text, options);
   if (!spans.length) return text;
 
+  // The replacement must fill the exact span length. A single-character
+  // replacement collapsing a whole multi-digit phone span down to one
+  // character silently shifts every character offset after it, which is
+  // harmless to a caller that only reads back matched substrings but
+  // corrupts any offset (start/end) computed against this masked text and
+  // later compared to the original, unmasked string.
+  const fill = String(replacement || ' ') || ' ';
   let out = '';
   let cursor = 0;
   for (const span of spans) {
     out += text.slice(cursor, span.start);
-    out += replacement;
+    const spanLength = span.end - span.start;
+    out += fill.repeat(Math.ceil(spanLength / fill.length)).slice(0, spanLength);
     cursor = span.end;
   }
   return out + text.slice(cursor);

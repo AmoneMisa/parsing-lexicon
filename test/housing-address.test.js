@@ -337,6 +337,22 @@ test('a trailing relation word describing a different nearby place is not swept 
   });
 });
 
+test('a phone number or explicit money amount after the street stops the street capture', () => {
+  const withPhone = parseHousingAddress('ул. Ленина 99 1881919 тел');
+  assert.equal(withPhone.street, 'Ленина');
+
+  const withDeposit = parseHousingAddress('ул. Мира 5, 100$ депозит');
+  assert.equal(withDeposit.street, 'Мира');
+  assert.equal(withDeposit.houseNumber, '5');
+
+  // A calendar-date-shaped street name (a common Soviet-legacy naming
+  // convention) must still parse — temporal spans are excluded from this
+  // guard specifically because they collide with real street names.
+  const dateShapedStreet = parseHousingAddress('ул. 8 Марта, 5');
+  assert.equal(dateShapedStreet.street, '8 Марта');
+  assert.equal(dateShapedStreet.houseNumber, '5');
+});
+
 test('composeHousingAddress produces a stable canonical query string', () => {
   assert.equal(composeHousingAddress({ street: 'Воробкевича', houseNumber: '12', building: '2' }), 'Воробкевича 12 корп. 2');
 });

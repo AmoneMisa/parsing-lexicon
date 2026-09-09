@@ -4,6 +4,7 @@ import {
   matchTashkentHousingMetro,
   matchTashkentNumberedArea,
 } from './tashkent-housing-geography.js';
+import { detectNonAddressSpans } from './semantic-spans.js';
 
 const PHONE_RUN_RE = /\+?\d[\d\s().-]{7,}\d/gu;
 const ADDRESS_LABEL_RE = /(?:адрес|адреса|адресація|адресация|manzil|address|adresă|adresa)\s*[:=\-–—]\s*/iu;
@@ -429,8 +430,20 @@ function addressCandidateLine(line) {
   const markerIndex = text.search(new RegExp(`${PREFIX_STREET_MARKER}|${POSTFIX_STREET_MARKER}`, 'iu'));
   const searchStart = markerIndex >= 0 ? markerIndex : 0;
   const tail = text.slice(searchStart);
-  const match = tail.match(ADDRESS_FIELD_STOP_RE);
-  return match ? clean(text.slice(0, searchStart + (match.index ?? 0))) : line;
+  const stopMatch = tail.match(ADDRESS_FIELD_STOP_RE);
+  const stopAt = stopMatch ? searchStart + (stopMatch.index ?? 0) : Infinity;
+  // A money/contact span overlapping the street phrase (e.g. "99 1881919",
+  // "100$ депозит") is at least as strong evidence that this text belongs
+  // to another domain as the local stop-word list below — reuse the shared
+  // classifier instead of growing another ad-hoc stop-word list here for
+  // every new case found. TEMPORAL is deliberately excluded: many
+  // legitimate Soviet-legacy street names ("8 Марта", "9 Января") are
+  // themselves calendar-date-shaped, so treating a date-like span as
+  // non-address evidence would wrongly cut off a real street name.
+  const nonAddressSpan = detectNonAddressSpans(text, { types: ['money', 'contact'] })
+    .find((span) => span.start >= searchStart && span.start < stopAt);
+  const cutAt = nonAddressSpan ? Math.min(stopAt, nonAddressSpan.start) : stopAt;
+  return cutAt < Infinity ? clean(text.slice(0, cutAt)) : line;
 }
 
 function collectExplicitStreetCandidates(text) {

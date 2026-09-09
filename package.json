@@ -193,6 +193,10 @@
       "types": "./src/housing-money.d.ts",
       "import": "./src/housing-money.js"
     },
+    "./semantic-spans": {
+      "types": "./src/semantic-spans.d.ts",
+      "import": "./src/semantic-spans.js"
+    },
     "./hiring-professions": "./src/hiring-professions.js",
     "./hiring-profession-display": {
       "types": "./src/hiring-profession-display.d.ts",
