@@ -45,11 +45,16 @@ test('reviewed Andijan street aliases resolve conservatively', () => {
   const bareCity = matchDictionaryLocation('Андижан', 'UZ', 'Andijan');
   assert.notEqual(bareCity?.type, 'streets');
 
+  // "Гумбаз улица" was originally listed as noise because the reviewed
+  // dataset didn't cover it yet. The auto-imported map-data street catalog
+  // now legitimately includes "Gumbaz ko'chasi" (alias: "Гумбаз улица"),
+  // so it resolves as a real street.
+  assertStreetMatch('Гумбаз улица', "Gumbaz ko'chasi");
+
   for (const noise of [
     'улица С. Зуннунова',
     'Дустлик улица',
     'улица Далварзин',
-    'Гумбаз улица',
     'улица Фарход',
   ]) {
     const match = matchDictionaryLocation(noise, 'UZ', 'Andijan');

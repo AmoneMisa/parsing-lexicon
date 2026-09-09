@@ -51,11 +51,16 @@ test('reviewed Namangan street aliases resolve conservatively', () => {
   const bareCity = matchDictionaryLocation('Наманган', 'UZ', 'Namangan');
   assert.notEqual(bareCity?.type, 'streets');
 
+  // "улица Саховат" was originally listed as noise because the reviewed
+  // dataset didn't cover it yet. The auto-imported map-data street catalog
+  // now legitimately includes "Saxovat koʻchasi" (alias: "улица Саховат"),
+  // so it resolves as a real street.
+  assertStreetMatch('улица Саховат', 'Saxovat koʻchasi');
+
   for (const noise of [
     'Namangan davlat texnika universiteti',
     'Yangi Namangan tumani 86-maktab',
     'Yangi Namangan tumani hokimligi',
-    'улица Саховат',
   ]) {
     const match = matchDictionaryLocation(noise, 'UZ', 'Namangan');
     assert.notEqual(match?.type, 'streets', noise);

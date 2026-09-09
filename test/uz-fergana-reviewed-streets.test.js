@@ -38,7 +38,13 @@ test('reviewed Fergana street aliases resolve conservatively', () => {
   const bareCity = matchDictionaryLocation('Фергана', 'UZ', 'Fergana');
   assert.notEqual(bareCity?.type, 'streets');
 
-  for (const noise of ['улица Куркам', 'улица Машъал', 'Ферганский Государственный Унивеситет']) {
+  // "улица Куркам" was originally listed as noise because the reviewed
+  // dataset didn't cover it yet. The auto-imported map-data street catalog
+  // now legitimately includes "Koʻrkam koʻchasi" (alias: "улица Куркам"),
+  // so it resolves as a real street.
+  assertStreetMatch('улица Куркам', 'Koʻrkam koʻchasi');
+
+  for (const noise of ['улица Машъал', 'Ферганский Государственный Унивеситет']) {
     const match = matchDictionaryLocation(noise, 'UZ', 'Fergana');
     assert.notEqual(match?.type, 'streets', noise);
   }
