@@ -69,7 +69,8 @@ duplicated/over-complex patterns worth consolidating.
   `MONEY_NUMBER_PATTERN` never overlap, so there's exactly one way to
   tokenize any input.
 - `escapeRegex()` now has one canonical implementation in `normalization.js`;
-  money and geography consumers import it rather than maintaining local copies.
+  money, geography, and hiring consumers import/re-export it rather than
+  maintaining local copies.
 
 ## Geography / locations (`src/geography*.js`, `geo.js`, `locations.js`,
 `landmarks.js`, `central-asia*.js`, `ua-*.js`, `kz-location-extensions.js`,
