@@ -12,6 +12,8 @@ export interface HousingListingEnrichment {
   terrace?: boolean | null;
   privateYard?: boolean | null;
   dishwasher?: boolean | null;
+  refrigerator?: boolean | null;
+  washingMachine?: boolean | null;
   airConditioner?: boolean | null;
   tv?: boolean | null;
   microwave?: boolean | null;

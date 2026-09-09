@@ -340,6 +340,18 @@ test('Tashkent City remains a typed development area and Samarqand Darvoza remai
   assert.equal(qoratosh.address, null);
 });
 
+test('OLX Fargona listing: Uzbek trailing yo‘q negates every appliance in its short list', () => {
+  const enrichment = parseHousingListingEnrichment(
+    'Kvartirada haladelnik kir moshina gilam yoq. 3 xonali 2 ta xammom 2 ta xojatxona 100kv m faqat oilagaa nomer 91 664 12 64 Manzil Fargona',
+    { country: 'UZ', city: 'Tashkent' },
+  );
+  assert.equal(enrichment.refrigerator, false);
+  assert.equal(enrichment.washingMachine, false);
+  assert.equal(enrichment.amenities.includes('Washing machine'), false);
+  assert.equal(enrichment.rooms, 3);
+  assert.equal(enrichment.audience, 'family');
+});
+
 // TODO(follow-up): add exact-text regressions for #3428, #8398667, #8390002,
 // #8388527, #8390008, #8386865, #8386867, and a Mercor job-posting example
 // once the raw source text for each is supplied — see the plan's "Known
