@@ -105,6 +105,17 @@ test('nearby-only residential complex references do not become the listing compl
   assert.ok(enrichment.nearby.includes('Infinity'));
 });
 
+test('postfix Uzbek proximity keeps a residential complex as a nearby landmark', () => {
+  const enrichment = parseHousingListingEnrichment('Сдается квартира. ЖК Seoul Mun yonida.', { country: 'UZ', city: 'Tashkent' });
+  assert.equal(enrichment.residenceComplex, null);
+  assert.ok(enrichment.nearby.includes('Seoul Mun Mall'));
+});
+
+test('payment wording with Russian "за" does not mask an explicit residential complex', () => {
+  const enrichment = parseHousingListingEnrichment('Сдается ЖК Seoul Mun за месяц.', { country: 'UZ', city: 'Tashkent' });
+  assert.equal(enrichment.residenceComplex, 'Seoul Mun');
+});
+
 test('parseHousingCommissionAmount ignores listings with no monetary commission mention', () => {
   assert.equal(parseHousingCommissionAmount('Сдается квартира, без комиссии'), null);
 });
