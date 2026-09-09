@@ -91,12 +91,27 @@ export const LOCATION_CONTEXT_TERMS = Object.freeze([
 ]);
 
 export const WORK_AUTHORIZATION_TERMS = Object.freeze([
-  group('sponsorshipOffered', { ru: ['визовая поддержка', 'спонсируем рабочую визу', 'оформляем рабочую визу'], en: ['visa sponsorship available', 'visa sponsorship provided', 'we sponsor visas', 'sponsorship available'], uk: ['візова підтримка', 'спонсоруємо робочу візу'], ro: ['sponsorizare viză', 'sponsorizare pentru viză'], uzLatn: ['viza yordami'], uzCyrl: ['виза ёрдами'], kk: ['визаға демеушілік'] }),
+  group('sponsorshipOffered', { ru: ['визовая поддержка', 'спонсируем рабочую визу', 'оформляем рабочую визу', 'виза h-1b', 'спонсорство h-1b', 'спонсорство визы h1b'], en: ['visa sponsorship available', 'visa sponsorship provided', 'we sponsor visas', 'sponsorship available', 'h-1b sponsorship', 'h1b sponsorship'], uk: ['візова підтримка', 'спонсоруємо робочу візу'], ro: ['sponsorizare viză', 'sponsorizare pentru viză'], uzLatn: ['viza yordami'], uzCyrl: ['виза ёрдами'], kk: ['визаға демеушілік'] }),
   group('noSponsorship', { ru: ['без визовой поддержки', 'визу не спонсируем', 'спонсорства визы нет'], en: ['no visa sponsorship', 'visa sponsorship is not available', 'we do not sponsor', 'unable to sponsor', 'cannot sponsor', 'no sponsorship'], uk: ['без візової підтримки', 'візу не спонсоруємо'], ro: ['fără sponsorizare pentru viză'], uzLatn: ['viza homiyligi yoq'], uzCyrl: ['виза ҳомийлиги йўқ'], kk: ['виза демеушілігі жоқ'] }),
-  group('workPermitRequired', { ru: ['разрешение на работу обязательно', 'нужно разрешение на работу'], en: ['work permit required', 'must have work authorization', 'must be authorized to work', 'right to work required'], uk: ['дозвіл на роботу обов’язковий'], ro: ['permis de muncă obligatoriu'], uzLatn: ['ishlash ruxsati kerak'], uzCyrl: ['ишлаш рухсати керак'], kk: ['жұмыс істеуге рұқсат қажет'] }),
+  // Bare "патент" is deliberately excluded: it also means an IP patent
+  // ("патентное право", "работа с патентами"), so only phrases that
+  // unambiguously mean the RF migrant work-permit document qualify.
+  group('workPermitRequired', { ru: ['разрешение на работу обязательно', 'нужно разрешение на работу', 'патент на работу', 'нужен патент', 'требуется патент', 'наличие патента', 'патент обязателен'], en: ['work permit required', 'must have work authorization', 'must be authorized to work', 'right to work required'], uk: ['дозвіл на роботу обов’язковий'], ro: ['permis de muncă obligatoriu'], uzLatn: ['ishlash ruxsati kerak'], uzCyrl: ['ишлаш рухсати керак'], kk: ['жұмыс істеуге рұқсат қажет'] }),
   group('citizenshipRequired', { ru: ['только граждане', 'гражданство обязательно'], en: ['citizenship required', 'citizens only'], uk: ['лише громадяни', 'громадянство обов’язкове'], ro: ['cetățenie obligatorie'], uzLatn: ['faqat fuqarolar'], uzCyrl: ['фақат фуқаролар'], kk: ['тек азаматтар'] }),
   group('residencePermit', { ru: ['внж', 'вид на жительство'], en: ['residence permit', 'residency permit'], uk: ['посвідка на проживання'], ro: ['permis de ședere'], uzLatn: ['yashash ruxsati'], uzCyrl: ['яшаш рухсати'], kk: ['тұруға ықтиярхат'] }),
 ]);
+
+// workAuthorization can carry several matched canonicals from the same text
+// (e.g. a posting that both restricts and offers). When a negative/restrictive
+// signal and a positive sponsorship signal co-occur, the restriction is the
+// more specific, deliberately-stated one — drop the contradictory positive.
+const CONTRADICTS_SPONSORSHIP_OFFERED = Object.freeze(['noSponsorship', 'citizenshipRequired']);
+
+function resolveWorkAuthorizationConflicts(canonicals) {
+  if (!canonicals.includes('sponsorshipOffered')) return canonicals;
+  if (!canonicals.some((item) => CONTRADICTS_SPONSORSHIP_OFFERED.includes(item))) return canonicals;
+  return canonicals.filter((item) => item !== 'sponsorshipOffered');
+}
 
 export const HIRING_AVAILABILITY_TERMS = Object.freeze([
   group('urgent', { ru: ['срочно нужен', 'срочно требуется', 'срочный набор'], en: ['urgent hire', 'hiring urgently', 'urgent opening'], uk: ['терміново потрібен'], ro: ['angajare urgentă'], uzLatn: ['zudlik bilan xodim kerak'], uzCyrl: ['зудлик билан ходим керак'], kk: ['шұғыл қызметкер керек'] }),
@@ -400,7 +415,7 @@ export function parseHiringContext(value, { title = '', mode = null } = {}) {
     application: matchCanonicals(text, APPLICATION_TERMS),
     companyContext: matchCanonicals(text, COMPANY_TERMS),
     locationContext: matchCanonicals(text, LOCATION_CONTEXT_TERMS),
-    workAuthorization: matchCanonicals(text, WORK_AUTHORIZATION_TERMS),
+    workAuthorization: resolveWorkAuthorizationConflicts(matchCanonicals(text, WORK_AUTHORIZATION_TERMS)),
     availability: matchCanonicals(text, HIRING_AVAILABILITY_TERMS),
     travel: has(text, TRAVEL_TERMS),
     relocation: has(text, RELOCATION_CONTEXT_TERMS),

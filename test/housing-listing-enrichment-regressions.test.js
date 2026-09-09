@@ -287,6 +287,7 @@ test('Medgorodok girls-only rental: UZS range, audience exclusions, and BezMakle
     amount: 950000,
     currency: 'UZS',
     approximate: false,
+    range: { minimum: 950000, maximum: 1000000 },
   });
   const enrichment = parseHousingListingEnrichment(LISTING_MEDGORODOK_GIRLS, { country: 'UZ', city: 'Tashkent' });
   assert.equal(enrichment.rooms, 2);

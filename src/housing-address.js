@@ -14,6 +14,11 @@ const HOUSE_MARKER = String.raw`(?:дом|д\.|будинок|буд\.|house|h\.
 const BUILDING_MARKER = String.raw`(?:корп(?:ус)?\.?|к\.|строен(?:ие)?|стр\.|будова|секц(?:ия|ія)?|bloc|corp|building|bldg\.?|korpus|bino|bina|бино)`;
 const NUMBER_TOKEN = String.raw`\d{1,5}(?:[-\/]?[\p{L}]\d{0,4})?(?:[\/-]\d{1,4}(?:[-\/]?[\p{L}]\d{0,4})?){0,2}`;
 const STREET_WORD = String.raw`[\p{L}'’.-]{2,48}`;
+// Common post-Soviet street names lead with a bare numeral ("8 Марта",
+// "50 лет Октября"). It's only ever a prefix before the required letter
+// word(s) below, never a substitute for them, so it cannot swallow a
+// following bare house number on its own.
+const LEADING_STREET_NUMERAL = String.raw`\d{1,3}`;
 const SECONDARY_TOKEN = String.raw`(?:${NUMBER_TOKEN}|[\p{L}])`;
 const LEVEL_NUMBER_TOKEN = String.raw`\d{1,3}(?:[-–—]?(?:й|ый|ий|st|nd|rd|th))?`;
 const LEVEL_MARKER = String.raw`(?:этаж(?:е|у|ом)?|поверх(?:у|е|ом)?|floor|qavat(?:da)?|қабат(?:та)?|кават|қават|etaj(?:da|ul)?)`;
@@ -25,8 +30,12 @@ const NON_ADDRESS_BARE_RE = /^(?:(?:(?:перш(?:ий|ому)|перв(?:ый|�
 const DELIMITED_STREET_REJECT_RE = /(?:^|\s)(?:город|місто|city|район|р-н|рн|мікрорайон|микрорайон|мкр|жк|метро|поверх|этаж|floor|qavat|кімнат\p{L}*|комнат\p{L}*|квартира|квартири|квартиры|оренда|аренда|продаж\p{L}*|цена|ціна|площад\p{L}*|площа|зупинка|остановка|ориентир\p{L}*|ор[-–—]?р\.?)(?:\s|$)/iu;
 const LOCATION_RELATION_RE = /(?:yonida|yaqin(?:ida)?|ro['’ʻʼ`]?parasida|near(?:by)?|close\s+to|next\s+to|рядом|возле|около|недалеко|поруч|біля|lângă|aproape)/iu;
 const DESCRIPTIVE_MAHALLA_WORD_RE = /^(?:orqasidagi|yonidagi|yaqinidagi|oldidagi|ortidagi|nearby|behind|opposite)$/iu;
+// "кв." also abbreviates "квадратный" (square, as in "кв. м" / square meters).
+// A lone captured letter must not be "м"/"m" itself, or "площадь 45 кв. м"
+// would misread the area unit as an apartment number.
+const UNIT_LETTER_TOKEN = String.raw`(?!(?:м|m)(?:²|2)?(?![\p{L}\p{N}]))[\p{L}]`;
 const UNIT_COMPONENT_PATTERNS = Object.freeze([
-  String.raw`(?:^|[\s,;])(?:кв\.?|кв-ра)(?!\p{L})\s*(?:№|#)?\s*(${SECONDARY_TOKEN})(?=$|[^\p{L}\p{N}])`,
+  String.raw`(?:^|[\s,;])(?:кв\.?|кв-ра)(?!\p{L})\s*(?:№|#)?\s*(${NUMBER_TOKEN}|${UNIT_LETTER_TOKEN})(?=$|[^\p{L}\p{N}])`,
   String.raw`(?:^|[\s,;])квартира\s*(?:№|#)\s*(${SECONDARY_TOKEN})(?=$|[^\p{L}\p{N}])`,
   String.raw`(?:^|[\s,;])(?:apt\.?|ap\.?|unit)(?!\p{L})\s*(?:no\.?|nr\.?|№|#)?\s*(${SECONDARY_TOKEN})(?=$|[^\p{L}\p{N}])`,
   String.raw`(?:^|[\s,;])apartament(?:ul)?\s*(?:nr\.?|№|#)\s*(${SECONDARY_TOKEN})(?=$|[^\p{L}\p{N}])`,
@@ -365,7 +374,7 @@ function splitAddressTail(raw) {
 
 function postfixTypedStreetAddress(line) {
   const suffix = line.match(new RegExp(
-    `(?:^|[^\\p{L}\\p{N}])((?:${STREET_WORD}\\s+){0,4}${STREET_WORD}\\s+${POSTFIX_STREET_TYPE})` +
+    `(?:^|[^\\p{L}\\p{N}])((?:${LEADING_STREET_NUMERAL}\\s+)?(?:${STREET_WORD}\\s+){0,4}${STREET_WORD}\\s+${POSTFIX_STREET_TYPE})` +
       `\\s*[,;]?\\s*(${NUMBER_TOKEN})` +
       `(?:\\s*[,;]?\\s*${BUILDING_MARKER}\\s*(${NUMBER_TOKEN}))?` +
       `(?=$|[^\\p{L}\\p{N}])`,
@@ -389,7 +398,7 @@ function postfixTypedStreetAddress(line) {
 function prefixTypedStreetAddress(line) {
   const prefix = line.match(new RegExp(
     `(?:^|[\\s,;])${PREFIX_STREET_MARKER}\\s+` +
-      `((?:${STREET_WORD}\\s+){0,4}${STREET_WORD})` +
+      `((?:${LEADING_STREET_NUMERAL}\\s+)?(?:${STREET_WORD}\\s+){0,4}${STREET_WORD})` +
       `\\s*[,;]?\\s*(?:${HOUSE_MARKER}\\s*)?(${NUMBER_TOKEN})` +
       `(?:\\s*[,;]?\\s*${BUILDING_MARKER}\\s*(${NUMBER_TOKEN}))?` +
       `(?=$|[^\\p{L}\\p{N}])`,
@@ -448,7 +457,7 @@ function explicitStreetAddress(text) {
     }
 
     const boundedPrefix = line.match(new RegExp(
-      `(?:^|[\\s,;])${PREFIX_STREET_MARKER}(?!\\p{L})\\s*((?:${STREET_WORD}\\s+){0,3}${STREET_WORD})(?=$|[,;])`,
+      `(?:^|[\\s,;])${PREFIX_STREET_MARKER}(?!\\p{L})\\s*((?:${LEADING_STREET_NUMERAL}\\s+)?(?:${STREET_WORD}\\s+){0,3}${STREET_WORD})(?=$|[,;])`,
       'iu',
     ));
     if (boundedPrefix) {

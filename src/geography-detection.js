@@ -66,8 +66,18 @@ export function detectCountryCodeFromText(value) {
   const exact = canonicalCountryCode(text);
   if (exact) return exact;
 
-  const country = COUNTRY_MATCHERS.find(({ re }) => re.test(text))?.item;
-  if (country?.code) return country.code;
+  // Multiple countries can legitimately be mentioned in one text (e.g. a
+  // relocation ad, "from X to Y"). Prefer whichever is mentioned first
+  // rather than whichever happens to be declared first in COUNTRY_MATCHERS.
+  let earliestCountry = null;
+  let earliestStart = Infinity;
+  for (const { item, re } of COUNTRY_MATCHERS) {
+    const match = text.match(re);
+    if (!match) continue;
+    const start = match.index ?? 0;
+    if (start < earliestStart) { earliestStart = start; earliestCountry = item; }
+  }
+  if (earliestCountry?.code) return earliestCountry.code;
 
   // Keep dotted U.S. and explicit "remote US" support without treating the
   // ordinary English pronoun "us" as a geography signal.
@@ -81,10 +91,21 @@ export function detectCityFromText(value, country = null) {
   const text = String(value || '');
   if (!text) return null;
   const code = country ? canonicalCountryCode(country) : null;
-  const match = CITY_MATCHERS.find((matcher) =>
-    (!code || matcher.item.country === code) && Boolean(cityTextMatch(text, matcher)));
-  if (!match) return null;
-  return Object.freeze({ canonical: match.item.canonical, country: match.item.country || null });
+  // Prefer whichever known city is mentioned first in the text, not whichever
+  // is declared first in CITY_MATCHERS (see detectCitiesFromText, which
+  // already orders by match position — this mirrors that for the single-hit
+  // case).
+  let earliest = null;
+  let earliestStart = Infinity;
+  for (const matcher of CITY_MATCHERS) {
+    if (code && matcher.item.country !== code) continue;
+    const match = cityTextMatch(text, matcher);
+    if (!match) continue;
+    const start = match.index ?? 0;
+    if (start < earliestStart) { earliestStart = start; earliest = matcher.item; }
+  }
+  if (!earliest) return null;
+  return Object.freeze({ canonical: earliest.canonical, country: earliest.country || null });
 }
 
 /** Detect every known city in free text, ordered by first mention and deduplicated by canonical name. */

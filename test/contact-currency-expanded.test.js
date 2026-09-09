@@ -7,6 +7,7 @@ import {
   normalizePhone,
   normalizeTelegramContact,
   parsePhoneNumbers,
+  parsePrimaryContact,
 } from '../src/contact.js';
 import {
   currencyDisplay,
@@ -55,6 +56,23 @@ test('telegram contacts normalize mentions and public links without transport lo
   assert.equal(contacts[0]?.url, 'https://t.me/Maria_dev');
   assert.equal(normalizeTelegramContact('telegram.me/admin_support')?.handle, '@admin_support');
   assert.deepEqual(findTelegramContacts('mail user@example.com'), []);
+});
+
+test('telegram contacts reject reserved link paths, digit-led handles, and app-name mentions', () => {
+  assert.deepEqual(findTelegramContacts('вступайте t.me/joinchat/AAAAbbbbCCCC'), []);
+  assert.deepEqual(findTelegramContacts('t.me/share/url?url=https://x.com'), []);
+  assert.deepEqual(findTelegramContacts('заказ @12345_promo'), []);
+  assert.deepEqual(findTelegramContacts('пишите @Telegram'), []);
+  assert.equal(findTelegramContacts('пишите t.me/real_landlord')[0]?.username, 'real_landlord');
+});
+
+test('parsePrimaryContact recognizes conjugated call-to-action phrasing', () => {
+  assert.equal(parsePrimaryContact('Звоните по номеру 87001234567'), '87001234567');
+  assert.equal(parsePrimaryContact('Наберите 87001234567'), '87001234567');
+  assert.equal(parsePrimaryContact('Позвоните мне +998901234567'), '+998901234567');
+  assert.equal(parsePrimaryContact('Дзвоніть 0671234567'), '0671234567');
+  // Unrelated words containing the same substrings must not false-positive.
+  assert.equal(parsePrimaryContact('хостел рядом, недорого'), null);
 });
 
 test('currency aliases cover additional regional and international currencies', () => {

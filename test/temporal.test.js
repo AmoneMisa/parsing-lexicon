@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { parseTemporal } from '../src/temporal.js';
+import { extractTemporalCandidates, parseTemporal } from '../src/temporal.js';
 
 test('temporal API preserves inferred availability dates and rental duration evidence', () => {
   const parsed = parseTemporal('Квартира свободна с 12 января, сдаётся минимум на 3 месяца', { domain: 'real-estate', publishedAt: '2026-12-20T12:00:00Z' });
@@ -135,4 +135,42 @@ test('temporal API resolves numbered relative availability dates in priority-cou
   assert.deepEqual(parseTemporal('Квартира доступна через 3 дні', context).data.availabilityDate, { year: 2026, month: 9, day: 12 });
   assert.deepEqual(parseTemporal('Disponibilă peste 2 zile', context).data.availabilityDate, { year: 2026, month: 9, day: 11 });
   assert.deepEqual(parseTemporal('Пәтер 4 күннен кейін бос', context).data.availabilityDate, { year: 2026, month: 9, day: 13 });
+});
+
+test('a bare Cyrillic "до" or "с" is not swallowed by an unrelated word containing that substring', () => {
+  // "Сдаю" starts with "С" — the "from" marker must not fire off that
+  // substring and hide the actual "до" (until) marker later in the line.
+  const untilResult = extractTemporalCandidates('Сдаю до 15.03 квартиру', { referenceDate: '2026-01-01' });
+  assert.equal(untilResult.length, 1);
+  assert.equal(untilResult[0].entityType, 'availabilityUntil');
+  assert.deepEqual(untilResult[0].value, { year: 2026, month: 3, day: 15 });
+
+  const fromResult = parseTemporal('Квартира свободна с 12 января', { domain: 'real-estate', referenceDate: '2026-12-20T12:00:00Z' });
+  assert.deepEqual(fromResult.data.availabilityDate, { year: 2027, month: 1, day: 12 });
+});
+
+test('declined "today/tomorrow" + day phrasing resolves without a spurious 1-day duration', () => {
+  const tomorrow = parseTemporal('Сдаётся с завтрашнего дня', { referenceDate: '2026-09-09T12:00:00Z' });
+  assert.deepEqual(tomorrow.data.relativeDate, { year: 2026, month: 9, day: 10 });
+  assert.equal(tomorrow.data.fixedRentalDuration, undefined);
+  assert.equal(tomorrow.data.duration, undefined);
+
+  const today = parseTemporal('Заезд с сегодняшнего дня', { referenceDate: '2026-09-09T12:00:00Z' });
+  assert.deepEqual(today.data.availabilityDate, { year: 2026, month: 9, day: 9 });
+});
+
+test('a year-less calendar date rolls over to its next occurrence even without from/until wording', () => {
+  const parsed = parseTemporal('12 января встреча', { referenceDate: '2026-12-20T12:00:00Z' });
+  assert.deepEqual(parsed.data.calendarDate, { year: 2027, month: 1, day: 12 });
+});
+
+test('"с 1 числа" and "next month" resolve to the start of the intended month', () => {
+  const firstOfMonth = parseTemporal('Сдаётся с 1 числа', { domain: 'real-estate', referenceDate: '2026-09-09T12:00:00Z' });
+  assert.deepEqual(firstOfMonth.data.availabilityDate ?? firstOfMonth.data.relativeDate, { year: 2026, month: 9, day: 1 });
+
+  const nextMonth = parseTemporal('Available next month', { domain: 'real-estate', referenceDate: '2026-09-09T12:00:00Z' });
+  assert.deepEqual(nextMonth.data.availabilityDate, { year: 2026, month: 10, day: 1 });
+
+  const decemberRollover = parseTemporal('Available next month', { domain: 'real-estate', referenceDate: '2026-12-09T12:00:00Z' });
+  assert.deepEqual(decemberRollover.data.availabilityDate, { year: 2027, month: 1, day: 1 });
 });

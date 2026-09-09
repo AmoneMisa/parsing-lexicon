@@ -314,3 +314,28 @@ test('does not expose secondary components without a valid address', () => {
 test('composeHousingAddress produces a stable canonical query string', () => {
   assert.equal(composeHousingAddress({ street: 'Воробкевича', houseNumber: '12', building: '2' }), 'Воробкевича 12 корп. 2');
 });
+
+test('a street name leading with a numeral is not stopped by the digit', () => {
+  const eighthMarch = parseHousingAddress('ул. 8 Марта, 5');
+  assert.equal(eighthMarch.street, '8 Марта');
+  assert.equal(eighthMarch.houseNumber, '5');
+
+  const fiftyYears = parseHousingAddress('ул. 50 лет Октября, 12');
+  assert.equal(fiftyYears.street, '50 лет Октября');
+  assert.equal(fiftyYears.houseNumber, '12');
+
+  // A bare house number after a normal street must still stay a house number,
+  // not get absorbed as a leading street numeral.
+  const ordinary = parseHousingAddress('ул. Ленина, 12');
+  assert.equal(ordinary.street, 'Ленина');
+  assert.equal(ordinary.houseNumber, '12');
+});
+
+test('spaced square-meter notation is never captured as an apartment unit', () => {
+  const parsed = parseHousingAddress('ул. Ленина, 12, площадь 45 кв. м');
+  assert.equal(parsed.unit, undefined);
+
+  // A genuine apartment number still parses normally.
+  const withUnit = parseHousingAddress('ул. Ленина, 12, кв. 5');
+  assert.equal(withUnit.unit, '5');
+});

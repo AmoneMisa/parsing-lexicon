@@ -2,6 +2,7 @@ export type HousingPriceParseResult = Readonly<{
   amount: number | null;
   currency: string;
   approximate: boolean;
+  range?: Readonly<{ minimum: number; maximum: number }>;
 }>;
 
 export type HousingMoneyParseContext = Readonly<{

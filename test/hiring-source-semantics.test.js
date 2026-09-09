@@ -88,6 +88,8 @@ test('vacancy source semantics centralize US, sponsorship, agency and nice-to-ha
   assert.equal(detectUsLocation('Toronto, Canada'), false);
   assert.equal(detectVisaSponsorshipWording('We can sponsor qualified candidates.'), 'offered');
   assert.equal(detectVisaSponsorshipWording('Must be authorized to work without future sponsorship.'), 'notOffered');
+  assert.equal(detectVisaSponsorshipWording('We do not offer work visa support.'), 'notOffered');
+  assert.equal(detectVisaSponsorshipWording('citizens only, no work visa sponsorship provided'), 'notOffered');
   assert.equal(detectRecruitmentAgency('International staffing agency'), true);
   assert.match(extractNiceToHaveContext('Requirements. Nice to have: Vue, GraphQL. Benefits.'), /Vue, GraphQL/);
 });

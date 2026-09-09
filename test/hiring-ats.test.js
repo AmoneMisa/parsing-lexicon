@@ -34,3 +34,9 @@ test('package ATS only permits ambiguous bare skills in an explicit skills secti
   assert.equal(prose.skills.has('Spring'), false);
   assert.equal(skills.skills.has('Spring'), true);
 });
+
+test('a skill under an explicit Skills heading outscores the same skill in unclassified preamble text', () => {
+  const inSkillsSection = scoreHiringAts('Skills\nDocker', { title: 'Backend Engineer', skills: ['Docker'] }, { fuzzySkills: true });
+  const inPreamble = scoreHiringAts('Docker is used here.\nSkills\nPython', { title: 'Backend Engineer', skills: ['Docker'] }, { fuzzySkills: true });
+  assert.ok(inSkillsSection.breakdown.skills > inPreamble.breakdown.skills);
+});

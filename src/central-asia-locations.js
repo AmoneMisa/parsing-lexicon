@@ -66,7 +66,10 @@ function explicitCityFromText(text, countryCode) {
       const start = match.index || 0;
       const before = value.slice(Math.max(0, start - 40), start);
       const after = value.slice(start + match[0].length, start + match[0].length + 48);
-      if (!/(?:shahri|город|viloyati|область|andijon|андижан)/iu.test(`${before} ${after}`)) continue;
+      // Kept in sync with geography-detection.js's CITY_CONTEXT_RE breadth
+      // (shahr/шаар/город/city/viloyat/област forms) plus the Xonobod-
+      // specific Andijan-region markers this catalog also relies on.
+      if (!/(?:shahr(?:i)?|шаар(?:ы|ында|ына|ынан)?|город(?:а|е|у|ом)?|city|viloyat(?:i)?|област\p{L}{0,4}|andijon|андижан)/iu.test(`${before} ${after}`)) continue;
     }
     matches.push({ item, length: normalizeForMatch(match[0]).length });
   }

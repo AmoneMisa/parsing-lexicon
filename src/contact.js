@@ -1,4 +1,5 @@
 import { parsePhoneNumberFromString } from 'libphonenumber-js/min';
+import { moneyCurrencyPattern } from './money-core.js';
 
 // Broad phone-like detection used by other parsers for exclusion/classification.
 // It deliberately stays tolerant and does not validate against a country plan.
@@ -6,15 +7,29 @@ const PHONE_LIKE_RE = /\+?\d(?:[\t \u00a0().-]*\d){9,}/g;
 
 // Contact extraction may start from shorter national formats, but candidates are
 // only returned after libphonenumber validation.
-const PHONE_CANDIDATE_RE = /\+?\d(?:[\t \u00a0().-]*\d){6,}(?:[\t \u00a0]*(?:ext\.?|extension|x|доб\.?|дод\.?)\s*\d{1,6})?/giu;
-const PHONE_EXTENSION_RE = /[\t \u00a0]*(?:ext\.?|extension|x|доб\.?|дод\.?)\s*(\d{1,6})$/iu;
+const PHONE_EXTENSION_ALTERNATION = 'ext\\.?|extension|x|доб\\.?|дод\\.?';
+const PHONE_CANDIDATE_RE = new RegExp(`\\+?\\d(?:[\\t \\u00a0().-]*\\d){6,}(?:[\\t \\u00a0]*(?:${PHONE_EXTENSION_ALTERNATION})\\s*\\d{1,6})?`, 'giu');
+const PHONE_EXTENSION_RE = new RegExp(`[\\t \\u00a0]*(?:${PHONE_EXTENSION_ALTERNATION})\\s*(\\d{1,6})$`, 'iu');
 const DATE_LIKE_PHONE_RE = /^\d{1,2}[./-]\d{1,2}[./-](?:\d{2}|\d{4})(?:\s+\d{1,2})?$/u;
 const PRICE_LABEL_BEFORE_NUMBER_RE = /(?:цена|ціна|нарх(?:и)?|narx(?:i)?|price|стоимост[ьи]|аренд(?:а|ная\s+плата)?|rent)\s*[:=\-–—]?\s*$/iu;
+// A currency term/symbol adjacent to a hyphenated digit span is evidence of a
+// price range even without an explicit label word ("50000-60000 сум"); a bare
+// phone number never carries one. Both sides are fully bounded (unlike
+// housing-money.js's number-adjacent variant) since this only scans nearby
+// window text, not text touching the digits themselves.
+const CURRENCY_TERM_NEARBY_RE = new RegExp(`(?<![\\p{L}\\p{N}_])(?:${moneyCurrencyPattern()})(?![\\p{L}\\p{N}_])`, 'iu');
 
-const TELEGRAM_USERNAME_RE = /^[A-Za-z0-9_]{5,32}$/;
+// Real Telegram usernames must start with a letter (Telegram itself rejects
+// a digit-led one), so a digit-led "handle" like "@12345_promo" is more
+// likely an order/SKU code than a contact.
+const TELEGRAM_USERNAME_RE = /^[A-Za-z][A-Za-z0-9_]{4,31}$/;
 const TELEGRAM_LINK_RE = /(?:https?:\/\/)?(?:t\.me|telegram\.me|telegram\.dog)\/([A-Za-z0-9_]{5,32})(?:\/[0-9]+)?(?:[/?#][^\s]*)?/giu;
 const TELEGRAM_TG_RE = /tg:\/\/resolve\?[^\s]*?\bdomain=([A-Za-z0-9_]{5,32})\b[^\s]*/giu;
 const TELEGRAM_MENTION_RE = /(^|[^\p{L}\p{N}_@])@([A-Za-z0-9_]{5,32})\b/gu;
+// Reserved t.me path segments (joinchat/share/... carry no real handle) and
+// app-name mentions people write as "@Telegram"/"@WhatsApp" — neither is a
+// contactable personal username.
+const RESERVED_TELEGRAM_NAME_RE = /^(?:joinchat|share|addstickers|addtheme|addemoji|confirmphone|login|proxy|socks|iv|s|boost|giftcode|setlanguage|telegram|whatsapp|viber|instagram|facebook)$/iu;
 
 function normalizedCountryHint(value) {
   const country = String(value || '').trim().toUpperCase();
@@ -30,7 +45,10 @@ function normalizedCountryHint(value) {
 function isExplicitPriceSpan(text, start, raw) {
   if (!/[\-–—]/u.test(raw)) return false;
   const before = text.slice(Math.max(0, start - 48), start);
-  return PRICE_LABEL_BEFORE_NUMBER_RE.test(before);
+  if (PRICE_LABEL_BEFORE_NUMBER_RE.test(before)) return true;
+  const end = start + raw.length;
+  const after = text.slice(end, Math.min(text.length, end + 24));
+  return CURRENCY_TERM_NEARBY_RE.test(before) || CURRENCY_TERM_NEARBY_RE.test(after);
 }
 
 function splitPhoneExtension(raw) {
@@ -154,7 +172,7 @@ export function normalizePhone(value, options = {}) {
 
 function telegramContact(username, raw, start, source) {
   const normalized = String(username || '').replace(/^@/, '');
-  if (!TELEGRAM_USERNAME_RE.test(normalized)) return null;
+  if (!TELEGRAM_USERNAME_RE.test(normalized) || RESERVED_TELEGRAM_NAME_RE.test(normalized)) return null;
   return Object.freeze({
     start,
     end: start + raw.length,
@@ -214,7 +232,10 @@ export function parsePrimaryContact(value) {
   }
   // Bounded like the `trailing` keyword below: "тел"/"phone" must be a whole
   // word, not a suffix of an unrelated word ("хостел", "котел").
-  const keyword = text.match(/(?<![\p{L}\p{N}_])(?:tel|тел|phone|моб|whats?app|viber|telegram|звонит|звоніть|aloqa|byla|contact)(?![\p{L}\p{N}_])[^\d+]{0,8}(\+?\d[\d\s().-]{6,}\d)/iu);
+  // Widened beyond bare stems to cover the conjugated imperative forms
+  // ('Звоните', 'Позвоните', 'Наберите', 'Дзвоніть') that are the actual
+  // everyday phrasing in CIS classifieds — the bare stems alone missed them.
+  const keyword = text.match(/(?<![\p{L}\p{N}_])(?:tel|тел|phone|моб|whats?app|viber|telegram|(?:по|пере|за)?звонит\p{L}*|(?:за|під)?дзвоніть\p{L}*|звоніть\p{L}*|наберит\p{L}*|номер\p{L}*|aloqa|byla|contact)(?![\p{L}\p{N}_])[^\d+]{0,20}(\+?\d[\d\s().-]{6,}\d)/iu);
   if (keyword) {
     const digits = keyword[1].replace(/\D/g, '');
     if (digits.length >= 9 && digits.length <= 15) return keyword[1].trim();

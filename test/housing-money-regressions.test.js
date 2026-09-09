@@ -223,3 +223,32 @@ test('a total sale price still wins when a separate per-square-meter quote is pr
     approximate: false,
   });
 });
+
+test('a bare build year is not mistaken for the listing price', () => {
+  assert.deepEqual(parseHousingPrice('Дом 2022 года постройки, сдается в долгосрочную аренду', {country: 'UA'}), {
+    amount: null,
+    currency: 'UAH',
+    approximate: false,
+  });
+  // A year next to real price evidence still stays out of the year guard's way.
+  assert.deepEqual(parseHousingPrice('Продаю дом, цена 2022 $', {country: 'UA'}), {
+    amount: 2022,
+    currency: 'USD',
+    approximate: false,
+  });
+});
+
+test('a labelled price range keeps its scale on both endpoints', () => {
+  assert.deepEqual(parseHousingPrice('цена 50-60 тыс сум', {country: 'UZ'}), {
+    amount: 50000,
+    currency: 'UZS',
+    approximate: false,
+    range: {minimum: 50000, maximum: 60000},
+  });
+});
+
+test('a keyword-less price range is not deleted by phone masking', () => {
+  const result = parseHousingPrice('Продаю, 50000-60000 сум', {country: 'UZ'});
+  assert.notEqual(result.amount, null);
+  assert.equal(result.currency, 'UZS');
+});

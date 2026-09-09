@@ -3,6 +3,7 @@ import { aliasesOf, escapeRegex, normalizeUnicode } from './normalization.js';
 import { parseSalary } from './money.js';
 import { extractCandidateName } from './hiring-candidate-fields.js';
 import { countryCurrency } from './country-context.js';
+import { SPONSORSHIP_NOT_OFFERED_RE, SPONSORSHIP_OFFERED_RE } from './hiring-requirements.js';
 
 const FIELD_EXTRA_ALIASES = Object.freeze({
   candidate: Object.freeze({
@@ -248,13 +249,12 @@ export function detectUsLocation(value) {
   return /\bunited states\b|\busa\b|\bu\.s\.?\b|\bUS(?:\s+remote)?\b|\b(?:AL|AK|AZ|AR|CA|CO|CT|DE|FL|GA|HI|ID|IL|IN|IA|KS|KY|LA|ME|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VT|VA|WA|WV|WI|WY|DC)\b/i.test(String(value || ''));
 }
 
-const NEGATIVE_SPONSORSHIP_RE = /(?:\bno\s+(?:visa\s+|immigration\s+|employment\s+)?sponsorship\b|\b(?:will\s+not|cannot|can't|unable\s+to|not\s+able\s+to)\s+sponsor\b|\bdo(?:es)?\s+not\s+(?:offer|provide)\s+(?:visa\s+|immigration\s+|employment\s+)?sponsorship\b|\bwithout\s+(?:the\s+need\s+for\s+)?(?:(?:current\s+(?:and\/or|or)\s+future|current|future)\s+)?(?:employer\s+|visa\s+)?sponsorship\b|\bmust\s+(?:be\s+)?(?:legally\s+)?authoriz\w+\s+to\s+work[^.!?]{0,80}\bwithout\s+(?:current\s+or\s+future\s+|current\s+|future\s+)?sponsorship\b|\bmust\s+not\s+require\s+(?:current\s+or\s+future\s+|current\s+|future\s+)?(?:visa\s+|employment\s+)?sponsorship\b|\b(?:current\s+and\/or\s+future|current\s+or\s+future)\s+sponsorship\s+(?:is\s+)?not\s+(?:available|provided|offered)\b|\bsponsorship\s+(?:is\s+)?not\s+(?:available|provided|offered)\b|\bno\s+c2c(?:\s+or\s+visa\s+sponsorship)?\b|\bmay\s+not\s+be\s+able\s+to\b[^\n!?]{0,450}\b(?:sponsor|support|provide)\b[^\n!?]{0,180}\bsponsorship\b|\b(?:will|can|may)\s+not\b[^\n!?]{0,220}\b(?:support|provide)\b[^\n!?]{0,160}\bsponsorship\b|\bnot\s+(?:currently\s+)?(?:able\s+to\s+)?(?:support|provide)\b[^\n!?]{0,160}\bsponsorship\b)/iu;
-const POSITIVE_SPONSORSHIP_RE = /(?:\bwill\s+sponsor\b|\bwe\s+sponsor\b|\b(?:can|may)\s+sponsor\b|\bopen\s+to\s+(?:visa\s+)?sponsorship\b|\bvisa\s+sponsorship\s+(?:is\s+)?(?:available|provided|offered|possible)\b|\b(?:h-?1b|h1-b)\s+(?:visa\s+)?sponsorship\b|\bh-?1b\s+transfer\b|\bimmigration\s+sponsorship\b|\bemployment\s+visa\s+sponsorship\b|\bwork\s+visa\s+sponsorship\b|\bsponsor(?:ing)?\s+(?:qualified|eligible|selected)\s+candidates\b|\beligible\s+for\s+(?:visa\s+)?sponsorship\b|\bvisa\s+support\b|\bwork\s+visa\s+support\b)/iu;
-
+// The negative/positive regexes themselves live in hiring-requirements.js so
+// this detector and isNoSponsorshipRequirement() cannot drift apart.
 export function detectVisaSponsorshipWording(value) {
   const text = String(value || '');
-  if (NEGATIVE_SPONSORSHIP_RE.test(text)) return 'notOffered';
-  if (POSITIVE_SPONSORSHIP_RE.test(text)) return 'offered';
+  if (SPONSORSHIP_NOT_OFFERED_RE.test(text)) return 'notOffered';
+  if (SPONSORSHIP_OFFERED_RE.test(text)) return 'offered';
   return null;
 }
 

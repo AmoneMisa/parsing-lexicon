@@ -76,7 +76,10 @@ const KZ_BASE_CITIES = Object.freeze([
   entity('Karaganda', { kk: ['Қарағанды'], ru: ['Караганда'], en: ['Karaganda', 'Qaragandy'] }, { country: 'KZ' }),
   entity('Aktobe', { kk: ['Ақтөбе'], ru: ['Актобе'], en: ['Aktobe', 'Aqtobe'] }, { country: 'KZ' }),
   entity('Atyrau', { kk: ['Атырау'], ru: ['Атырау'], en: ['Atyrau'] }, { country: 'KZ' }),
-  entity('Oral', { kk: ['Орал'], ru: ['Уральск', 'Орал'], en: ['Oral', 'Uralsk'] }, { country: 'KZ' }),
+  // "Oral" is an ordinary English word ("an oral agreement"); "Уральск"/
+  // "Uralsk" are unambiguous and stay unguarded, only the short aliases need
+  // nearby city context.
+  entity('Oral', { kk: ['Орал'], ru: ['Уральск', 'Орал'], en: ['Oral', 'Uralsk'] }, { country: 'KZ', contextRequiredAliases: ['Oral', 'Орал'] }),
   entity('Taraz', { kk: ['Тараз'], ru: ['Тараз', 'Джамбул'], en: ['Taraz'] }, { country: 'KZ' }),
   entity('Pavlodar', { kk: ['Павлодар'], ru: ['Павлодар'], en: ['Pavlodar'] }, { country: 'KZ' }),
   entity('Semey', { kk: ['Семей'], ru: ['Семей', 'Семипалатинск'], en: ['Semey', 'Semipalatinsk'] }, { country: 'KZ' }),
@@ -148,7 +151,10 @@ export const KZ_CITY_ADDITIONS = Object.freeze([
   catalogCity('Kurchatov', { kk: ['Курчатов'], ru: ['Курчатов'], en: ['Kurchatov'] }, { country: 'KZ', priority: 'P4' }),
   catalogCity('Ayagoz', { kk: ['Аягөз'], ru: ['Аягоз'], en: ['Ayagoz'] }, { country: 'KZ', priority: 'P4' }),
   catalogCity('Khromtau', { kk: ['Хромтау'], ru: ['Хромтау'], en: ['Khromtau'] }, { country: 'KZ', priority: 'P4' }),
-  catalogCity('Alga', { kk: ['Алға'], ru: ['Алга'], en: ['Alga'] }, { country: 'KZ', priority: 'P4' }),
+  // "Alga" (a common Kazakh exclamation, "forward!") and "alga" (the English
+  // word for algae) collide badly in ordinary prose, with no unambiguous
+  // longer alias available.
+  catalogCity('Alga', { kk: ['Алға'], ru: ['Алга'], en: ['Alga'] }, { country: 'KZ', priority: 'P4', contextRequired: true }),
   catalogCity('Kandyagash', { kk: ['Қандыағаш'], ru: ['Кандыагаш'], en: ['Kandyagash'] }, { country: 'KZ', priority: 'P4' }),
   catalogCity('Shalkar', { kk: ['Шалқар'], ru: ['Шалкар'], en: ['Shalkar'] }, { country: 'KZ', priority: 'P4' }),
   catalogCity('Kulsary', { kk: ['Құлсары'], ru: ['Кульсары'], en: ['Kulsary'] }, { country: 'KZ', priority: 'P4' }),
@@ -160,9 +166,12 @@ export const KZ_CITY_ADDITIONS = Object.freeze([
   catalogCity('Zhitikara', { kk: ['Жітіқара'], ru: ['Житикара'], en: ['Zhitikara'] }, { country: 'KZ', priority: 'P4' }),
   catalogCity('Aksai', { kk: ['Ақсай'], ru: ['Аксай'], en: ['Aksai'] }, { country: 'KZ', priority: 'P4' }),
   catalogCity('Baikonur', { kk: ['Байқоңыр'], ru: ['Байконур'], en: ['Baikonur'] }, { country: 'KZ', priority: 'P4', type: 'special_status_city' }),
-  catalogCity('Aral', { kk: ['Арал'], ru: ['Аральск', 'Арал'], en: ['Aral', 'Aralsk'] }, { country: 'KZ', priority: 'P4' }),
+  // "Aral"/"Арал" collide with "Aral Sea" mentions; "Аральск"/"Aralsk" stay
+  // unguarded since they're unambiguous.
+  catalogCity('Aral', { kk: ['Арал'], ru: ['Аральск', 'Арал'], en: ['Aral', 'Aralsk'] }, { country: 'KZ', priority: 'P4', contextRequiredAliases: ['Aral', 'Арал'] }),
   catalogCity('Kazaly', { kk: ['Қазалы'], ru: ['Казалинск', 'Казалы'], en: ['Kazaly', 'Kazalinsk'] }, { country: 'KZ', priority: 'P4' }),
-  catalogCity('Shu', { kk: ['Шу'], ru: ['Шу'], en: ['Shu'] }, { country: 'KZ', priority: 'P4' }),
+  // "Shu" is a two-letter token with no unambiguous longer alias.
+  catalogCity('Shu', { kk: ['Шу'], ru: ['Шу'], en: ['Shu'] }, { country: 'KZ', priority: 'P4', contextRequired: true }),
   catalogCity('Karatau', { kk: ['Қаратау'], ru: ['Каратау'], en: ['Karatau'] }, { country: 'KZ', priority: 'P4' }),
   catalogCity('Zhanatas', { kk: ['Жаңатас'], ru: ['Жанатас'], en: ['Zhanatas'] }, { country: 'KZ', priority: 'P4' }),
   catalogCity('Merke', { kk: ['Мерке'], ru: ['Мерке'], en: ['Merke'] }, { country: 'KZ', priority: 'P4' }),

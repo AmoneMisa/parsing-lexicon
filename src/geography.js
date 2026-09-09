@@ -67,7 +67,9 @@ export const KG_CITIES = Object.freeze([
   entity('Batken', { ky: ['Баткен'], ru: ['Баткен'], en: ['Batken'] }, { country: 'KG', type: 'city' }),
   entity('Kara-Balta', { ky: ['Кара-Балта', 'Кара Балта'], ru: ['Кара-Балта', 'Кара Балта'], en: ['Kara-Balta', 'Kara Balta'] }, { country: 'KG', type: 'city' }),
   entity('Balykchy', { ky: ['Балыкчы'], ru: ['Балыкчи'], en: ['Balykchy', 'Balykchi'] }, { country: 'KG', type: 'city' }),
-  entity('Kant', { ky: ['Кант'], ru: ['Кант'], en: ['Kant'] }, { country: 'KG', type: 'city' }),
+  // "Kant" collides with the philosopher's name in ordinary English prose
+  // and has no unambiguous longer alias, unlike Manas/Jalal-Abad above.
+  entity('Kant', { ky: ['Кант'], ru: ['Кант'], en: ['Kant'] }, { country: 'KG', type: 'city', contextRequired: true }),
   entity('Uzgen', { ky: ['Өзгөн', 'Озгон'], ru: ['Узген', 'Озгон'], en: ['Uzgen', 'Özgön', 'Ozgon'] }, { country: 'KG', type: 'city' }),
   entity('Kyzyl-Kiya', { ky: ['Кызыл-Кыя', 'Кызыл Кыя'], ru: ['Кызыл-Кия', 'Кызыл Кия'], en: ['Kyzyl-Kiya', 'Kyzyl Kiya'] }, { country: 'KG', type: 'city' }),
   entity('Aydarken', { ky: ['Айдаркен'], ru: ['Айдаркен', 'Хайдаркан'], en: ['Aydarken', 'Aidarken', 'Khaidarkan'] }, { country: 'KG', type: 'city' }),

@@ -70,9 +70,37 @@ export function requiresUsSponsorship(value) {
   return null;
 }
 
+// Shared with hiring-source-semantics.js's detectVisaSponsorshipWording so the
+// negative and positive sponsorship signals cannot drift into two competing
+// implementations. SPONSORSHIP_OBJECT covers "visa support" as an alternative
+// object to "sponsorship" (not just the latter) so "We do not offer work visa
+// support" / "no work visa sponsorship provided" resolve the same way as
+// "we do not offer visa sponsorship" — the modifier group tries "work visa "
+// as a unit first and falls back (via normal regex backtracking) to "work "
+// alone so "visa support" is still available as the object.
+const SPONSORSHIP_OBJECT_MODIFIER = '(?:work\\s+visa\\s+|work\\s+|visa\\s+|immigration\\s+|employment\\s+)?';
+const SPONSORSHIP_OBJECT = '(?:sponsorship|visa\\s+support)';
+
+export const SPONSORSHIP_NOT_OFFERED_RE = new RegExp(
+  `(?:\\bno\\s+${SPONSORSHIP_OBJECT_MODIFIER}${SPONSORSHIP_OBJECT}\\b`
+  + `|\\b(?:will\\s+not|cannot|can't|unable\\s+to|not\\s+able\\s+to)\\s+sponsor\\b`
+  + `|\\b(?:does|do)\\s+not\\s+(?:offer|provide|support)\\s+(?:current\\s+or\\s+future\\s+)?${SPONSORSHIP_OBJECT_MODIFIER}${SPONSORSHIP_OBJECT}\\b`
+  + `|\\bwithout\\s+(?:the\\s+need\\s+for\\s+)?(?:(?:current\\s+(?:and\\/or|or)\\s+future|current|future)\\s+)?(?:employer\\s+|visa\\s+)?sponsorship\\b`
+  + `|\\bmust\\s+(?:be\\s+)?(?:legally\\s+)?authoriz\\w+\\s+to\\s+work[^.!?]{0,100}\\bwithout\\s+(?:current\\s+or\\s+future\\s+)?sponsorship\\b`
+  + `|\\bmust\\s+not\\s+require\\s+(?:current\\s+or\\s+future\\s+)?(?:visa\\s+|employment\\s+)?sponsorship\\b`
+  + `|\\b(?:current\\s+and\\/or\\s+future|current\\s+or\\s+future)\\s+sponsorship\\s+(?:is\\s+)?not\\s+(?:available|provided|offered)\\b`
+  + `|\\bsponsorship\\s+(?:is\\s+)?not\\s+(?:available|provided|offered)\\b`
+  + `|\\bno\\s+c2c(?:\\s+or\\s+visa\\s+sponsorship)?\\b`
+  + `|\\bmay\\s+not\\s+be\\s+able\\s+to\\b[^\\n!?]{0,450}\\b(?:sponsor|support|provide)\\b[^\\n!?]{0,180}\\bsponsorship\\b`
+  + `|\\b(?:will|can|may)\\s+not\\b[^\\n!?]{0,220}\\b(?:sponsor|support|provide)\\b[^\\n!?]{0,160}\\bsponsorship\\b`
+  + `|\\bnot\\s+(?:currently\\s+)?(?:able\\s+to\\s+)?(?:sponsor|support|provide)\\b[^\\n!?]{0,160}\\bsponsorship\\b)`,
+  'iu',
+);
+
+export const SPONSORSHIP_OFFERED_RE = /(?:\bwill\s+sponsor\b|\bwe\s+sponsor\b|\b(?:can|may)\s+sponsor\b|\bopen\s+to\s+(?:visa\s+)?sponsorship\b|\bvisa\s+sponsorship\s+(?:is\s+)?(?:available|provided|offered|possible)\b|\b(?:h-?1b|h1-b)\s+(?:visa\s+)?sponsorship\b|\bh-?1b\s+transfer\b|\bimmigration\s+sponsorship\b|\bemployment\s+visa\s+sponsorship\b|\bwork\s+visa\s+sponsorship\b|\bsponsor(?:ing)?\s+(?:qualified|eligible|selected)\s+candidates\b|\beligible\s+for\s+(?:visa\s+)?sponsorship\b|\bvisa\s+support\b|\bwork\s+visa\s+support\b)/iu;
+
 export function isNoSponsorshipRequirement(value) {
-  const text = String(value || '');
-  return /(?:\bno\s+(?:visa\s+|immigration\s+|employment\s+)?sponsorship\b|\b(?:will\s+not|cannot|can't|unable\s+to|not\s+able\s+to)\s+sponsor\b|\b(?:does|do)\s+not\s+(?:offer|provide|support)\s+(?:current\s+or\s+future\s+)?(?:visa\s+|employment\s+)?sponsorship\b|\bwithout\s+(?:the\s+need\s+for\s+)?(?:current\s+or\s+future\s+)?(?:employer\s+|visa\s+)?sponsorship\b|\bmust\s+(?:be\s+)?(?:legally\s+)?authoriz\w+\s+to\s+work[^.!?]{0,100}\bwithout\s+(?:current\s+or\s+future\s+)?sponsorship\b|\bsponsorship\s+(?:is\s+)?not\s+(?:available|provided|offered)\b|\bmay\s+not\s+be\s+able\s+to\b[^\n!?]{0,450}\b(?:sponsor|support|provide)\b[^\n!?]{0,180}\bsponsorship\b|\b(?:will|can|may)\s+not\b[^\n!?]{0,220}\b(?:sponsor|support|provide)\b[^\n!?]{0,160}\bsponsorship\b|\bnot\s+(?:currently\s+)?(?:able\s+to\s+)?(?:sponsor|support|provide)\b[^\n!?]{0,160}\bsponsorship\b)/i.test(text);
+  return SPONSORSHIP_NOT_OFFERED_RE.test(String(value || ''));
 }
 
 const REQUIRED_MARKER_RE = /\b(requirements?|qualifications?|minimum qualifications?|required skills?|must[- ]?have|you have|what (?:we|you) (?:are looking for|need|bring)|you(?:'|’)ll need|who you are|ideal candidate|what makes you a fit)\b|требован|квалификац|обязательн|необходим(?:о|ые|ый)|что мы (?:жд[её]м|ожидаем)|кого мы ищем|вимог|кваліфікац|обов['’]?язков|необхідн|кого ми шукаємо/i;

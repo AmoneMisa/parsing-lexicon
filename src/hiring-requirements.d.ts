@@ -9,6 +9,9 @@ export function detectDegreeFields(value: unknown): readonly DegreeField[];
 export function extractRequiredExperienceYears(value: unknown): number | null;
 export function hasUsWorkAuthorization(value: unknown): boolean;
 export function requiresUsSponsorship(value: unknown): boolean | null;
+// Shared with hiring-source-semantics.js's detectVisaSponsorshipWording.
+export const SPONSORSHIP_NOT_OFFERED_RE: RegExp;
+export const SPONSORSHIP_OFFERED_RE: RegExp;
 export function isNoSponsorshipRequirement(value: unknown): boolean;
 export function bucketVacancyText(value: unknown): Readonly<{ required: string; optional: string; context: string; noise: string }>;
 export function classifyCvSectionHeading(value: unknown): CvSection | null;

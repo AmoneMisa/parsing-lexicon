@@ -34,6 +34,12 @@ test('normalizes US work authorization and sponsorship evidence', () => {
   assert.equal(isNoSponsorshipRequirement('This employer does not offer visa sponsorship.'), true);
 });
 
+test('recognizes "visa support" phrasing as negatable, not just "sponsorship"', () => {
+  assert.equal(isNoSponsorshipRequirement('We do not offer work visa support.'), true);
+  assert.equal(isNoSponsorshipRequirement('citizens only, no work visa sponsorship provided'), true);
+  assert.equal(isNoSponsorshipRequirement('no visa support for this role'), true);
+});
+
 test('handles dotted abbreviations inside long sponsorship clauses', () => {
   const text = 'For US based roles only, the Company may not be able to employ candidates for this role who have United States work authorization related to certain U.S. visa categories, or support future H-1B sponsorship at this time.';
   assert.equal(isNoSponsorshipRequirement(text), true);

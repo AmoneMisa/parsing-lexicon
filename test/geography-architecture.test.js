@@ -45,6 +45,21 @@ test('context-required cities stay guarded in free text', () => {
   assert.equal(detectCityFromText('Xonobod shahri', 'UZ')?.canonical, 'Xonobod');
 });
 
+test('short ambiguous KZ/KG city names stay guarded against ordinary word collisions', () => {
+  assert.equal(detectCityFromText('We had an oral agreement about the rent'), null);
+  assert.equal(detectCityFromText('Kant wrote about ethics'), null);
+  assert.equal(detectCityFromText('Alga forever, let\'s go team'), null);
+  assert.equal(detectCityFromText('переезд в город Орал')?.canonical, 'Oral');
+  assert.equal(detectCityFromText('квартира рядом с Уральском')?.canonical, 'Oral');
+});
+
+test('detectCityFromText and detectCountryCodeFromText prefer whichever match appears first in the text', () => {
+  assert.equal(detectCityFromText('Flight from Almaty to Tashkent tonight')?.canonical, 'Almaty');
+  assert.equal(detectCityFromText('Flight from Tashkent to Almaty tonight')?.canonical, 'Tashkent');
+  assert.equal(detectCountryCodeFromText('Moved from Uzbekistan to Kazakhstan for work'), 'UZ');
+  assert.equal(detectCountryCodeFromText('Moved from Kazakhstan to Uzbekistan for work'), 'KZ');
+});
+
 test('country scopes accept codes and aliases', () => {
   assert.equal(canonicalCity('Київ', 'UA'), 'Kyiv');
   assert.equal(canonicalCity('Київ', 'Ukraine'), 'Kyiv');

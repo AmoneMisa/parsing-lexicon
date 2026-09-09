@@ -247,22 +247,27 @@ export function extractHousingMoneyCandidates(value, context = '') {
   // before generic amounts so the second endpoint cannot be selected merely
   // because it is larger.
   const labelledPriceRangeRe = new RegExp(
-    `${PRICE_KEYWORD}\\s*[:=\\-–—]?\\s*(${MONEY_NUMBER_PATTERN})\\s*(?:-{1,3}|–|—|to|до|dan\\s+gacha)\\s*(${MONEY_NUMBER_PATTERN})(?=$|[^\\p{L}\\p{N}_])`,
+    `${PRICE_KEYWORD}\\s*[:=\\-–—]?\\s*(${MONEY_NUMBER_PATTERN})\\s*(?:(${SCALE_PATTERN})(?=$|[^\\p{L}\\p{N}_]))?\\s*(?:-{1,3}|–|—|to|до|dan\\s+gacha)\\s*(${MONEY_NUMBER_PATTERN})\\s*(?:(${SCALE_PATTERN})(?=$|[^\\p{L}\\p{N}_]))?(?=$|[^\\p{L}\\p{N}_])`,
     'igu',
   );
   for (const match of text.matchAll(labelledPriceRangeRe)) {
-    const minimum = parseNumericAmount(match[1]);
-    const maximum = parseNumericAmount(match[2]);
+    // A scale stated on only one endpoint applies to both: "50-60 тыс сум"
+    // means 50,000-60,000, not 50-60,000. Mirrors money.js's range parsing.
+    const firstScale = match[2] || match[4] || null;
+    const secondScale = match[4] || match[2] || null;
+    const minimum = parsedMoneyAmount(match[1], firstScale);
+    const maximum = parsedMoneyAmount(match[3], secondScale);
     if (minimum == null || maximum == null || minimum > maximum) continue;
     const start = match.index ?? 0;
     addCandidate({
-      amount: Math.round(minimum),
+      amount: minimum,
       currency: country === 'UZ' ? 'UZS' : fallbackCurrency || '',
       start,
       end: start + match[0].length,
       explicitCurrency: false,
+      scale: firstScale || secondScale || null,
       priceKeyword: true,
-      range: Object.freeze({ minimum: Math.round(minimum), maximum: Math.round(maximum) }),
+      range: Object.freeze({ minimum, maximum }),
       confidenceBoost: 0.2,
     });
   }
@@ -393,11 +398,13 @@ export function parseHousingPrice(value, context = '') {
   // regional formats below remain as deterministic fallbacks until each is
   // represented by a richer candidate extractor.
   if (preferredCandidate && preferredCandidate.confidence >= 0.65) {
-    return Object.freeze({
+    const result = {
       amount: preferredCandidate.amount,
       currency: preferredCandidate.currency || fallbackCurrency || '',
       approximate: preferredCandidate.approximate,
-    });
+    };
+    if (preferredCandidate.range) result.range = preferredCandidate.range;
+    return Object.freeze(result);
   }
   let currency = moneyCurrencyFromText(priceText, fallbackCurrency || '')
     || moneyCurrencyFromText(text, fallbackCurrency || '')
@@ -545,7 +552,16 @@ export function parseHousingPrice(value, context = '') {
       const digits = raw.replace(/[\s.,]/g, '');
       if (digits[0] === '0') continue;
       const amount = parseNumericAmount(raw);
-      if (amount != null && amount >= 1000 && amount <= 5_000_000_000 && (best == null || amount > best)) best = amount;
+      if (amount == null || amount < 1000 || amount > 5_000_000_000) continue;
+      // A bare 4-digit amount in this range is at least as likely to be a
+      // build year ("2022 \u0433\u043E\u0434\u0430 \u043F\u043E\u0441\u0442\u0440\u043E\u0439\u043A\u0438") as a price. Only accept it here
+      // when there's independent currency/price evidence nearby.
+      if (amount >= 1900 && amount <= 2100) {
+        const window = priceText.slice(Math.max(0, start - 40), Math.min(priceText.length, start + raw.length + 40));
+        const hasPriceEvidence = PRICE_KEYWORD_RE.test(window) || Boolean(moneyCurrencyFromText(window, ''));
+        if (!hasPriceEvidence) continue;
+      }
+      if (best == null || amount > best) best = amount;
     }
     price = best;
   }

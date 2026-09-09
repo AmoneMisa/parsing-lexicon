@@ -23,13 +23,14 @@ const DAY_ALIASES = Object.freeze({
   сб: 5, суббота: 5, субботы: 5, субота: 5, sat: 5, saturday: 5, shanba: 5, сенбі: 5, ишемби: 5, sâmbătă: 5, sambata: 5,
   вс: 6, воскресенье: 6, воскресенья: 6, неділя: 6, неділю: 6, sun: 6, sunday: 6, yakshanba: 6, жексенбі: 6, жекшемби: 6, duminică: 6, duminica: 6,
 });
-const RELATIVE_RE = /(?<![\p{L}\p{N}])(?:с\s+|з\s+|dan\s+)?(сегодня|завтра|послезавтра|сьогодні|післязавтра|bugun|ertaga|indin|бүгін|ертең|бүрсігүні|бүгүн|эртең|бүрсүгүнү|astăzi|azi|mâine|maine|poimâine|poimaine|today|tomorrow|day\s+after\s+tomorrow|через\s+(\d+|неделю|две\s+недели)\s*(?:дн(?:я|ей)?|день|недел[ьюи])?)(?![\p{L}\p{N}])/giu;
+const RELATIVE_RE = /(?<![\p{L}\p{N}])(?:с\s+|з\s+|dan\s+)?(послезавтрашн\p{L}*\s+дн\p{L}*|сегодняшн\p{L}*\s+дн\p{L}*|завтрашн\p{L}*\s+дн\p{L}*|післязавтрашн\p{L}*\s+дн\p{L}*|сьогоднішн\p{L}*\s+дн\p{L}*|сегодня|завтра|послезавтра|сьогодні|післязавтра|bugun|ertaga|indin|бүгін|ертең|бүрсігүні|бүгүн|эртең|бүрсүгүнү|astăzi|azi|mâine|maine|poimâine|poimaine|today|tomorrow|day\s+after\s+tomorrow|через\s+(\d+|неделю|две\s+недели)\s*(?:дн(?:я|ей)?|день|недел[ьюи])?)(?![\p{L}\p{N}])/giu;
 const EXTENDED_RELATIVE_RE = /(?<![\p{L}\p{N}])(?:через\s+(\d+)\s+(дні|днів|тижд(?:ень|ні|нів|ня))|peste\s+(\d+)\s+(zile?|săptămân(?:ă|i)|saptaman(?:a|i))|(\d+)\s+(күннен|аптадан|кун(?:дөн|дон)|жумадан)\s+(?:кейін|кийин))(?![\p{L}\p{N}])/giu;
 const DAY_PATTERN = Object.keys(DAY_ALIASES).sort((a, b) => b.length - a.length).join('|');
 const WEEKDAY_RANGE_RE = new RegExp(`(?<![\\p{L}\\p{N}])(${DAY_PATTERN})\\s*(?:-|–|—|до|to|по)\\s*(${DAY_PATTERN})(?![\\p{L}\\p{N}])`, 'giu');
 const NEXT_WEEKDAY_RE = new RegExp(`(?<![\\p{L}\\p{N}])(?:со?\\s+следующ(?:его|ей)\\s+|з\\s+наступн(?:ого|ої)\\s+|next\\s+)(${DAY_PATTERN})(?![\\p{L}\\p{N}])`, 'giu');
 const END_OF_MONTH_RE = new RegExp(`(?<![\\p{L}\\p{N}])(?:до|until|p[âa]nă\\s+la|gacha|дейін|чейин|available\\s+until)\\s+(?:конца|кінця|sf[âa]rșit(?:ul)?(?:\\s+lunii)?|end\\s+of)\\s+(${MONTH_NAMES})(?:\\s+(20\\d{2}))?(?![\\p{L}\\p{N}])`, 'giu');
-const START_OF_MONTH_RE = /(?<![\p{L}\p{N}])(?:с|з|from|din|dan|бастап|баштап)\s+(?:начала\s+месяца|початку\s+місяця|începutul\s+lunii|start\s+of\s+(?:the\s+)?month)(?![\p{L}\p{N}])/giu;
+const START_OF_MONTH_RE = /(?<![\p{L}\p{N}])(?:с|з|from|din|dan|бастап|баштап)\s+(?:начала\s+месяца|початку\s+місяця|începutul\s+lunii|start\s+of\s+(?:the\s+)?month|1(?:-го)?\s+числа|первого\s+числа|1(?:-го)?\s+числа\s+місяця)(?![\p{L}\p{N}])/giu;
+const NEXT_MONTH_RE = /(?<![\p{L}\p{N}])(?:next\s+month|со?\s+следующего\s+месяца|з\s+наступного\s+місяця)(?![\p{L}\p{N}])/giu;
 const SHIFT_RE = /(?<!\d)(\d{1,2})\s*(?:смен[аы]|shift)\s*(\d{1,2}(?:[:.]\d{2})?\s*(?:am|pm|утра|вечера)?)\s*(?:-|–|—|до|to)\s*(\d{1,2}(?:[:.]\d{2})?\s*(?:am|pm|утра|вечера)?)/giu;
 
 function referenceEntry(context = {}) {
@@ -44,8 +45,19 @@ function referenceDate(context = {}) { return referenceEntry(context).date; }
 function dateValue(year, month, day) { return Object.freeze({ year, month, day }); }
 function validDate(value) { const date = new Date(Date.UTC(value.year, value.month - 1, value.day)); return date.getUTCFullYear() === value.year && date.getUTCMonth() === value.month - 1 && date.getUTCDate() === value.day; }
 function candidate(entityType, value, match, parser, confidence, evidence) { const start = match.index ?? 0; return createParseCandidate({ id: `${entityType}:${start}`, entityType, value, raw: match[0], start, end: start + match[0].length, parser, confidence, evidence }); }
-function relationNear(text, start) { const before = text.slice(Math.max(0, start - 32), start); return /(?:с|з|from|din|dan|бастап|баштап|доступна\s+(?:с|з)|заезд\s+(?:с|з))/iu.test(before) ? 'from' : /(?:до|until|p[âa]nă\s+la|gacha|дейін|чейин|не\s+позднее)/iu.test(before) ? 'until' : 'exact'; }
-function inferYear(month, day, relation, context) { const reference = referenceDate(context); let year = reference.getUTCFullYear(); const candidateDate = Date.UTC(year, month - 1, day); if (relation === 'from' && candidateDate < reference.getTime() - 36 * 3_600_000) year += 1; if (relation === 'until' && candidateDate < reference.getTime() - 36 * 3_600_000) year += 1; return year; }
+// Bare "с"/"з"/"до" are single Cyrillic letters and match as a substring of
+// countless ordinary words ("Сдаю", "доступна") without a boundary guard —
+// "Сдаю до 15.03" was misread as 'from' off the "С" in "Сдаю" alone, hiding
+// the actual "до" (until) marker that followed.
+const RELATION_FROM_RE = /(?<![\p{L}\p{N}])(?:с|з|from|din|dan|бастап|баштап|доступна\s+(?:с|з)|заезд\s+(?:с|з))(?![\p{L}\p{N}])/iu;
+const RELATION_UNTIL_RE = /(?<![\p{L}\p{N}])(?:до|until|p[âa]nă\s+la|gacha|дейін|чейин|не\s+позднее)(?![\p{L}\p{N}])/iu;
+function relationNear(text, start) { const before = text.slice(Math.max(0, start - 32), start); return RELATION_FROM_RE.test(before) ? 'from' : RELATION_UNTIL_RE.test(before) ? 'until' : 'exact'; }
+// A year-less date is assumed to refer to its next occurrence when the
+// current year's reading has already passed — not just for explicit
+// "from"/"until" wording. A bare mention with no relation ('exact') is the
+// common case (e.g. "12 января встреча") and would otherwise silently
+// resolve to a date up to a year in the past.
+function inferYear(month, day, relation, context) { const reference = referenceDate(context); let year = reference.getUTCFullYear(); const candidateDate = Date.UTC(year, month - 1, day); if (candidateDate < reference.getTime() - 36 * 3_600_000) year += 1; return year; }
 function parseClock(raw) { const match = String(raw).trim().match(new RegExp(String.raw`^(\d{1,2})(?:[:.](\d{2}))?\s*(${TIME_SUFFIX})?$`, 'iu')); if (!match) return null; let hour = Number(match[1]); const minute = Number(match[2] || 0); const suffix = String(match[3] || '').toLowerCase(); if (suffix === 'pm' && hour < 12) hour += 12; if (suffix === 'am' && hour === 12) hour = 0; if (/(?:вечера|вечора|kechqurun)/u.test(suffix) && hour < 12) hour += 12; return hour < 24 && minute < 60 ? Object.freeze({ hour, minute }) : null; }
 function durationValue(prefix, amount, unit) { const normalized = String(unit).toLowerCase(); const value = normalized === 'полгода' ? .5 : Number(amount || 1); const canonicalUnit = /год|year|yil|жыл|рок|\ban/i.test(normalized) || normalized === 'полгода' ? 'year' : /месяц|мес|month|\boy|місяц|lun/i.test(normalized) ? 'month' : /нед|week|hafta|апта|тиж|săptăm|saptaman/i.test(normalized) ? 'week' : /дн|день|day|\bkun|күн|zi/i.test(normalized) ? 'day' : /мин|minute|daqiqa/i.test(normalized) ? 'minute' : 'hour'; const bound = /от|минимум|не\s+менее|kamida|eng\s+kam|кемінде|не\s+менш|at\s+least/iu.test(prefix || '') ? 'min' : /до|не\s+более|ko'?pi\s+bilan|көп\s+емес/iu.test(prefix || '') ? 'max' : 'exact'; return Object.freeze({ value, unit: canonicalUnit, bound }); }
 function semanticDurationType(text, start, duration) {
@@ -109,6 +121,7 @@ function isClockContextual(match, text) {
   return SCHEDULE_CONTEXT_RE.test(text.slice(Math.max(0, start - 24), start + match[0].length + 24));
 }
 function dateAtMonthEnd(year, month) { return dateValue(year, month, new Date(Date.UTC(year, month, 0)).getUTCDate()); }
+function dateAtNextMonthStart(reference) { const month = reference.getUTCMonth() + 2; const year = reference.getUTCFullYear() + Math.floor((month - 1) / 12); return dateValue(year, ((month - 1) % 12) + 1, 1); }
 function nextWeekday(date, weekday) { const current = (date.getUTCDay() + 6) % 7; let days = (weekday - current + 7) % 7; if (days === 0) days = 7; return addUtcDays(date, days); }
 
 /** Extract generic temporal candidates without silently fabricating a Date. */
@@ -120,7 +133,7 @@ export function extractTemporalCandidates(value, context = {}) {
   }
   for (const match of text.matchAll(new RegExp(DATE_NUMERIC_PARTIAL_RE, 'gu'))) {
     const start = match.index ?? 0; const around = text.slice(Math.max(0, start - 40), start + match[0].length + 40);
-    if (!/(?:deadline|apply\s+by|closing\s+date|дедлайн|срок(?:\s+подачи)?|термін(?:\s+подання)?|свобод|доступ|заезд|заезж|available|move[- ]?in|\b(?:с|до|from|until)\b)/iu.test(around)) continue;
+    if (!/(?:deadline|apply\s+by|closing\s+date|дедлайн|срок(?:\s+подачи)?|термін(?:\s+подання)?|свобод|доступ|заезд|заезж|available|move[- ]?in|(?<![\p{L}\p{N}])(?:с|до|from|until)(?![\p{L}\p{N}]))/iu.test(around)) continue;
     const relation = relationNear(text, start); const inferred = true;
     const date = dateValue(inferYear(Number(match[2]), Number(match[1]), relation, context), Number(match[2]), Number(match[1]));
     if (validDate(date)) candidates.push(candidate(dateEntityType(text, start, context, relation), date, match, 'temporal.calendar.numeric-partial', .86, [{ type: 'regex', rule: 'numeric-partial-date' }, ...inferredDateEvidence(inferred, context)]));
@@ -144,6 +157,10 @@ export function extractTemporalCandidates(value, context = {}) {
     const reference = referenceDate(context); const date = dateValue(reference.getUTCFullYear(), reference.getUTCMonth() + 1, 1);
     candidates.push(candidate(temporalContextType(text, match.index ?? 0, context), date, match, 'temporal.relative.month-start', .88, [{ type: 'context', value: 'month-start' }, { type: 'reference-date', value: referenceEntry(context).source }]));
   }
+  for (const match of text.matchAll(NEXT_MONTH_RE)) {
+    const date = dateAtNextMonthStart(referenceDate(context));
+    candidates.push(candidate(temporalContextType(text, match.index ?? 0, context), date, match, 'temporal.relative.next-month', .88, [{ type: 'context', value: 'next-month' }, { type: 'reference-date', value: referenceEntry(context).source }]));
+  }
   for (const match of text.matchAll(NEXT_WEEKDAY_RE)) {
     const weekday = DAY_ALIASES[match[1].toLowerCase()]; if (weekday == null) continue;
     candidates.push(candidate(temporalContextType(text, match.index ?? 0, context), nextWeekday(referenceDate(context), weekday), match, 'temporal.relative.next-weekday', .9, [{ type: 'dictionary', dictionary: 'weekdays', key: match[1] }, { type: 'reference-date', value: referenceEntry(context).source }]));
@@ -158,7 +175,15 @@ export function extractTemporalCandidates(value, context = {}) {
     candidates.push(candidate(type, addUtcDays(referenceDate(context), days), match, 'temporal.relative-date.extended', .91, [{ type: 'context', value: `relative:${days}d` }, { type: 'unit', value: unit }, { type: 'reference-date', value: referenceEntry(context).source }]));
   }
   for (const match of text.matchAll(new RegExp(DURATION_NUMBER_FIRST_RE, 'giu'))) { const value = durationValue(match[1], match[2], match[3]); candidates.push(candidate(semanticDurationType(text, match.index ?? 0, value), value, match, 'temporal.duration.number-unit', .95, [{ type: 'unit', value: match[3] }, ...(match[1] ? [{ type: 'prefix', value: match[1] }] : [])])); }
-  for (const match of text.matchAll(new RegExp(DURATION_RE, 'giu'))) { if (match[3]) continue; const value = durationValue(match[1], match[3], match[2]); candidates.push(candidate(semanticDurationType(text, match.index ?? 0, value), value, match, 'temporal.duration.word-unit', .94, [{ type: 'unit', value: match[2] }, ...(match[1] ? [{ type: 'prefix', value: match[1] }] : [])])); }
+  for (const match of text.matchAll(new RegExp(DURATION_RE, 'giu'))) {
+    if (match[3]) continue;
+    // Bare genitive "дня" is almost always part of another phrase ("конца
+    // дня", "сегодняшнего дня", "через 2 дня") rather than a standalone
+    // 1-day duration. Only accept it here when an explicit duration prefix
+    // ("на", "минимум", ...) makes the duration reading unambiguous.
+    if (!match[1] && /^дня$/iu.test(match[2])) continue;
+    const value = durationValue(match[1], match[3], match[2]); candidates.push(candidate(semanticDurationType(text, match.index ?? 0, value), value, match, 'temporal.duration.word-unit', .94, [{ type: 'unit', value: match[2] }, ...(match[1] ? [{ type: 'prefix', value: match[1] }] : [])]));
+  }
   const timeRangeSpans = [];
   for (const match of text.matchAll(new RegExp(TIME_RANGE_RE, 'giu'))) {
     const start = parseClock(match[1]); const end = parseClock(match[2]);

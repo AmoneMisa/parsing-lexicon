@@ -42,6 +42,19 @@ test('explicit we-do-sponsor wording is recognized as sponsorship offered', () =
   assert.ok(!parsed.workAuthorization.includes('noSponsorship'));
 });
 
+test('Russian "патент" work-permit phrasing is recognized without matching IP patents', () => {
+  const permit = parseHiringContext('Требуется патент на работу.', { mode: 'vacancy' });
+  assert.ok(permit.workAuthorization.includes('workPermitRequired'));
+  const unrelated = parseHiringContext('Ищем юриста для работы с патентами и товарными знаками.', { mode: 'vacancy' });
+  assert.ok(!unrelated.workAuthorization.includes('workPermitRequired'));
+});
+
+test('contradictory workAuthorization signals resolve to the negative one', () => {
+  const parsed = parseHiringContext('citizens only, no work visa sponsorship provided', { mode: 'vacancy' });
+  assert.ok(parsed.workAuthorization.includes('citizenshipRequired'));
+  assert.ok(!parsed.workAuthorization.includes('sponsorshipOffered'));
+});
+
 test('inline emoji section markers preserve vacancy responsibilities and conditions', () => {
   const parsed = parseHiringContext('✅Требования: • Знание русского языка. ✅Обязанности: • Приём и выкладка товаров; • Консультирование клиентов. ✅Условия: • График работы: 6/1; • Два сменных варианта.', { mode: 'vacancy' });
   assert.equal(parsed.sections.responsibilities, '• Приём и выкладка товаров; • Консультирование клиентов.');

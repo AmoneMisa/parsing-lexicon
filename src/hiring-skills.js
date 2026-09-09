@@ -7,7 +7,7 @@ export { escapeRegex } from './normalization.js'
 
 // These canonical labels are ordinary words or one-letter tokens. Matching the
 // label itself would create noisy results; only their explicit aliases are safe.
-const AMBIGUOUS_CANONICALS = new Set(['C', 'Go', 'Make', 'REST', 'Spring'])
+const AMBIGUOUS_CANONICALS = new Set(['C', 'Go', 'Make', 'REST', 'Spring', 'R'])
 
 const group = (category, subcategory, entries) =>
   entries.map(([name, aliases = []]) => ({
@@ -22,7 +22,7 @@ const group = (category, subcategory, entries) =>
 export const SKILL_CATALOG = [
   ...group('IT', 'Frontend', [
     ['HTML', ['html5']], ['CSS', ['css3']], ['Sass', ['scss']], ['Less', ['less css']],
-    ['JavaScript', ['ecmascript', 'es6', 'js developer', 'js framework']], ['TypeScript', ['type script']],
+    ['JavaScript', ['ecmascript', 'es6', 'js developer', 'js framework', 'js']], ['TypeScript', ['type script', 'ts']],
     ['React', ['react.js', 'reactjs']], ['React Native', ['react-native']],
     ['Vue', ['vue.js', 'vuejs']], ['Nuxt', ['nuxt.js', 'nuxtjs']],
     ['Next.js', ['nextjs', 'next js']], ['Angular', ['angular.js', 'angularjs']],
@@ -95,6 +95,7 @@ export const SKILL_CATALOG = [
   ]),
   ...group('Data', 'Analytics & AI', [
     ['Data Analysis', ['analytics', 'data analytics', 'анализ данных']], ['Business Analytics'], ['Commercial Analytics'],
+    ['R', ['r language', 'r programming', 'rstudio', 'r stats', 'tidyverse']],
     ['Pandas'], ['NumPy'], ['Jupyter'], ['Power BI', ['powerbi']], ['Tableau'], ['Looker'], ['Qlik'],
     ['Apache Spark', ['pyspark']], ['Hadoop'], ['Airflow'], ['Kafka'], ['RabbitMQ'], ['ETL'],
     ['Data Warehouse'], ['Data Science'], ['Machine Learning', ['машинное обучение']], ['Deep Learning'], ['TensorFlow'],
