@@ -32,7 +32,15 @@ const END_OF_MONTH_RE = new RegExp(`(?<![\\p{L}\\p{N}])(?:до|until|p[âa]nă\\
 const START_OF_MONTH_RE = /(?<![\p{L}\p{N}])(?:с|з|from|din|dan|бастап|баштап)\s+(?:начала\s+месяца|початку\s+місяця|începutul\s+lunii|start\s+of\s+(?:the\s+)?month)(?![\p{L}\p{N}])/giu;
 const SHIFT_RE = /(?<!\d)(\d{1,2})\s*(?:смен[аы]|shift)\s*(\d{1,2}(?:[:.]\d{2})?\s*(?:am|pm|утра|вечера)?)\s*(?:-|–|—|до|to)\s*(\d{1,2}(?:[:.]\d{2})?\s*(?:am|pm|утра|вечера)?)/giu;
 
-function referenceDate(context = {}) { return new Date(context.referenceDate || context.publishedAt || context.fetchedAt || Date.now()); }
+function referenceEntry(context = {}) {
+  for (const [source, value] of [['referenceDate', context.referenceDate], ['publishedAt', context.publishedAt], ['fetchedAt', context.fetchedAt]]) {
+    if (value == null || value === '') continue;
+    const date = new Date(value);
+    if (Number.isFinite(date.getTime())) return Object.freeze({ date, source });
+  }
+  return Object.freeze({ date: new Date(), source: 'currentDate' });
+}
+function referenceDate(context = {}) { return referenceEntry(context).date; }
 function dateValue(year, month, day) { return Object.freeze({ year, month, day }); }
 function validDate(value) { const date = new Date(Date.UTC(value.year, value.month - 1, value.day)); return date.getUTCFullYear() === value.year && date.getUTCMonth() === value.month - 1 && date.getUTCDate() === value.day; }
 function candidate(entityType, value, match, parser, confidence, evidence) { const start = match.index ?? 0; return createParseCandidate({ id: `${entityType}:${start}`, entityType, value, raw: match[0], start, end: start + match[0].length, parser, confidence, evidence }); }
@@ -71,7 +79,7 @@ function dateEntityType(text, start, context, relation = relationNear(text, star
   if (relation === 'from' || (context.domain === 'real-estate' && /(?:свобод|доступ|заезд|заезж|ijara|bo['’`]?sh|вільн|disponibil|move[- ]?in|available)/iu.test(around))) return 'availabilityDate';
   return 'calendarDate';
 }
-function inferredDateEvidence(inferred, context) { return inferred ? [{ type: 'inferred-year', reference: context.referenceDate ? 'referenceDate' : context.publishedAt ? 'publishedAt' : context.fetchedAt ? 'fetchedAt' : 'currentDate' }] : []; }
+function inferredDateEvidence(inferred, context) { return inferred ? [{ type: 'inferred-year', reference: referenceEntry(context).source }] : []; }
 const SCHEDULE_CONTEXT_RE = /(?:график|смен[аы]|режим\s+работы|work\s*schedule|shift|работ[аы]|job|графік|змін[аи]|program(?:ul)?\s+de\s+lucru|ish\s+grafigi|жұмыс\s+кестесі|жумуш\s+графиги)/iu;
 function scheduleDaysOffMode(text) {
   if (/(?:плавающ|floating|flexible\s+days\s+off)/iu.test(text)) return 'floating';
@@ -134,20 +142,20 @@ export function extractTemporalCandidates(value, context = {}) {
   }
   for (const match of text.matchAll(START_OF_MONTH_RE)) {
     const reference = referenceDate(context); const date = dateValue(reference.getUTCFullYear(), reference.getUTCMonth() + 1, 1);
-    candidates.push(candidate(temporalContextType(text, match.index ?? 0, context), date, match, 'temporal.relative.month-start', .88, [{ type: 'context', value: 'month-start' }, { type: 'reference-date', value: context.referenceDate ? 'referenceDate' : context.publishedAt ? 'publishedAt' : context.fetchedAt ? 'fetchedAt' : 'currentDate' }]));
+    candidates.push(candidate(temporalContextType(text, match.index ?? 0, context), date, match, 'temporal.relative.month-start', .88, [{ type: 'context', value: 'month-start' }, { type: 'reference-date', value: referenceEntry(context).source }]));
   }
   for (const match of text.matchAll(NEXT_WEEKDAY_RE)) {
     const weekday = DAY_ALIASES[match[1].toLowerCase()]; if (weekday == null) continue;
-    candidates.push(candidate(temporalContextType(text, match.index ?? 0, context), nextWeekday(referenceDate(context), weekday), match, 'temporal.relative.next-weekday', .9, [{ type: 'dictionary', dictionary: 'weekdays', key: match[1] }, { type: 'reference-date', value: context.referenceDate ? 'referenceDate' : context.publishedAt ? 'publishedAt' : context.fetchedAt ? 'fetchedAt' : 'currentDate' }]));
+    candidates.push(candidate(temporalContextType(text, match.index ?? 0, context), nextWeekday(referenceDate(context), weekday), match, 'temporal.relative.next-weekday', .9, [{ type: 'dictionary', dictionary: 'weekdays', key: match[1] }, { type: 'reference-date', value: referenceEntry(context).source }]));
   }
-  for (const match of text.matchAll(RELATIVE_RE)) { const days = relativeDays(match[1]); if (days == null) continue; const type = temporalContextType(text, match.index ?? 0, context); candidates.push(candidate(type, addUtcDays(referenceDate(context), days), match, 'temporal.relative-date', .91, [{ type: 'context', value: `relative:${days}d` }, { type: 'reference-date', value: context.referenceDate ? 'referenceDate' : context.publishedAt ? 'publishedAt' : context.fetchedAt ? 'fetchedAt' : 'currentDate' }])); }
+  for (const match of text.matchAll(RELATIVE_RE)) { const days = relativeDays(match[1]); if (days == null) continue; const type = temporalContextType(text, match.index ?? 0, context); candidates.push(candidate(type, addUtcDays(referenceDate(context), days), match, 'temporal.relative-date', .91, [{ type: 'context', value: `relative:${days}d` }, { type: 'reference-date', value: referenceEntry(context).source }])); }
   for (const match of text.matchAll(EXTENDED_RELATIVE_RE)) {
     const amount = match[1] || match[3] || match[5];
     const unit = match[2] || match[4] || match[6];
     const days = relativeDurationDays(amount, unit);
     if (days == null) continue;
     const type = temporalContextType(text, match.index ?? 0, context);
-    candidates.push(candidate(type, addUtcDays(referenceDate(context), days), match, 'temporal.relative-date.extended', .91, [{ type: 'context', value: `relative:${days}d` }, { type: 'unit', value: unit }, { type: 'reference-date', value: context.referenceDate ? 'referenceDate' : context.publishedAt ? 'publishedAt' : context.fetchedAt ? 'fetchedAt' : 'currentDate' }]));
+    candidates.push(candidate(type, addUtcDays(referenceDate(context), days), match, 'temporal.relative-date.extended', .91, [{ type: 'context', value: `relative:${days}d` }, { type: 'unit', value: unit }, { type: 'reference-date', value: referenceEntry(context).source }]));
   }
   for (const match of text.matchAll(new RegExp(DURATION_NUMBER_FIRST_RE, 'giu'))) { const value = durationValue(match[1], match[2], match[3]); candidates.push(candidate(semanticDurationType(text, match.index ?? 0, value), value, match, 'temporal.duration.number-unit', .95, [{ type: 'unit', value: match[3] }, ...(match[1] ? [{ type: 'prefix', value: match[1] }] : [])])); }
   for (const match of text.matchAll(new RegExp(DURATION_RE, 'giu'))) { if (match[3]) continue; const value = durationValue(match[1], match[3], match[2]); candidates.push(candidate(semanticDurationType(text, match.index ?? 0, value), value, match, 'temporal.duration.word-unit', .94, [{ type: 'unit', value: match[2] }, ...(match[1] ? [{ type: 'prefix', value: match[1] }] : [])])); }
