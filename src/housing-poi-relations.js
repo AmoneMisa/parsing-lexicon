@@ -1,5 +1,6 @@
 import { deepFreeze } from './lexicon-core.js';
 import { normalizeUnicode } from './normalization.js';
+import { canonicalCity } from './geography.js';
 
 const TYPE_MARKERS = Object.freeze([
   ['poi.university', /(?:university|uni\b|institute|academy|college|universitet|institut|universiteti|университет|универ|институт|академия)/iu],
@@ -49,10 +50,24 @@ function stripLeadingTypeMarker(value) {
     .replace(/\s+/g, ' ').trim();
 }
 
+function parentMatchesCity(parentId, city, country) {
+  if (!city || !parentId) return true;
+  const expected = canonicalCity(city, country);
+  if (!expected) return true;
+  const parentCities = String(parentId)
+    .split(/[:/]/u)
+    .map((part) => canonicalCity(part, country))
+    .filter(Boolean);
+  // A resolver was already given the city scope. Reject only when its stable
+  // parent ID identifies a *different known city*; a catalog's local-language
+  // slug (e.g. Bucuresti) is a valid alias of the caller's canonical city.
+  return parentCities.length === 0 || parentCities.includes(expected);
+}
+
 function normalizeReference(candidate, country, city) {
   if (!candidate?.id || !candidate?.canonicalName && !candidate?.canonical) return null;
   if (candidate.country && String(candidate.country).toUpperCase() !== country) return null;
-  if (city && candidate.parentId && !String(candidate.parentId).toLowerCase().includes(String(city).toLowerCase())) return null;
+  if (!parentMatchesCity(candidate.parentId, city, country)) return null;
   return Object.freeze({
     id: String(candidate.id),
     canonical: String(candidate.canonicalName || candidate.canonical),

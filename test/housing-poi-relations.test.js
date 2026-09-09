@@ -54,7 +54,7 @@ test('target-first Ukrainian travel time separates a concrete supermarket name f
 test('recognises priority-country proximity wording without putting it into the POI name', () => {
   const entities = {
     'Алатау метро': { id: 'kz:almaty:metro:alataw', canonical: 'Alatau', type: 'metro', country: 'KZ', parentId: 'kz:almaty:city:almaty' },
-    'Universitatea București': { id: 'ro:bucharest:university:ub', canonical: 'University of Bucharest', type: 'poi.university', country: 'RO', parentId: 'ro:bucharest:city:bucharest' },
+    'Universitatea București': { id: 'ro:bucuresti:university:ub', canonical: 'University of Bucharest', type: 'poi.university', country: 'RO', parentId: 'ro:bucuresti:city:bucuresti' },
   };
   const resolver = ({ query }) => entities[query] ? [entities[query]] : [];
 
@@ -68,4 +68,10 @@ test('recognises priority-country proximity wording without putting it into the 
   const [romanian] = extractHousingPoiRelations('în spatele Universitatea București', { country: 'RO', city: 'Bucharest', resolveGeoCandidates: resolver });
   assert.equal(romanian.relation, 'behind');
   assert.equal(romanian.target.canonical, 'University of Bucharest');
+
+  const wrongCity = extractHousingPoiRelations('lângă Universitatea București', {
+    country: 'RO', city: 'Bucharest',
+    resolveGeoCandidates: () => [{ id: 'ro:cluj:university:ub', canonical: 'University of Bucharest', type: 'poi.university', country: 'RO', parentId: 'ro:cluj:city:cluj' }],
+  });
+  assert.deepEqual(wrongCity, []);
 });
