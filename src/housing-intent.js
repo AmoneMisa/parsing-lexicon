@@ -1,5 +1,6 @@
 import { findCanonical } from './normalization.js';
 import { lexiconEntity } from './lexicon-core.js';
+import { findPhoneLikeSpans } from './contact.js';
 
 const group = (canonical, aliases, extra = {}) => lexiconEntity(canonical, aliases, extra);
 const KK_RENT_OUT_ALIASES = Object.freeze(['жалға беремін', 'жалға беріледі']);
@@ -159,5 +160,44 @@ const EXPLICIT_SHORT_STAY_RE = /(?:^|[^\p{L}\p{N}_])сут(?:ки|ок)(?=$|[^\p
 
 export function looksExplicitDailyRentalMention(value) {
   return EXPLICIT_SHORT_STAY_RE.test(String(value || ''));
+}
+
+// A commercial hotel-group advertisement lists several distinct business
+// names, several unrelated phone numbers and a scattering of prices — none
+// of which cohere into one describable property the way a single owner
+// listing does. Each signal alone is common in ordinary listings (a broker
+// might list two contact numbers; a listing might mention one hotel by
+// name as a nearby landmark), so only their co-occurrence is meaningful.
+const HOTEL_BUSINESS_MARKER_RE = /(?:\bhotel\b|гостиниц\p{L}*|отел[ья]?\p{L}*|\bhostel\b|хостел\p{L}*|mehmonxona\p{L}*|guest\s*house|\bb\s*&\s*b\b|bed\s+and\s+breakfast)/giu;
+const PROMOTIONAL_MARKER_RE = /(?:скидк\p{L}*|\bакция\b|бронируйте|бронирование|звоните\s+прямо\s+сейчас|call\s+now|book\s+now|chegirma|eng\s+arzon\s+narx|лучшие\s+цены|top\s+prices|специальное\s+предложение)/iu;
+const PRICE_LIKE_RE = /\d{2,6}\s*(?:\$|usd|сум|сўм|so['’ʻʼ]?m|som|сом|тенге|kzt)/giu;
+
+/**
+ * Weak-signal evidence for a commercial/multi-property advertisement rather
+ * than a single owner's listing. Exposed separately from
+ * isHousingCommercialAd() so callers can inspect which signals fired.
+ */
+export function detectHousingCommercialAdSignals(value) {
+  const text = String(value || '');
+  const hotelNameCount = new Set((text.match(HOTEL_BUSINESS_MARKER_RE) || []).map((match) => match.toLowerCase())).size;
+  const phoneCount = findPhoneLikeSpans(text).length;
+  const priceCount = (text.match(PRICE_LIKE_RE) || []).length;
+  return Object.freeze({
+    multipleBusinessNames: hotelNameCount >= 2,
+    repeatedContactBlocks: phoneCount >= 3,
+    manyPriceMentions: priceCount >= 3,
+    promotionalText: PROMOTIONAL_MARKER_RE.test(text),
+  });
+}
+
+/**
+ * True when at least two independent weak signals of a commercial/
+ * multi-property advertisement co-occur. A single signal (one hotel name
+ * mentioned as a landmark, two phone numbers on a broker listing) is
+ * common in ordinary single-property ads and must not trigger this alone.
+ */
+export function isHousingCommercialAd(value) {
+  const signals = detectHousingCommercialAdSignals(value);
+  return Object.values(signals).filter(Boolean).length >= 2;
 }
 

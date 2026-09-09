@@ -71,3 +71,14 @@ export function composeHousingAddress(parts?: Readonly<{
   houseNumber?: unknown;
   building?: unknown;
 }>): string | null;
+
+export type HousingAddressCandidate = Readonly<{
+  address: string | null;
+  street: string | null;
+  houseNumber: string | null;
+  building: string | null;
+  confidence: number;
+  score: number;
+}>;
+
+export function extractHousingAddressCandidates(value: unknown): readonly HousingAddressCandidate[];

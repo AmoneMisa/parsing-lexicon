@@ -428,7 +428,7 @@ function addressCandidateLine(line) {
   return match ? clean(text.slice(0, searchStart + (match.index ?? 0))) : line;
 }
 
-function explicitStreetAddress(text) {
+function collectExplicitStreetCandidates(text) {
   const lines = text
     .split(/[\r\n|]/u)
     .map((part) => clean(part).slice(0, 1200))
@@ -513,7 +513,7 @@ function explicitStreetAddress(text) {
   // Listing text often names a nearby street before the actual postal
   // address. Keep alternatives long enough to rank component evidence rather
   // than returning whichever regex happened to run first.
-  return candidates
+  return Object.freeze(candidates
     .map((value, index) => ({
       value,
       index,
@@ -521,7 +521,27 @@ function explicitStreetAddress(text) {
         + (value.houseNumber ? 0.18 : 0)
         + (value.building ? 0.03 : 0),
     }))
-    .sort((a, b) => b.score - a.score || a.index - b.index)[0]?.value || null;
+    .sort((a, b) => b.score - a.score || a.index - b.index)
+    .map(({ value, score }) => Object.freeze({ ...value, score: Number(score.toFixed(2)) })));
+}
+
+function explicitStreetAddress(text) {
+  const { score, ...winner } = collectExplicitStreetCandidates(text)[0] || {};
+  return winner.street ? Object.freeze(winner) : null;
+}
+
+/**
+ * Expose every plausible street/house candidate found in free-form listing
+ * text, ranked by evidence score, instead of only the single winner
+ * parseHousingAddress() commits to. Useful when the caller wants to inspect
+ * or re-rank competing parses (e.g. a nearby street mentioned before the
+ * actual postal address).
+ */
+export function extractHousingAddressCandidates(value) {
+  const text = clean(value);
+  if (!text) return Object.freeze([]);
+  const addressText = stripSecondaryComponents(text) || text;
+  return collectExplicitStreetCandidates(addressText);
 }
 
 function knownStreetAddress(text, knownStreet) {

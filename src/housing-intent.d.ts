@@ -9,4 +9,12 @@ export const HOUSING_ACTION_MAP: Readonly<Record<HousingAction, Readonly<{ listi
 export function resolveHousingIntent(value: unknown): HousingIntentResult | null;
 export declare function classifyHousingDealType(value: unknown): 'sale' | 'longRent' | 'shortRent' | null;
 export declare function looksExplicitDailyRentalMention(value: unknown): boolean;
+export type HousingCommercialAdSignals = Readonly<{
+  multipleBusinessNames: boolean;
+  repeatedContactBlocks: boolean;
+  manyPriceMentions: boolean;
+  promotionalText: boolean;
+}>;
+export declare function detectHousingCommercialAdSignals(value: unknown): HousingCommercialAdSignals;
+export declare function isHousingCommercialAd(value: unknown): boolean;
 

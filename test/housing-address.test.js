@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { composeHousingAddress, parseHousingAddress } from '../src/housing-address.js';
+import { composeHousingAddress, extractHousingAddressCandidates, parseHousingAddress } from '../src/housing-address.js';
 
 test('parses explicit Ukrainian street, house and building', () => {
   assert.deepEqual(parseHousingAddress('вул. Воробкевича 12, корпус 2'), {
@@ -309,6 +309,21 @@ test('does not expose secondary components without a valid address', () => {
     building: null,
     confidence: 0,
   });
+});
+
+test('extractHousingAddressCandidates exposes competing parses instead of only the winner', () => {
+  const candidates = extractHousingAddressCandidates('Орієнтир: вул. Льва Толстого\nвул. Воробкевича 12');
+  assert.equal(candidates.length, 2);
+  assert.equal(candidates[0].street, 'Воробкевича');
+  assert.equal(candidates[0].houseNumber, '12');
+  assert.equal(candidates[1].street, 'Льва Толстого');
+  assert.ok(candidates[0].score > candidates[1].score);
+
+  const single = extractHousingAddressCandidates('вул. Воробкевича 12, корпус 2');
+  assert.equal(single.length, 1);
+  assert.equal(single[0].street, 'Воробкевича');
+
+  assert.deepEqual(extractHousingAddressCandidates('Сдам квартиру 2 комнаты, 5 этаж'), []);
 });
 
 test('composeHousingAddress produces a stable canonical query string', () => {
