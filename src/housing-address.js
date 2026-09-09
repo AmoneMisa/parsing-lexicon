@@ -83,6 +83,11 @@ function compactStreet(value) {
     // "проживания" -> "оживания").
     .replace(new RegExp(`^${PREFIX_STREET_MARKER}(?!\\p{L})\\s*`, 'iu'), '')
     .replace(new RegExp(`\\s+${POSTFIX_STREET_MARKER}$`, 'iu'), '')
+    // A generic street-word capture has no stop-word list of its own, so a
+    // trailing relation marker ("недалеко", "рядом") from prose describing
+    // a *different* nearby location can get swept into the street name
+    // itself (e.g. "ул. Первого Мая недалеко"). Trim it and anything after.
+    .replace(new RegExp(`\\s+(?:${LOCATION_RELATION_RE.source})(?:\\s+.*)?$`, 'iu'), '')
     // OCR frequently substitutes “оя” for the Ukrainian/Russian “ля” in
     // “шлях”; correct the street-token typo before canonical lookup.
     .replace(/(?<!\p{L})шоях(?!\p{L})/giu, 'шлях')

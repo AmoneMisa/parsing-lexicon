@@ -326,6 +326,17 @@ test('extractHousingAddressCandidates exposes competing parses instead of only t
   assert.deepEqual(extractHousingAddressCandidates('Сдам квартиру 2 комнаты, 5 этаж'), []);
 });
 
+test('a trailing relation word describing a different nearby place is not swept into the street name', () => {
+  const candidates = extractHousingAddressCandidates('Сдаю квартиру от 1 месяца, ул. первого мая недалеко');
+  assert.equal(candidates.length, 1);
+  assert.equal(candidates[0].street, 'первого мая');
+
+  // A rental-duration phrase alone must still never become a street.
+  assert.deepEqual(parseHousingAddress('Сдаю квартиру от 1 месяца'), {
+    address: null, street: null, houseNumber: null, building: null, confidence: 0,
+  });
+});
+
 test('composeHousingAddress produces a stable canonical query string', () => {
   assert.equal(composeHousingAddress({ street: 'Воробкевича', houseNumber: '12', building: '2' }), 'Воробкевича 12 корп. 2');
 });
