@@ -32,11 +32,15 @@ const APPLIANCE_PATTERNS = Object.freeze([
 const FIRST_RENT_UZ_RE = /(?:hali\s+hech\s+kim\s+(?:yashamagan|turmagan)|ҳали\s+ҳеч\s+ким\s+(?:яшамаган|турмаган))/iu;
 const LANDLORD_PRESENT_RE = /(?:xozaykali|hojaykali|xo['’]?jaykali|с\s+хозяйк(?:ой|ой\s+в\s+квартире)|хозяйк\p{L}*\s+(?:жив[её]т|прожива\p{L}*)|with\s+(?:the\s+)?(?:landlord|owner)\s+(?:present|living\s+in)|cu\s+proprietar(?:ul)?\s+în\s+cas(?:ă|a)|үй\s*иесі\s+(?:тұрады|бірге\s+тұрады))/iu;
 const STUDENT_RE = /(?:studentlar\s+uchun|talabalar\s+uchun|студент(?:ам|ы|ок|ов)?\s+(?:можно|для)|для\s+студент|students?\s+(?:only|welcome)|for\s+students|pentru\s+studen[țt]i|studen[țt]i(?:lor)?|студенттерге|студенттер\s+үшін|(?:oila|oyla)(?:ga|lar|li)?\s+yoki\s+\d{1,2}\s+ta\s+bola(?:lar)?(?:ga)?\s+(?:ijara(?:ga)?\s+)?(?:beril|topshiril))/iu;
-const NO_BROKER_RE = /(?:bez\s+makler|maklersiz|vositachisiz|без\s+(?:маклер|посредник|риелтор|риэлтор|комисси)|no\s+(?:broker|agent|commission|agency\s+fee)|f[ăa]r[ăa]\s+(?:comision|agen[țt]ie|intermediari)|делдалсыз|комиссиясыз)/iu;
+const NO_BROKER_RE = /(?:bez\s*makler|maklersiz|vositachisiz|без\s+(?:маклер|посредник|риелтор|риэлтор|комисси)|no\s+(?:broker|agent|commission|agency\s+fee)|f[ăa]r[ăa]\s+(?:comision|agen[țt]ie|intermediari)|делдалсыз|комиссиясыз)/iu;
 const BROKER_RE = /(?:makler|vositachi|макл(?:ер[а-яё]*)?|ри[еэ]лтор[а-яё]*|агентств[а-яё]*|комисси[а-яё]*|broker|realtor|commission|comision(?:ul)?|agen[țt]ie|delda[lл]\p{L}*|делдал\p{L}*)/iu;
 const MEN_RE = /(?:o['’ʻʼ‘`]?g['’ʻʼ‘`]?il\s+bola(?:lar)?(?:ga)?|ogil\s+bola(?:lar)?(?:ga)?|sherik\s+bola|эркак(?:лар)?|erkak(?:lar)?(?:ga)?|только\s+(?:мужчин|парн)|\bmen\s+only\b|b[ăa]rba[țt]i(?:lor)?|b[ăa]ie[țt]i(?:lor)?|жігіттерге|жігіттер(?:ге)?|хлопц(?:ям|і|ів)?|чоловік(?:ам|и)?)/iu;
 const WOMEN_RE = /(?:qiz(?:lar)?(?:ga)?|ayol(?:lar)?(?:ga|ni)?|киз(?:лар)?(?:га)?|аёл(?:лар)?(?:га|ни)?|девушк\p{L}*|женщин\p{L}*|girls?\s+only|women\s+only|fete(?:lor)?|femei(?:lor)?|қыздарға|қыздар(?:ға)?|дівчат(?:ам|а|ок)?|жінк(?:ам|и)?)/iu;
 const FAMILY_RE = /(?:семь\p{L}*|family|oila(?:ga|lar|li)?|oyla(?:ga|lar|li)?|oila\s+uchun|оилага|оелага|оилавий|oelaga|famil(?:ie|ia)|cuplu(?:ri)?|отбасына|отбасылы|жанұяға|сім['’ʼ]?[яїі](?:ям|ям[иі])?|сімейн\p{L}*)/iu;
+// A category word in an exclusion clause is negative evidence, not a tenant
+// preference.  Keep this narrow and local to avoid rejecting ordinary
+// "oila uchun" / "для семьи" invitations elsewhere in the listing.
+const FAMILY_EXCLUSION_RE = /(?:oila|oyla|семь\p{L}*|family|famil(?:ie|ia)|cuplu(?:ri)?|отбас\p{L}*|жанұя\p{L}*)[^\r\n.!?]{0,48}(?:bezovta\s+qilmasin|murojaat\s+qilmasin|kerak\s+emas|qabul\s+qilinmaydi|не\s+(?:беспокоить|принимаем)|not\s+(?:allowed|welcome))/iu;
 const ROOM_SHARE_RE = /(?:sherik(?:ka|lik|likga)?|шерик(?:ка|лик)?|roommate|flatmate|подселени|койко[-\s]?мест|место\s+в\s+(?:комнат|квартир)|birga\s+yashash(?:ga)?|kvartira(?:ga|da)?[^\r\n.!?]{0,36}(?:\d+|bitta|1)\s*(?:ta\s*)?(?:qiz|ayol)[^\r\n.!?]{0,20}(?:ijarachi\s*)?(?:kerak|kere)|coleg\s+de\s+(?:apartament|camer[ăa])|bed\s+space|бөлмелес(?:\s+керек)?|көрші\s+керек)/iu;
 const AIR_CONDITIONER_RE = /(?:кондицион|air\s*con|konditsioner|kandit(?:s|c)?aner|kanditsaner|кандитсанер)/iu;
 const PER_PERSON_PRICE_RE = /(?:kishi\s+boshiga|киши\s+бошига)\s*(\d{1,3}(?:[\s.,]\d{3})*|\d+(?:[.,]\d+)?)\s*(ming|минг|million|mln|млн)?(?:dan|дан)?/iu;
@@ -176,7 +180,7 @@ export function parseHousingNearby(value) {
 
 export function parseHousingAudience(value) {
   const text = normalizeUnicode(value ?? '');
-  const family = FAMILY_RE.test(text);
+  const family = FAMILY_RE.test(text) && !FAMILY_EXCLUSION_RE.test(text);
   const women = WOMEN_RE.test(text);
   const men = MEN_RE.test(text);
   const students = STUDENT_RE.test(text);

@@ -199,7 +199,7 @@ export function extractHousingMoneyCandidates(value, context = '') {
   const text = maskPhoneLikeSpans(String(value || ''), ' ', { country });
   const candidates = [];
   const seen = new Set();
-  const addCandidate = ({ amount, currency, start, end, explicitCurrency, scale = null, priceKeyword = false, confidenceBoost = 0 }) => {
+  const addCandidate = ({ amount, currency, start, end, explicitCurrency, scale = null, priceKeyword = false, range = null, confidenceBoost = 0 }) => {
     if (amount == null || amount < 1 || amount > 5_000_000_000 || seen.has(`${start}:${end}`)) return;
     seen.add(`${start}:${end}`);
     candidates.push(Object.freeze({
@@ -210,6 +210,7 @@ export function extractHousingMoneyCandidates(value, context = '') {
       explicitCurrency,
       scale,
       priceKeyword,
+      range,
       paymentRole: candidatePaymentRole(text, start, end),
       approximate: APPROXIMATE_RE.test(text.slice(Math.max(0, start - 12), end)),
       confidenceBoost,
@@ -236,6 +237,33 @@ export function extractHousingMoneyCandidates(value, context = '') {
       explicitCurrency: true,
       priceKeyword: true,
       confidenceBoost: 0.1,
+    });
+  }
+
+  // A price-labelled range is common in Telegram rentals even when the author
+  // omits "sum".  In Uzbek country context, grouped endpoints are an explicit
+  // UZS signal; preserve both endpoints on the candidate while exposing the
+  // lower bound through the legacy single-price result.  It must be collected
+  // before generic amounts so the second endpoint cannot be selected merely
+  // because it is larger.
+  const labelledPriceRangeRe = new RegExp(
+    `${PRICE_KEYWORD}\\s*[:=\\-–—]?\\s*(${MONEY_NUMBER_PATTERN})\\s*(?:-{1,3}|–|—|to|до|dan\\s+gacha)\\s*(${MONEY_NUMBER_PATTERN})(?=$|[^\\p{L}\\p{N}_])`,
+    'igu',
+  );
+  for (const match of text.matchAll(labelledPriceRangeRe)) {
+    const minimum = parseNumericAmount(match[1]);
+    const maximum = parseNumericAmount(match[2]);
+    if (minimum == null || maximum == null || minimum > maximum) continue;
+    const start = match.index ?? 0;
+    addCandidate({
+      amount: Math.round(minimum),
+      currency: country === 'UZ' ? 'UZS' : fallbackCurrency || '',
+      start,
+      end: start + match[0].length,
+      explicitCurrency: false,
+      priceKeyword: true,
+      range: Object.freeze({ minimum: Math.round(minimum), maximum: Math.round(maximum) }),
+      confidenceBoost: 0.2,
     });
   }
 
