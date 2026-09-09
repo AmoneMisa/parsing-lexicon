@@ -10,6 +10,7 @@ import {
 import { maskPhoneLikeSpans } from './contact.js';
 import { DEPOSIT_TERMS, SELLER_TERMS } from './housing.js';
 import { COUNTRIES, canonicalCountryCode, countryByCode } from './countries.js';
+import { extractTemporalCandidates } from './temporal.js';
 import {
   classifyHousingSingleMSpans,
   HOUSING_NUMERIC_SPAN_TYPES,
@@ -93,6 +94,21 @@ function parsedMoneyAmount(numberValue, scaleValue) {
 }
 
 const APPROXIMATE_RE = /около|примерно|~|≈/iu;
+
+// A number already claimed by a duration/date/schedule reading ("на 1200
+// дней", "с 2027 года") is not a plausible bare price — it is at least as
+// likely to be that temporal value's own count/year as a price digit that
+// happens to sit near it. This is only used as a last-resort exclusion in
+// the bare-amount fallback below, once every explicit currency/scale/
+// keyword path has already failed to find a price. Only reasonably
+// confident temporal candidates disqualify a span, so an ambiguous bare
+// number elsewhere in the text is unaffected. Calls temporal.js directly
+// rather than semantic-spans.js: that module itself depends on this file's
+// extractHousingMoneyCandidates(), so importing it here would cycle back.
+function overlapsConfidentTemporalSpan(text, start, end) {
+  return extractTemporalCandidates(text).some((item) => (Number(item.confidence) || 0) >= 0.5
+    && start < item.end && item.start < end);
+}
 
 function perSquareMeterMatches(text, fallbackCurrency = '') {
   const matches = [];
@@ -561,6 +577,10 @@ export function parseHousingPrice(value, context = '') {
         const hasPriceEvidence = PRICE_KEYWORD_RE.test(window) || Boolean(moneyCurrencyFromText(window, ''));
         if (!hasPriceEvidence) continue;
       }
+      // A number already read as a duration/date/schedule value ("\u043D\u0430 1200
+      // \u0434\u043D\u0435\u0439") is not a plausible bare price either \u2014 e.g. "\u0441\u0434\u0430\u044E \u043D\u0430 1200
+      // \u0434\u043D\u0435\u0439" must not report 1200 as the rent.
+      if (overlapsConfidentTemporalSpan(priceText, start, start + raw.length)) continue;
       if (best == null || amount > best) best = amount;
     }
     price = best;

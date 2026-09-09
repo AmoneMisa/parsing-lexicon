@@ -252,3 +252,17 @@ test('a keyword-less price range is not deleted by phone masking', () => {
   assert.notEqual(result.amount, null);
   assert.equal(result.currency, 'UZS');
 });
+
+test('a number already read as a duration is not also reported as a bare price', () => {
+  assert.deepEqual(parseHousingPrice('Сдаю на 1200 дней', {country: 'UA'}), {
+    amount: null,
+    currency: 'UAH',
+    approximate: false,
+  });
+  // A real price near duration wording must still resolve normally.
+  assert.deepEqual(parseHousingPrice('Сдаю квартиру, цена 15000$, на 1200 дней', {country: 'UA'}), {
+    amount: 15000,
+    currency: 'USD',
+    approximate: false,
+  });
+});
