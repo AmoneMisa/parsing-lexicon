@@ -226,4 +226,24 @@ export function extractTemporalCandidates(value, context = {}) {
   return Object.freeze(candidates);
 }
 
-export function parseTemporal(value, context = {}) { const candidates = extractTemporalCandidates(value, context); const resolved = resolveParseCandidates(candidates); const data = Object.fromEntries(resolved.selected.map((item) => [item.entityType, item.value])); if (data.workSchedule && data.timeRange) data.workSchedule = Object.freeze({ ...data.workSchedule, workingHours: data.timeRange }); return Object.freeze({ data: Object.freeze(data), confidence: Object.freeze(Object.fromEntries(resolved.selected.map((item) => [item.entityType, item.confidence]))), debug: Object.freeze({ candidates, discardedCandidates: resolved.discarded, refinersApplied: Object.freeze(['missing-year', 'relative-date', 'duration-context', 'schedule-context', 'conflict-resolver']) }) }); }
+// The default resolver only rejects overlapping candidates of the *same*
+// entityType. That is right in general — e.g. an extended relative-date
+// reading of "через 3 дні" legitimately outranks a spurious bare-duration
+// reading of the same "3 дні" text, and a blanket cross-type overlap ban
+// would keep whichever has the higher raw confidence, which is not always
+// the correct one. But a schedule cycle like "2/2" (workSchedule) and a
+// bare clock-time match on its own leading "2" (clockTime) are never two
+// competing *interpretations* worth ranking — clockTime's schedule-context
+// fallback (isClockContextual) was only ever meant to recognize genuine
+// standalone times near schedule language, not to double-read a cycle
+// ratio's digits. Drop clockTime candidates that overlap a workSchedule
+// candidate's span specifically, rather than loosening compatibility for
+// every entity-type pair.
+function suppressClockTimeInsideWorkSchedule(candidates) {
+  const scheduleSpans = candidates.filter((item) => item.entityType === 'workSchedule');
+  if (!scheduleSpans.length) return candidates;
+  return candidates.filter((item) => item.entityType !== 'clockTime'
+    || !scheduleSpans.some((schedule) => item.start < schedule.end && schedule.start < item.end));
+}
+
+export function parseTemporal(value, context = {}) { const candidates = suppressClockTimeInsideWorkSchedule(extractTemporalCandidates(value, context)); const resolved = resolveParseCandidates(candidates); const data = Object.fromEntries(resolved.selected.map((item) => [item.entityType, item.value])); if (data.workSchedule && data.timeRange) data.workSchedule = Object.freeze({ ...data.workSchedule, workingHours: data.timeRange }); return Object.freeze({ data: Object.freeze(data), confidence: Object.freeze(Object.fromEntries(resolved.selected.map((item) => [item.entityType, item.confidence]))), debug: Object.freeze({ candidates, discardedCandidates: resolved.discarded, refinersApplied: Object.freeze(['missing-year', 'relative-date', 'duration-context', 'schedule-context', 'conflict-resolver']) }) }); }

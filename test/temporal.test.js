@@ -27,6 +27,12 @@ test('temporal API resolves contextual schedules and overnight ranges without tr
   assert.equal(parseTemporal('Смена 22:00-06:00').data.timeRange.crossesMidnight, true);
 });
 
+test('a schedule-cycle ratio never also produces a spurious clock time from its own digits', () => {
+  const parsed = parseTemporal('график 2/2', { domain: 'vacancy' });
+  assert.deepEqual(parsed.data.workSchedule, { type: 'cycle', workDays: 2, restDays: 2, daysOffMode: 'fixed' });
+  assert.equal(parsed.data.clockTime, undefined);
+});
+
 test('temporal API resolves relative availability, weekdays, and multiple shifts', () => {
   const availability = parseTemporal('Можно заезжать с завтра', { domain: 'real-estate', referenceDate: '2026-09-07T12:00:00Z' });
   assert.deepEqual(availability.data.availabilityDate, { year: 2026, month: 9, day: 8 });
