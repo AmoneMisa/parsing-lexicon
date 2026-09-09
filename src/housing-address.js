@@ -5,14 +5,28 @@ import {
   matchTashkentNumberedArea,
 } from './tashkent-housing-geography.js';
 import { detectNonAddressSpans } from './semantic-spans.js';
+import {
+  BUILDING_MARKERS,
+  HOUSE_MARKERS,
+  STREET_POSTFIX_MARKERS,
+  STREET_PREFIX_MARKERS,
+  STREET_TYPE_MARKERS,
+  combinedMarkerPattern,
+} from './address-grammar.js';
 
 const PHONE_RUN_RE = /\+?\d[\d\s().-]{7,}\d/gu;
 const ADDRESS_LABEL_RE = /(?:адрес|адреса|адресація|адресация|manzil|address|adresă|adresa)\s*[:=\-–—]\s*/iu;
-const PREFIX_STREET_MARKER = String.raw`(?:(?:ул(?:ица)?|вул(?:иця)?|пр|просп(?:ект)?|пр-т|переул(?:ок)?|пров(?:улок)?|проезд|наб(?:ережная)?|шоссе|str(?:ada)?|street|st|avenue|ave|road|rd|көше)\.?)`;
-const POSTFIX_STREET_MARKER = String.raw`(?:ko['’ʼ\u02bc]?cha(?:si)?|кўча(?:си)?|коча(?:си)?|kocha(?:si)?|көше(?:сі)?|көшесі|көчө(?:сү)?)`;
-const POSTFIX_STREET_TYPE = String.raw`(?:вулиця|улица|провулок|переулок|проспект|бульвар|набережна|набережная|шосе|шоссе|площа|площадь|узвіз|спуск|алея|аллея|дорога|тупик|көше(?:сі)?|көшесі|көчө(?:сү)?)`;
-const HOUSE_MARKER = String.raw`(?:дом|д\.|будинок|буд\.|house|h\.|uy|уй|үй|nr\.?|no\.?|№)`;
-const BUILDING_MARKER = String.raw`(?:корп(?:ус)?\.?|к\.|строен(?:ие)?|стр\.|будова|секц(?:ия|ія)?|bloc|corp|building|bldg\.?|korpus|bino|bina|бино)`;
+// These marker alternations are built from address-grammar.js's tagged,
+// per-language fragment data (one shared parser engine, country/language
+// grammar as data — see that file) rather than hardcoded here. The
+// combined pattern strings are verified byte-identical to the original
+// hardcoded regexes in address-grammar.test.js, so this is a pure data
+// extraction with no behavior change.
+const PREFIX_STREET_MARKER = String.raw`(?:(?:${combinedMarkerPattern(STREET_PREFIX_MARKERS)})\.?)`;
+const POSTFIX_STREET_MARKER = `(?:${combinedMarkerPattern(STREET_POSTFIX_MARKERS)})`;
+const POSTFIX_STREET_TYPE = `(?:${combinedMarkerPattern(STREET_TYPE_MARKERS)})`;
+const HOUSE_MARKER = `(?:${combinedMarkerPattern(HOUSE_MARKERS)})`;
+const BUILDING_MARKER = `(?:${combinedMarkerPattern(BUILDING_MARKERS)})`;
 const NUMBER_TOKEN = String.raw`\d{1,5}(?:[-\/]?[\p{L}]\d{0,4})?(?:[\/-]\d{1,4}(?:[-\/]?[\p{L}]\d{0,4})?){0,2}`;
 const STREET_WORD = String.raw`[\p{L}'’.-]{2,48}`;
 // Common post-Soviet street names lead with a bare numeral ("8 Марта",
