@@ -87,7 +87,7 @@ export function parseHousingRoomCount(value) {
     if (total >= 1 && total <= 20) return total;
   }
   for (const [re, rooms] of NUMBER_WORDS) if (re.test(text)) return rooms;
-  const numeric = text.match(/(?:^|[^\p{L}\p{N}])(\d{1,2})\s*(?:(?:-\s*)?комнат\p{L}*|(?:-\s*)?к(?:\.|\b)|(?:-\s*)?xona(?:li)?|(?:-\s*)?хона(?:лик|ли)?|бөлмелі|rooms?)(?=$|[^\p{L}\p{N}])/iu);
+  const numeric = text.match(/(?:^|[^\p{L}\p{N}])(\d{1,2})\s*(?:ta\s*)?(?:(?:-\s*)?комнат\p{L}*|(?:-\s*)?к(?:\.|\b)|(?:-\s*)?xona(?:li|si|lari)?|(?:-\s*)?хона(?:лик|ли|си|лари)?|бөлмелі|rooms?)(?=$|[^\p{L}\p{N}])/iu);
   if (numeric) {
     const rooms = toNumber(numeric[1]);
     if (rooms != null && rooms >= 1 && rooms <= 20) return rooms;

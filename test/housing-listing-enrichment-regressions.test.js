@@ -258,6 +258,45 @@ test('#8382612 Yangi Tashkent sale: per-m² quote is not the total apartment pri
   });
 });
 
+// Real Telegram rental listing: a UZS range without an explicit currency,
+// girls-only targeting, and joined "BezMakler" spelling.  These signals must
+// stay independent: the lower bound is the compatible legacy single-price
+// value, while the prohibition on families is never a family preference.
+const LISTING_MEDGORODOK_GIRLS = `
+🌸 QIZLARGA IJARAGA BEZMAKLER 🌸
+#QIZLARGA #XOZAYKALI
+
+📍 Manzil: Medgorodok (Qorakamish)
+🎓 TOSHMI, Beruniy va Milliy universitet — 10 daqiqalik yo‘l
+
+🏡 Hovlining 2 ta xonasi ijaraga beriladi.
+👭 Faqat qizlar uchun!
+4 ta QIZLAR OLINADI
+
+💰 Narxi: 950 000 - 1.000.000
+
+📞 Tel: +998930096839
+📞 Tel: +998931723334
+
+🚫 Oila va yigitlar bezovta qilmasin!
+`;
+
+test('Medgorodok girls-only rental: UZS range, audience exclusions, and BezMakler remain semantic fields', () => {
+  assert.deepEqual(parseHousingPrice(LISTING_MEDGORODOK_GIRLS, { country: 'UZ' }), {
+    amount: 950000,
+    currency: 'UZS',
+    approximate: false,
+  });
+  const enrichment = parseHousingListingEnrichment(LISTING_MEDGORODOK_GIRLS, { country: 'UZ', city: 'Tashkent' });
+  assert.equal(enrichment.rooms, 2);
+  assert.equal(enrichment.audience, 'women');
+  assert.deepEqual(enrichment.audienceAlternatives, ['women']);
+  assert.equal(enrichment.commission, false);
+  assert.equal(enrichment.commissionPercent, 0);
+  assert.equal(enrichment.address, null, 'landmarks and local areas must not be fabricated as a street address');
+  assert.equal(enrichment.addressStreet, null);
+});
+
 // TODO(follow-up): add exact-text regressions for #3428, #8398667, #8390002,
 // #8388527, #8390008, #8386865, #8386867, and a Mercor job-posting example
 // once the raw source text for each is supplied — see the plan's "Known

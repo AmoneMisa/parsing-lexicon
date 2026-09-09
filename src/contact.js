@@ -9,6 +9,7 @@ const PHONE_LIKE_RE = /\+?\d(?:[\t \u00a0().-]*\d){9,}/g;
 const PHONE_CANDIDATE_RE = /\+?\d(?:[\t \u00a0().-]*\d){6,}(?:[\t \u00a0]*(?:ext\.?|extension|x|доб\.?|дод\.?)\s*\d{1,6})?/giu;
 const PHONE_EXTENSION_RE = /[\t \u00a0]*(?:ext\.?|extension|x|доб\.?|дод\.?)\s*(\d{1,6})$/iu;
 const DATE_LIKE_PHONE_RE = /^\d{1,2}[./-]\d{1,2}[./-](?:\d{2}|\d{4})(?:\s+\d{1,2})?$/u;
+const PRICE_LABEL_BEFORE_NUMBER_RE = /(?:цена|ціна|нарх(?:и)?|narx(?:i)?|price|стоимост[ьи]|аренд(?:а|ная\s+плата)?|rent)\s*[:=\-–—]?\s*$/iu;
 
 const TELEGRAM_USERNAME_RE = /^[A-Za-z0-9_]{5,32}$/;
 const TELEGRAM_LINK_RE = /(?:https?:\/\/)?(?:t\.me|telegram\.me|telegram\.dog)\/([A-Za-z0-9_]{5,32})(?:\/[0-9]+)?(?:[/?#][^\s]*)?/giu;
@@ -18,6 +19,18 @@ const TELEGRAM_MENTION_RE = /(^|[^\p{L}\p{N}_@])@([A-Za-z0-9_]{5,32})\b/gu;
 function normalizedCountryHint(value) {
   const country = String(value || '').trim().toUpperCase();
   return /^[A-Z]{2}$/.test(country) ? country : undefined;
+}
+
+// PHONE_LIKE_RE deliberately accepts punctuation-separated digit sequences.
+// That also resembles a grouped monetary range such as
+// "Narxi: 950 000 - 1.000.000".  A nearby explicit price label is stronger
+// semantic evidence than the broad (unvalidated) ten-digit phone mask, so do
+// not hide that span before the money candidate parser sees it.  This does
+// not weaken validated national-phone parsing below.
+function isExplicitPriceSpan(text, start, raw) {
+  if (!/[\-–—]/u.test(raw)) return false;
+  const before = text.slice(Math.max(0, start - 48), start);
+  return PRICE_LABEL_BEFORE_NUMBER_RE.test(before);
 }
 
 function splitPhoneExtension(raw) {
@@ -38,6 +51,7 @@ export function findPhoneLikeSpans(value, options = {}) {
     const digits = raw.replace(/\D/g, '');
     if (digits.length < 10) continue;
     const start = match.index ?? 0;
+    if (isExplicitPriceSpan(text, start, raw)) continue;
     spans.push(Object.freeze({
       start,
       end: start + raw.length,
