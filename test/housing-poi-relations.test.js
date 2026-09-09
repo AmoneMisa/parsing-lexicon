@@ -75,3 +75,19 @@ test('recognises priority-country proximity wording without putting it into the 
   });
   assert.deepEqual(wrongCity, []);
 });
+
+test('uses multilingual transport and parking markers to constrain catalog resolution', () => {
+  const entities = {
+    'аеропорт Львів': { id: 'ua:lviv:poi:airport', canonical: 'Lviv Danylo Halytskyi International Airport', type: 'poi.airport', country: 'UA', parentId: 'ua:lviv' },
+    'Автостанція Південна': { id: 'ua:lviv:poi:south-bus-station', canonical: 'Lviv South Bus Station', type: 'poi.bus_station', country: 'UA', parentId: 'ua:lviv' },
+    'avtoturargoh Makro': { id: 'uz:tashkent:poi:makro-parking', canonical: 'Makro Parking', type: 'poi.parking', country: 'UZ', parentId: 'uz:tashkent' },
+  };
+  const typedResolver = ({ query, types = [] }) => {
+    const entity = entities[query];
+    return entity && types.includes(entity.type) ? [entity] : [];
+  };
+
+  assert.equal(extractHousingPoiRelations('біля аеропорт Львів', { country: 'UA', city: 'Lviv', resolveGeoCandidates: typedResolver })[0]?.target.type, 'poi.airport');
+  assert.equal(extractHousingPoiRelations('біля Автостанція Південна', { country: 'UA', city: 'Lviv', resolveGeoCandidates: typedResolver })[0]?.target.type, 'poi.bus_station');
+  assert.equal(extractHousingPoiRelations('avtoturargoh Makro yaqinida', { country: 'UZ', city: 'Tashkent', resolveGeoCandidates: typedResolver })[0]?.target.type, 'poi.parking');
+});

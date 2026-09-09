@@ -43,3 +43,9 @@ test('Bukhara review POI and street noise is not retyped as an area', () => {
     assert.ok(!match || !['microdistricts', 'localAreas'].includes(match.type), text);
   }
 });
+
+test('cached Bukhara bus-station names resolve as landmarks in city scope', () => {
+  assertMatch('Автостанция Северная', 'landmarks', 'North Bus Station');
+  assertMatch('Автовокзал (в Ташкент через Самарканд)', 'landmarks', 'Tashkent–Samarkand Bus Station');
+  assertMatch('маршрутки в Чор Бакр', 'landmarks', 'Chor Bakr Minibus Station');
+});
