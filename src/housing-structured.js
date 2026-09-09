@@ -5,7 +5,7 @@ import { moneyCurrencyFromText } from './money-core.js';
 import { DEPOSIT_TERMS, SELLER_TERMS, UTILITY_TERMS } from './housing.js';
 import { GENERIC_LANDMARK_TERMS } from './landmarks.js';
 import { LOCATION_RELATIONS, parseHousingContext } from './housing-context.js';
-import { resolveHousingIntent } from './housing-intent.js';
+import { isHousingCommercialAd, resolveHousingIntent } from './housing-intent.js';
 import { countryCurrency, countryPhoneHint } from './country-context.js';
 import { findTelegramContacts, maskPhoneLikeSpans, parsePhoneNumbers } from './contact.js';
 import { parseHousingAddress } from './housing-address.js';
@@ -425,6 +425,12 @@ export function parseHousingStructured(value, options = {}) {
     ? deepFreeze({ ...parsedPayments, utilities: null })
     : parsedPayments;
   const numericOptions = { country, dealType: effectiveDealType };
+  // A commercial/multi-property advertisement (hotel group, several
+  // listed businesses) has no single coherent address or price to extract
+  // — whichever one a naive parse picked would be arbitrary and misleading
+  // rather than downranked-but-plausible. Suppress both instead of
+  // returning a confident-looking but meaningless single value.
+  const isCommercialAd = isHousingCommercialAd(text);
 
   return deepFreeze({
     text,
@@ -433,20 +439,25 @@ export function parseHousingStructured(value, options = {}) {
       contact: sourcePost.contact,
     },
     intent,
+    isCommercialAd,
     context: parseHousingContext(text),
     rooms: parseHousingRoomCount(text),
     floor: parseHousingFloor(text),
     area: parseHousingAreas(text, numericOptions),
-    price: parseHousingPrice(text, {
-      country,
-      currency: fallbackCurrency,
-      dealType: effectiveDealType,
-    }),
-    address: parseHousingAddress(text, {
-      knownStreet: options.knownStreet || null,
-      allowDelimitedBare: options.allowDelimitedBareAddress === true,
-      allowBare: options.allowBareAddress === true,
-    }),
+    price: isCommercialAd
+      ? deepFreeze({ amount: null, currency: fallbackCurrency, approximate: false })
+      : parseHousingPrice(text, {
+        country,
+        currency: fallbackCurrency,
+        dealType: effectiveDealType,
+      }),
+    address: isCommercialAd
+      ? deepFreeze({ address: null, street: null, houseNumber: null, building: null, confidence: 0 })
+      : parseHousingAddress(text, {
+        knownStreet: options.knownStreet || null,
+        allowDelimitedBare: options.allowDelimitedBareAddress === true,
+        allowBare: options.allowBareAddress === true,
+      }),
     residentialComplex: parseHousingResidentialComplex(text),
     amenities: parseHousingAmenities(text),
     listingFields,

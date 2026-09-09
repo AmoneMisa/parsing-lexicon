@@ -76,6 +76,7 @@ export type HousingStructuredResult = Readonly<{
   text: string;
   source: Readonly<{ platform: string | null; contact: string | null }>;
   intent: Readonly<{ action: string | null; listingKind: string | null; dealType: string }> | null;
+  isCommercialAd: boolean;
   context: Readonly<Record<string, unknown>>;
   rooms: number | null;
   floor: Readonly<{ floor: number | null; totalFloors: number | null }>;
