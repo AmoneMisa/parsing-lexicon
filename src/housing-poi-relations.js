@@ -18,8 +18,8 @@ const TYPE_MARKERS = Object.freeze([
   ['metro', /(?:metro|metrosi|метро|м\.)/iu],
 ]);
 
-const RELATION_RE = /(?<relation>рядом\s+(?:с|со)|возле|около|недалеко\s+от|напротив|за|перед|near(?:by)?|close\s+to|next\s+to|opposite|behind|in\s+front\s+of|yaqin(?:ida)?|yonida|ro['’ʻʼ`]?parasida|орналасқан\s+жерде|поруч|біля|поблизу|lângă|aproape\s+de)\s+(?<target>[^,;.!?\r\n]{2,96})/giu;
-const POSTFIX_RELATION_RE = /(?<target>[^,;.!?\r\n]{2,96}?)\s+(?<relation>yonida|yaqin(?:ida)?|ro['’ʻʼ`]?parasida)(?=$|[,;.!?\r\n])/giu;
+const RELATION_RE = /(?<relation>рядом\s+(?:с|со)|возле|около|недалеко\s+от|напротив|навпроти|за|перед|позаду|near(?:by)?|close\s+to|next\s+to|opposite|behind|in\s+front\s+of|yaqin(?:ida)?|yonida|ro['’ʻʼ`]?parasida|орналасқан\s+жерде|жанында|қасында|жакын|каршысында|қарсысында|артында|алдында|поруч|біля|поблизу|lângă|aproape\s+de|în\s+apropiere\s+de|vizavi\s+de|în\s+spatele|în\s+fața)\s+(?<target>[^,;.!?\r\n]{2,96})/giu;
+const POSTFIX_RELATION_RE = /(?<target>[^,;.!?\r\n]{2,96}?)\s+(?<relation>yonida|yaqin(?:ida)?|ro['’ʻʼ`]?parasida|жанында|қасында|жакын|каршысында|қарсысында|артында|алдында)(?=$|[,;.!?\r\n])/giu;
 const DISTANCE_UNIT = String.raw`(?:km|км|min(?:ute)?s?|мин(?:ут(?:ы|а|ах)?)?|хв(?:илин(?:и|у)?)?|дақиқа|daqiqa|метр(?:а|ов|ів)?|m)`;
 const DISTANCE_MODE = String.raw`(?:пешком|пішки|walking?|yayov|piyoda|на\s+машине|by\s+car)`;
 const DISTANCE_RE = new RegExp(String.raw`(?<amount>\d{1,3}(?:[.,]\d+)?)\s*(?<unit>${DISTANCE_UNIT})\s*(?<mode>${DISTANCE_MODE})?\s*(?:до|от|from|to|до\s+станции)\s+(?<target>[^,;.!?\r\n]{2,96})`, 'giu');
@@ -33,9 +33,9 @@ function cleanTarget(value) {
 
 function relationKind(value) {
   const text = String(value || '').toLowerCase();
-  if (/напротив|opposite|ro['’ʻʼ`]?parasida/u.test(text)) return 'opposite';
-  if (/behind|\bза\b/u.test(text)) return 'behind';
-  if (/in\s+front|\bперед\b/u.test(text)) return 'in_front_of';
+  if (/напротив|навпроти|opposite|vizavi|ro['’ʻʼ`]?parasida|каршысында|қарсысында/u.test(text)) return 'opposite';
+  if (/behind|за|позаду|în\s+spatele|артында/u.test(text)) return 'behind';
+  if (/in\s+front|\bперед\b|în\s+fața|алдында/u.test(text)) return 'in_front_of';
   return 'near';
 }
 

@@ -50,3 +50,22 @@ test('target-first Ukrainian travel time separates a concrete supermarket name f
     mode: 'unknown',
   }]);
 });
+
+test('recognises priority-country proximity wording without putting it into the POI name', () => {
+  const entities = {
+    'Алатау метро': { id: 'kz:almaty:metro:alataw', canonical: 'Alatau', type: 'metro', country: 'KZ', parentId: 'kz:almaty:city:almaty' },
+    'Universitatea București': { id: 'ro:bucharest:university:ub', canonical: 'University of Bucharest', type: 'poi.university', country: 'RO', parentId: 'ro:bucharest:city:bucharest' },
+  };
+  const resolver = ({ query }) => entities[query] ? [entities[query]] : [];
+
+  const [kazakh] = extractHousingPoiRelations('Алатау метро жанында', { country: 'KZ', city: 'Almaty', resolveGeoCandidates: resolver });
+  assert.equal(kazakh.relation, 'near');
+  assert.equal(kazakh.target.canonical, 'Alatau');
+
+  const [kazakhOpposite] = extractHousingPoiRelations('Алатау метро қарсысында', { country: 'KZ', city: 'Almaty', resolveGeoCandidates: resolver });
+  assert.equal(kazakhOpposite.relation, 'opposite');
+
+  const [romanian] = extractHousingPoiRelations('în spatele Universitatea București', { country: 'RO', city: 'Bucharest', resolveGeoCandidates: resolver });
+  assert.equal(romanian.relation, 'behind');
+  assert.equal(romanian.target.canonical, 'University of Bucharest');
+});
