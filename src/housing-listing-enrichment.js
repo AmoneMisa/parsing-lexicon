@@ -11,6 +11,7 @@ import { parseHousingAddress, resolveHousingAddressGeoEntities } from './housing
 import { HOUSING_LANDMARK_EXTENSIONS, HOUSING_POI_EXTENSIONS } from './housing-poi-extensions.js';
 import { resolveHousingIntent } from './housing-intent.js';
 import { extractHousingPoiRelations } from './housing-poi-relations.js';
+import { dictionaryFor } from './locations-runtime.js';
 
 const GENERIC_CATEGORY = Object.freeze({
   Park: 'park', Metro: 'metro', 'Bus stop': 'transport', 'Public transport': 'transport', 'Main road': 'transport',
@@ -41,9 +42,12 @@ const AIR_CONDITIONER_RE = /(?:кондицион|air\s*con|konditsioner|kandit(
 const PER_PERSON_PRICE_RE = /(?:kishi\s+boshiga|киши\s+бошига)\s*(\d{1,3}(?:[\s.,]\d{3})*|\d+(?:[.,]\d+)?)\s*(ming|минг|million|mln|млн)?(?:dan|дан)?/iu;
 const WALK_MINUTES_RE = /(?:yayov|piyoda|пешком)\s*(\d{1,2})\s*(?:daqiqa|min(?:ute)?s?|минут)/iu;
 const TRANSIT_ROUTES_RE = /(?:aftobuslar|avtobuslar|автобуслар|автобусы)[^\r\n\d]{0,24}((?:\d{1,4}[\s,;/]*){1,10})/iu;
-const NEARBY_RELATION_TAIL_RE = /(?<!\p{L})(?:рядом\s+(?:с|со)|недалеко\s+от|возле|около|ориентир\s*[:—–-]?|ор[-–—]?р\.?\s*[:—–-]?|near(?:by)?|close\s+to|lângă|aproape\s+de)(?!\p{L})[^.!?\r\n;]*/giu;
+const NEARBY_RELATION_TAIL_RE = /(?<!\p{L})(?:рядом\s+(?:с|со)|недалеко\s+от|возле|около|напротив|навпроти|ориентир\s*[:—–-]?|ор[-–—]?р\.?\s*[:—–-]?|near(?:by)?|close\s+to|next\s+to|opposite|behind|in\s+front\s+of|yaqin(?:ida)?|lângă|aproape\s+de|în\s+apropiere\s+de|vizavi\s+de|în\s+spatele|în\s+fața)(?!\p{L})[^.!?\r\n;]*/giu;
+const NEARBY_POSTFIX_RELATION_RE = /(?<!\p{L})[^,;.!?\r\n]{2,96}?\s+(?:yonida|yaqin(?:ida)?|ro['’ʻʼ`]?parasida|жанында|қасында|жакын|каршысында|қарсысында|артында|алдында)(?=$|[,;.!?\r\n])/giu;
 const NEARBY_TRAVEL_TAIL_RE = /(?<!\p{L})(?:до|până\s+la)(?!\p{L})[^.!?\r\n;]{0,96}(?<!\p{L})\d{1,3}\s*(?:мин(?:ут(?:ы|а|ах)?|\.?)?|min(?:ute)?s?|дақиқ\p{L}*|daqiqa|км|km|метр(?:а|ов)?|m)(?!\p{L})[^.!?\r\n;]*/giu;
 const RESIDENTIAL_CONTEXT_RE = /(?:ж\.?\s*к\.?|жил(?:ой|ого)\s+комплекс|новострой(?:ка|ки)?|residential\s+complex|residence|turar\s+joy|uy[-\s]?joy|majmua|массив)/iu;
+const METRO_PREFIX_RE = /(?:^|[^\p{L}])(?:metro|metrosi|метро|м\.)\s*$/iu;
+const SUPERMARKET_PREFIX_RE = /(?:^|[^\p{L}])(?:супермаркет|supermarket|магазин)\s*$/iu;
 
 function unique(values) {
   return [...new Set(values.filter(Boolean))];
@@ -55,7 +59,7 @@ function categoryOf(entry) {
 
 function nearbyReferenceRanges(text) {
   const ranges = [];
-  for (const pattern of [NEARBY_RELATION_TAIL_RE, NEARBY_TRAVEL_TAIL_RE]) {
+  for (const pattern of [NEARBY_RELATION_TAIL_RE, NEARBY_POSTFIX_RELATION_RE, NEARBY_TRAVEL_TAIL_RE]) {
     const regex = new RegExp(pattern.source, pattern.flags);
     for (const match of text.matchAll(regex)) {
       const start = match.index ?? 0;
@@ -72,6 +76,7 @@ function insideNearbyReference(match, ranges) {
 function withoutNearbyLocationReferences(text) {
   return String(text || '')
     .replace(NEARBY_RELATION_TAIL_RE, ' ')
+    .replace(NEARBY_POSTFIX_RELATION_RE, ' ')
     .replace(NEARBY_TRAVEL_TAIL_RE, ' ');
 }
 
@@ -120,6 +125,42 @@ function genericMatches(text) {
     category: categoryOf(match.entry),
     start: match.start,
   }));
+}
+
+// A city dictionary is the canonical lexical source.  Collect every contextual
+// match here instead of using matchDictionaryLocation(), which intentionally
+// returns just one longest match for simple lookup callers.
+function contextualCityMatches(text, country, city, type, prefix) {
+  const dictionary = dictionaryFor(String(country || '').toUpperCase(), city);
+  if (!dictionary || !prefix) return [];
+  const matches = [];
+  for (const entry of dictionary[type] || []) {
+    if (!entry?.re) continue;
+    const flags = [...new Set(`${entry.re.flags.replace(/g/g, '')}g`)].join('');
+    const re = new RegExp(entry.re.source, flags);
+    for (const match of text.matchAll(re)) {
+      const start = match.index ?? 0;
+      const before = text.slice(Math.max(0, start - 40), start);
+      if (!prefix.test(before)) continue;
+      matches.push({ canonical: entry.name, start, length: match[0].length });
+    }
+  }
+  return matches.sort((a, b) => a.start - b.start || b.length - a.length || a.canonical.localeCompare(b.canonical));
+}
+
+function cityMetro(text, country, city) {
+  return contextualCityMatches(text, country, city, 'metro', METRO_PREFIX_RE)[0]?.canonical || null;
+}
+
+function contextualNearby(text, country, city, metro) {
+  const shops = contextualCityMatches(text, country, city, 'landmarks', SUPERMARKET_PREFIX_RE)
+    .map((match) => match.canonical);
+  const generic = parseHousingNearby(text).filter((name) => {
+    if (name === 'Metro' && metro) return false;
+    if (name === 'Supermarket' && shops.length) return false;
+    return true;
+  });
+  return deepFreeze(unique([...shops, ...generic]));
 }
 
 export function parseHousingNearby(value) {
@@ -246,7 +287,7 @@ export function parseHousingListingEnrichment(value, { country = '', city = '', 
   const observedAmenities = parseHousingObservedAmenities(text);
   const quarter = matchTashkentHousingQuarter(text);
   const district = matchTashkentHousingDistrict(text)?.name || quarter?.district || null;
-  const metro = matchTashkentHousingMetro(text)?.name || null;
+  const metro = matchTashkentHousingMetro(text)?.name || cityMetro(text, country, city) || null;
   const primaryResidentialText = withoutNearbyLocationReferences(text);
   const parsedRc = specificResidentialComplex(primaryResidentialText)
     || matchTashkentResidentialComplex(primaryResidentialText)?.name
@@ -314,7 +355,7 @@ export function parseHousingListingEnrichment(value, { country = '', city = '', 
     perPersonPrice,
     transitRoutes: parseHousingTransitRoutes(text),
     walkMinutes: walkMinutes(text),
-    nearby: parseHousingNearby(text),
+    nearby: contextualNearby(text, country, city, metro),
     ...(poiRelations.length ? { poiRelations, nearbyEntities: deepFreeze(nearbyEntities) } : {}),
     amenities: observedAmenities,
     district: district || null,

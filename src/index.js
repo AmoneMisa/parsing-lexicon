@@ -1,5 +1,8 @@
 export * from './lexicon-core.js';
 export * from './normalization.js';
+// Both normalization and hiring-skills expose an internal regex escaper.  The
+// root API deliberately chooses the generic normalization helper instead of
+// letting ESM's ambiguous star-export rule silently omit it.
 export { escapeRegex } from './normalization.js';
 export * from './parser-core.js';
 export * from './temporal.js';

@@ -1,4 +1,4 @@
-import { aliasesOf, findCanonical } from './normalization.js';
+import { aliasesOf, escapeRegex, findCanonical } from './normalization.js';
 import { CURRENCY_TERMS, NUMBER_MULTIPLIERS } from './money-lexicon.js';
 import {
   MONEY_NUMBER_PATTERN,
@@ -30,10 +30,6 @@ const PAYMENT_AMOUNT_TERMS = Object.freeze([
   SELLER_TERMS.commission,
 ].filter(Boolean));
 const PRICE_KEYWORD_RE = new RegExp(PRICE_KEYWORD, 'iu');
-
-function escapeRegex(value) {
-  return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
 
 // One-letter `m/м` is deliberately excluded from the generic multiplier set.
 // Its meaning is resolved by housing-numeric-spans.js first, so area/distance/

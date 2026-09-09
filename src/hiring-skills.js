@@ -1,4 +1,9 @@
 import { cleanHiringSourceText } from './hiring-source-semantics.js'
+import { escapeRegex } from './normalization.js'
+
+// Kept as a compatibility export for existing hiring consumers. The lexical
+// implementation itself has one canonical home in normalization.js.
+export { escapeRegex } from './normalization.js'
 
 // These canonical labels are ordinary words or one-letter tokens. Matching the
 // label itself would create noisy results; only their explicit aliases are safe.
@@ -247,10 +252,6 @@ export function normalizeSkillText(value) {
     .replace(/[‐‑‒–—]/g, '-')
     .replace(/\s+/g, ' ')
     .trim()
-}
-
-export function escapeRegex(value) {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
 
 export function buildSkillRegex(alias) {

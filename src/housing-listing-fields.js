@@ -102,7 +102,9 @@ function parseUtilitiesAmount(text) {
 function parseCommunalSeparated(text, country) {
   if (/(коммунал\p{L}*(?:\s+услуг\p{L}*)?\s*(?:отдельно|сверху|плюс|оплачива\p{L}*\s*отдельно)|свет\s*вода\s*газ\s*отдельно|k[oa]munal\p{L}*\s*(?:alohida|aloxida|ustiga)|камунал\s+туловлари\s+алохида|коммунал\s+тўловлари\s+алоҳида|utilities?\s*(?:separate|extra|not included))/iu.test(text)) return true;
   if (/(коммунал\p{L}*(?:\s+услуг\p{L}*)?\s*(?:включ|входит|в\s*стоимост)|вс[её]\s*включ|all\s*inclusive|kommunal\p{L}*\s*(?:kiritilgan|ichida)|комунал(?:каси)?\s+ичида|коммунал(?:каси)?\s+ичида|utilities?\s*included)/iu.test(text)) return false;
-  return String(country || '').toUpperCase() === 'UA' ? true : null;
+  // Utility-payment terms must be explicit.  A country default turns ordinary
+  // Ukrainian listings into a made-up "utilities separate" assertion.
+  return null;
 }
 
 function parseDepositRequired(text) {

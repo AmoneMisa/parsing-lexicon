@@ -27,6 +27,14 @@ test('housing V2 resolves temporal availability and minimum rental duration thro
   assert.ok(parsed.debug.refinersApplied.includes('temporal-context'));
 });
 
+test('housing V2 keeps rental-duration spans out of address and geo components', () => {
+  const parsed = parseHousingV2('Квартира сдаётся от 1 месяца', { country: 'UA', city: 'Kharkiv' });
+  assert.deepEqual(parsed.data.minimumRentalDuration, { value: 1, unit: 'month', bound: 'min' });
+  assert.equal(parsed.data['address.street'], undefined);
+  assert.equal(parsed.data['address.houseNumber'], undefined);
+  assert.equal(parsed.data['geo.district'], undefined);
+});
+
 test('housing V2 emits address and catalog-reference candidates without coordinates', () => {
   const parsed = parseHousingV2('Yashnobot tuman Olmos metrosi Olmos mahalla 3/11/16', {
     country: 'UZ', city: 'Tashkent',

@@ -94,6 +94,38 @@ test('parses Uzbek and Romanian explicit address markers', () => {
   assert.equal(ro.building, '3');
 });
 
+test('stops a marked street before ownership and marketing prose', () => {
+  assert.deepEqual(
+    parseHousingAddress('Здам 3-х кімнатну квартиру на вул.Воробкевича. ВЛАСНИК'),
+    {
+      address: 'Воробкевича',
+      street: 'Воробкевича',
+      houseNumber: null,
+      building: null,
+      confidence: 0.88,
+    },
+  );
+});
+
+test('ranks a complete marked address above an earlier street-only mention', () => {
+  const parsed = parseHousingAddress('Орієнтир: вул. Льва Толстого\nвул. Воробкевича 12');
+  assert.equal(parsed.address, 'Воробкевича 12');
+  assert.equal(parsed.street, 'Воробкевича');
+  assert.equal(parsed.houseNumber, '12');
+});
+
+test('shared address grammar accepts Kazakh and Kyrgyz postfix street forms', () => {
+  const kz = parseHousingAddress('Абай көшесі 12-А, кіреберіс 3');
+  assert.equal(kz.street, 'Абай');
+  assert.equal(kz.houseNumber, '12-А');
+  assert.equal(kz.entrance, '3');
+
+  const kg = parseHousingAddress('Чүй көчөсү 17 корпус 2');
+  assert.equal(kg.street, 'Чүй');
+  assert.equal(kg.houseNumber, '17');
+  assert.equal(kg.building, '2');
+});
+
 test('normalizes the common Kharkiv Poltavskyi Shliakh OCR typo before parsing its house number', () => {
   assert.deepEqual(parseHousingAddress('улица Полтавский шоях 171'), {
     address: 'Полтавский шлях 171',

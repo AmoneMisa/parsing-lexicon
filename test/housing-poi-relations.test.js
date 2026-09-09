@@ -33,18 +33,45 @@ test('uses metro marker to disambiguate an otherwise ambiguous name', () => {
   assert.equal(result.durationMinutes, 10);
 });
 
-test('parses Uzbek landmark-first proximity phrases without polluting the target name', () => {
-  const uzResolver = ({ query }) => {
-    const known = {
-      'Magic City': { id: 'uz:tashkent:poi:magic-city', canonicalName: 'Magic City', type: 'poi.shopping_mall', country: 'UZ', parentId: 'uz:tashkent' },
-      Narxoz: { id: 'uz:tashkent:poi:narxoz', canonicalName: 'Narxoz', type: 'poi.university', country: 'UZ', parentId: 'uz:tashkent' },
-    };
-    return known[query] ? [known[query]] : [];
-  };
-  const result = extractHousingPoiRelations('Magic City yonida, Narxozga yaqin', {
-    country: 'UZ', city: 'Tashkent', resolveGeoCandidates: uzResolver,
+test('target-first Ukrainian travel time separates a concrete supermarket name from its duration', () => {
+  const result = extractHousingPoiRelations('Супермаркет Класс 5 хвилин, метро Героев праци', {
+    country: 'UA', city: 'Kharkiv',
+    resolveGeoCandidates({ query }) {
+      return query.toLowerCase() === 'класс'
+        ? [{ id: 'ua:kharkiv:supermarket:klass', canonical: 'Klass', type: 'supermarket', country: 'UA', parentId: 'ua:kharkiv:city:kharkiv' }]
+        : [];
+    },
   });
-  assert.deepEqual(result.map((item) => [item.relation, item.target.canonical]), [
-    ['near', 'Magic City'], ['near', 'Narxoz'],
-  ]);
+  assert.deepEqual(result, [{
+    relation: 'travel_time',
+    target: { id: 'ua:kharkiv:supermarket:klass', canonical: 'Klass', type: 'supermarket', country: 'UA', parentId: 'ua:kharkiv:city:kharkiv' },
+    confidence: 0.94,
+    durationMinutes: 5,
+    mode: 'unknown',
+  }]);
+});
+
+test('recognises priority-country proximity wording without putting it into the POI name', () => {
+  const entities = {
+    'Алатау метро': { id: 'kz:almaty:metro:alataw', canonical: 'Alatau', type: 'metro', country: 'KZ', parentId: 'kz:almaty:city:almaty' },
+    'Universitatea București': { id: 'ro:bucuresti:university:ub', canonical: 'University of Bucharest', type: 'poi.university', country: 'RO', parentId: 'ro:bucuresti:city:bucuresti' },
+  };
+  const resolver = ({ query }) => entities[query] ? [entities[query]] : [];
+
+  const [kazakh] = extractHousingPoiRelations('Алатау метро жанында', { country: 'KZ', city: 'Almaty', resolveGeoCandidates: resolver });
+  assert.equal(kazakh.relation, 'near');
+  assert.equal(kazakh.target.canonical, 'Alatau');
+
+  const [kazakhOpposite] = extractHousingPoiRelations('Алатау метро қарсысында', { country: 'KZ', city: 'Almaty', resolveGeoCandidates: resolver });
+  assert.equal(kazakhOpposite.relation, 'opposite');
+
+  const [romanian] = extractHousingPoiRelations('în spatele Universitatea București', { country: 'RO', city: 'Bucharest', resolveGeoCandidates: resolver });
+  assert.equal(romanian.relation, 'behind');
+  assert.equal(romanian.target.canonical, 'University of Bucharest');
+
+  const wrongCity = extractHousingPoiRelations('lângă Universitatea București', {
+    country: 'RO', city: 'Bucharest',
+    resolveGeoCandidates: () => [{ id: 'ro:cluj:university:ub', canonical: 'University of Bucharest', type: 'poi.university', country: 'RO', parentId: 'ro:cluj:city:cluj' }],
+  });
+  assert.deepEqual(wrongCity, []);
 });

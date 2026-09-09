@@ -1,8 +1,6 @@
 import { COUNTRIES, canonicalCountryCode } from './countries.js';
 import { CITIES } from './geography.js';
-import { aliasesOf, aliasesToRegex, normalizeForMatch } from './normalization.js';
-
-const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+import { aliasesOf, aliasesToRegex, escapeRegex, normalizeForMatch } from './normalization.js';
 
 function cityInflectionRegex(aliases) {
   const cyrillic = [...new Set(aliases.filter((alias) => /\p{Script=Cyrillic}/u.test(alias)))];

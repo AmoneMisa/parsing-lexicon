@@ -137,10 +137,7 @@ export function scoreHiringAts(profileOrCv, job, options = {}) {
   const relevance = extractTerms(keywordSource).size ? Math.round(coverage(profile.terms || extractTerms(profile.raw), extractTerms(keywordSource)) * 100) : 60;
   const breakdown = Object.freeze({ skills, experience: experience.score, seniority: seniority.score, scope: scope.score, education: education.score, relevance });
   let fitScore = Math.round(skills * .30 + experience.score * .20 + seniority.score * .20 + scope.score * .15 + education.score * .10 + relevance * .05);
-  // Source-specific ATS ingestion can supply the wording that established a
-  // sponsorship policy separately from the rendered description.  It remains
-  // input evidence, not consumer-side parsing logic.
-  const usText = `${job?.location || ''} ${title} ${description} ${tagText} ${(job?.sponsorshipEvidence || []).join(' ')}`;
+  const usText = `${job?.location || ''} ${title} ${description}`;
   const visaBlocked = (job?.country || '').toUpperCase() === 'US' || detectCountryCodeFromText(usText) === 'US'
     ? profile.requiresUsSponsorship === true && isNoSponsorshipRequirement(usText) : false;
   const blockers = visaBlocked ? [Object.freeze({ code: 'visa_sponsorship', label: 'Visa sponsorship unavailable', critical: true })] : [];

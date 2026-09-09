@@ -1,6 +1,6 @@
 import type { HiringSeniority, DegreeLevel, DegreeField } from './hiring-requirements.js';
 export type HiringAtsProfile = Readonly<{ raw: string; skills: Set<string>; skillEvidence: Map<string, number>; terms?: Set<string>; experienceYears?: number; seniority?: HiringSeniority; degreeLevel?: DegreeLevel; degreeFields: Set<DegreeField>; requiresUsSponsorship?: boolean }>;
-export type HiringAtsJob = Readonly<{ title: string; description?: string; tags?: string[]; skills?: string[]; niceToHave?: string[]; experienceMinYears?: number; seniority?: string | null; education?: string; country?: string; location?: string; sponsorshipEvidence?: string[] }>;
+export type HiringAtsJob = Readonly<{ title: string; description?: string; tags?: string[]; skills?: string[]; niceToHave?: string[]; experienceMinYears?: number; seniority?: string | null; education?: string; country?: string; location?: string }>;
 export function buildHiringAtsProfile(cvText: unknown, options?: { fuzzySkills?: boolean; referenceDate?: Date }): HiringAtsProfile;
 export function scoreHiringAts(profileOrCv: HiringAtsProfile | string, job: HiringAtsJob, options?: { fuzzySkills?: boolean; referenceDate?: Date }): Readonly<{ score: number; fitScore: number; eligible: boolean; blockers: readonly { code: string; label: string; critical: boolean }[]; breakdown: Readonly<{ skills: number; experience: number; seniority: number; scope: number; education: number; relevance: number }>; matched: readonly string[]; missing: readonly string[] }>;
 export function hiringAtsScoreColor(score: number): string;
