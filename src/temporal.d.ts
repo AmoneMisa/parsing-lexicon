@@ -9,6 +9,10 @@ export type WorkScheduleValue = Readonly<{
   type: 'cycle' | 'weekdays' | 'custom' | 'flexible';
   workDays?: number;
   restDays?: number;
+  cycleHours?: Readonly<{
+    work: number;
+    rest: number;
+  }>;
   daysOffMode?: 'fixed' | 'floating' | 'rotating';
   workingDays?: readonly Weekday[];
   workingHours?: TimeRangeValue;

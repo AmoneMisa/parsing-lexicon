@@ -68,6 +68,11 @@ test('temporal API requires context for ambiguous clocks and schedule cycles', (
   assert.equal(parseTemporal('Цена 7.00').data.clockTime, undefined);
   assert.equal(parseTemporal('Планировка 2/2').data.workSchedule, undefined);
 
+  assert.deepEqual(parseTemporal('График 24/48, смены', { domain: 'vacancy' }).data.workSchedule, {
+    type: 'cycle', cycleHours: { work: 24, rest: 48 }, daysOffMode: 'rotating',
+  });
+  assert.equal(parseTemporal('Планировка 24/48').data.workSchedule, undefined);
+
   const schedule = parseTemporal('Работа 2 через 2, ночные смены 19:00-07:00', { domain: 'vacancy' });
   assert.deepEqual(schedule.data.workSchedule, {
     type: 'cycle', workDays: 2, restDays: 2, daysOffMode: 'fixed', workingHours: {

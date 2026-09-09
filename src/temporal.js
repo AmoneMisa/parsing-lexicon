@@ -72,6 +72,17 @@ function scheduleDaysOffMode(text) {
   if (/(?:скользящ|сменн|rotating\s+days\s+off|выходные\s+по\s+графику)/iu.test(text)) return 'rotating';
   return 'fixed';
 }
+function cycleScheduleValue(work, rest, daysOffMode) {
+  // Day cycles such as 2/2 and 5/2 are common. Values larger than a week in
+  // an explicit schedule context are the conventional shift notation 24/48
+  // or 12/24, not a claim of dozens of working days.
+  if (Math.max(work, rest) > 7) {
+    // An hour cycle has no fixed weekday rest days. Keep an explicitly
+    // floating mode, otherwise expose the inherent repeating rotation.
+    return Object.freeze({ type: 'cycle', cycleHours: Object.freeze({ work, rest }), daysOffMode: daysOffMode === 'fixed' ? 'rotating' : daysOffMode });
+  }
+  return Object.freeze({ type: 'cycle', workDays: work, restDays: rest, daysOffMode });
+}
 function isTimeRangeContextual(match, text) {
   if (/[.:]|\b(?:am|pm|утра|вечера|ранку|вечора|ertalab|kechqurun)\b/iu.test(match[0])) return true;
   if (/^\s*(?:с|from)\b/iu.test(match[0])) return true;
@@ -142,7 +153,8 @@ export function extractTemporalCandidates(value, context = {}) {
   for (const match of text.matchAll(/(?<![\d:.])(\d{1,2})\s*(?:\/|\\|через|-)\s*(\d{1,2})(?![\d:.])/giu)) {
     const around = text.slice(Math.max(0, (match.index ?? 0) - 32), (match.index ?? 0) + match[0].length + 32); if (!scheduleContext.test(around)) continue;
     const daysOffMode = scheduleDaysOffMode(around);
-    candidates.push(candidate('workSchedule', Object.freeze({ type: 'cycle', workDays: Number(match[1]), restDays: Number(match[2]), daysOffMode }), match, 'temporal.schedule-cycle', .99, [{ type: 'context', value: 'schedule' }, { type: 'range', value: 'cycle' }, { type: 'days-off-mode', value: daysOffMode }]));
+    const work = Number(match[1]); const rest = Number(match[2]);
+    candidates.push(candidate('workSchedule', cycleScheduleValue(work, rest, daysOffMode), match, 'temporal.schedule-cycle', .99, [{ type: 'context', value: 'schedule' }, { type: 'range', value: Math.max(work, rest) > 7 ? 'cycle-hours' : 'cycle' }, { type: 'days-off-mode', value: daysOffMode }]));
   }
   for (const match of text.matchAll(/(?<![\p{L}\p{N}])два\s+через\s+два(?![\p{L}\p{N}])/giu)) {
     const around = text.slice(Math.max(0, (match.index ?? 0) - 32), (match.index ?? 0) + match[0].length + 32); if (!scheduleContext.test(around)) continue;
