@@ -120,3 +120,10 @@ test('temporal API keeps one shared engine while accepting priority-country sche
     assert.deepEqual(parseTemporal(value).data.workSchedule.workingDays, ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']);
   }
 });
+
+test('temporal API resolves numbered relative availability dates in priority-country language', () => {
+  const context = { domain: 'real-estate', referenceDate: '2026-09-09T12:00:00Z' };
+  assert.deepEqual(parseTemporal('Квартира доступна через 3 дні', context).data.availabilityDate, { year: 2026, month: 9, day: 12 });
+  assert.deepEqual(parseTemporal('Disponibilă peste 2 zile', context).data.availabilityDate, { year: 2026, month: 9, day: 11 });
+  assert.deepEqual(parseTemporal('Пәтер 4 күннен кейін бос', context).data.availabilityDate, { year: 2026, month: 9, day: 13 });
+});
