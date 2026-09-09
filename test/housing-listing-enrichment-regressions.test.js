@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { parseHousingListingEnrichment, parseHousingCommissionAmount } from '../src/housing-listing-enrichment.js';
+import { parseHousingAddress } from '../src/housing-address.js';
 import { parseHousingPrice } from '../src/housing-money.js';
 
 // #3419 — real Telegram-repost of an OLX ad, using the channel's structured
@@ -295,6 +296,48 @@ test('Medgorodok girls-only rental: UZS range, audience exclusions, and BezMakle
   assert.equal(enrichment.commissionPercent, 0);
   assert.equal(enrichment.address, null, 'landmarks and local areas must not be fabricated as a street address');
   assert.equal(enrichment.addressStreet, null);
+});
+
+const LISTING_SERGELI_SOUTH_STATION = `
+👭 Qizlarga ijaraga kvartira- Sergeli
+#Qizlarga #Ayollarga
+📍Manzil: Sergeli tumani (janubiy vokzal orqasidagi mahalla)
+KIUT (eski YODJU) universitetiga 10-15 daqiqa piyoda
+💵Narxi:1000 000 so'm
+📞Tel: +998901227075
+`;
+
+test('Sergeli women-only rental: malformed grouped UZS price is not a phone or a bare metro/mahalla', () => {
+  assert.deepEqual(parseHousingPrice(LISTING_SERGELI_SOUTH_STATION, { country: 'UZ' }), {
+    amount: 1000000,
+    currency: 'UZS',
+    approximate: false,
+  });
+  const enrichment = parseHousingListingEnrichment(LISTING_SERGELI_SOUTH_STATION, { country: 'UZ', city: 'Tashkent' });
+  assert.equal(enrichment.district, 'Sergeli');
+  assert.equal(enrichment.metro, null, 'a named district must not create a duplicate bare metro');
+  assert.equal(enrichment.address, null);
+  const address = parseHousingAddress(LISTING_SERGELI_SOUTH_STATION);
+  assert.ok(!('mahalla' in address), 'descriptive “behind the station” prose is not a mahalla canonical');
+});
+
+test('Tashkent City remains a typed development area and Samarqand Darvoza remains a POI, not a residence complex', () => {
+  const city = parseHousingListingEnrichment(
+    'Аренда: Дружба народов, Ташкент сити. 2 комнатная, 16 этаж, 27 этажный дом, новостройка, цена: 1300$',
+    { country: 'UZ', city: 'Tashkent' },
+  );
+  assert.equal(city.developmentArea, 'Tashkent City');
+  assert.equal(city.residenceComplex, null);
+
+  const qoratosh = parseHousingListingEnrichment(
+    'Manzil: Shayxontohur tumani, Qoratosh mahallasi. Xona: 2 xonali uy. Qulaylik: Xalqlar do‘stligi metro, Chorsu bozor, Samarqand darvoza savdo markazi.',
+    { country: 'UZ', city: 'Tashkent' },
+  );
+  assert.equal(qoratosh.district, 'Shaykhantahur');
+  assert.equal(qoratosh.metro, 'Xalqlar Dostligi');
+  assert.equal(qoratosh.residenceComplex, null);
+  assert.ok(qoratosh.nearby.includes('Samarqand Darvoza'));
+  assert.equal(qoratosh.address, null);
 });
 
 // TODO(follow-up): add exact-text regressions for #3428, #8398667, #8390002,

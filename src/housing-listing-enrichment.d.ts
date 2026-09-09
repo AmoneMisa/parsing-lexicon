@@ -56,6 +56,7 @@ export interface HousingListingEnrichment {
   district?: string | null;
   quarter?: { number: number; suffix: string } | null;
   metro?: string | null;
+  developmentArea?: string | null;
   residenceComplex?: string | null;
   address?: string | null;
   addressStreet?: string | null;

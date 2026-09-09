@@ -4,6 +4,7 @@ const AMBIGUOUS_TASHKENT_COMPLEXES = new Set([
   'Amir Temur',
   'Bodomzor',
   'City Mall',
+  'DARVOZA',
   'Darhan',
   'Pushkin',
   'Seoul Mun',

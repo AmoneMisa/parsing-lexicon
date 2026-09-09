@@ -286,19 +286,27 @@ export function matchTashkentHousingMetro(value) {
   const text = String(value ?? '');
   if (!text) return null;
   for (const station of TASHKENT_METRO) {
-    const match = text.match(station.re);
-    if (!match) continue;
-    if (hasExplicitMetroContext(text, match)) return station;
+    const flags = [...new Set(`${station.re.flags.replace(/g/gu, '')}g`)].join('');
+    const matches = [...text.matchAll(new RegExp(station.re.source, flags))];
+    if (!matches.length) continue;
+    // An explicit marker must win even if an earlier bare occurrence shares a
+    // name with a district. For example, "Sergeli tumani, metro Sergeli"
+    // still refers to the station at the second occurrence.
+    if (matches.some((match) => hasExplicitMetroContext(text, match))) return station;
+    const sameNamedDistrict = hasExplicitTashkentDistrict(text, station.name);
+    for (const match of matches) {
+      if (sameNamedDistrict) continue;
     // "Toshkent" is both a metro station and the city's own name, so a bare
     // mention ("Toshkent shahri") is not evidence of the station the way a
     // bare mention of any other station name would be. Require an explicit
     // metro context for this one station specifically.
-    if (station.name === 'Toshkent') continue;
-    if (station.name === 'Qoyliq' && QOYLIQ_MASSIF_RE.test(text)) continue;
-    const areaCanonical = METRO_NUMBERED_AREA[station.name];
-    if (areaCanonical && matchTashkentNumberedArea(text, areaCanonical)) continue;
-    if (hasExplicitDistrictContext(text, match) || hasExplicitAreaContext(text, match) || hasExplicitMahallaContext(text, match) || hasExplicitLandmarkContext(text, match)) continue;
-    return station;
+      if (station.name === 'Toshkent') continue;
+      if (station.name === 'Qoyliq' && QOYLIQ_MASSIF_RE.test(text)) continue;
+      const areaCanonical = METRO_NUMBERED_AREA[station.name];
+      if (areaCanonical && matchTashkentNumberedArea(text, areaCanonical)) continue;
+      if (hasExplicitDistrictContext(text, match) || hasExplicitAreaContext(text, match) || hasExplicitMahallaContext(text, match) || hasExplicitLandmarkContext(text, match)) continue;
+      return station;
+    }
   }
   for (const [canonical, aliases] of Object.entries(EXTRA_METRO_ALIASES)) {
     const match = text.match(aliasesToRegex(aliases));

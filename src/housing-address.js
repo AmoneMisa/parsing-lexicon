@@ -24,6 +24,7 @@ const PROPERTY_AREA_LINE_RE = /(?:^|[^\p{L}\p{N}_])(?:(?:общая|жилая|�
 const NON_ADDRESS_BARE_RE = /^(?:(?:(?:перш(?:ий|ому)|перв(?:ый|ом)|друг(?:ий|ому)|втор(?:ой|ом)|трет(?:ій|ьем|ий)|\d{1,3}(?:-?й)?)\s+(?:поверх|этаж|floor|qavat|қабат))|(?:поверх|этаж|floor|qavat|қабат)(?:\s|$)|(?:район|р-н|рн|мікрорайон|микрорайон|мкр\.?|жк|ж\.к\.|жилой\s+комплекс|житловий\s+комплекс|residential\s+complex)(?:\s|$)|(?:недалеко|поруч|рядом|біля|около|возле)(?=$|[^\p{L}\p{N}_])|(?:зупинка|остановка|станція|станция)(?:\s|$))/iu;
 const DELIMITED_STREET_REJECT_RE = /(?:^|\s)(?:город|місто|city|район|р-н|рн|мікрорайон|микрорайон|мкр|жк|метро|поверх|этаж|floor|qavat|кімнат\p{L}*|комнат\p{L}*|квартира|квартири|квартиры|оренда|аренда|продаж\p{L}*|цена|ціна|площад\p{L}*|площа|зупинка|остановка|ориентир\p{L}*|ор[-–—]?р\.?)(?:\s|$)/iu;
 const LOCATION_RELATION_RE = /(?:yonida|yaqin(?:ida)?|ro['’ʻʼ`]?parasida|near(?:by)?|close\s+to|next\s+to|рядом|возле|около|недалеко|поруч|біля|lângă|aproape)/iu;
+const DESCRIPTIVE_MAHALLA_WORD_RE = /^(?:orqasidagi|yonidagi|yaqinidagi|oldidagi|ortidagi|nearby|behind|opposite)$/iu;
 const UNIT_COMPONENT_PATTERNS = Object.freeze([
   String.raw`(?:^|[\s,;])(?:кв\.?|кв-ра)(?!\p{L})\s*(?:№|#)?\s*(${SECONDARY_TOKEN})(?=$|[^\p{L}\p{N}])`,
   String.raw`(?:^|[\s,;])квартира\s*(?:№|#)\s*(${SECONDARY_TOKEN})(?=$|[^\p{L}\p{N}])`,
@@ -217,7 +218,11 @@ function tashkentGeoComponents(value) {
   const district = matchTashkentHousingDistrict(text)?.name || null;
   const metro = matchTashkentHousingMetro(text)?.name || null;
   const mahalla = text.match(/(?:^|[^\p{L}])(\p{L}[\p{L}'’ʼ-]{1,48})\s+(?:mahalla(?:si)?|маҳалла(?:си)?|махалл[ая]|mfy)(?=$|[^\p{L}])/iu)?.[1] || null;
-  return Object.freeze({ district, metro, mahalla: compactStreet(mahalla) });
+  return Object.freeze({
+    district,
+    metro,
+    mahalla: DESCRIPTIVE_MAHALLA_WORD_RE.test(mahalla || '') ? null : compactStreet(mahalla),
+  });
 }
 
 function attachGeoComponents(parsed, value) {

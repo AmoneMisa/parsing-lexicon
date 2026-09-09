@@ -224,7 +224,7 @@ export function extractHousingMoneyCandidates(value, context = '') {
   // than two competing prices.  These must be extracted before the shorter
   // generic currency/scale candidates below.
   const expandedUzbekThousandsRe = new RegExp(
-    `${PRICE_KEYWORD}[^\\d\\r\\n]{0,16}(\\d{4})[.]000\\s*(?:с[ўу]м|so['‘’ʻʼ]?m|som|sum|uzs)(?=$|[^\\p{L}\\p{N}_])`,
+    `${PRICE_KEYWORD}[^\\d\\r\\n]{0,16}(\\d{4})(?:[.]|[\\s\\u00a0])000\\s*(?:с[ўу]м|so['‘’ʻʼ]?m|som|sum|uzs)(?=$|[^\\p{L}\\p{N}_])`,
     'igu',
   );
   for (const match of text.matchAll(expandedUzbekThousandsRe)) {
@@ -436,7 +436,7 @@ export function parseHousingPrice(value, context = '') {
   // Uzbek ads also use a dot as a thousands separator after four leading
   // digits: "2500.000 сум" means 2,500,000 UZS, not 2,500 UZS.
   const expandedUzbekThousands = priceText.match(new RegExp(
-    `${PRICE_KEYWORD}[^\\d\\r\\n]{0,16}(\\d{4})[.]000\\s*(?:с[ўу]м|so['‘’ʻʼ]?m|som|sum|uzs)(?=$|[^\\p{L}\\p{N}_])`,
+    `${PRICE_KEYWORD}[^\\d\\r\\n]{0,16}(\\d{4})(?:[.]|[\\s\\u00a0])000\\s*(?:с[ўу]м|so['‘’ʻʼ]?m|som|sum|uzs)(?=$|[^\\p{L}\\p{N}_])`,
     'iu',
   ));
   if (price == null && expandedUzbekThousands) {

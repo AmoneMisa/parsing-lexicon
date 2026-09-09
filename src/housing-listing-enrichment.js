@@ -12,6 +12,7 @@ import { HOUSING_LANDMARK_EXTENSIONS, HOUSING_POI_EXTENSIONS } from './housing-p
 import { resolveHousingIntent } from './housing-intent.js';
 import { extractHousingPoiRelations } from './housing-poi-relations.js';
 import { dictionaryFor } from './locations-runtime.js';
+import { matchCentralAsiaLocationEntities } from './central-asia-locations.js';
 
 const GENERIC_CATEGORY = Object.freeze({
   Park: 'park', Metro: 'metro', 'Bus stop': 'transport', 'Public transport': 'transport', 'Main road': 'transport',
@@ -156,6 +157,13 @@ function cityMetro(text, country, city) {
   return contextualCityMatches(text, country, city, 'metro', METRO_PREFIX_RE)[0]?.canonical || null;
 }
 
+function cityDevelopmentArea(text, country, city) {
+  const normalizedCountry = String(country || '').toUpperCase();
+  if (!['KZ', 'UZ'].includes(normalizedCountry) || !city) return null;
+  return matchCentralAsiaLocationEntities(text, normalizedCountry, city)
+    .matches.find((match) => match.type === 'development_area' && match.role !== 'nearby')?.name || null;
+}
+
 function contextualNearby(text, country, city, metro) {
   const shops = contextualCityMatches(text, country, city, 'landmarks', SUPERMARKET_PREFIX_RE)
     .map((match) => match.canonical);
@@ -292,6 +300,7 @@ export function parseHousingListingEnrichment(value, { country = '', city = '', 
   const quarter = matchTashkentHousingQuarter(text);
   const district = matchTashkentHousingDistrict(text)?.name || quarter?.district || null;
   const metro = matchTashkentHousingMetro(text)?.name || cityMetro(text, country, city) || null;
+  const developmentArea = cityDevelopmentArea(text, country, city);
   const primaryResidentialText = withoutNearbyLocationReferences(text);
   const parsedRc = specificResidentialComplex(primaryResidentialText)
     || matchTashkentResidentialComplex(primaryResidentialText)?.name
@@ -365,6 +374,7 @@ export function parseHousingListingEnrichment(value, { country = '', city = '', 
     district: district || null,
     quarter: quarter ? { number: quarter.number, suffix: quarter.suffix } : null,
     metro: metro || null,
+    developmentArea,
     residenceComplex: parsedRc || null,
     address: address.address,
     addressStreet: address.street,
