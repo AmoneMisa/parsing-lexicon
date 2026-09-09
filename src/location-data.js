@@ -177,6 +177,11 @@ export const LOCATION_DICTIONARIES = Object.freeze({
         ['Gara de Nord', 'București Nord', 'Северный вокзал Бухареста'], ['Piața Romană', 'Piata Romana'], ['Piața Victoriei', 'Piata Victoriei'],
       ]),
     }),
+    Otopeni: Object.freeze({
+      landmarks: entries([
+        ['Bucharest Henri Coandă International Airport', 'Henri Coandă Airport', 'Henri Coanda Airport', 'Otopeni Airport', 'Aeroportul Internațional Henri Coandă', 'Aeroportul Otopeni', 'Аэропорт Отопень', 'OTP', 'LROP'],
+      ]),
+    }),
     Brasov: Object.freeze({
       microdistricts: entries([
         ['Tractorul'], ['Coresi'], ['Astra'], ['Racadau', 'Răcădău'], ['Bartolomeu'], ['Noua'], ['Darste', 'Dârste'], ['Schei', 'Șchei'],

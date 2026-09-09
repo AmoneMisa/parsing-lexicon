@@ -48,3 +48,13 @@ test('Russian infrastructure prose canonicalizes without source-local regexes', 
   assert.equal(matcher('Park').test('парковая зона'), true);
   assert.equal(matcher('Maternity hospital').test('ориентир 8 роддом'), true);
 });
+
+test('transport hubs and parking canonicalize across supported listing languages', () => {
+  assert.equal(matcher('Airport').test('аеропорт поруч'), true);
+  assert.equal(matcher('Airport').test('әуежай жанында'), true);
+  assert.equal(matcher('Railway station').test('temir yo\'l vokzali yaqinida'), true);
+  assert.equal(matcher('Bus station').test('autogară aproape'), true);
+  assert.equal(matcher('Bus station').test('автостанція поруч'), true);
+  assert.equal(matcher('Parking').test('avtoturargoh bor'), true);
+  assert.equal(matcher('Parking').test('автотұрақ бар'), true);
+});
