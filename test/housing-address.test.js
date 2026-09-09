@@ -240,6 +240,15 @@ test('allowBare is reserved for source-provided address fields', () => {
   assert.equal(parsed.confidence, 0.85);
 });
 
+test('allowBare rejects a rental-duration field mislabelled as an address, but keeps date-shaped streets', () => {
+  assert.deepEqual(parseHousingAddress('от 1 месяца', { allowBare: true }), {
+    address: null, street: null, houseNumber: null, building: null, confidence: 0,
+  });
+  const dateShaped = parseHousingAddress('8 Марта 5', { allowBare: true });
+  assert.equal(dateShaped.street, '8 Марта');
+  assert.equal(dateShaped.houseNumber, '5');
+});
+
 test('allowDelimitedBare extracts street and house from city-scoped comma prose', () => {
   const parsed = parseHousingAddress(
     'Харьков, Киевский р-н, Метростроителей, 3, Северная Салтовка',

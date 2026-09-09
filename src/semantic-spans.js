@@ -32,9 +32,22 @@ function contactSpans(text, context) {
     .map((span) => ({ type: NON_ADDRESS_SPAN_TYPE.CONTACT, start: span.start, end: span.end }));
 }
 
+// Calendar dates built from a literal "<day> <month-name>" pattern
+// (temporal.calendar.month-name/month-first/month-end) are the one temporal
+// shape that collides with real street names: many Soviet-legacy streets
+// ("8 Марта", "9 Января", "1 Мая") are themselves day-plus-month-name
+// phrases. Everything else temporal.js recognizes — durations, schedules,
+// clock times, relative wording ("завтра", "через 3 дня") — has no such
+// collision risk and is safe to treat as non-address evidence.
+const CALENDAR_MONTH_NAME_PARSERS = new Set([
+  'temporal.calendar.month-name',
+  'temporal.calendar.month-first',
+  'temporal.calendar.month-end',
+]);
+
 function temporalSpans(text, context) {
   return extractTemporalCandidates(text, context)
-    .filter((candidate) => (Number(candidate.confidence) || 0) >= 0.5)
+    .filter((candidate) => (Number(candidate.confidence) || 0) >= 0.5 && !CALENDAR_MONTH_NAME_PARSERS.has(candidate.parser))
     .map((candidate) => ({ type: NON_ADDRESS_SPAN_TYPE.TEMPORAL, start: candidate.start, end: candidate.end }));
 }
 

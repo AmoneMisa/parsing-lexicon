@@ -21,6 +21,15 @@ test('detects money, contact and temporal spans with offsets aligned to the orig
   assert.equal(overlapsAnySpan(streetStart, streetStart + 'Ленина 5'.length, spans), false);
 });
 
+test('a calendar-date-shaped span (day + month name) is excluded, but other temporal spans are kept', () => {
+  // "8 Марта" is a real Soviet-legacy street name, not just a date.
+  assert.equal(detectNonAddressSpans('8 Марта').length, 0);
+  // A duration has no such collision risk and should still be reported.
+  const duration = detectNonAddressSpans('от 1 месяца');
+  assert.ok(duration.length >= 1);
+  assert.ok(duration.every((span) => span.type === NON_ADDRESS_SPAN_TYPE.TEMPORAL));
+});
+
 test('a bare unlabelled number is not treated as money evidence', () => {
   // "5" here is a plausible house number, not a price — must not appear as a MONEY span.
   const text = 'ул. Ленина 5';

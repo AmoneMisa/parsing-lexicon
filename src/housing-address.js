@@ -432,15 +432,15 @@ function addressCandidateLine(line) {
   const tail = text.slice(searchStart);
   const stopMatch = tail.match(ADDRESS_FIELD_STOP_RE);
   const stopAt = stopMatch ? searchStart + (stopMatch.index ?? 0) : Infinity;
-  // A money/contact span overlapping the street phrase (e.g. "99 1881919",
-  // "100$ депозит") is at least as strong evidence that this text belongs
-  // to another domain as the local stop-word list below — reuse the shared
-  // classifier instead of growing another ad-hoc stop-word list here for
-  // every new case found. TEMPORAL is deliberately excluded: many
-  // legitimate Soviet-legacy street names ("8 Марта", "9 Января") are
-  // themselves calendar-date-shaped, so treating a date-like span as
-  // non-address evidence would wrongly cut off a real street name.
-  const nonAddressSpan = detectNonAddressSpans(text, { types: ['money', 'contact'] })
+  // A money/contact/temporal span overlapping the street phrase (e.g.
+  // "99 1881919", "100$ депозит", "от 1 месяца") is at least as strong
+  // evidence that this text belongs to another domain as the local
+  // stop-word list below — reuse the shared classifier instead of growing
+  // another ad-hoc stop-word list here for every new case found. The
+  // classifier already excludes calendar-date-shaped temporal spans
+  // ("8 Марта", "9 Января" — a real Soviet-legacy street-naming
+  // convention) from its TEMPORAL results, so this stays safe for those.
+  const nonAddressSpan = detectNonAddressSpans(text)
     .find((span) => span.start >= searchStart && span.start < stopAt);
   const cutAt = nonAddressSpan ? Math.min(stopAt, nonAddressSpan.start) : stopAt;
   return cutAt < Infinity ? clean(text.slice(0, cutAt)) : line;
@@ -664,7 +664,15 @@ function bareAddress(text) {
   const cleaned = clean(text);
   if (!cleaned || PROPERTY_AREA_LINE_RE.test(cleaned) || NON_ADDRESS_BARE_RE.test(cleaned)) return null;
   const stopMatch = cleaned.match(ADDRESS_FIELD_STOP_RE);
-  const truncated = stopMatch ? clean(cleaned.slice(0, stopMatch.index)) : cleaned;
+  const stopAt = stopMatch ? stopMatch.index : Infinity;
+  // allowBare trusts the caller's claim that this whole field is an
+  // address, so it has no street-marker anchor to lean on the way
+  // addressCandidateLine() does — a money/contact/temporal amount is the
+  // only guard against source data that mislabels e.g. a rental-duration
+  // field ("от 1 месяца") as an address field.
+  const nonAddressSpan = detectNonAddressSpans(cleaned).find((span) => span.start < stopAt);
+  const cutAt = nonAddressSpan ? Math.min(stopAt, nonAddressSpan.start) : stopAt;
+  const truncated = cutAt < Infinity ? clean(cleaned.slice(0, cutAt)) : cleaned;
   if (!truncated) return null;
   const tail = splitAddressTail(truncated);
   if (!tail) return null;
