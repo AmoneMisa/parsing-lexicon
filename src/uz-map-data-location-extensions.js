@@ -36,29 +36,37 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Microdistrict 7/1"
       ],
       [
-        "Акчасай"
+        "Акчасай",
+        "Akchasay"
       ],
       [
-        "Ахтахана"
+        "Ахтахана",
+        "Akhtakhana"
       ],
       [
-        "Военный городок"
+        "Военный городок",
+        "Military Town"
       ],
       [
-        "Жукова"
+        "Жукова",
+        "Zhukova"
       ],
       [
-        "Никбайсай"
+        "Никбайсай",
+        "Nikbaysay"
       ],
       [
-        "посёлок ГРЭ"
+        "посёлок ГРЭ",
+        "пос. ГРЭ",
+        "GRE Settlement"
       ],
       [
         "Сагана",
         "Sagan"
       ],
       [
-        "Ташмехлесхоз"
+        "Ташмехлесхоз",
+        "Tashmekhleskhoz"
       ],
       [
         "Abiz",
@@ -274,7 +282,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Uzbekistan mahalla"
       ],
       [
-        "Ohangaron shahar sanoat zonasi"
+        "Ohangaron shahar sanoat zonasi",
+        "промзона Охангарон город",
+        "Ohangaron City Ind. Zone"
       ],
       [
         "Olmaliqsoy mahallasi",
@@ -483,36 +493,51 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
     ],
     "streets": [
       [
-        "50 лет АГМК"
+        "50 лет АГМК",
+        "50 Years of AGMK"
       ],
       [
         "Алмалыкская улица",
-        "Ахунбабаева улица"
+        "Ахунбабаева улица",
+        "ул. Алмалыкская | ул. Ахунбабаева",
+        "Almalykskaya St. | Akhunbabaeva St."
       ],
       [
-        "Амира Темура улица"
+        "Амира Темура улица",
+        "ул. Амира Темура",
+        "Amira Temura St."
       ],
       [
-        "Бустон"
+        "Бустон",
+        "Buston"
       ],
       [
-        "Гагарина улица"
+        "Гагарина улица",
+        "ул. Гагарина",
+        "Gagarina St."
       ],
       [
-        "Гастелло улица"
+        "Гастелло улица",
+        "ул. Гастелло",
+        "Gastello St."
       ],
       [
-        "Известковая улица"
+        "Известковая улица",
+        "ул. Известковая",
+        "Izvestkovaya St."
       ],
       [
         "Красногорск-Паркент",
         "Krasnogorsk-Parkent"
       ],
       [
-        "Садовая"
+        "Садовая",
+        "Sadovaya"
       ],
       [
-        "улица Ленина"
+        "улица Ленина",
+        "ул. Ленина",
+        "Lenina St."
       ],
       [
         "улица Чиланзар",
@@ -520,10 +545,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Chilanzar street"
       ],
       [
-        "Хамида Алимджана улица"
+        "Хамида Алимджана улица",
+        "ул. Хамида Алимджана",
+        "Khamida Alimdzhana St."
       ],
       [
-        "Худжаева улица"
+        "Худжаева улица",
+        "ул. Худжаева",
+        "Khudzhaeva St."
       ],
       [
         "Чиланзар улица",
@@ -531,14 +560,18 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Яшинобод куча",
-        "Яшинобод улица"
+        "ул. Яшинобод",
+        "Яшинобод улица",
+        "Yashinobod St."
       ],
       [
         "Abay ko'chasi",
         "Абай улица"
       ],
       [
-        "Abay tor ko'chasi"
+        "Abay tor ko'chasi",
+        "пр. Абай",
+        "Abay Ln."
       ],
       [
         "Abdulla Qahhor ko'chasi",
@@ -549,23 +582,33 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Абдулла Тукай улица"
       ],
       [
-        "Afrosiyob 1-berk ko'chasi"
+        "Afrosiyob 1-berk ko'chasi",
+        "1-й туп. Афросиаб",
+        "Afrosiyob 1st Dead End"
       ],
       [
-        "Afrosiyob 2-berk ko'chasi"
+        "Afrosiyob 2-berk ko'chasi",
+        "2-й туп. Афросиаб",
+        "Afrosiyob 2nd Dead End"
       ],
       [
-        "Afrosiyob ko'chasi"
+        "Afrosiyob ko'chasi",
+        "ул. Афросиаб",
+        "Afrosiyob St."
       ],
       [
-        "Ag‘zamov ko'chasi"
+        "Ag‘zamov ko'chasi",
+        "ул. Агзамов",
+        "Ag'zamov St."
       ],
       [
         "Ahillik ko'chasi",
         "Ахиллик улица"
       ],
       [
-        "Ahmad Yassaviy ko'chasi"
+        "Ahmad Yassaviy ko'chasi",
+        "ул. Ахмад Яссавий",
+        "Ahmad Yassaviy St."
       ],
       [
         "Ahmad Yassaviy tor ko'chasi",
@@ -578,15 +621,15 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Alisher Navoiy street"
       ],
       [
-        "Alpomish ko'chasi"
-      ],
-      [
-        "Amir Temur ko'chasi",
-        "проспект Амира Темура"
+        "Alpomish ko'chasi",
+        "ул. Алпомиш",
+        "Alpomish St."
       ],
       [
         "Amir Temur koʻchasi",
         "Амир Тимур улица",
+        "проспект Амира Темура",
+        "Amir Temur ko'chasi",
         "Amir Timur Street"
       ],
       [
@@ -610,7 +653,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Ат-Термизий"
       ],
       [
-        "Bahor 1-tor ko'chasi"
+        "Bahor 1-tor ko'chasi",
+        "1-й пр. Бахор",
+        "Bahor 1st Ln."
       ],
       [
         "Bahor 2-tor ko'chasi",
@@ -621,17 +666,23 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Бахор улица"
       ],
       [
-        "Barhayot ko'chasi"
+        "Barhayot ko'chasi",
+        "ул. Бархаёт",
+        "Barhayot St."
       ],
       [
-        "Barkamol ko'chasi"
+        "Barkamol ko'chasi",
+        "ул. Баркамол",
+        "Barkamol St."
       ],
       [
         "Baxt ko'chasi",
         "Бахт улица"
       ],
       [
-        "Bayram ko'chasi"
+        "Bayram ko'chasi",
+        "ул. Байрам",
+        "Bayram St."
       ],
       [
         "Bekobod berk ko'chasi",
@@ -643,14 +694,18 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Ломоносова улица"
       ],
       [
-        "Bekobod tor ko'chasi"
+        "Bekobod tor ko'chasi",
+        "пр. Бекобод",
+        "Bekobod Ln."
       ],
       [
         "Binokor ko'chasi",
         "Бинокор улица"
       ],
       [
-        "Birdamlik 1-tor ko'chasi"
+        "Birdamlik 1-tor ko'chasi",
+        "1-й пр. Бирдамлик",
+        "Birdamlik 1st Ln."
       ],
       [
         "Birdamlik 2-tor ko'chasi",
@@ -670,16 +725,24 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Бустон улица"
       ],
       [
-        "Bog‘bon ko'chasi"
+        "Bog‘bon ko'chasi",
+        "ул. Богбон",
+        "Bog'bon St."
       ],
       [
-        "Bog‘ishamol ko'chasi"
+        "Bog‘ishamol ko'chasi",
+        "ул. Богишамол",
+        "Bog'ishamol St."
       ],
       [
-        "Buloqsoy ko'chasi"
+        "Buloqsoy ko'chasi",
+        "ул. Булоксой",
+        "Buloqsoy St."
       ],
       [
-        "Buloqsoy tor ko'chasi"
+        "Buloqsoy tor ko'chasi",
+        "пр. Булоксой",
+        "Buloqsoy Ln."
       ],
       [
         "Bunyodkor ko'chasi",
@@ -690,30 +753,42 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Бухара улица"
       ],
       [
-        "Buyuklar ko'chasi"
+        "Buyuklar ko'chasi",
+        "ул. Буюклар",
+        "Buyuklar St."
       ],
       [
-        "Chamanzor ko'chasi"
+        "Chamanzor ko'chasi",
+        "ул. Чаманзор",
+        "Chamanzor St."
       ],
       [
-        "Chambil ko'chasi"
+        "Chambil ko'chasi",
+        "ул. Чамбил",
+        "Chambil St."
       ],
       [
         "Chinor ko'chasi",
         "Чинар улица"
       ],
       [
-        "Chirchiq ko'chasi"
+        "Chirchiq ko'chasi",
+        "ул. Чирчик",
+        "Chirchiq St."
       ],
       [
         "Cho‘lpon ko'chasi",
         "Чулпан улица"
       ],
       [
-        "Chuqursoy ko'chasi"
+        "Chuqursoy ko'chasi",
+        "ул. Чукурсой",
+        "Chuqursoy St."
       ],
       [
-        "Chuqursoy tor ko'chasi"
+        "Chuqursoy tor ko'chasi",
+        "пр. Чукурсой",
+        "Chuqursoy Ln."
       ],
       [
         "Do'stlik ko'chasi",
@@ -745,10 +820,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Ферганская улица"
       ],
       [
-        "Farhod ko'chasi"
+        "Farhod ko'chasi",
+        "ул. Фарход",
+        "Farhod St."
       ],
       [
-        "Farobiy ko'chasi"
+        "Farobiy ko'chasi",
+        "ул. Фароби",
+        "Farobiy St."
       ],
       [
         "Farovon ko'chasi",
@@ -767,7 +846,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Феруза улица"
       ],
       [
-        "Firdavsiy ko'chasi"
+        "Firdavsiy ko'chasi",
+        "ул. Фирдавси",
+        "Firdavsiy St."
       ],
       [
         "Furqat 2-tor ko'chasi",
@@ -804,31 +885,41 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Гагарина улица"
       ],
       [
-        "Gulbahor ko'chasi"
+        "Gulbahor ko'chasi",
+        "ул. Гулбахор",
+        "Gulbahor St."
       ],
       [
         "Guliston ko'chasi",
         "Гулистан улица"
       ],
       [
-        "Gulobod ko'chasi"
+        "Gulobod ko'chasi",
+        "ул. Гулобод",
+        "Gulobod St."
       ],
       [
         "Gulshan ko'chasi",
         "Гунча улица"
       ],
       [
-        "Gultepa berk ko'chasi"
+        "Gultepa berk ko'chasi",
+        "туп. Гултепа",
+        "Gultepa Dead End"
       ],
       [
         "Gultepa ko'chasi",
         "Гультепа улица"
       ],
       [
-        "Gulzor ko'chasi"
+        "Gulzor ko'chasi",
+        "ул. Гулзор",
+        "Gulzor St."
       ],
       [
-        "Halqa ko'chasi"
+        "Halqa ko'chasi",
+        "ул. Халка",
+        "Halqa St."
       ],
       [
         "Hamid Olimjon ko'chasi",
@@ -840,10 +931,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Hamkor Street"
       ],
       [
-        "Hamkorlik berk ko'chasi"
+        "Hamkorlik berk ko'chasi",
+        "туп. Хамкорлик",
+        "Hamkorlik Dead End"
       ],
       [
-        "Hamkorlik ko'chasi"
+        "Hamkorlik ko'chasi",
+        "ул. Хамкорлик",
+        "Hamkorlik St."
       ],
       [
         "Hamza ko'chasi",
@@ -859,7 +954,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "ибн Сино улица"
       ],
       [
-        "Ibrat ko'chasi"
+        "Ibrat ko'chasi",
+        "ул. Ибрат",
+        "Ibrat St."
       ],
       [
         "Iftixor ko'chasi",
@@ -874,7 +971,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Ипак йули улица"
       ],
       [
-        "Iqtidor ko'chasi"
+        "Iqtidor ko'chasi",
+        "ул. Иктидор",
+        "Iqtidor St."
       ],
       [
         "Istiqbol ko'chasi",
@@ -885,16 +984,24 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Истиллол улица"
       ],
       [
-        "Jaloir ko'chasi"
+        "Jaloir ko'chasi",
+        "ул. Джалоир",
+        "Jaloir St."
       ],
       [
-        "Jaloliddin Manguberdi ko'chasi"
+        "Jaloliddin Manguberdi ko'chasi",
+        "ул. Джалолиддин Мангуберди",
+        "Jaloliddin Manguberdi St."
       ],
       [
-        "Jaloliddin Manguberdi tor ko'chasi"
+        "Jaloliddin Manguberdi tor ko'chasi",
+        "пр. Джалолиддин Мангуберди",
+        "Jaloliddin Manguberdi Ln."
       ],
       [
-        "Jumhuriyat ko'chasi"
+        "Jumhuriyat ko'chasi",
+        "ул. Джумхурият",
+        "Jumhuriyat St."
       ],
       [
         "Kamalak ko'chasi",
@@ -909,29 +1016,43 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Камолот улица"
       ],
       [
-        "Katta chinor berk ko'chasi"
+        "Katta chinor berk ko'chasi",
+        "туп. Катта чинор",
+        "Katta chinor Dead End"
       ],
       [
-        "Katta chinor ko'chasi"
+        "Katta chinor ko'chasi",
+        "ул. Катта чинор",
+        "Katta chinor St."
       ],
       [
         "Kitve ko'chasi",
         "Китве улица"
       ],
       [
-        "Ko‘kaldosh 1-tor ko'chasi"
+        "Ko‘kaldosh 1-tor ko'chasi",
+        "1-й пр. Кукалдош",
+        "Ko'kaldosh 1st Ln."
       ],
       [
-        "Ko‘kaldosh 2-tor ko'chasi"
+        "Ko‘kaldosh 2-tor ko'chasi",
+        "2-й пр. Кукалдош",
+        "Ko'kaldosh 2nd Ln."
       ],
       [
-        "Ko‘kaldosh ko'chasi"
+        "Ko‘kaldosh ko'chasi",
+        "ул. Кукалдош",
+        "Ko'kaldosh St."
       ],
       [
-        "Ko‘rpasoy ko'chasi"
+        "Ko‘rpasoy ko'chasi",
+        "ул. Курпасой",
+        "Ko'rpasoy St."
       ],
       [
-        "Ko‘rpasoy tor ko'chasi"
+        "Ko‘rpasoy tor ko'chasi",
+        "пр. Курпасой",
+        "Ko'rpasoy Ln."
       ],
       [
         "Konchilar ko'chasi",
@@ -946,13 +1067,19 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Лолазор улица"
       ],
       [
-        "Lolazor tor ko'chasi"
+        "Lolazor tor ko'chasi",
+        "пр. Лолазор",
+        "Lolazor Ln."
       ],
       [
-        "Lutfiy ko'chasi"
+        "Lutfiy ko'chasi",
+        "ул. Лутфий",
+        "Lutfiy St."
       ],
       [
-        "Ma’naviyat ko'chasi"
+        "Ma’naviyat ko'chasi",
+        "ул. Манавият",
+        "Ma'naviyat St."
       ],
       [
         "Ma’rifat 1-tor ko'chasi",
@@ -967,56 +1094,64 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Марифат 3-й проезд"
       ],
       [
-        "Ma’rifat 4-tor ko'chasi",
-        "Марифат 4-й проезд"
-      ],
-      [
-        "Ma’rifat ko'chasi",
-        "Марифат улица"
-      ],
-      [
         "Ma’rifat tor ko'chasi",
         "Марифат улица"
       ],
       [
-        "Mahmudxo‘ja Behbudiy ko'chasi"
+        "Mahmudxo‘ja Behbudiy ko'chasi",
+        "ул. Махмудхуджа Бехбудий",
+        "Mahmudxo'ja Behbudiy St."
       ],
       [
         "Majnuntol ko'chasi",
         "Маджнунтал улица"
       ],
       [
-        "Maktab ko'chasi"
+        "Maktab ko'chasi",
+        "ул. Мактаб",
+        "Maktab St."
       ],
       [
-        "Manguberdi 1-tor ko'chasi"
+        "Manguberdi 1-tor ko'chasi",
+        "1-й пр. Мангуберди",
+        "Manguberdi 1st Ln."
       ],
       [
-        "Manguberdi 2-tor ko'chasi"
+        "Manguberdi 2-tor ko'chasi",
+        "2-й пр. Мангуберди",
+        "Manguberdi 2nd Ln."
       ],
       [
         "Mashhur ko‘chasi",
         "Фестивальная улица"
       ],
       [
-        "Mashhur tor ko'chasi"
+        "Mashhur tor ko'chasi",
+        "пр. Машхур",
+        "Mashhur Ln."
       ],
       [
         "Maʼrifat 4-tor koʻchasi",
         "4-й Геологический проезд",
-        "4-я улица Просвещения"
+        "4-я улица Просвещения",
+        "Марифат 4-й проезд",
+        "Ma’rifat 4-tor ko'chasi"
       ],
       [
         "Maʼrifat koʻchasi",
+        "Марифат улица",
         "улица Геологическая",
-        "улица Просвещения"
+        "улица Просвещения",
+        "Ma’rifat ko'chasi"
       ],
       [
         "Mehr ko'chasi",
         "Мехр улица"
       ],
       [
-        "Mehr tor ko'chasi"
+        "Mehr tor ko'chasi",
+        "пр. Мехр",
+        "Mehr Ln."
       ],
       [
         "Mirishkor ko'chsai",
@@ -1034,19 +1169,18 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Мискон улица"
       ],
       [
-        "Munchoqtepa ko'chasi"
+        "Munchoqtepa ko'chasi",
+        "ул. Мунчоктепа",
+        "Munchoqtepa St."
       ],
       [
         "Muqimiy ko'chasi",
         "Мукими улица"
       ],
       [
-        "Mustaqillik ko'chasi",
-        "Мустакиллик улица"
-      ],
-      [
         "Mustaqillik koʻchasi",
-        "Мустакиллик улица"
+        "Мустакиллик улица",
+        "Mustaqillik ko'chasi"
       ],
       [
         "Nafosat ko'chasi",
@@ -1062,7 +1196,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Навкирон улица"
       ],
       [
-        "Navqiron tor ko'chasi"
+        "Navqiron tor ko'chasi",
+        "пр. Навкирон",
+        "Navqiron Ln."
       ],
       [
         "Navro‘z ko'chasi",
@@ -1081,28 +1217,40 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Нурафшан улица"
       ],
       [
-        "Nurli hayot ko'chasi"
+        "Nurli hayot ko'chasi",
+        "ул. Нурли хаёт",
+        "Nurli hayot St."
       ],
       [
-        "Nurli hayot tor ko'chasi"
+        "Nurli hayot tor ko'chasi",
+        "пр. Нурли хаёт",
+        "Nurli hayot Ln."
       ],
       [
-        "O‘qituvchilar ko'chasi"
+        "O‘qituvchilar ko'chasi",
+        "ул. Укитувчилар",
+        "O'qituvchilar St."
       ],
       [
         "O'rikzor ko'chasi",
         "Уризкор улица",
-        "Урикзар улица"
+        "Урикзар улица",
+        "Oʻrikzor koʻchasi",
+        "Urikzar street"
       ],
       [
-        "O‘rol Tansiqboyev ko'chasi"
+        "O‘rol Tansiqboyev ko'chasi",
+        "ул. Урол Тансикбоев",
+        "O'rol Tansiqboyev St."
       ],
       [
         "O‘zbekiston ko'chasi",
         "Узбекистанская улица"
       ],
       [
-        "O‘zbekiston tor ko'chasi"
+        "O‘zbekiston tor ko'chasi",
+        "пр. Узбекистон",
+        "O'zbekiston Ln."
       ],
       [
         "Obod ko'chasi",
@@ -1124,11 +1272,6 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Огохий улица"
       ],
       [
-        "Oʻrikzor koʻchasi",
-        "Урикзар улица",
-        "Urikzar street"
-      ],
-      [
         "Olchazor ko'chasi",
         "Алчазар улица"
       ],
@@ -1138,14 +1281,18 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Ахунбабаева улица"
       ],
       [
-        "Olmaliqsoy berk ko'chasi"
+        "Olmaliqsoy berk ko'chasi",
+        "туп. Олмаликсой",
+        "Olmaliqsoy Dead End"
       ],
       [
         "Olmaliqsoy ko'chasi",
         "Алмалыксай улица"
       ],
       [
-        "Olmazor ko'chasi"
+        "Olmazor ko'chasi",
+        "ул. Олмазор",
+        "Olmazor St."
       ],
       [
         "Omongeldi ko'chasi",
@@ -1173,7 +1320,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Орият улица"
       ],
       [
-        "Osiyo ko'chasi"
+        "Osiyo ko'chasi",
+        "ул. Осиё",
+        "Osiyo St."
       ],
       [
         "Oxunboboyev ko'chasi",
@@ -1189,16 +1338,24 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Паровз улица"
       ],
       [
-        "Paxtakor ko'chasi"
+        "Paxtakor ko'chasi",
+        "ул. Пахтакор",
+        "Paxtakor St."
       ],
       [
-        "Paxtakor tor ko'chasi"
+        "Paxtakor tor ko'chasi",
+        "пр. Пахтакор",
+        "Paxtakor Ln."
       ],
       [
-        "Piskent ko'chasi"
+        "Piskent ko'chasi",
+        "ул. Пискент",
+        "Piskent St."
       ],
       [
-        "Pomir ko'chasi"
+        "Pomir ko'chasi",
+        "ул. Помир",
+        "Pomir St."
       ],
       [
         "Pomir tor ko'chasi",
@@ -1223,47 +1380,65 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Кальмакыр улица"
       ],
       [
-        "Qolmaqir tor ko'chasi"
+        "Qolmaqir tor ko'chasi",
+        "пр. Колмакир",
+        "Qolmaqir Ln."
       ],
       [
-        "Qorasuv ko'chasi"
+        "Qorasuv ko'chasi",
+        "ул. Корасув",
+        "Qorasuv St."
       ],
       [
         "Qoratog‘ ko'chasi",
         "Каратог улица"
       ],
       [
-        "Qoratog‘ tor ko'chasi"
+        "Qoratog‘ tor ko'chasi",
+        "пр. Коратог'",
+        "Qoratog' Ln."
       ],
       [
         "Qoratosh ko'chasi",
         "Караташ улица"
       ],
       [
-        "Qori Niyoziy ko'chasi"
+        "Qori Niyoziy ko'chasi",
+        "ул. Кори Ниёзий",
+        "Qori Niyoziy St."
       ],
       [
-        "Qudrat ko'chasi"
+        "Qudrat ko'chasi",
+        "ул. Кудрат",
+        "Qudrat St."
       ],
       [
         "Qurama ko'chasi",
         "Курама улица"
       ],
       [
-        "Qushbegi ko'chasi"
+        "Qushbegi ko'chasi",
+        "ул. Кушбеги",
+        "Qushbegi St."
       ],
       [
         "Ravnaq ko'chasi",
         "Равнак улица"
       ],
       [
-        "Registon ko'chasi"
+        "Registon ko'chasi",
+        "ул. Регистон",
+        "Registon St."
       ],
       [
-        "Rudakiy ko'chasi"
+        "Rudakiy ko'chasi",
+        "ул. Рудакий",
+        "Rudakiy St."
       ],
       [
-        "Sada ko'chasi"
+        "Sada ko'chasi",
+        "ул. Сада",
+        "Sada St."
       ],
       [
         "Sadoqat ko'chasi",
@@ -1283,10 +1458,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Саодат улица"
       ],
       [
-        "Sariq cho‘qqi ko'chasi"
+        "Sariq cho‘qqi ko'chasi",
+        "ул. Сарик чукки",
+        "Sariq cho'qqi St."
       ],
       [
-        "Sariq ko‘l ko'chasi"
+        "Sariq ko‘l ko'chasi",
+        "ул. Сарик кул",
+        "Sariq ko'l St."
       ],
       [
         "Sariq ko‘l tor ko'chasi",
@@ -1294,10 +1473,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Sariqko'l tor ko'chasi"
       ],
       [
-        "Shabada ko'chasi"
+        "Shabada ko'chasi",
+        "ул. Шабада",
+        "Shabada St."
       ],
       [
-        "Sharof Rashidov berk ko'chasi"
+        "Sharof Rashidov berk ko'chasi",
+        "туп. Шароф Рашидов",
+        "Sharof Rashidov Dead End"
       ],
       [
         "Sharof Rashidov ko'chasi",
@@ -1310,7 +1493,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Shark street"
       ],
       [
-        "Shifokorlar ko'chasi"
+        "Shifokorlar ko'chasi",
+        "ул. Шифокорлар",
+        "Shifokorlar St."
       ],
       [
         "Shiroq ko'chasi",
@@ -1325,36 +1510,52 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Шаш-илак улица"
       ],
       [
-        "Shosh-iloq tor ko'chasi"
+        "Shosh-iloq tor ko'chasi",
+        "пр. Шош-илок",
+        "Shosh-iloq Ln."
       ],
       [
-        "Sokin ko'chasi"
+        "Sokin ko'chasi",
+        "ул. Сокин",
+        "Sokin St."
       ],
       [
-        "Tabarruk 1-tor ko'chasi"
+        "Tabarruk 1-tor ko'chasi",
+        "1-й пр. Табаррук",
+        "Tabarruk 1st Ln."
       ],
       [
-        "Tabarruk 2-tor ko'chasi"
+        "Tabarruk 2-tor ko'chasi",
+        "2-й пр. Табаррук",
+        "Tabarruk 2nd Ln."
       ],
       [
         "Tabarruk ko'chasi",
         "Табарук улица"
       ],
       [
-        "Tabassum ko'chasi"
+        "Tabassum ko'chasi",
+        "ул. Табассум",
+        "Tabassum St."
       ],
       [
         "Temur Malik ko'chasi",
         "Темур Малик улица"
       ],
       [
-        "Terakzor ko'chasi"
+        "Terakzor ko'chasi",
+        "ул. Теракзор",
+        "Terakzor St."
       ],
       [
-        "Tinchlik 1-tor ko'chasi"
+        "Tinchlik 1-tor ko'chasi",
+        "1-й пр. Тинчлик",
+        "Tinchlik 1st Ln."
       ],
       [
-        "Tinchlik 2-tor ko'chasi"
+        "Tinchlik 2-tor ko'chasi",
+        "2-й пр. Тинчлик",
+        "Tinchlik 2nd Ln."
       ],
       [
         "Tinchlik 3-tor ko'chasi",
@@ -1365,7 +1566,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Тинчлик 4-й проезд"
       ],
       [
-        "Tinchlik ko'chasi"
+        "Tinchlik ko'chasi",
+        "ул. Тинчлик",
+        "Tinchlik St."
       ],
       [
         "Tinchlik tor ko'chasi",
@@ -1377,7 +1580,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Тумарис улица"
       ],
       [
-        "Tojmahal berk ko'chasi"
+        "Tojmahal berk ko'chasi",
+        "туп. Тоджмахал",
+        "Tojmahal Dead End"
       ],
       [
         "Tojmahal ko'chasi",
@@ -1406,7 +1611,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Ташкент улица"
       ],
       [
-        "Totuvlik 1-tor ko'chasi"
+        "Totuvlik 1-tor ko'chasi",
+        "1-й пр. Тотувлик",
+        "Totuvlik 1st Ln."
       ],
       [
         "Totuvlik ko'chasi",
@@ -1414,7 +1621,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Tovuvlik street"
       ],
       [
-        "Tunkent ko'chasi"
+        "Tunkent ko'chasi",
+        "ул. Тункент",
+        "Tunkent St."
       ],
       [
         "Tunkent tor ko'chasi",
@@ -1459,17 +1668,23 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Yangiabad Street"
       ],
       [
-        "Yoshlik ko'chasi"
+        "Yoshlik ko'chasi",
+        "ул. Ёшлик",
+        "Yoshlik St."
       ],
       [
         "Yuksalish ko'chasi",
         "Юксалиш улица"
       ],
       [
-        "Zakovat ko'chasi"
+        "Zakovat ko'chasi",
+        "ул. Заковат",
+        "Zakovat St."
       ],
       [
-        "Zarqaynar ko'chasi"
+        "Zarqaynar ko'chasi",
+        "ул. Заркайнар",
+        "Zarqaynar St."
       ],
       [
         "Ziyolilar ko'chasi",
@@ -1512,7 +1727,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "7-й микрорайон"
       ],
       [
-        "Бывший автомобильный рынок"
+        "Бывший автомобильный рынок",
+        "Former Automobile Market"
       ],
       [
         "Bo'ston daxasi",
@@ -1531,19 +1747,29 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
     ],
     "streets": [
       [
-        "1-я ул Кичик Окйор"
+        "1-я ул Кичик Окйор",
+        "1-я ул. Кичик Окйор",
+        "Kichik Okyor 1st St."
       ],
       [
-        "2-я ул Кичик Окйор"
+        "2-я ул Кичик Окйор",
+        "2-я ул. Кичик Окйор",
+        "Kichik Okyor 2nd St."
       ],
       [
-        "3-я улица Кичик"
+        "3-я улица Кичик",
+        "3-я ул. Кичик",
+        "Kichik 3rd St."
       ],
       [
-        "3-kichik daha"
+        "3-kichik daha",
+        "3-kichik Quarter",
+        "кв-л 3-кичик"
       ],
       [
-        "5 kichik daha"
+        "5 kichik daha",
+        "5 kichik Quarter",
+        "кв-л 5 кичик"
       ],
       [
         "8-Mart koʻchasi",
@@ -1559,40 +1785,64 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Jalabek ko'chasi"
       ],
       [
-        "Индустриальная улица"
+        "Индустриальная улица",
+        "ул. Индустриальная",
+        "Industrialnaya St."
       ],
       [
-        "Казанская улица"
+        "Казанская улица",
+        "ул. Казанская",
+        "Kazanskaya St."
       ],
       [
-        "Коканд Πереулок 2"
+        "Коканд Πереулок 2",
+        "2-й пер. Коканд",
+        "Kokand 2nd Ln."
       ],
       [
-        "Минавварходжи 3 тор"
+        "Минавварходжи 3 тор",
+        "3-й пр. Минавварходжи",
+        "Minavvarkhodzhi 3rd Ln."
       ],
       [
-        "Минаввархожи 1-тор"
+        "Минаввархожи 1-тор",
+        "1-й пр. Минаввархожи",
+        "Minavvarkhozhi 1st Ln."
       ],
       [
-        "Минаввархожи 2 тор"
+        "Минаввархожи 2 тор",
+        "2-й пр. Минаввархожи",
+        "Minavvarkhozhi 2nd Ln."
       ],
       [
-        "Минаввархожи 4-тор"
+        "Минаввархожи 4-тор",
+        "4-й пр. Минаввархожи",
+        "Minavvarkhozhi 4th Ln."
       ],
       [
-        "Минаввархожи кўчаси"
+        "Минаввархожи кўчаси",
+        "ул. Минаввархожи",
+        "Minavvarkhozhi St."
       ],
       [
-        "проезд Саккаки"
+        "проезд Саккаки",
+        "пр-д Саккаки",
+        "Sakkaki Passage"
       ],
       [
-        "Узумзор улица"
+        "Узумзор улица",
+        "ул. Узумзор",
+        "Uzumzor St."
       ],
       [
-        "Ул. Карим Махмудов"
+        "Ул. Карим Махмудов",
+        "ул. Карим Махмудов",
+        "Karim Makhmudov St."
       ],
       [
-        "Ул. Маданият"
+        "Ул. Маданият",
+        "ул. Маданият",
+        "Madaniyat St."
       ],
       [
         "Ул.Асад Исматов",
@@ -1600,49 +1850,79 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Asad Ismatov street"
       ],
       [
-        "Ул.Нажот"
+        "Ул.Нажот",
+        "ул. Нажот",
+        "Nazhot St."
       ],
       [
-        "Ул.Хиндистон"
+        "Ул.Хиндистон",
+        "ул. Хиндистон",
+        "Khindiston St."
       ],
       [
-        "Ул.Хужа"
+        "Ул.Хужа",
+        "ул. Хужа",
+        "Khuzha St."
       ],
       [
-        "улица Бойчечак"
+        "улица Бойчечак",
+        "ул. Бойчечак",
+        "Boychechak St."
       ],
       [
-        "улица Кизил Юлдуз"
+        "улица Кизил Юлдуз",
+        "ул. Кизил Юлдуз",
+        "Kizil Yulduz St."
       ],
       [
-        "улица Муминова"
+        "улица Муминова",
+        "ул. Муминова",
+        "Muminova St."
       ],
       [
-        "улица Мураббийлар"
+        "улица Мураббийлар",
+        "ул. Мураббийлар",
+        "Murabbiylar St."
       ],
       [
-        "улица Мустакил Юрт"
+        "улица Мустакил Юрт",
+        "ул. Мустакил Юрт",
+        "Mustakil Yurt St."
       ],
       [
-        "улица Обод"
+        "улица Обод",
+        "ул. Обод",
+        "Obod St."
       ],
       [
-        "улица Рахимбобоева"
+        "улица Рахимбобоева",
+        "ул. Рахимбобоева",
+        "Rakhimboboeva St."
       ],
       [
-        "улица Сокинлик"
+        "улица Сокинлик",
+        "ул. Сокинлик",
+        "Sokinlik St."
       ],
       [
-        "улица Хакимова"
+        "улица Хакимова",
+        "ул. Хакимова",
+        "Khakimova St."
       ],
       [
-        "Учкун улица"
+        "Учкун улица",
+        "ул. Учкун",
+        "Uchkun St."
       ],
       [
-        "Чуама улица"
+        "Чуама улица",
+        "ул. Чуама",
+        "Chuama St."
       ],
       [
-        "Янги Маориф улица"
+        "Янги Маориф улица",
+        "ул. Янги Маориф",
+        "Yangi Maorif St."
       ],
       [
         "A. Abduqodirov koʻchasi",
@@ -1723,12 +2003,10 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Ahmad Yassaviy ko`chasi",
-        "Ахмад Яссавий улица"
-      ],
-      [
-        "Ahmad Yassaviy koʻchasi",
         "2-й проезд Ахмада Яссави",
-        "улица Ахмада Яссави"
+        "Ахмад Яссавий улица",
+        "улица Ахмада Яссави",
+        "Ahmad Yassaviy koʻchasi"
       ],
       [
         "Ahmadbek Xoji ko'chasi",
@@ -1788,7 +2066,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "جاده کمربندی اندیجان"
       ],
       [
-        "Anisiy ko'chasi"
+        "Anisiy ko'chasi",
+        "ул. Анисий",
+        "Anisiy St."
       ],
       [
         "Anorzor 3-tor koʻchasi",
@@ -1816,7 +2096,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Б. Рахимова"
       ],
       [
-        "B.Naqshbandiy ko'chasi"
+        "B.Naqshbandiy ko'chasi",
+        "ул. Б.Накшбандий",
+        "B.Naqshbandiy St."
       ],
       [
         "Badavlat koʻchasi",
@@ -1856,7 +2138,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Бедил"
       ],
       [
-        "Birdamlik ko'chasi"
+        "Birdamlik ko'chasi",
+        "ул. Бирдамлик",
+        "Birdamlik St."
       ],
       [
         "Birlashgan berk koʻchasi",
@@ -1886,13 +2170,10 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Бабур проспект",
         "Бобур шоҳ кўчаси",
         "проспект Бабура",
+        "проспект Бобура",
         "Babur avenue",
-        "Babur-Schah-Straße"
-      ],
-      [
-        "Bobur shoh koʻchasi",
-        "Бобур шоҳ кўчаси",
-        "проспект Бобура"
+        "Babur-Schah-Straße",
+        "Bobur shoh koʻchasi"
       ],
       [
         "Boburshoh 2-tor ko‘chasi",
@@ -1947,11 +2228,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       [
         "Buyuk Turon ko'chasi",
         "Буюк Турон улица",
-        "улица Буюк Турон"
-      ],
-      [
-        "Buyuk Turon koʻchasi",
-        "улица Буюк Турон"
+        "улица Буюк Турон",
+        "Buyuk Turon koʻchasi"
       ],
       [
         "Buyuk Turon tor ko'chasi",
@@ -2004,11 +2282,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       [
         "Chuama ko'chasi",
         "улица Чуама",
-        "Чуама кўчаси"
-      ],
-      [
-        "Chuama koʻchasi",
-        "улица Чуама"
+        "Чуама кўчаси",
+        "Chuama koʻchasi"
       ],
       [
         "Chuvama 1-tor koʻchasi",
@@ -2030,19 +2305,17 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Диёр"
       ],
       [
-        "Do'stlik ko'chasi"
-      ],
-      [
-        "Doʻstlik koʻchasi",
-        "улица Дустлик"
-      ],
-      [
-        "Dukchi Eshon ko'chasi",
-        "Дукчи Эшан улица"
+        "Do'stlik ko'chasi",
+        "ул. Дустлик",
+        "улица Дустлик",
+        "Do'stlik St.",
+        "Doʻstlik koʻchasi"
       ],
       [
         "Dukchi Eshon koʻchasi",
-        "улица Дукчи Эшона"
+        "Дукчи Эшан улица",
+        "улица Дукчи Эшона",
+        "Dukchi Eshon ko'chasi"
       ],
       [
         "Ergash Ashurov ko'chasi",
@@ -2068,12 +2341,12 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Эрксевар 2-тор кўчаси"
       ],
       [
-        "Eski O‘sh ko'chasi"
-      ],
-      [
         "Eski Oʻsh koʻchasi",
+        "ул. Ески Уш",
         "улица Ески Уш",
-        "улица Эски Ош"
+        "улица Эски Ош",
+        "Eski O‘sh ko'chasi",
+        "Eski O'sh St."
       ],
       [
         "F.Egamberdiyev kо‘chasi"
@@ -2142,7 +2415,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Фараби"
       ],
       [
-        "Farovon ko'chasi"
+        "Farovon ko'chasi",
+        "ул. Фаровон",
+        "Farovon St."
       ],
       [
         "Farovon tor ko'chasi",
@@ -2158,11 +2433,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Furqat ko'chasi",
-        "Фуркат улица"
-      ],
-      [
-        "Furqat koʻchasi",
-        "улица Фурката"
+        "улица Фурката",
+        "Фуркат улица",
+        "Furqat koʻchasi"
       ],
       [
         "Fuzuliy koʻchasi",
@@ -2454,11 +2727,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Maorif ko'chasi",
-        "улица Маориф"
-      ],
-      [
-        "Maorif koʻchasi",
-        "улица Маориф"
+        "улица Маориф",
+        "Maorif koʻchasi"
       ],
       [
         "Mashhur 1-tor koʻchasi",
@@ -2477,7 +2747,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "4-й проезд Машхур"
       ],
       [
-        "Mashrab 1-tor ko'chasi"
+        "Mashrab 1-tor ko'chasi",
+        "1-й пр. Машраб",
+        "Mashrab 1st Ln."
       ],
       [
         "Mashrab ko'chasi",
@@ -2491,10 +2763,6 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       [
         "Maxjuriy koʻchasi",
         "улица Махжурий"
-      ],
-      [
-        "Maybog'cha ko'chasi",
-        "Майбогча улица"
       ],
       [
         "Maybogʻcha 10-tor koʻchasi",
@@ -2515,7 +2783,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Maybogʻcha koʻchasi",
-        "улица Майбогча"
+        "Майбогча улица",
+        "улица Майбогча",
+        "Maybog'cha ko'chasi"
       ],
       [
         "Mehnat koʻchasi",
@@ -2611,7 +2881,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Хакимова"
       ],
       [
-        "Nabijon Oxunov ko'chasi"
+        "Nabijon Oxunov ko'chasi",
+        "ул. Набиджон Охунов",
+        "Nabijon Oxunov St."
       ],
       [
         "Najmiddin Kubro berk koʻchasi",
@@ -2631,19 +2903,19 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Навбахор"
       ],
       [
-        "Navbaxor 2-tor koʻchasi"
+        "Navbaxor 2-tor koʻchasi",
+        "2-й пр. Навбахор",
+        "Navbaxor 2nd Ln."
       ],
       [
         "Navroʻz koʻchasi",
         "улица Навруз"
       ],
       [
-        "Nayman ko'chasi",
-        "Найман улица"
-      ],
-      [
         "Nayman koʻchasi",
+        "Найман улица",
         "улица Найман",
+        "Nayman ko'chasi",
         "Nayman street"
       ],
       [
@@ -2669,7 +2941,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Нематжона Умарова"
       ],
       [
-        "Nodira ko'chasi"
+        "Nodira ko'chasi",
+        "ул. Нодира",
+        "Nodira St."
       ],
       [
         "Nukus 1-tor koʻchasi",
@@ -2696,7 +2970,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Нурабад"
       ],
       [
-        "O. Sarkorov 3-tor koʻchasi"
+        "O. Sarkorov 3-tor koʻchasi",
+        "3-й пр. О. Саркоров",
+        "O. Sarkorov 3rd Ln."
       ],
       [
         "O‘sh 1-tor koʻchasi",
@@ -2704,16 +2980,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "O'sh ko'chasi",
-        "Ош улица"
-      ],
-      [
-        "O‘zbekiston 2-tor koʻchasi",
-        "2-й проезд Узбекистан"
-      ],
-      [
-        "O‘zbekiston 3-tor koʻchasi",
-        "3-й проезд Узбекистан",
-        "Ўзбекистон 3-тор кучаси"
+        "Ош улица",
+        "улица Ош",
+        "Oʻsh koʻchasi"
       ],
       [
         "Obi Hayot koʻchasi",
@@ -2734,12 +3003,12 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Обод"
       ],
       [
-        "Ogahiy ko'chasi"
-      ],
-      [
         "Ogahiy koʻchasi",
+        "ул. Огахий",
         "улица Огахи",
-        "улица Огахий"
+        "улица Огахий",
+        "Ogahiy ko'chasi",
+        "Ogahiy St."
       ],
       [
         "Oʻlga koʻchasi",
@@ -2751,16 +3020,15 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Ўш берк кўчаси"
       ],
       [
-        "Oʻsh koʻchasi",
-        "улица Ош"
-      ],
-      [
         "Oʻzbekiston 2-tor koʻchasi",
-        "2-й проезд Узбекистан"
+        "2-й проезд Узбекистан",
+        "O‘zbekiston 2-tor koʻchasi"
       ],
       [
         "Oʻzbekiston 3-tor koʻchasi",
-        "3-й проезд Узбекистан"
+        "3-й проезд Узбекистан",
+        "Ўзбекистон 3-тор кучаси",
+        "O‘zbekiston 3-tor koʻchasi"
       ],
       [
         "Oʻzbekiston koʻchasi",
@@ -2824,21 +3092,17 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Озодлик 4-берк кўчаси"
       ],
       [
-        "Paxtachi ko`chasi",
-        "Пахтачи улица"
-      ],
-      [
         "Paxtachi koʻchasi",
-        "улица Пахтачи"
+        "Пахтачи улица",
+        "улица Пахтачи",
+        "Paxtachi ko`chasi"
       ],
       [
         "Paxtakor ko'chasi",
         "Пахтакор кўчаси",
-        "Пахтакор улица"
-      ],
-      [
-        "Paxtakor koʻchasi",
-        "улица Пахтакор"
+        "Пахтакор улица",
+        "улица Пахтакор",
+        "Paxtakor koʻchasi"
       ],
       [
         "Pillakash koʻchasi",
@@ -2867,15 +3131,17 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Кайрагоч таги"
       ],
       [
-        "Qizil Sharq 2-tor koʻchasi"
+        "Qizil Sharq 2-tor koʻchasi",
+        "2-й пр. Кизил Шарк",
+        "Qizil Sharq 2nd Ln."
       ],
       [
-        "Qizil Sharq ko'chasi"
-      ],
-      [
-        "Qizil Sharq koʻchasi",
+        "Qizil Sharq ko'chasi",
+        "ул. Кизил Шарк",
         "улица Кизил Шарк",
-        "улица Кызыл Шарк"
+        "улица Кызыл Шарк",
+        "Qizil Sharq koʻchasi",
+        "Qizil Sharq St."
       ],
       [
         "Qo'shariq daha",
@@ -2918,18 +3184,20 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "4-й проезд Кори Ниёзий"
       ],
       [
-        "Qori Niyoziy 5-tor ko'chasi"
-      ],
-      [
         "Qori Niyoziy 5-tor koʻchasi",
-        "5-й проезд Кори Ниёзий"
+        "5-й пр. Кори Ниёзий",
+        "5-й проезд Кори Ниёзий",
+        "Qori Niyoziy 5-tor ko'chasi",
+        "Qori Niyoziy 5th Ln."
       ],
       [
         "Qori Niyoziy 6-tor koʻchasi",
         "6-й проезд Кори Ниёзий"
       ],
       [
-        "Qori Niyoziy ko'chasi"
+        "Qori Niyoziy ko'chasi",
+        "ул. Кори Ниёзий",
+        "Qori Niyoziy St."
       ],
       [
         "Qosimov ko'chasi",
@@ -2978,7 +3246,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "1-й проезд С. Абдулла."
       ],
       [
-        "Sadiy ko'chasi"
+        "Sadiy ko'chasi",
+        "ул. Садий",
+        "Sadiy St."
       ],
       [
         "Sahovat koʻchasi",
@@ -3023,21 +3293,20 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "тупик Саноат"
       ],
       [
-        "Sanoat ko'chasi",
+        "Sanoat koʻchasi",
         "Саноат улица",
         "улица Саноат",
+        "Sanoat ko'chasi",
         "Sanoat street"
-      ],
-      [
-        "Sanoat koʻchasi",
-        "улица Саноат"
       ],
       [
         "Saodat koʻchasi",
         "улица Саодат"
       ],
       [
-        "Sarikuy ko'chasi"
+        "Sarikuy ko'chasi",
+        "ул. Сарикуй",
+        "Sarikuy St."
       ],
       [
         "Sayfiy koʻchasi",
@@ -3157,7 +3426,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Шиговул"
       ],
       [
-        "Shimoliy kichik daxa"
+        "Shimoliy kichik daxa",
+        "кв-л Шимолий кичик",
+        "Shimoliy kichik Quarter"
       ],
       [
         "Shimoliy sanoat 1-tor koʻchasi",
@@ -3287,7 +3558,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Темир Йул"
       ],
       [
-        "Termez ko'chasi"
+        "Termez ko'chasi",
+        "ул. Термез",
+        "Termez St."
       ],
       [
         "Tinchlik kо‘chasi",
@@ -3306,12 +3579,10 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "1-й проезд Тоджидина Реджапова"
       ],
       [
-        "Tojidin Rejapov ko'chasi",
-        "Т. Режабов улица"
-      ],
-      [
         "Tojidin Rejapov koʻchasi",
-        "улица Тожидина Режапова"
+        "Т. Режабов улица",
+        "улица Тожидина Режапова",
+        "Tojidin Rejapov ko'chasi"
       ],
       [
         "Tojik koʻchasi",
@@ -3332,11 +3603,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Toshkent ko'chasi",
-        "улица Ташкентская"
-      ],
-      [
-        "Toshkent koʻchasi",
-        "Ташкентская улица"
+        "Ташкентская улица",
+        "улица Ташкентская",
+        "Toshkent koʻchasi"
       ],
       [
         "Turkiston koʻchasi",
@@ -3409,7 +3678,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "3-й проезд Урганч"
       ],
       [
-        "Urgench ko'chasi"
+        "Urgench ko'chasi",
+        "ул. Ургенч",
+        "Urgench St."
       ],
       [
         "Usaysiy koʻchasi",
@@ -3417,7 +3688,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Uvaysiy koʻchasi"
       ],
       [
-        "Usmon Yusupov ko'chasi"
+        "Usmon Yusupov ko'chasi",
+        "ул. Усмон Юсупов",
+        "Usmon Yusupov St."
       ],
       [
         "Uyg‘ur 2-tor koʻchasi",
@@ -3450,7 +3723,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица В. Азимова"
       ],
       [
-        "V.Azimov ko'chasi"
+        "V.Azimov ko'chasi",
+        "ул. В.Азимов",
+        "V.Azimov St."
       ],
       [
         "X.Azimov koʻchasi",
@@ -3477,7 +3752,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Хакулаобод"
       ],
       [
-        "Xarabek ko'chasi"
+        "Xarabek ko'chasi",
+        "ул. Харабек",
+        "Xarabek St."
       ],
       [
         "Xidiraliyev koʻchasi",
@@ -3618,68 +3895,88 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "4 quarter"
       ],
       [
-        "Айналма"
+        "Айналма",
+        "Aynalma"
       ],
       [
-        "Апартак"
+        "Апартак",
+        "Apartak"
       ],
       [
-        "Бешкала урочище"
+        "Бешкала урочище",
+        "Beshkala urochishche"
       ],
       [
-        "Дархан"
+        "Дархан",
+        "Darkhan"
       ],
       [
-        "Джакиндек"
+        "Джакиндек",
+        "Dzhakindek"
       ],
       [
-        "Джанджал"
+        "Джанджал",
+        "Dzhandzhal"
       ],
       [
-        "Джанибек"
+        "Джанибек",
+        "Dzhanibek"
       ],
       [
-        "Каттачукур"
+        "Каттачукур",
+        "Kattachukur"
       ],
       [
-        "Коч-Булак Месторождение"
+        "Коч-Булак Месторождение",
+        "Koch-Bulak Deposit"
       ],
       [
-        "Куль урочище"
+        "Куль урочище",
+        "Kul urochishche"
       ],
       [
-        "Курбана урочище"
+        "Курбана урочище",
+        "Kurbana urochishche"
       ],
       [
         "Курган",
         "Kurgan"
       ],
       [
-        "Курсак"
+        "Курсак",
+        "Kursak"
       ],
       [
-        "Курташ"
+        "Курташ",
+        "Kurtash"
       ],
       [
-        "Лешкерек урочище"
+        "Лешкерек урочище",
+        "Leshkerek urochishche"
       ],
       [
-        "Соглым урочище"
+        "Соглым урочище",
+        "Soglym urochishche"
       ],
       [
-        "Ташлакты урочище"
+        "Ташлакты урочище",
+        "Tashlakty urochishche"
       ],
       [
-        "Токлыямлав урочище"
+        "Токлыямлав урочище",
+        "Toklyyamlav urochishche"
       ],
       [
-        "Учайрылыш"
+        "Учайрылыш",
+        "Uchayrylysh"
       ],
       [
-        "Ущелье Голубиное"
+        "Ущелье Голубиное",
+        "Ushchele Golubinoe"
       ],
       [
-        "Четсу урочище"
+        "Четсу урочище",
+        "Chetsu urochishche"
       ],
       [
         "Чувалдак",
@@ -4005,107 +4302,172 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
     "streets": [
       [
         ".Кирова улица",
-        "Кирова улица"
+        ".Kirova St. | Kirova St.",
+        "Кирова улица",
+        "ул. .Кирова | ул. Кирова"
       ],
       [
-        "2-проезд Грум"
+        "2-проезд Грум",
+        "2-пр-д Грум",
+        "Grum 2nd Passage"
       ],
       [
-        "Аблыкская улица"
+        "Аблыкская улица",
+        "ул. Аблыкская",
+        "Ablykskaya St."
       ],
       [
-        "Алмалыкская улица"
+        "Алмалыкская улица",
+        "ул. Алмалыкская",
+        "Almalykskaya St."
       ],
       [
-        "Бобур улица"
+        "Бобур улица",
+        "ул. Бобур",
+        "Bobur St."
       ],
       [
-        "Гунча проезд"
+        "Гунча проезд",
+        "пр-д Гунча",
+        "Guncha Passage"
       ],
       [
-        "Дукентская улица"
+        "Дукентская улица",
+        "ул. Дукентская",
+        "Dukentskaya St."
       ],
       [
-        "Зеленая улица"
+        "Зеленая улица",
+        "ул. Зеленая",
+        "Zelenaya St."
       ],
       [
         "Камчик",
         "Kamchik"
       ],
       [
-        "Комсомольская"
+        "Комсомольская",
+        "Komsomolskaya"
       ],
       [
-        "Маяковского улица"
+        "Маяковского улица",
+        "ул. Маяковского",
+        "Mayakovskogo St."
       ],
       [
-        "Самаркандская улица"
+        "Самаркандская улица",
+        "ул. Самаркандская",
+        "Samarkandskaya St."
       ],
       [
-        "Сквозной проезд"
+        "Сквозной проезд",
+        "пр-д Сквозной",
+        "Skvoznoy Passage"
       ],
       [
-        "ул.Кирова"
+        "ул.Кирова",
+        "ул. Кирова",
+        "Kirova St."
       ],
       [
-        "улица Братская"
+        "улица Братская",
+        "ул. Братская",
+        "Bratskaya St."
       ],
       [
-        "Улица Гулистан"
+        "Улица Гулистан",
+        "ул. Гулистан",
+        "Gulistan St."
       ],
       [
-        "улица Звездная"
+        "улица Звездная",
+        "ул. Звездная",
+        "Zvezdnaya St."
       ],
       [
-        "улица Иктидор"
+        "улица Иктидор",
+        "ул. Иктидор",
+        "Iktidor St."
       ],
       [
-        "улица Истикол"
+        "улица Истикол",
+        "ул. Истикол",
+        "Istikol St."
       ],
       [
-        "улица Ифтихор"
+        "улица Ифтихор",
+        "ул. Ифтихор",
+        "Iftikhor St."
       ],
       [
-        "улица Ихлос"
+        "улица Ихлос",
+        "ул. Ихлос",
+        "Ikhlos St."
       ],
       [
-        "улица Карабаусай"
+        "улица Карабаусай",
+        "ул. Карабаусай",
+        "Karabausay St."
       ],
       [
-        "улица Кахрамон"
+        "улица Кахрамон",
+        "ул. Кахрамон",
+        "Kakhramon St."
       ],
       [
-        "улица Комарова"
+        "улица Комарова",
+        "ул. Комарова",
+        "Komarova St."
       ],
       [
-        "улица Майдон"
+        "улица Майдон",
+        "ул. Майдон",
+        "Maydon St."
       ],
       [
-        "улица Навбахор"
+        "улица Навбахор",
+        "ул. Навбахор",
+        "Navbakhor St."
       ],
       [
-        "улица Озодлик"
+        "улица Озодлик",
+        "ул. Озодлик",
+        "Ozodlik St."
       ],
       [
-        "улица Ойбек"
+        "улица Ойбек",
+        "ул. Ойбек",
+        "Oybek St."
       ],
       [
-        "улица Олмос"
+        "улица Олмос",
+        "ул. Олмос",
+        "Olmos St."
       ],
       [
-        "улица Садовая"
+        "улица Садовая",
+        "ул. Садовая",
+        "Sadovaya St."
       ],
       [
-        "улица Северная"
+        "улица Северная",
+        "ул. Северная",
+        "Severnaya St."
       ],
       [
-        "улица Строитель"
+        "улица Строитель",
+        "ул. Строитель",
+        "Stroitel St."
       ],
       [
-        "улица Туркистон"
+        "улица Туркистон",
+        "ул. Туркистон",
+        "Turkiston St."
       ],
       [
-        "улица Уйгун"
+        "улица Уйгун",
+        "ул. Уйгун",
+        "Uygun St."
       ],
       [
         "улица Улугбек",
@@ -4114,19 +4476,27 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Ulugbek"
       ],
       [
-        "улица Уфк"
+        "улица Уфк",
+        "ул. Уфк",
+        "Ufk St."
       ],
       [
-        "Хорезмская"
+        "Хорезмская",
+        "Khorezmskaya"
       ],
       [
-        "Чирчикская улица"
+        "Чирчикская улица",
+        "ул. Чирчикская",
+        "Chirchikskaya St."
       ],
       [
-        "Школьная улица"
+        "Школьная улица",
+        "ул. Школьная",
+        "Shkolnaya St."
       ],
       [
-        "A373"
+        "A373",
+        "А373"
       ],
       [
         "A373 \"Камчик\"",
@@ -4143,7 +4513,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Амир Тимур"
       ],
       [
-        "Axmad Yassaviy ko'chasi"
+        "Axmad Yassaviy ko'chasi",
+        "ул. Ахмад Яссавий",
+        "Axmad Yassaviy St."
       ],
       [
         "Bahor ko'chasi",
@@ -4154,14 +4526,18 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улича Маринчева"
       ],
       [
-        "Birlik ko'chasi"
+        "Birlik ko'chasi",
+        "ул. Бирлик",
+        "Birlik St."
       ],
       [
         "Bunyodkor",
         "Бунедкор"
       ],
       [
-        "Bunyodkor ko'chasi"
+        "Bunyodkor ko'chasi",
+        "ул. Бунёдкор",
+        "Bunyodkor St."
       ],
       [
         "Chikrizov ko'chasi",
@@ -4193,7 +4569,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Истикол"
       ],
       [
-        "Konchi"
+        "Konchi",
+        "Кончи"
       ],
       [
         "Konchi ko'chasi",
@@ -4213,7 +4590,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Марифат улица"
       ],
       [
-        "Mustaqillik ko'chasi"
+        "Mustaqillik ko'chasi",
+        "ул. Мустакиллик",
+        "Mustaqillik St."
       ],
       [
         "Navoiy ko'chasi",
@@ -4241,7 +4620,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Турон"
       ],
       [
-        "Ziyoratgoh ko'chasi"
+        "Ziyoratgoh ko'chasi",
+        "ул. Зиёратгох",
+        "Ziyoratgoh St."
       ]
     ]
   },
@@ -4249,7 +4630,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
     "localAreas": [
       [
         "Мудай махалла",
-        "Кужган"
+        "Кужган",
+        "Кужган | Мудай махалла",
+        "Kuzhgan | Muday Mahalla"
       ],
       [
         "Нематабад",
@@ -4267,89 +4650,133 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "アサカ"
       ],
       [
-        "Marufjo Maxmudjonovich"
+        "Marufjo Maxmudjonovich",
+        "Маруфджо Махмудджонович"
       ],
       [
         "Oqboʻyra",
         "Акбуйра"
       ],
       [
-        "Umidjon Ulugbek ogli"
+        "Umidjon Ulugbek ogli",
+        "Умидджон Улугбек огли"
       ]
     ],
     "residentialComplexes": [
       [
-        "Неотложка"
+        "Неотложка",
+        "Neotlozhka"
       ]
     ],
     "streets": [
       [
-        "Бахор 1 тор куча"
+        "Бахор 1 тор куча",
+        "пр. Бахор 1",
+        "Bakhor 1st Ln."
       ],
       [
-        "Бахор 2 тор куча"
+        "Бахор 2 тор куча",
+        "пр. Бахор 2",
+        "Bakhor 2nd Ln."
       ],
       [
-        "Бахор 3 тор куча"
+        "Бахор 3 тор куча",
+        "пр. Бахор 3",
+        "Bakhor 3rd Ln."
       ],
       [
-        "Бахор 4 тор куча"
+        "Бахор 4 тор куча",
+        "пр. Бахор 4",
+        "Bakhor 4th Ln."
       ],
       [
-        "Бахор 5 тор куча"
+        "Бахор 5 тор куча",
+        "пр. Бахор 5",
+        "Bakhor 5th Ln."
       ],
       [
-        "Бахор кучаси"
+        "Бахор кучаси",
+        "ул. Бахор",
+        "Bakhor St."
       ],
       [
-        "Исломобод 5 тупик"
+        "Исломобод 5 тупик",
+        "5-й туп. Исломобод",
+        "Islomobod 5th Dead End"
       ],
       [
-        "Исломобод 6 тупик"
+        "Исломобод 6 тупик",
+        "6-й туп. Исломобод",
+        "Islomobod 6th Dead End"
       ],
       [
-        "Исломобод 7 тупик"
+        "Исломобод 7 тупик",
+        "7-й туп. Исломобод",
+        "Islomobod 7th Dead End"
       ],
       [
-        "Исломобод 8 тупик"
+        "Исломобод 8 тупик",
+        "8-й туп. Исломобод",
+        "Islomobod 8th Dead End"
       ],
       [
-        "Исломобод улица"
+        "Исломобод улица",
+        "ул. Исломобод",
+        "Islomobod St."
       ],
       [
-        "Нажмиддин Кубро"
+        "Нажмиддин Кубро",
+        "Nazhmiddin Kubro"
       ],
       [
         "Тошлок улица",
-        "улица Тошлок"
+        "ул. Тошлок",
+        "улица Тошлок",
+        "Toshlok St."
       ],
       [
-        "Узбекистон кучаси"
+        "Узбекистон кучаси",
+        "ул. Узбекистон",
+        "Uzbekiston St."
       ],
       [
-        "улица Доримолон"
+        "улица Доримолон",
+        "ул. Доримолон",
+        "Dorimolon St."
       ],
       [
-        "улица Турттош"
+        "улица Турттош",
+        "ул. Турттош",
+        "Turttosh St."
       ],
       [
-        "Arg'in ko'chasi"
+        "Arg'in ko'chasi",
+        "ул. Аргин",
+        "Arg'in St."
       ],
       [
-        "Asadbek Ko’chasi"
+        "Asadbek Ko’chasi",
+        "ул. Асадбек",
+        "Asadbek St."
       ],
       [
         "Binokor ko'chasi",
         "Бинокор улица"
       ],
       [
-        "Bolalik ko'chasi"
+        "Bolalik ko'chasi",
+        "ул. Болалик",
+        "Bolalik St."
       ],
       [
-        "Chitgar ko'chasi"
+        "Chitgar ko'chasi",
+        "ул. Читгар",
+        "Chitgar St."
       ],
       [
-        "Dorboz ko'chasi"
+        "Dorboz ko'chasi",
+        "ул. Дорбоз",
+        "Dorboz St."
       ],
       [
         "Farg‘ona halqa yo‘li",
@@ -4373,7 +4800,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Fidoiy Street"
       ],
       [
-        "Guliston ko'chasi"
+        "Guliston ko'chasi",
+        "ул. Гулистон",
+        "Guliston St."
       ],
       [
         "Gulom Yoqubov ko'chasi",
@@ -4381,7 +4810,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Gulam Yakubov street"
       ],
       [
-        "Hamdo'stlik ko'chasi"
+        "Hamdo'stlik ko'chasi",
+        "ул. Хамдустлик",
+        "Hamdo'stlik St."
       ],
       [
         "Humo ko`ko’chasi",
@@ -4402,29 +4833,43 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Имам Бухари"
       ],
       [
-        "Madaniyat ko'chasi"
+        "Madaniyat ko'chasi",
+        "ул. Маданият",
+        "Madaniyat St."
       ],
       [
-        "Marg'iloniy ko'chasi"
+        "Marg'iloniy ko'chasi",
+        "ул. Маргилоний",
+        "Marg'iloniy St."
       ],
       [
         "Mustaxkam ko'chasi",
         "Мустакем көчөсү"
       ],
       [
-        "Najmiddin Kubro ko'chasi"
+        "Najmiddin Kubro ko'chasi",
+        "ул. Наджмиддин Кубро",
+        "Najmiddin Kubro St."
       ],
       [
-        "Navkan ko'chasi"
+        "Navkan ko'chasi",
+        "ул. Навкан",
+        "Navkan St."
       ],
       [
-        "O'rta Qurama ko'chasi"
+        "O'rta Qurama ko'chasi",
+        "ул. Урта Курама",
+        "O'rta Qurama St."
       ],
       [
-        "O'zbek ko'chasi"
+        "O'zbek ko'chasi",
+        "ул. Узбек",
+        "O'zbek St."
       ],
       [
-        "Sohibkor Kochasi"
+        "Sohibkor Kochasi",
+        "ул. Сохибкор",
+        "Sohibkor St."
       ],
       [
         "Sohil bo`yi ko`chasi",
@@ -4442,24 +4887,32 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Умид улица"
       ],
       [
-        "Uzun ko'chasi"
+        "Uzun ko'chasi",
+        "ул. Узун",
+        "Uzun St."
       ],
       [
         "Vokzal ko'cha",
         "Воклзальная улица"
       ],
       [
-        "Xo'jabosmon ko'chasi"
+        "Xo'jabosmon ko'chasi",
+        "ул. Худжабосмон",
+        "Xo'jabosmon St."
       ],
       [
         "Xumo ko’chasi",
         "Хумо улица"
       ],
       [
-        "Yangiobod ko'chasi"
+        "Yangiobod ko'chasi",
+        "ул. Янгиобод",
+        "Yangiobod St."
       ],
       [
-        "Yangisor ko'chasi"
+        "Yangisor ko'chasi",
+        "ул. Янгисор",
+        "Yangisor St."
       ],
       [
         "Yoshlik ko'chasi",
@@ -4483,14 +4936,18 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Зиёлилар 3 проезд"
       ],
       [
-        "Ziyolilar ko'chasi"
+        "Ziyolilar ko'chasi",
+        "ул. Зиёлилар",
+        "Ziyolilar St."
       ]
     ]
   },
   "Bekabad": {
     "localAreas": [
       [
-        "11-й микрорайон"
+        "11-й микрорайон",
+        "11-y Microdist.",
+        "мкр. 11-й"
       ],
       [
         "11-daha",
@@ -4498,7 +4955,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "11 microdistrict"
       ],
       [
-        "12-й микрорайон"
+        "12-й микрорайон",
+        "12-y Microdist.",
+        "мкр. 12-й"
       ],
       [
         "12-daha",
@@ -4511,10 +4970,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "13 microdistrict"
       ],
       [
-        "13-й микрорайон"
+        "13-й микрорайон",
+        "13-y Microdist.",
+        "мкр. 13-й"
       ],
       [
-        "14 микрорайон"
+        "14 микрорайон",
+        "14 Microdist.",
+        "мкр. 14"
       ],
       [
         "14 daha",
@@ -4522,7 +4985,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "14 microdistrict"
       ],
       [
-        "15-микрорайон"
+        "15-микрорайон",
+        "15-мкр.",
+        "15-Microdist."
       ],
       [
         "3-daha",
@@ -4530,7 +4995,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "3-й микрорайон"
       ],
       [
-        "64 квартал"
+        "64 квартал",
+        "64 Quarter",
+        "кв-л 64"
       ],
       [
         "65 mavze",
@@ -4548,85 +5015,113 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "81 quarter"
       ],
       [
-        "Аббасов"
+        "Аббасов",
+        "Abbasov"
       ],
       [
-        "Аль-Хорезми"
+        "Аль-Хорезми",
+        "Al-Khorezmi"
       ],
       [
-        "Андижан"
+        "Андижан",
+        "Andizhan"
       ],
       [
-        "Бабур"
+        "Бабур",
+        "Babur"
       ],
       [
-        "Бобур"
+        "Бобур",
+        "Bobur"
       ],
       [
-        "Богишамол"
+        "Богишамол",
+        "Bogishamol"
       ],
       [
-        "Булокарик"
+        "Булокарик",
+        "Bulokarik"
       ],
       [
-        "Дустлик"
+        "Дустлик",
+        "Dustlik"
       ],
       [
-        "Ёшлик"
+        "Ёшлик",
+        "Yoshlik"
       ],
       [
-        "К. Турдиев"
+        "К. Турдиев",
+        "K. Turdiev"
       ],
       [
-        "М. Тургунбоева"
+        "М. Тургунбоева",
+        "M. Turgunboeva"
       ],
       [
         "Мукими",
-        "Металлургов"
+        "Металлургов",
+        "Металлургов | Мукими",
+        "Metallurgov | Mukimi"
       ],
       [
-        "Мусстакиллик"
+        "Мусстакиллик",
+        "Musstakillik"
       ],
       [
-        "Нижний посёлок кирпичного завода"
+        "Нижний посёлок кирпичного завода",
+        "Нижний пос. кирпичного завода",
+        "Nizhniy Settlement kirpichnogo zavoda"
       ],
       [
-        "Нурили Йул"
+        "Нурили Йул",
+        "Nurili Yul"
       ],
       [
         "Пахтакор",
         "Паxтакор"
       ],
       [
-        "С. Айний"
+        "С. Айний",
+        "S. Ayniy"
       ],
       [
-        "Самарканд"
+        "Самарканд",
+        "Samarkand"
       ],
       [
-        "Тинчлик"
+        "Тинчлик",
+        "Tinchlik"
       ],
       [
-        "Туркистан"
+        "Туркистан",
+        "Turkistan"
       ],
       [
         "Узбекистон",
-        "Узбекистан"
+        "Узбекистан",
+        "Узбекистан | Узбекистон",
+        "Uzbekistan | Uzbekiston"
       ],
       [
-        "Фергона"
+        "Фергона",
+        "Fergona"
       ],
       [
-        "Цементгородок"
+        "Цементгородок",
+        "Tsementgorodok"
       ],
       [
-        "Шанхай"
+        "Шанхай",
+        "Shankhay"
       ],
       [
-        "Шахматчи (Косим ота Фармонов махаля)"
+        "Шахматчи (Косим ота Фармонов махаля)",
+        "Shakhmatchi (Kosim ota Farmonov makhalya)"
       ],
       [
-        "Ширин"
+        "Ширин",
+        "Shirin"
       ],
       [
         "Dalvarzin 8-bo'lim",
@@ -4643,7 +5138,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Гидрометрия"
       ],
       [
-        "Hamid Olimjon mahallasi"
+        "Hamid Olimjon mahallasi",
+        "мах. Хамид Олимджон",
+        "Hamid Olimjon Mahalla"
       ],
       [
         "M. Turg'unboeva",
@@ -4675,222 +5172,322 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Takachi"
       ],
       [
-        "Taraqqiyot mahallasi"
+        "Taraqqiyot mahallasi",
+        "мах. Тараккиёт",
+        "Taraqqiyot Mahalla"
       ]
     ],
     "streets": [
       [
-        "А. Жалиля"
+        "А. Жалиля",
+        "A. Zhalilya"
       ],
       [
         "А. Кодирий",
-        "Кутузова"
+        "А. Кодирий | Кутузова",
+        "Кутузова",
+        "A. Kodiriy | Kutuzova"
       ],
       [
-        "А. Тукая"
+        "А. Тукая",
+        "A. Tukaya"
       ],
       [
-        "Аббасова тупик 1"
+        "Аббасова тупик 1",
+        "1-й туп. Аббасова",
+        "Abbasova 1st Dead End"
       ],
       [
-        "Аббасова тупик 2"
+        "Аббасова тупик 2",
+        "2-й туп. Аббасова",
+        "Abbasova 2nd Dead End"
       ],
       [
-        "Абдукахор"
+        "Абдукахор",
+        "Abdukakhor"
       ],
       [
-        "Абдураззаков"
+        "Абдураззаков",
+        "Abdurazzakov"
       ],
       [
-        "Ахунбабаева улица"
+        "Ахунбабаева улица",
+        "ул. Ахунбабаева",
+        "Akhunbabaeva St."
       ],
       [
-        "Б. Рахмонов"
+        "Б. Рахмонов",
+        "B. Rakhmonov"
       ],
       [
-        "Галаба улица"
+        "Галаба улица",
+        "ул. Галаба",
+        "Galaba St."
       ],
       [
-        "Гулбог"
+        "Гулбог",
+        "Gulbog"
       ],
       [
-        "Гулистанская"
+        "Гулистанская",
+        "Gulistanskaya"
       ],
       [
-        "Ёшлик"
+        "Ёшлик",
+        "Yoshlik"
       ],
       [
-        "Железняка"
+        "Железняка",
+        "Zheleznyaka"
       ],
       [
         "Заркайнар",
-        "А. Тукая"
+        "А. Тукая",
+        "А. Тукая | Заркайнар",
+        "A. Tukaya | Zarkaynar"
       ],
       [
         "Ибрагимова",
-        "Пешакова улица"
+        "Ибрагимова | ул. Пешакова",
+        "Пешакова улица",
+        "Ibragimova | Peshakova St."
       ],
       [
-        "Индустриальная улица"
+        "Индустриальная улица",
+        "ул. Индустриальная",
+        "Industrialnaya St."
       ],
       [
-        "К. Турдиева"
+        "К. Турдиева",
+        "K. Turdieva"
       ],
       [
         "Кутузова",
-        "А. Кодирий"
+        "А. Кодирий",
+        "А. Кодирий | Кутузова",
+        "A. Kodiriy | Kutuzova"
       ],
       [
-        "Кушкина"
+        "Кушкина",
+        "Kushkina"
       ],
       [
-        "Мелиева"
+        "Мелиева",
+        "Melieva"
       ],
       [
-        "Металлургическая"
+        "Металлургическая",
+        "Metallurgicheskaya"
       ],
       [
-        "Мирзачул"
+        "Мирзачул",
+        "Mirzachul"
       ],
       [
-        "Норкузиева"
+        "Норкузиева",
+        "Norkuzieva"
       ],
       [
-        "Октябирьская"
+        "Октябирьская",
+        "Oktyabirskaya"
       ],
       [
-        "Октябирьский переулок"
+        "Октябирьский переулок",
+        "пер. Октябирьский",
+        "Oktyabirskiy Ln."
       ],
       [
-        "Октябрьская"
+        "Октябрьская",
+        "Oktyabrskaya"
       ],
       [
-        "Октябрьский переулок"
+        "Октябрьский переулок",
+        "пер. Октябрьский",
+        "Oktyabrskiy Ln."
       ],
       [
-        "Пахтаобод"
+        "Пахтаобод",
+        "Pakhtaobod"
       ],
       [
-        "переулок 1-Мая"
+        "переулок 1-Мая",
+        "1-Maya Ln.",
+        "пер. 1-Мая"
       ],
       [
-        "переулок Кушкина"
+        "переулок Кушкина",
+        "пер. Кушкина",
+        "Kushkina Ln."
       ],
       [
-        "переулок Навои"
+        "переулок Навои",
+        "пер. Навои",
+        "Navoi Ln."
       ],
       [
-        "Плеханова"
+        "Плеханова",
+        "Plekhanova"
       ],
       [
-        "проезд на реактивную"
+        "проезд на реактивную",
+        "пр-д на реактивную",
+        "na reaktivnuyu Passage"
       ],
       [
-        "Р. Хаитова"
+        "Р. Хаитова",
+        "R. Khaitova"
       ],
       [
-        "РҶ068"
+        "РҶ068",
+        "RҶ068"
       ],
       [
-        "РҶ091"
+        "РҶ091",
+        "RҶ091"
       ],
       [
         "Сайдалиева",
-        "Физкультурный"
+        "Сайдалиева | Физкультурный",
+        "Физкультурный",
+        "Saydalieva | Fizkulturnyy"
       ],
       [
-        "Самаркандская"
+        "Самаркандская",
+        "Samarkandskaya"
       ],
       [
-        "Саримсакова"
+        "Саримсакова",
+        "Sarimsakova"
       ],
       [
         "Султонжура",
-        "Ушакова"
+        "Султонжура | Ушакова",
+        "Ушакова",
+        "Sultonzhura | Ushakova"
       ],
       [
-        "Ташкентская"
+        "Ташкентская",
+        "Tashkentskaya"
       ],
       [
-        "Тельмана Мелиева"
+        "Тельмана Мелиева",
+        "Telmana Melieva"
       ],
       [
-        "Транспортная"
+        "Транспортная",
+        "Transportnaya"
       ],
       [
-        "тупик Мехнатобод"
+        "тупик Мехнатобод",
+        "туп. Мехнатобод",
+        "Mekhnatobod Dead End"
       ],
       [
-        "тупик Мукими"
+        "тупик Мукими",
+        "туп. Мукими",
+        "Mukimi Dead End"
       ],
       [
-        "тупик Охунова"
+        "тупик Охунова",
+        "туп. Охунова",
+        "Okhunova Dead End"
       ],
       [
-        "тупик Сырдарьиннский"
+        "тупик Сырдарьиннский",
+        "туп. Сырдарьиннский",
+        "Syrdarinnskiy Dead End"
       ],
       [
-        "тупик Ташкентский 2"
+        "тупик Ташкентский 2",
+        "туп. Ташкентский 2",
+        "Tashkentskiy 2nd Dead End"
       ],
       [
-        "тупик Шахматчи"
+        "тупик Шахматчи",
+        "туп. Шахматчи",
+        "Shakhmatchi Dead End"
       ],
       [
-        "Узумзор"
+        "Узумзор",
+        "Uzumzor"
       ],
       [
-        "улица Фирдавси"
+        "улица Фирдавси",
+        "ул. Фирдавси",
+        "Firdavsi St."
       ],
       [
-        "Фарогат"
+        "Фарогат",
+        "Farogat"
       ],
       [
-        "Ферганская"
+        "Ферганская",
+        "Ferganskaya"
       ],
       [
-        "Фурманова"
+        "Фурманова",
+        "Furmanova"
       ],
       [
-        "Худайкулов"
+        "Худайкулов",
+        "Khudaykulov"
       ],
       [
         "Ш. Бурханова",
-        "Орджоникидзе"
+        "Орджоникидзе",
+        "Орджоникидзе | ш. Бурханова",
+        "Ordzhonikidze | Sh. Burkhanova"
       ],
       [
-        "Шахриобод"
+        "Шахриобод",
+        "Shakhriobod"
       ],
       [
-        "Энгельса"
+        "Энгельса",
+        "Engelsa"
       ],
       [
-        "A. Nabiyev koʻchasi"
+        "A. Nabiyev koʻchasi",
+        "ул. А. Набиев",
+        "A. Nabiyev St."
       ],
       [
         "Abbosov ko'chasi",
         "Аббасова улица"
       ],
       [
-        "Ahillik koʻchasi"
+        "Ahillik koʻchasi",
+        "ул. Ахиллик",
+        "Ahillik St."
       ],
       [
-        "Al-Farobiy ko'chasi"
+        "Al-Farobiy ko'chasi",
+        "ул. Ал-Фароби",
+        "Al-Farobiy St."
       ],
       [
-        "Al-Xorazmiy ko'chasi"
+        "Al-Xorazmiy ko'chasi",
+        "ул. Ал-Хоразмий",
+        "Al-Xorazmiy St."
       ],
       [
         "Alpomish ko'chasi",
         "Володарского"
       ],
       [
-        "Amir Temur koʻchasi"
+        "Amir Temur koʻchasi",
+        "ул. Амир Темур",
+        "Amir Temur St."
       ],
       [
-        "Baxor ko'chasi"
+        "Baxor ko'chasi",
+        "ул. Бахор",
+        "Baxor St."
       ],
       [
-        "Baxt koʻchasi"
+        "Baxt koʻchasi",
+        "ул. Бахт",
+        "Baxt St."
       ],
       [
         "Bekobod",
@@ -4905,14 +5502,18 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Котовского"
       ],
       [
-        "Bogʻzor koʻchasi"
+        "Bogʻzor koʻchasi",
+        "ул. Богзор",
+        "Bog'zor St."
       ],
       [
         "Buyuk Ipak yo'li",
         "Буюк Ипак юли улица"
       ],
       [
-        "Charxiy koʻchasi"
+        "Charxiy koʻchasi",
+        "ул. Чархий",
+        "Charxiy St."
       ],
       [
         "Chustiy ko'chasi",
@@ -4921,13 +5522,19 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Чустий улица"
       ],
       [
-        "Eshonov ko'chasi"
+        "Eshonov ko'chasi",
+        "ул. Ешонов",
+        "Eshonov St."
       ],
       [
-        "Fayzulla Xoʻjayev koʻchasi"
+        "Fayzulla Xoʻjayev koʻchasi",
+        "ул. Файзулла Худжаев",
+        "Fayzulla Xo'jayev St."
       ],
       [
-        "Furqat koʻchasi"
+        "Furqat koʻchasi",
+        "ул. Фуркат",
+        "Furqat St."
       ],
       [
         "Gʻafur Gʻulom koʻchasi",
@@ -4938,17 +5545,23 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Победы"
       ],
       [
-        "Gulzor koʻchasi"
+        "Gulzor koʻchasi",
+        "ул. Гулзор",
+        "Gulzor St."
       ],
       [
-        "Hamid Olimjon ko'chasi"
+        "Hamid Olimjon ko'chasi",
+        "ул. Хамид Олимджон",
+        "Hamid Olimjon St."
       ],
       [
         "Haqiqat ko'chasi",
         "Хакикат улица"
       ],
       [
-        "Islomobod koʻchasi"
+        "Islomobod koʻchasi",
+        "ул. Исломобод",
+        "Islomobod St."
       ],
       [
         "Istiqbol ko'chasi",
@@ -4959,29 +5572,43 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Истиклол улица"
       ],
       [
-        "Kamolot ko'chasi"
+        "Kamolot ko'chasi",
+        "ул. Камолот",
+        "Kamolot St."
       ],
       [
-        "Lohutiy ko'chasi"
+        "Lohutiy ko'chasi",
+        "ул. Лохутий",
+        "Lohutiy St."
       ],
       [
         "M. Uzoqov koʻchasi",
         "М. Узоков улица"
       ],
       [
-        "M. Xasanov ko'chasi"
+        "M. Xasanov ko'chasi",
+        "ул. М. Хасанов",
+        "M. Xasanov St."
       ],
       [
-        "Mannon Uyg'ur ko'chasi"
+        "Mannon Uyg'ur ko'chasi",
+        "ул. Маннон Уйгур",
+        "Mannon Uyg'ur St."
       ],
       [
-        "Mehnatobod ko'chasi"
+        "Mehnatobod ko'chasi",
+        "ул. Мехнатобод",
+        "Mehnatobod St."
       ],
       [
-        "Mehnatobod tor ko'chasi"
+        "Mehnatobod tor ko'chasi",
+        "пр. Мехнатобод",
+        "Mehnatobod Ln."
       ],
       [
-        "Meliev ko'chasi"
+        "Meliev ko'chasi",
+        "ул. Мелиев",
+        "Meliev St."
       ],
       [
         "Mevazor ko'chasi",
@@ -4996,70 +5623,106 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Мукумий улица"
       ],
       [
-        "Murabbiy ko'chasi"
+        "Murabbiy ko'chasi",
+        "ул. Мураббий",
+        "Murabbiy St."
       ],
       [
-        "Muxtor Ashrafiy ko'chasi"
+        "Muxtor Ashrafiy ko'chasi",
+        "ул. Мухтор Ашрафий",
+        "Muxtor Ashrafiy St."
       ],
       [
-        "Nafosat ko'chasi"
+        "Nafosat ko'chasi",
+        "ул. Нафосат",
+        "Nafosat St."
       ],
       [
-        "Namangan ko'chasi"
+        "Namangan ko'chasi",
+        "ул. Наманган",
+        "Namangan St."
       ],
       [
         "Navbahor ko'chasi",
         "Реактиваная улица"
       ],
       [
-        "Navro'z ko'chasi"
+        "Navro'z ko'chasi",
+        "ул. Навруз",
+        "Navro'z St."
       ],
       [
-        "Nurobod berk ko'chasi"
+        "Nurobod berk ko'chasi",
+        "туп. Нуробод",
+        "Nurobod Dead End"
       ],
       [
-        "Nurobod ko'chasi"
+        "Nurobod ko'chasi",
+        "ул. Нуробод",
+        "Nurobod St."
       ],
       [
-        "Nurobod tor ko'chasi"
+        "Nurobod tor ko'chasi",
+        "пр. Нуробод",
+        "Nurobod Ln."
       ],
       [
-        "Nurutdinov koʻchasi"
+        "Nurutdinov koʻchasi",
+        "ул. Нурутдинов",
+        "Nurutdinov St."
       ],
       [
         "Ohunboboyev koʻchasi",
         "Ахунбабаева улица"
       ],
       [
-        "Oʻzbekiston koʻchasi"
+        "Oʻzbekiston koʻchasi",
+        "ул. Узбекистон",
+        "O'zbekiston St."
       ],
       [
-        "Olchazor ko'chasi"
+        "Olchazor ko'chasi",
+        "ул. Олчазор",
+        "Olchazor St."
       ],
       [
-        "Oqterak ko'chasi"
+        "Oqterak ko'chasi",
+        "ул. Октерак",
+        "Oqterak St."
       ],
       [
-        "Oxunov ko'chasi"
+        "Oxunov ko'chasi",
+        "ул. Охунов",
+        "Oxunov St."
       ],
       [
-        "Pahtaobod ko‘chasi"
+        "Pahtaobod ko‘chasi",
+        "ул. Пахтаобод",
+        "Pahtaobod St."
       ],
       [
-        "Paxtakor koʻchasi"
+        "Paxtakor koʻchasi",
+        "ул. Пахтакор",
+        "Paxtakor St."
       ],
       [
-        "Paxtaobod ko‘chasi"
+        "Paxtaobod ko‘chasi",
+        "ул. Пахтаобод",
+        "Paxtaobod St."
       ],
       [
         "Peshakov ko'chasi",
         "Пешакова улица"
       ],
       [
-        "Qo'qon ko'chasi"
+        "Qo'qon ko'chasi",
+        "ул. Кукон",
+        "Qo'qon St."
       ],
       [
-        "Qodirov koʻchasi"
+        "Qodirov koʻchasi",
+        "ул. Кодиров",
+        "Qodirov St."
       ],
       [
         "Sadriddin Ayni ko'chasi",
@@ -5071,26 +5734,38 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Саломатлик улица"
       ],
       [
-        "Sarbon ko'chasi"
+        "Sarbon ko'chasi",
+        "ул. Сарбон",
+        "Sarbon St."
       ],
       [
-        "Sayram ko'chasi"
+        "Sayram ko'chasi",
+        "ул. Сайрам",
+        "Sayram St."
       ],
       [
         "Sementchilar ko'chasi",
         "Дзержинского"
       ],
       [
-        "Shahriobod ko'chasi"
+        "Shahriobod ko'chasi",
+        "ул. Шахриобод",
+        "Shahriobod St."
       ],
       [
-        "Shaxmatchi ko'chasi"
+        "Shaxmatchi ko'chasi",
+        "ул. Шахматчи",
+        "Shaxmatchi St."
       ],
       [
-        "Shirin ko'chasi"
+        "Shirin ko'chasi",
+        "ул. Ширин",
+        "Shirin St."
       ],
       [
-        "Shodlik ko'chasi"
+        "Shodlik ko'chasi",
+        "ул. Шодлик",
+        "Shodlik St."
       ],
       [
         "Sirdaryo ko‘chasi",
@@ -5101,10 +5776,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Декабристов"
       ],
       [
-        "Temur Malik ko'chasi"
+        "Temur Malik ko'chasi",
+        "ул. Темур Малик",
+        "Temur Malik St."
       ],
       [
-        "Tinchlik koʻchasi"
+        "Tinchlik koʻchasi",
+        "ул. Тинчлик",
+        "Tinchlik St."
       ],
       [
         "To'maris ko'chasi",
@@ -5119,38 +5798,58 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "У. Юсупов улица"
       ],
       [
-        "Umid ko'chasi"
+        "Umid ko'chasi",
+        "ул. Умид",
+        "Umid St."
       ],
       [
-        "Usmon Nosir ko'chasi"
+        "Usmon Nosir ko'chasi",
+        "ул. Усмон Носир",
+        "Usmon Nosir St."
       ],
       [
-        "X. Xodjimuratov ko'chasi"
+        "X. Xodjimuratov ko'chasi",
+        "ул. Х. Ходджимуратов",
+        "X. Xodjimuratov St."
       ],
       [
-        "Xorazm koʻchasi"
+        "Xorazm koʻchasi",
+        "ул. Хорезм",
+        "Xorazm St."
       ],
       [
-        "Yangi hayot ko'chasi"
+        "Yangi hayot ko'chasi",
+        "ул. Янги хаёт",
+        "Yangi hayot St."
       ],
       [
-        "Yangiobod ko'chasi"
+        "Yangiobod ko'chasi",
+        "ул. Янгиобод",
+        "Yangiobod St."
       ],
       [
-        "Yoshlik ko'chasi"
+        "Yoshlik ko'chasi",
+        "ул. Ёшлик",
+        "Yoshlik St."
       ],
       [
         "Zarafshon ko'chasi",
         "Заравшан улица"
       ],
       [
-        "Zarqaynar koʻchasi"
+        "Zarqaynar koʻchasi",
+        "ул. Заркайнар",
+        "Zarqaynar St."
       ],
       [
-        "Ziyoli ko'chasi"
+        "Ziyoli ko'chasi",
+        "ул. Зиёли",
+        "Ziyoli St."
       ],
       [
-        "Zulfiya ko'chasi"
+        "Zulfiya ko'chasi",
+        "ул. Зулфия",
+        "Zulfiya St."
       ]
     ]
   },
@@ -5291,7 +5990,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "1-september street"
       ],
       [
-        "АСКАР Улица"
+        "АСКАР Улица",
+        "ул. АСКАР",
+        "ASKAR St."
       ],
       [
         "A. Qodiriy ko'shesi",
@@ -5692,12 +6393,6 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Furqat street"
       ],
       [
-        "G'afur G'ulom ko'shesi",
-        "Гафур Гулам улица",
-        "G'ofur Gulom ko'chasi",
-        "Gafur Gulom street"
-      ],
-      [
         "G'alaba ko'shesi",
         "Галаба улица",
         "ГАЛАБА улица",
@@ -5709,7 +6404,10 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Gʻafur Gʻulom ko'shesi",
+        "Гафур Гулам улица",
         "улица Гафур Гулам",
+        "G'afur G'ulom ko'shesi",
+        "G'ofur Gulom ko'chasi",
         "Gafur Gulom street",
         "Gʻafur Gʻulom ko'chasi"
       ],
@@ -5774,7 +6472,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Ilgor street"
       ],
       [
-        "Ilonli qal'a koʻchasi"
+        "Ilonli qal'a koʻchasi",
+        "ул. Илонли кала",
+        "Ilonli qal'a St."
       ],
       [
         "Imkon ko'shesi",
@@ -6251,7 +6951,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Obod street"
       ],
       [
-        "Obod Mahalla"
+        "Obod Mahalla",
+        "мах. Обод"
       ],
       [
         "Ochilmafiya ko'shesi",
@@ -6975,7 +7676,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Шарк 2"
       ],
       [
-        "60-sonli XO'JA MUSHKIN MFY"
+        "60-sonli XO'JA MUSHKIN MFY",
+        "60-сонли ХУДЖА МУШКИН МФЙ"
       ],
       [
         "От бозор",
@@ -7000,7 +7702,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Гулобиён"
       ],
       [
-        "Hotel Ulug'bek"
+        "Hotel Ulug'bek",
+        "Хотел Улугбек"
       ],
       [
         "Navbahor mahallasi",
@@ -7036,7 +7739,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "9"
       ],
       [
-        "Мутал Бурхон"
+        "Мутал Бурхон",
+        "Mutal Burkhon"
       ],
       [
         "Нихол Кольцо",
@@ -7044,43 +7748,64 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Mustakillik street"
       ],
       [
-        "Обод"
+        "Обод",
+        "Obod"
       ],
       [
-        "Орифон"
+        "Орифон",
+        "Orifon"
       ],
       [
-        "разворот в обе стороны"
+        "разворот в обе стороны",
+        "razvorot v obe storony"
       ],
       [
-        "Садаф улица"
+        "Садаф улица",
+        "ул. Садаф",
+        "Sadaf St."
       ],
       [
-        "ул Абдухолик Гиждувоний"
+        "ул Абдухолик Гиждувоний",
+        "ул. Абдухолик Гиждувоний",
+        "Abdukholik Gizhduvoniy St."
       ],
       [
-        "ул Бобур"
+        "ул Бобур",
+        "ул. Бобур",
+        "Bobur St."
       ],
       [
-        "ул Махмуд Кошгарий"
+        "ул Махмуд Кошгарий",
+        "ул. Махмуд Кошгарий",
+        "Makhmud Koshgariy St."
       ],
       [
-        "ул Хаетобод"
+        "ул Хаетобод",
+        "ул. Хаетобод",
+        "Khaetobod St."
       ],
       [
-        "ул Элобод"
+        "ул Элобод",
+        "ул. Элобод",
+        "Elobod St."
       ],
       [
-        "улица Садриддина Айни"
+        "улица Садриддина Айни",
+        "ул. Садриддина Айни",
+        "Sadriddina Ayni St."
       ],
       [
-        "Улица Шохруд"
+        "Улица Шохруд",
+        "ул. Шохруд",
+        "Shokhrud St."
       ],
       [
-        "Хилол Бухорий"
+        "Хилол Бухорий",
+        "Khilol Bukhoriy"
       ],
       [
-        "Ш Шохин"
+        "Ш Шохин",
+        "Sh Shokhin"
       ],
       [
         "A. Munzim ko'chasi",
@@ -7114,7 +7839,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "بزرگراه ابوعلی سینا"
       ],
       [
-        "ABU HAFSI KABIR"
+        "ABU HAFSI KABIR",
+        "АБУ ХАФСИ КАБИР"
       ],
       [
         "Abu Hayz Kabir ko'chasi",
@@ -7158,17 +7884,23 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Алпомиш улица"
       ],
       [
-        "Amirobod ko'chasi"
+        "Amirobod ko'chasi",
+        "ул. Амиробод",
+        "Amirobod St."
       ],
       [
-        "Amudaryo ko'chasi"
+        "Amudaryo ko'chasi",
+        "ул. Амударё",
+        "Amudaryo St."
       ],
       [
         "Arabon ko'chasi",
         "Арабон улица"
       ],
       [
-        "B. Amonova ko'chasi"
+        "B. Amonova ko'chasi",
+        "ул. Б. Амонова",
+        "B. Amonova St."
       ],
       [
         "Bahovaddin Naqshband ko'chasi",
@@ -7177,7 +7909,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Bakhovaddin Nakshband street"
       ],
       [
-        "Barakiyon ko'chasi"
+        "Barakiyon ko'chasi",
+        "ул. Баракиён",
+        "Barakiyon St."
       ],
       [
         "Beyneu - G'uzor Avtotrassasi",
@@ -7185,10 +7919,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Beyneu - G'uzor Highway"
       ],
       [
-        "Bobiyi-Porado'z Muyulish ko'chasi"
+        "Bobiyi-Porado'z Muyulish ko'chasi",
+        "ул. Бобийи-Порадуз Муюлиш",
+        "Bobiyi-Porado'z Muyulish St."
       ],
       [
-        "Boboyi-Porado'z ko'chasi"
+        "Boboyi-Porado'z ko'chasi",
+        "ул. Бобойи-Порадуз",
+        "Boboyi-Porado'z St."
       ],
       [
         "Bog'ishamol ko'chasi",
@@ -7200,7 +7938,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Боги Амир"
       ],
       [
-        "Chit Bofon ko'chasi"
+        "Chit Bofon ko'chasi",
+        "ул. Чит Бофон",
+        "Chit Bofon St."
       ],
       [
         "Choʻplon koʻchasi",
@@ -7231,7 +7971,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Давлатобод улица"
       ],
       [
-        "Dilkusho Durun"
+        "Dilkusho Durun",
+        "Дилкушо Дурун"
       ],
       [
         "Dilkusho ko'chasi",
@@ -7272,7 +8013,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "بزرگراه فیض آباد"
       ],
       [
-        "G'azzoliy ko'chasi"
+        "G'azzoliy ko'chasi",
+        "ул. Газзолий",
+        "G'azzoliy St."
       ],
       [
         "G'ijduvon ko‘chasi",
@@ -7280,13 +8023,19 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "G'ijduvon ko'chasi"
       ],
       [
-        "G'oziyon ko'chasi"
+        "G'oziyon ko'chasi",
+        "ул. Гозиён",
+        "G'oziyon St."
       ],
       [
-        "Gavkushon ko'chasi"
+        "Gavkushon ko'chasi",
+        "ул. Гавкушон",
+        "Gavkushon St."
       ],
       [
-        "Gazli shox ko'chasi"
+        "Gazli shox ko'chasi",
+        "ул. Газли шох",
+        "Gazli shox St."
       ],
       [
         "Gulchorbo'g ko'chasi",
@@ -7298,10 +8047,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Улица Гулшан"
       ],
       [
-        "Gulzor ko'chasi"
+        "Gulzor ko'chasi",
+        "ул. Гулзор",
+        "Gulzor St."
       ],
       [
-        "Halvopazon ko'chasi"
+        "Halvopazon ko'chasi",
+        "ул. Халвопазон",
+        "Halvopazon St."
       ],
       [
         "Haqiqat ko'chasi",
@@ -7318,7 +8071,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Хазрати Кучкар улица"
       ],
       [
-        "Hisor ko'chasi"
+        "Hisor ko'chasi",
+        "ул. Хисор",
+        "Hisor St."
       ],
       [
         "Hofiz tanish al Buxoriy ko'chasi",
@@ -7342,7 +8097,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Islam Karimov street"
       ],
       [
-        "Islom ko'chasi"
+        "Islom ko'chasi",
+        "ул. Ислом",
+        "Islom St."
       ],
       [
         "Istiqlol ko'chasi",
@@ -7383,7 +8140,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Kuksaroy street"
       ],
       [
-        "Levi Boboxonov ko'chasi"
+        "Levi Boboxonov ko'chasi",
+        "ул. Леви Бобохонов",
+        "Levi Boboxonov St."
       ],
       [
         "Lolazor ko'chasi",
@@ -7435,6 +8194,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Muhammad Payraviy ko'chasi",
+        "ул. Мухаммад Пайравий",
+        "Muhammad Payraviy St.",
         "خیابان محمد پیروی"
       ],
       [
@@ -7488,7 +8249,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "بلوار پیر دستگیر"
       ],
       [
-        "Po'stin do'zon ko'chasi"
+        "Po'stin do'zon ko'chasi",
+        "ул. Пустин дузон",
+        "Po'stin do'zon St."
       ],
       [
         "Qalqon ko`chasi",
@@ -7502,7 +8265,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "بلوار خیام"
       ],
       [
-        "Qozi Havzi Kalon"
+        "Qozi Havzi Kalon",
+        "Кози Хавзи Калон"
       ],
       [
         "Rohat",
@@ -7533,7 +8297,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Sanoatchilar street"
       ],
       [
-        "Sarrafon ko'chasi"
+        "Sarrafon ko'chasi",
+        "ул. Саррафон",
+        "Sarrafon St."
       ],
       [
         "Sharif Nurxon ko'chasi",
@@ -7546,10 +8312,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Shirbuddin street"
       ],
       [
-        "Shoh Axsiy ko'chasi"
+        "Shoh Axsiy ko'chasi",
+        "ул. Шох Ахсий",
+        "Shoh Axsiy St."
       ],
       [
-        "Sirdaryo ko'chasi"
+        "Sirdaryo ko'chasi",
+        "ул. Сирдарё",
+        "Sirdaryo St."
       ],
       [
         "Siyohkoron ko'chasi",
@@ -7561,14 +8331,18 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Sobir Raximov Street"
       ],
       [
-        "Tagban Bofon ko'chasi"
+        "Tagban Bofon ko'chasi",
+        "ул. Тагбан Бофон",
+        "Tagban Bofon St."
       ],
       [
         "Toji Qarayev ko'chasi",
         "Тоджи Караева улица"
       ],
       [
-        "Toskent ko'chasi"
+        "Toskent ko'chasi",
+        "ул. Тоскент",
+        "Toskent St."
       ],
       [
         "Turdi Farog'iy ko'chasi",
@@ -7579,7 +8353,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Турки Жанди улица"
       ],
       [
-        "Turkiy-jandi ko'chasi"
+        "Turkiy-jandi ko'chasi",
+        "ул. Туркий-джанди",
+        "Turkiy-jandi St."
       ],
       [
         "Turon ko'chasi",
@@ -7615,10 +8391,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Khamza street"
       ],
       [
-        "Xazrati Qo'chqor ko'chasi"
+        "Xazrati Qo'chqor ko'chasi",
+        "ул. Хазрати Кучкор",
+        "Xazrati Qo'chqor St."
       ],
       [
-        "Xo'ja Bulg'or ko'chasi"
+        "Xo'ja Bulg'or ko'chasi",
+        "ул. Худжа Булгор",
+        "Xo'ja Bulg'or St."
       ],
       [
         "Xo'ja Gulrez ko'chasi",
@@ -7642,17 +8422,22 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Ходжа Кучкор"
       ],
       [
-        "Xo'ja Tabband"
+        "Xo'ja Tabband",
+        "Худжа Таббанд"
       ],
       [
         "Xo'ja Tabband ko'chasi",
         "Ходжа Таббанд улица"
       ],
       [
-        "Xo'kja-Ro'shnoyi ko'chasi"
+        "Xo'kja-Ro'shnoyi ko'chasi",
+        "ул. Хукджа-Рушнойи",
+        "Xo'kja-Ro'shnoyi St."
       ],
       [
         "Xoki Roh ko'chasi",
+        "ул. Хоки Рох | ул. Хокирох",
+        "Xoki Roh St. | Xokiroh St.",
         "Xokiroh ko'chasi"
       ],
       [
@@ -7665,7 +8450,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Янги йул улица"
       ],
       [
-        "Yangi-hayot ko'chasi"
+        "Yangi-hayot ko'chasi",
+        "ул. Янги-хаёт",
+        "Yangi-hayot St."
       ],
       [
         "Yangiobod ko'chasi",
@@ -7677,7 +8464,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Zayniddin ko'chasi",
-        "M. Saidjon ko'chasi"
+        "ул. М. Саидджон | ул. Зайниддин",
+        "M. Saidjon ko'chasi",
+        "M. Saidjon St. | Zayniddin St."
       ],
       [
         "Zulfiya ko'chasi",
@@ -7695,7 +8484,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "チャルタク"
       ],
       [
-        "Shohjuva"
+        "Shohjuva",
+        "Шохджува"
       ],
       [
         "Uychi",
@@ -7706,10 +8496,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
     ],
     "streets": [
       [
-        "Улица Бирдамлик"
+        "Улица Бирдамлик",
+        "ул. Бирдамлик",
+        "Birdamlik St."
       ],
       [
-        "Урикзар Улица"
+        "Урикзар Улица",
+        "ул. Урикзар",
+        "Urikzar St."
       ],
       [
         "Abu Rayxon Beruniy ko'chasi",
@@ -7721,34 +8515,37 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Алишера Навоий"
       ],
       [
-        "Amir Temur ko`chasi",
-        "Амир Темур кўчаси",
-        "Амир Темур улица",
-        "улица АмираТемура",
-        "Amir Temur ko'chasi"
-      ],
-      [
-        "Birdamlik ko'chasi"
+        "Birdamlik ko'chasi",
+        "ул. Бирдамлик",
+        "Birdamlik St."
       ],
       [
         "Bogʻ koʻchasi",
         "улица Бог"
       ],
       [
-        "Buyuk Turon ko'chasi"
+        "Buyuk Turon ko'chasi",
+        "ул. Буюк Турон",
+        "Buyuk Turon St."
       ],
       [
-        "Eshon ko'chasi"
+        "Eshon ko'chasi",
+        "ул. Ешон",
+        "Eshon St."
       ],
       [
-        "Ibn Sino ko'chasi"
+        "Ibn Sino ko'chasi",
+        "ул. Ибн Сино",
+        "Ibn Sino St."
       ],
       [
         "Ibrat koʻchasi",
         "улица Ибрат"
       ],
       [
-        "Idrok ko'chasi"
+        "Idrok ko'chasi",
+        "ул. Идрок",
+        "Idrok St."
       ],
       [
         "Irismetov ko'chasi",
@@ -7756,20 +8553,28 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Ирисметова"
       ],
       [
-        "Ishonch ko'chasi"
+        "Ishonch ko'chasi",
+        "ул. Ишонч",
+        "Ishonch St."
       ],
       [
-        "Istiqlol ko'chasi"
+        "Istiqlol ko'chasi",
+        "ул. Истиклол",
+        "Istiqlol St."
       ],
       [
         "Mashad koʻchasi",
         "улица Машад"
       ],
       [
-        "Mirishkor ko'chasi"
+        "Mirishkor ko'chasi",
+        "ул. Миришкор",
+        "Mirishkor St."
       ],
       [
-        "Mustaqillik shox ko'chasi"
+        "Mustaqillik shox ko'chasi",
+        "ул. Мустакиллик шох",
+        "Mustaqillik shox St."
       ],
       [
         "Navoiy koʻchasi",
@@ -7777,22 +8582,34 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Navoiy street"
       ],
       [
-        "Nurli ko'chasi"
+        "Nurli ko'chasi",
+        "ул. Нурли",
+        "Nurli St."
       ],
       [
-        "Nuroniylar ko'chasi"
+        "Nuroniylar ko'chasi",
+        "ул. Нуронийлар",
+        "Nuroniylar St."
       ],
       [
-        "Oʻzbekiston koʻchasi"
+        "Oʻzbekiston koʻchasi",
+        "ул. Узбекистон",
+        "O'zbekiston St."
       ],
       [
-        "Posbonlar ko'chasi"
+        "Posbonlar ko'chasi",
+        "ул. Посбонлар",
+        "Posbonlar St."
       ],
       [
-        "Salomatlik ko’chasi"
+        "Salomatlik ko’chasi",
+        "ул. Саломатлик",
+        "Salomatlik St."
       ],
       [
-        "Shifokor ko'chasi"
+        "Shifokor ko'chasi",
+        "ул. Шифокор",
+        "Shifokor St."
       ],
       [
         "Shodlik ko'chasi",
@@ -7800,23 +8617,33 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Шодлик улица"
       ],
       [
-        "Shohjuva koʻchasi"
+        "Shohjuva koʻchasi",
+        "ул. Шохджува",
+        "Shohjuva St."
       ],
       [
-        "Shuxratli ko'chasi"
+        "Shuxratli ko'chasi",
+        "ул. Шухратли",
+        "Shuxratli St."
       ],
       [
         "Sulton Said ko'chasi",
         "Султан Саид улица"
       ],
       [
-        "Tabarruk ko'chasi"
+        "Tabarruk ko'chasi",
+        "ул. Табаррук",
+        "Tabarruk St."
       ],
       [
-        "Ustazoda Kochasi"
+        "Ustazoda Kochasi",
+        "ул. Устазода",
+        "Ustazoda St."
       ],
       [
         "Uychi aylanma avtomobil yoʻli",
+        "дор. Уйчи айланма автомобил",
+        "Uychi aylanma avtomobil Rd.",
         "شاهراه کنارگذر اویچی"
       ],
       [
@@ -7824,30 +8651,42 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Уйчи куча"
       ],
       [
-        "Uzumzor ko'chasi"
+        "Uzumzor ko'chasi",
+        "ул. Узумзор",
+        "Uzumzor St."
       ],
       [
-        "Xonabod koʻchasi"
+        "Xonabod koʻchasi",
+        "ул. Хонабод",
+        "Xonabod St."
       ],
       [
-        "Yangi O‘zbekiston ko'chasi"
+        "Yangi O‘zbekiston ko'chasi",
+        "ул. Янги Узбекистон",
+        "Yangi O'zbekiston St."
       ],
       [
         "Yangilanish koʻchasi",
         "улица Янгиланиш"
       ],
       [
-        "Yogʻdu koʻchasi"
+        "Yogʻdu koʻchasi",
+        "ул. Ёгду",
+        "Yog'du St."
       ],
       [
         "Zafar Diyor koʻchasi",
         "улица Зафар Диёр"
       ],
       [
-        "Zamin  Ko'cha"
+        "Zamin  Ko'cha",
+        "Замин Куча",
+        "Zamin Ko'cha"
       ],
       [
-        "Ziyo maskani ko'chasi"
+        "Ziyo maskani ko'chasi",
+        "ул. Зиё маскани",
+        "Ziyo maskani St."
       ],
       [
         "Ziyoli koʻchasi",
@@ -8220,20 +9059,26 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Alisher Navoiy Avenue"
       ],
       [
-        "Горосполком"
+        "Горосполком",
+        "Gorospolkom"
       ],
       [
-        "Кашгарий"
+        "Кашгарий",
+        "Kashgariy"
       ],
       [
-        "Плац"
+        "Плац",
+        "Plats"
       ],
       [
-        "Старая Газалкентская дорога"
+        "Старая Газалкентская дорога",
+        "дор. Старая Газалкентская",
+        "Staraya Gazalkentskaya Rd."
       ],
       [
         "улица У. Гуламова",
-        "ул. У. Гуламова"
+        "ул. У. Гуламова",
+        "U. Gulamova St."
       ],
       [
         "Чарвакская трасса",
@@ -8241,10 +9086,13 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Чотқол",
-        "Чаткал"
+        "Чаткал",
+        "Чаткал | Чотқол",
+        "Chatkal | Chotqol"
       ],
       [
-        "Шарк"
+        "Шарк",
+        "Shark"
       ],
       [
         "A. Gulyayev ko‘chasi",
@@ -8257,7 +9105,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Chetin Street"
       ],
       [
-        "A.Chetin ko‘chasi"
+        "A.Chetin ko‘chasi",
+        "ул. А.Четин",
+        "A.Chetin St."
       ],
       [
         "A.Nabiyev ko‘chasi",
@@ -8283,7 +9133,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Абдулла Каххар улица"
       ],
       [
-        "Abdulla Qodiriy 5-berk ko‘chasi"
+        "Abdulla Qodiriy 5-berk ko‘chasi",
+        "5-й туп. Абдулла Кодирий",
+        "Abdulla Qodiriy 5th Dead End"
       ],
       [
         "Abdulla Qodiriy ko‘chasi",
@@ -8466,7 +9318,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Бустан улица"
       ],
       [
-        "Boborahim Mashrab ko‘chasi"
+        "Boborahim Mashrab ko‘chasi",
+        "ул. Боборахим Машраб",
+        "Boborahim Mashrab St."
       ],
       [
         "Bog‘ 2-berk ko‘chasi",
@@ -8518,7 +9372,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Булак улица"
       ],
       [
-        "Bunyodkor ko'chasi"
+        "Bunyodkor ko'chasi",
+        "ул. Бунёдкор",
+        "Bunyodkor St."
       ],
       [
         "Bunyodkorlar 1-tor ko‘chasi",
@@ -8587,7 +9443,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Дарьябуйи -2"
       ],
       [
-        "Daryobo‘yi ko‘chasi"
+        "Daryobo‘yi ko‘chasi",
+        "ул. Дарёбуйи",
+        "Daryobo'yi St."
       ],
       [
         "Dehqon ko‘chasi",
@@ -8978,10 +9836,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Навбахор улица"
       ],
       [
-        "Navro‘z 2-berk ko‘chasi"
+        "Navro‘z 2-berk ko‘chasi",
+        "2-й туп. Навруз",
+        "Navro'z 2nd Dead End"
       ],
       [
-        "Navro‘z berk ko‘chasi"
+        "Navro‘z berk ko‘chasi",
+        "туп. Навруз",
+        "Navro'z Dead End"
       ],
       [
         "Navro‘z ko‘chasi",
@@ -9047,7 +9909,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Окружная улица"
       ],
       [
-        "Olimlar ko'chasi"
+        "Olimlar ko'chasi",
+        "ул. Олимлар",
+        "Olimlar St."
       ],
       [
         "Olmazor ko'chasi",
@@ -9116,7 +9980,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Кадрият улица"
       ],
       [
-        "Qaldirg‘och 1-berk ko‘chasi"
+        "Qaldirg‘och 1-berk ko‘chasi",
+        "1-й туп. Калдиргоч",
+        "Qaldirg'och 1st Dead End"
       ],
       [
         "Qaldirg‘och ko‘chasi",
@@ -9303,7 +10169,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Соглом авлод учун улица"
       ],
       [
-        "Sohibkor berk ko‘chasi"
+        "Sohibkor berk ko‘chasi",
+        "туп. Сохибкор",
+        "Sohibkor Dead End"
       ],
       [
         "Sohibkor ko‘chasi",
@@ -9463,7 +10331,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "ул. У. Гуламова"
       ],
       [
-        "Uchariq ko'chasi"
+        "Uchariq ko'chasi",
+        "ул. Учарик",
+        "Uchariq St."
       ],
       [
         "Umid ko‘chasi",
@@ -9497,10 +10367,13 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "V. Xaydarov Street"
       ],
       [
-        "Vatan"
+        "Vatan",
+        "Ватан"
       ],
       [
-        "Vatan 1-berk ko‘chasi"
+        "Vatan 1-berk ko‘chasi",
+        "1-й туп. Ватан",
+        "Vatan 1st Dead End"
       ],
       [
         "Vatan 1-tor ko‘chasi",
@@ -9634,41 +10507,52 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
   "Chust": {
     "localAreas": [
       [
-        "Агасарай"
+        "Агасарай",
+        "Agasaray"
       ],
       [
-        "Арыкбойи"
+        "Арыкбойи",
+        "Arykboyi"
       ],
       [
-        "Дуоба"
+        "Дуоба",
+        "Duoba"
       ],
       [
-        "Иттифок"
+        "Иттифок",
+        "Ittifok"
       ],
       [
-        "Какликурган"
+        "Какликурган",
+        "Kaklikurgan"
       ],
       [
-        "Кызылташ"
+        "Кызылташ",
+        "Kyzyltash"
       ],
       [
-        "Майдамиллат"
+        "Майдамиллат",
+        "Maydamillat"
       ],
       [
-        "Мирзаабад"
+        "Мирзаабад",
+        "Mirzaabad"
       ],
       [
-        "Мирзабад"
+        "Мирзабад",
+        "Mirzabad"
       ],
       [
         "Найман",
         "Nayman"
       ],
       [
-        "Саркамыш"
+        "Саркамыш",
+        "Sarkamysh"
       ],
       [
-        "Уйгурсай"
+        "Уйгурсай",
+        "Uygursay"
       ],
       [
         "Axcha",
@@ -9742,7 +10626,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "パプ"
       ],
       [
-        "Qayirma"
+        "Qayirma",
+        "Кайирма"
       ],
       [
         "Qirqchek",
@@ -9750,7 +10635,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Қирқчек"
       ],
       [
-        "Qiziltepa"
+        "Qiziltepa",
+        "Кизилтепа"
       ],
       [
         "Qolgandaryo",
@@ -9772,10 +10658,12 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Sarsunchul tog tizimi"
       ],
       [
-        "Sho'raqo'rg'on"
+        "Sho'raqo'rg'on",
+        "Шуракургон"
       ],
       [
-        "Shoyon"
+        "Shoyon",
+        "Шоён"
       ],
       [
         "Solma",
@@ -9783,7 +10671,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Salma"
       ],
       [
-        "Tepaqo'rg'on"
+        "Tepaqo'rg'on",
+        "Тепакургон"
       ],
       [
         "To'da",
@@ -9825,58 +10714,87 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Yangi-Khojaabad"
       ],
       [
-        "Yorqishloq"
+        "Yorqishloq",
+        "Ёркишлок"
       ]
     ],
     "streets": [
       [
-        "Алишера Навоий Улица"
+        "Алишера Навоий Улица",
+        "ул. Алишера Навоий",
+        "Alishera Navoiy St."
       ],
       [
-        "Жабарсой"
+        "Жабарсой",
+        "Zhabarsoy"
       ],
       [
-        "Истикбол"
+        "Истикбол",
+        "Istikbol"
       ],
       [
-        "Улица биродарлик"
+        "Улица биродарлик",
+        "ул. биродарлик",
+        "birodarlik St."
       ],
       [
-        "улица Коинот"
+        "улица Коинот",
+        "ул. Коинот",
+        "Koinot St."
       ],
       [
-        "Улица Мехнатобод"
+        "Улица Мехнатобод",
+        "ул. Мехнатобод",
+        "Mekhnatobod St."
       ],
       [
-        "улица Сой Буйи"
+        "улица Сой Буйи",
+        "ул. Сой Буйи",
+        "Soy Buyi St."
       ],
       [
-        "улица Суфизода"
+        "улица Суфизода",
+        "ул. Суфизода",
+        "Sufizoda St."
       ],
       [
-        "Amir Temur ko'chasi"
+        "Amir Temur ko'chasi",
+        "ул. Амир Темур",
+        "Amir Temur St."
       ],
       [
-        "Axsi ko'chasi"
+        "Axsi ko'chasi",
+        "ул. Ахси",
+        "Axsi St."
       ],
       [
-        "Beruniy ko'chasi"
+        "Beruniy ko'chasi",
+        "ул. Беруни",
+        "Beruniy St."
       ],
       [
-        "Bobur Ko’cha"
+        "Bobur Ko’cha",
+        "Бобур Куча",
+        "Bobur Ko'cha"
       ],
       [
-        "Bogʼ ko'chasi"
+        "Bogʼ ko'chasi",
+        "ул. Бог'",
+        "Bog' St."
       ],
       [
         "Charog‘on ko‘chasi",
         "Чароган улица"
       ],
       [
-        "Doʻstlik ko'chasi"
+        "Doʻstlik ko'chasi",
+        "ул. Дустлик",
+        "Do'stlik St."
       ],
       [
-        "Eshonchek ko'chasi"
+        "Eshonchek ko'chasi",
+        "ул. Ешончек",
+        "Eshonchek St."
       ],
       [
         "Farg‘ona halqa yo‘li",
@@ -9888,7 +10806,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "فرغانه حلقه شاهیۉلی"
       ],
       [
-        "Gulzor ko'chasi"
+        "Gulzor ko'chasi",
+        "ул. Гулзор",
+        "Gulzor St."
       ],
       [
         "Hamkorlik Ko’chasi",
@@ -9904,17 +10824,23 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Ипак Йули"
       ],
       [
-        "Istiqlol ko'chasi"
+        "Istiqlol ko'chasi",
+        "ул. Истиклол",
+        "Istiqlol St."
       ],
       [
-        "Koʻlhovuz ko'chasi"
+        "Koʻlhovuz ko'chasi",
+        "ул. Кулховуз",
+        "Ko'lhovuz St."
       ],
       [
         "Koinot ko'chasi",
         "Коинот улица"
       ],
       [
-        "Madaniyat ko'chasi"
+        "Madaniyat ko'chasi",
+        "ул. Маданият",
+        "Madaniyat St."
       ],
       [
         "Mashhur ko’chasi",
@@ -9926,48 +10852,69 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Mustaqillik ko'chasi",
-        "Mustaqillik Ko’chasi"
+        "ул. Мустакиллик",
+        "Mustaqillik Ko’chasi",
+        "Mustaqillik St."
       ],
       [
-        "Namuna"
+        "Namuna",
+        "Намуна"
       ],
       [
-        "Navro’z Ko’cha"
+        "Navro’z Ko’cha",
+        "Навруз Куча",
+        "Navro'z Ko'cha"
       ],
       [
-        "Nurafshon ko'chasi"
+        "Nurafshon ko'chasi",
+        "ул. Нурафшон",
+        "Nurafshon St."
       ],
       [
-        "Oʻzbekiston ko'chasi"
+        "Oʻzbekiston ko'chasi",
+        "ул. Узбекистон",
+        "O'zbekiston St."
       ],
       [
-        "Olmazor"
+        "Olmazor",
+        "Олмазор"
       ],
       [
         "Olmazor ko'chasi",
         "Алмазар улица"
       ],
       [
-        "Olmos ko'chasi"
+        "Olmos ko'chasi",
+        "ул. Олмос",
+        "Olmos St."
       ],
       [
-        "Oxunboboyev ko'chasi"
+        "Oxunboboyev ko'chasi",
+        "ул. Охунбобоев",
+        "Oxunboboyev St."
       ],
       [
-        "Paxtakor ko'chasi"
+        "Paxtakor ko'chasi",
+        "ул. Пахтакор",
+        "Paxtakor St."
       ],
       [
-        "Qo'rg'ontepa ko'chasi"
+        "Qo'rg'ontepa ko'chasi",
+        "ул. Кургонтепа",
+        "Qo'rg'ontepa St."
       ],
       [
-        "Qolgandaryo koʻchasi"
+        "Qolgandaryo koʻchasi",
+        "ул. Колгандарё",
+        "Qolgandaryo St."
       ],
       [
         "S.Rahimov ko'chasi",
         "улица Сабира Рахимова"
       ],
       [
-        "Samimiyat"
+        "Samimiyat",
+        "Самимият"
       ],
       [
         "Samimiyat ko'chasi",
@@ -9983,80 +10930,108 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Туркестан улица"
       ],
       [
-        "Xamid Olimjon ko'chasi"
+        "Xamid Olimjon ko'chasi",
+        "ул. Хамид Олимджон",
+        "Xamid Olimjon St."
       ],
       [
-        "Yakkatol ko'chasi"
+        "Yakkatol ko'chasi",
+        "ул. Яккатол",
+        "Yakkatol St."
       ],
       [
-        "Yuqori kanal ko'chasi"
+        "Yuqori kanal ko'chasi",
+        "ул. Юкори канал",
+        "Yuqori kanal St."
       ],
       [
-        "Zarafshon ko'chasi"
+        "Zarafshon ko'chasi",
+        "ул. Зарафшон",
+        "Zarafshon St."
       ]
     ]
   },
   "Denov": {
     "localAreas": [
       [
-        "Ак-Су"
+        "Ак-Су",
+        "Ak-Su"
       ],
       [
-        "Аксу"
+        "Аксу",
+        "Aksu"
       ],
       [
-        "Аткамар"
+        "Аткамар",
+        "Atkamar"
       ],
       [
-        "Бадава"
+        "Бадава",
+        "Badava"
       ],
       [
-        "Байкишлак"
+        "Байкишлак",
+        "Baykishlak"
       ],
       [
-        "Итака"
+        "Итака",
+        "Itaka"
       ],
       [
-        "Карагез"
+        "Карагез",
+        "Karagez"
       ],
       [
-        "Каранккуль"
+        "Каранккуль",
+        "Karankkul"
       ],
       [
-        "Карасан"
+        "Карасан",
+        "Karasan"
       ],
       [
-        "Карашулюк"
+        "Карашулюк",
+        "Karashulyuk"
       ],
       [
-        "Катта Дагана"
+        "Катта Дагана",
+        "Katta Dagana"
       ],
       [
-        "Кияу-Су"
+        "Кияу-Су",
+        "Kiyau-Su"
       ],
       [
-        "Кокайты"
+        "Кокайты",
+        "Kokayty"
       ],
       [
-        "Кошчека"
+        "Кошчека",
+        "Koshcheka"
       ],
       [
-        "Кульмазар"
+        "Кульмазар",
+        "Kulmazar"
       ],
       [
-        "Кульфиста"
+        "Кульфиста",
+        "Kulfista"
       ],
       [
-        "Люкка"
+        "Люкка",
+        "Lyukka"
       ],
       [
-        "Маданият"
+        "Маданият",
+        "Madaniyat"
       ],
       [
-        "Минара"
+        "Минара",
+        "Minara"
       ],
       [
-        "Нурабад"
+        "Нурабад",
+        "Nurabad"
       ],
       [
         "Овраг Аргамчи",
@@ -10075,49 +11050,64 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Ovrag Yail'ma"
       ],
       [
-        "Околтын"
+        "Околтын",
+        "Okoltyn"
       ],
       [
-        "Панома"
+        "Панома",
+        "Panoma"
       ],
       [
-        "Поджур"
+        "Поджур",
+        "Podzhur"
       ],
       [
-        "Сино"
+        "Сино",
+        "Sino"
       ],
       [
-        "Совжарок"
+        "Совжарок",
+        "Sovzharok"
       ],
       [
-        "Такбай"
+        "Такбай",
+        "Takbay"
       ],
       [
-        "Такчиян"
+        "Такчиян",
+        "Takchiyan"
       ],
       [
-        "Тартули"
+        "Тартули",
+        "Tartuli"
       ],
       [
-        "Ушар"
+        "Ушар",
+        "Ushar"
       ],
       [
-        "Фазылкушты"
+        "Фазылкушты",
+        "Fazylkushty"
       ],
       [
-        "Хаузкак"
+        "Хаузкак",
+        "Khauzkak"
       ],
       [
-        "Хояк"
+        "Хояк",
+        "Khoyak"
       ],
       [
-        "Чакар"
+        "Чакар",
+        "Chakar"
       ],
       [
-        "Чульдара"
+        "Чульдара",
+        "Chuldara"
       ],
       [
-        "Янгикуч"
+        "Янгикуч",
+        "Yangikuch"
       ],
       [
         "Bahortojik qishlog‘i",
@@ -10177,14 +11167,17 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "GULOBOD MAHALLASI",
-        "Gulobod mahalla fuqarolar yig'ini"
+        "Гулобод мах. фукаролар йигини | мах. ГУЛОБОД",
+        "Gulobod mahalla fuqarolar yig'ini",
+        "Gulobod Mahalla fuqarolar yig'ini | GULOBOD Mahalla"
       ],
       [
         "Hazarbog",
         "Хазарбаг"
       ],
       [
-        "Ishon"
+        "Ishon",
+        "Ишон"
       ],
       [
         "Jobu",
@@ -10301,7 +11294,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Шакишлак"
       ],
       [
-        "Soʻfiyon"
+        "Soʻfiyon",
+        "Суфиён",
+        "So'fiyon"
       ],
       [
         "Tirgaron",
@@ -10387,28 +11382,38 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
     ],
     "streets": [
       [
-        "Ат-Термизий"
+        "Ат-Термизий",
+        "At-Termiziy"
       ],
       [
-        "Гулистан"
+        "Гулистан",
+        "Gulistan"
       ],
       [
         "Даштобод Kучаси"
       ],
       [
-        "Рохи Хупар"
+        "Рохи Хупар",
+        "Rokhi Khupar"
       ],
       [
-        "улица Алишера Навои"
+        "улица Алишера Навои",
+        "ул. Алишера Навои",
+        "Alishera Navoi St."
       ],
       [
-        "улица Якка тут"
+        "улица Якка тут",
+        "ул. Якка тут",
+        "Yakka tut St."
       ],
       [
-        "Холматова"
+        "Холматова",
+        "Kholmatova"
       ],
       [
-        "A.Yassaviy ko'chasi"
+        "A.Yassaviy ko'chasi",
+        "ул. А.Яссавий",
+        "A.Yassaviy St."
       ],
       [
         "Abdurahmon Jomiy ko‘chasi",
@@ -10424,35 +11429,53 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Abdurrahman Jami street"
       ],
       [
-        "Al Buxoriy ko'chasi"
+        "Al Buxoriy ko'chasi",
+        "ул. Ал Бухорий",
+        "Al Buxoriy St."
       ],
       [
-        "Anhor ko'chasi"
+        "Anhor ko'chasi",
+        "ул. Анхор",
+        "Anhor St."
       ],
       [
-        "At-Termeziy ko'chasi"
+        "At-Termeziy ko'chasi",
+        "ул. Ат-Термезий",
+        "At-Termeziy St."
       ],
       [
-        "Batosh Koʻchasi"
+        "Batosh Koʻchasi",
+        "ул. Батош",
+        "Batosh St."
       ],
       [
-        "Baxtli el 2-ko'chasi"
+        "Baxtli el 2-ko'chasi",
+        "2-я ул. Бахтли ел",
+        "Baxtli el 2nd St."
       ],
       [
-        "Baxtli el ko'chasi"
+        "Baxtli el ko'chasi",
+        "ул. Бахтли ел",
+        "Baxtli el St."
       ],
       [
-        "Beruniy ko'chasi"
+        "Beruniy ko'chasi",
+        "ул. Беруни",
+        "Beruniy St."
       ],
       [
         "Bibixonim ko'chasi",
         "улица Бибиханум"
       ],
       [
-        "Bo’ston ko’chasi"
+        "Bo’ston ko’chasi",
+        "ул. Бустон",
+        "Bo'ston St."
       ],
       [
-        "Bog’ Ko’chasi"
+        "Bog’ Ko’chasi",
+        "ул. Бог'",
+        "Bog' St."
       ],
       [
         "Denov - Dushanbe avtomobil yoʻli",
@@ -10477,19 +11500,29 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Фаррухий"
       ],
       [
-        "Furqat ko'chasi"
+        "Furqat ko'chasi",
+        "ул. Фуркат",
+        "Furqat St."
       ],
       [
-        "G'ofur G'ulom ko'chasi"
+        "G'ofur G'ulom ko'chasi",
+        "ул. Гофур Гулом",
+        "G'ofur G'ulom St."
       ],
       [
-        "Guliston ko'chasi"
+        "Guliston ko'chasi",
+        "ул. Гулистон",
+        "Guliston St."
       ],
       [
-        "Guliston ko'chasi Bobur mahallasi"
+        "Guliston ko'chasi Bobur mahallasi",
+        "ул. Гулистон, мах. Бобур",
+        "Guliston St., Bobur Mahalla"
       ],
       [
-        "Gulobod Ko’chasi"
+        "Gulobod Ko’chasi",
+        "ул. Гулобод",
+        "Gulobod St."
       ],
       [
         "Hufarga yo'l",
@@ -10498,7 +11531,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "рохи Хупар 2"
       ],
       [
-        "Ibn Sino ko'chasi"
+        "Ibn Sino ko'chasi",
+        "ул. Ибн Сино",
+        "Ibn Sino St."
       ],
       [
         "Istiqlol ko'chasi",
@@ -10521,10 +11556,13 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "شاهراه جرقرغان- ده‌نو"
       ],
       [
-        "Kelajagi buyuk ko'chasi"
+        "Kelajagi buyuk ko'chasi",
+        "ул. Келаджаги буюк",
+        "Kelajagi buyuk St."
       ],
       [
-        "Ko'prugi usto Toshmurod"
+        "Ko'prugi usto Toshmurod",
+        "Купруги усто Тошмурод"
       ],
       [
         "M. Baraka ko'chasi",
@@ -10583,17 +11621,23 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Obizarang street"
       ],
       [
-        "Ogahiy ko'chasi"
+        "Ogahiy ko'chasi",
+        "ул. Огахий",
+        "Ogahiy St."
       ],
       [
         "Oltin Vodiy",
         "Олтин Водий"
       ],
       [
-        "Ostonaqulov ko'chasi"
+        "Ostonaqulov ko'chasi",
+        "ул. Остонакулов",
+        "Ostonaqulov St."
       ],
       [
-        "Oxunboboyev ko'chasi"
+        "Oxunboboyev ko'chasi",
+        "ул. Охунбобоев",
+        "Oxunboboyev St."
       ],
       [
         "Paxtakor ko‘chasi",
@@ -10604,10 +11648,13 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Paxtakor street"
       ],
       [
-        "Rohi Soytagob"
+        "Rohi Soytagob",
+        "Рохи Сойтагоб"
       ],
       [
-        "S.Qilichev ko'chasi"
+        "S.Qilichev ko'chasi",
+        "ул. С.Киличев",
+        "S.Qilichev St."
       ],
       [
         "Sayilgoh ko'chasi",
@@ -10618,7 +11665,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Шараф Рашидова"
       ],
       [
-        "Tadbirkorlar ko'chasi"
+        "Tadbirkorlar ko'chasi",
+        "ул. Тадбиркорлар",
+        "Tadbirkorlar St."
       ],
       [
         "Termiz - O'sh avtotrassasi",
@@ -10642,7 +11691,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Turkistan street"
       ],
       [
-        "Uzbekistan street"
+        "Uzbekistan street",
+        "ул. Узбекистан",
+        "Uzbekistan St."
       ],
       [
         "Xamid Olimjon ko'chasi",
@@ -10674,7 +11725,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
   "Fergana": {
     "localAreas": [
       [
-        "Фрунзенский массив"
+        "Фрунзенский массив",
+        "ж/м Фрунзенский",
+        "Frunzenskiy Res. Area"
       ],
       [
         "Fargona Eko Shahar",
@@ -10683,6 +11736,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Mexanik shaharcha kvartali",
+        "кв-л Механик шахарча | ж/м Ойбек",
+        "Mexanik shaharcha Quarter | Oybek Res. Area",
         "Oybek massivi"
       ],
       [
@@ -10694,7 +11749,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "квартал Садвинсовхоз"
       ],
       [
-        "Tarona kochasi"
+        "Tarona kochasi",
+        "ул. Тарона",
+        "Tarona St."
       ]
     ],
     "streets": [
@@ -10703,13 +11760,18 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица 8 Марта"
       ],
       [
-        "Огохий"
+        "Огохий",
+        "Ogokhiy"
       ],
       [
-        "Ул. Кори Нийозий"
+        "Ул. Кори Нийозий",
+        "ул. Кори Нийозий",
+        "Kori Niyoziy St."
       ],
       [
-        "Ул. Махмуд Кашкарий"
+        "Ул. Махмуд Кашкарий",
+        "ул. Махмуд Кашкарий",
+        "Makhmud Kashkariy St."
       ],
       [
         "A. Muxtor koʻchasi",
@@ -10717,7 +11779,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "A.Muxtor koʻchasi"
       ],
       [
-        "Abdulla Qahhor koʻchasi"
+        "Abdulla Qahhor koʻchasi",
+        "ул. Абдулла Каххор",
+        "Abdulla Qahhor St."
       ],
       [
         "Abdulla Qodiriy koʻchasi",
@@ -10798,11 +11862,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Bahor ko'chasi",
-        "улица Бахор"
-      ],
-      [
-        "Bahor koʻchasi",
-        "улица Бахор"
+        "улица Бахор",
+        "Bahor koʻchasi"
       ],
       [
         "Barhayot koʻchasi",
@@ -10891,11 +11952,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Burhoniddin Marg'iloniy ko'chasi",
-        "улица Бурхониддин Маргилоний"
-      ],
-      [
-        "Burhoniddin Margʻiloniy koʻchasi",
-        "улица Бурхониддин Маргилоний"
+        "улица Бурхониддин Маргилоний",
+        "Burhoniddin Margʻiloniy koʻchasi"
       ],
       [
         "Chaman koʻchasi",
@@ -10930,7 +11988,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Дильшода Асанова"
       ],
       [
-        "Dodxox ko'chasi"
+        "Dodxox ko'chasi",
+        "ул. Додхох",
+        "Dodxox St."
       ],
       [
         "Doʻrmon koʻchasi",
@@ -10985,12 +12045,10 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "فرغانه شهری ایلنمه شاهیۉلی"
       ],
       [
-        "Farobiy ko'chasi",
-        "улица Фаробий"
-      ],
-      [
         "Farobiy koʻchasi",
         "улица Фараби",
+        "улица Фаробий",
+        "Farobiy ko'chasi",
         "Farobiy Street",
         "Khodjenskaya"
       ],
@@ -11067,7 +12125,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Гулшан"
       ],
       [
-        "Gulxaniy koʻchasi"
+        "Gulxaniy koʻchasi",
+        "ул. Гулханий",
+        "Gulxaniy St."
       ],
       [
         "Gulzor koʻchasi",
@@ -11123,7 +12183,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Иктидор"
       ],
       [
-        "Iste'dod ko'chasi"
+        "Iste'dod ko'chasi",
+        "ул. Истедод",
+        "Iste'dod St."
       ],
       [
         "Istiqbol koʻchasi",
@@ -11147,11 +12209,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Jaloliddin Manguberdi ko'chasi",
-        "улица Джалолиддина Мангуберди"
-      ],
-      [
-        "Jaloliddin Manguberdi koʻchasi",
-        "улица Жалолиддин Мангуберди"
+        "улица Джалолиддина Мангуберди",
+        "улица Жалолиддин Мангуберди",
+        "Jaloliddin Manguberdi koʻchasi"
       ],
       [
         "Jaloliddin Rumiy koʻchasi",
@@ -11195,12 +12255,10 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Куркам"
       ],
       [
-        "Koinot ko'chasi",
-        "Коинот улица"
-      ],
-      [
         "Koinot koʻchasi",
-        "улица Коинот"
+        "Коинот улица",
+        "улица Коинот",
+        "Koinot ko'chasi"
       ],
       [
         "Kumariq koʻchasi",
@@ -11231,10 +12289,6 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица М. Узокова"
       ],
       [
-        "Ma'rifat ko'chasi",
-        "Маърифат улица"
-      ],
-      [
         "Madaniyat koʻchasi",
         "улица Маданият"
       ],
@@ -11245,7 +12299,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Maʻrifat koʻchasi",
-        "Маърифат улица"
+        "Маърифат улица",
+        "Ma'rifat ko'chasi"
       ],
       [
         "Malham koʻchasi",
@@ -11351,11 +12406,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       [
         "Muruvvat ko'chasi",
         "Мурувват улица",
-        "Muruvvat Street"
-      ],
-      [
+        "улица Мурувват",
         "Muruvvat koʻchasi",
-        "улица Мурувват"
+        "Muruvvat Street"
       ],
       [
         "Musaffo koʻchasi",
@@ -11366,11 +12419,11 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Муштарак"
       ],
       [
-        "Mustaqillik shoh ko'chasi"
-      ],
-      [
         "Mustaqillik shoh koʻchasi",
-        "проспект Мустакиллик"
+        "проспект Мустакиллик",
+        "ул. Мустакиллик шох",
+        "Mustaqillik shoh ko'chasi",
+        "Mustaqillik shoh St."
       ],
       [
         "Muxtor Ashrafiy koʻchasi",
@@ -11401,11 +12454,11 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Нодирабегим"
       ],
       [
-        "Nurafshon ko'chasi"
-      ],
-      [
+        "Nurafshon ko'chasi",
+        "ул. Нурафшон",
+        "улица Нурафшон",
         "Nurafshon koʻchasi",
-        "улица Нурафшон"
+        "Nurafshon St."
       ],
       [
         "Nurli koʻchasi",
@@ -11526,7 +12579,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Айбек улица"
       ],
       [
-        "Ozodlik koʻchasi"
+        "Ozodlik koʻchasi",
+        "ул. Озодлик",
+        "Ozodlik St."
       ],
       [
         "Pahlavon Mahmud koʻchasi",
@@ -11563,22 +12618,17 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Кашкар Кишлок"
       ],
       [
-        "Qo'rg'ontagi ko'chasi",
+        "Qoʻrgʻontagi koʻchasi",
         "улица Кургантаги",
+        "улица Кургонтаги",
+        "Qo'rg'ontagi ko'chasi",
         "Qorgontagi street"
       ],
       [
-        "Qoʻrgʻontagi koʻchasi",
-        "улица Кургонтаги"
-      ],
-      [
-        "Qutlug' ko'chasi",
-        "улица Кутлуг",
-        "Qutlug' ko‘chasi"
-      ],
-      [
         "Qutlugʻ koʻchasi",
-        "улица Кутлуг"
+        "улица Кутлуг",
+        "Qutlug' ko'chasi",
+        "Qutlug' ko‘chasi"
       ],
       [
         "Quva koʻchasi",
@@ -11706,11 +12756,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Sohibqiron Temur ko'chasi",
-        "улица Сохибкирона Темура"
-      ],
-      [
-        "Sohibqiron Temur koʻchasi",
+        "улица Сохибкирона Темура",
         "улица Сохибкирона Тимура",
+        "Sohibqiron Temur koʻchasi",
         "Sohibqiron Temur street"
       ],
       [
@@ -11718,7 +12766,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "проезд Сохибкирона Темура"
       ],
       [
-        "Sohibquron kochasi"
+        "Sohibquron kochasi",
+        "ул. Сохибкурон",
+        "Sohibquron St."
       ],
       [
         "Sovur Buloq koʻchasi",
@@ -11842,11 +12892,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Universitet ko'chasi",
-        "Университетская улица"
-      ],
-      [
-        "Universitet koʻchasi",
-        "Университетская улица"
+        "Университетская улица",
+        "Universitet koʻchasi"
       ],
       [
         "Usmon Nosir ko'chasi",
@@ -11913,20 +12960,13 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Янги Бог"
       ],
       [
-        "Yangi Hayot ko'chasi",
-        "улица Янги Хаёт"
-      ],
-      [
         "Yangi soy 1-koʻchasi",
         "1-я улица Янги Сой"
       ],
       [
-        "Yangi Turon ko'chasi",
-        "улица Янги Турон"
-      ],
-      [
         "Yangi Turon koʻchasi",
-        "улица Янги Турон"
+        "улица Янги Турон",
+        "Yangi Turon ko'chasi"
       ],
       [
         "Yangi Yer koʻchasi",
@@ -11949,12 +12989,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Ёнгокзор"
       ],
       [
-        "Yorug'lik koʻchasi",
-        "улица Ёруглик"
-      ],
-      [
         "Yorugʻlik koʻchasi",
-        "улица Ёруглик"
+        "улица Ёруглик",
+        "Yorug'lik koʻchasi"
       ],
       [
         "Yosh Avlod koʻchasi",
@@ -12045,7 +13082,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
   "Gazalkent": {
     "localAreas": [
       [
-        "Парчаюз"
+        "Парчаюз",
+        "Parchayuz"
       ],
       [
         "Barraj",
@@ -12128,28 +13166,39 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "\"Чимган\""
       ],
       [
-        "Бобура"
+        "Бобура",
+        "Bobura"
       ],
       [
         "Горбатый мост",
         "Gorbaty Bridge"
       ],
       [
-        "Улица Беруни"
+        "Улица Беруни",
+        "ул. Беруни",
+        "Beruni St."
       ],
       [
         "Улица Бирлик",
-        "Вавилова улица"
+        "Вавилова улица",
+        "ул. Вавилова | ул. Бирлик",
+        "Vavilova St. | Birlik St."
       ],
       [
-        "Улица Гунча"
+        "Улица Гунча",
+        "ул. Гунча",
+        "Guncha St."
       ],
       [
-        "улица Нурчилар"
+        "улица Нурчилар",
+        "ул. Нурчилар",
+        "Nurchilar St."
       ],
       [
         "Улица Рудаки",
-        "улица Толстого"
+        "ул. Рудаки | ул. Толстого",
+        "улица Толстого",
+        "Rudaki St. | Tolstogo St."
       ],
       [
         "Чирчикская улица",
@@ -12161,7 +13210,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Chulpan street"
       ],
       [
-        "Anor ko'cha"
+        "Anor ko'cha",
+        "Анор куча"
       ],
       [
         "Bo'stonliq ko'chasi",
@@ -12181,7 +13231,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Э. Асанова улица"
       ],
       [
-        "G'ofur G'ulom ko'chasi"
+        "G'ofur G'ulom ko'chasi",
+        "ул. Гофур Гулом",
+        "G'ofur G'ulom St."
       ],
       [
         "Gazalkent (Lenin) street",
@@ -12363,7 +13415,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица 3 мавзе"
       ],
       [
-        "4R-653"
+        "4R-653",
+        "4Р-653"
       ],
       [
         "Гуллола кучаси",
@@ -12381,14 +13434,20 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "R28"
       ],
       [
-        "улица Г.Абдурахманова"
+        "улица Г.Абдурахманова",
+        "ул. Г.Абдурахманова",
+        "G.Abdurakhmanova St."
       ],
       [
         "улица Фархадская",
-        "Фарход кучаси"
+        "ул. Фархадская | ул. Фарход",
+        "Фарход кучаси",
+        "Farkhadskaya St. | Farkhod St."
       ],
       [
-        "улица Янги Бозор"
+        "улица Янги Бозор",
+        "ул. Янги Бозор",
+        "Yangi Bozor St."
       ],
       [
         "Фксрфящк ko'chasi",
@@ -12456,10 +13515,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "тупик Али Кушчи"
       ],
       [
-        "Alisher Navoiy ko'chasi"
+        "Alisher Navoiy ko'chasi",
+        "ул. Алишер Навои",
+        "Alisher Navoiy St."
       ],
       [
-        "Alisher Navoiy shox ko'chasi"
+        "Alisher Navoiy shox ko'chasi",
+        "ул. Алишер Навои шох",
+        "Alisher Navoiy shox St."
       ],
       [
         "Alpomish ko'chasi",
@@ -14315,24 +15378,28 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Zargar"
       ],
       [
-        "Ильгар"
+        "Ильгар",
+        "Ilgar"
       ],
       [
-        "Камар"
+        "Камар",
+        "Kamar"
       ],
       [
         "Каракуйли",
         "Karakuyli"
       ],
       [
-        "Карасай"
+        "Карасай",
+        "Karasay"
       ],
       [
         "Кашкабулак",
         "Kashkabulak"
       ],
       [
-        "Кудукча"
+        "Кудукча",
+        "Kudukcha"
       ],
       [
         "Кушсарай",
@@ -14344,10 +15411,13 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Мехнатабад",
-        "Муллабулак"
+        "Мехнатабад | Муллабулак",
+        "Муллабулак",
+        "Mekhnatabad | Mullabulak"
       ],
       [
-        "Мингчинар"
+        "Мингчинар",
+        "Mingchinar"
       ],
       [
         "Наслдар",
@@ -14359,31 +15429,41 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Паймарота",
-        "Паймарата"
+        "Паймарата",
+        "Паймарата | Паймарота",
+        "Paymarata | Paymarota"
       ],
       [
-        "Паймартата"
+        "Паймартата",
+        "Paymartata"
       ],
       [
-        "Пахмар"
+        "Пахмар",
+        "Pakhmar"
       ],
       [
-        "Разъезд №13"
+        "Разъезд №13",
+        "Razezd №13"
       ],
       [
-        "Санзарский лесхоз"
+        "Санзарский лесхоз",
+        "Sanzarskiy leskhoz"
       ],
       [
-        "Стан"
+        "Стан",
+        "Stan"
       ],
       [
-        "Тазаррук"
+        "Тазаррук",
+        "Tazarruk"
       ],
       [
-        "Тепа"
+        "Тепа",
+        "Tepa"
       ],
       [
-        "Уаб"
+        "Уаб",
+        "Uab"
       ],
       [
         "Учкыз",
@@ -14395,13 +15475,16 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Hamid"
       ],
       [
-        "Хатаб"
+        "Хатаб",
+        "Khatab"
       ],
       [
-        "Шеркангли"
+        "Шеркангли",
+        "Sherkangli"
       ],
       [
-        "Amir Temur"
+        "Amir Temur",
+        "Амир Темур"
       ],
       [
         "Avliyo",
@@ -14429,7 +15512,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Bustan"
       ],
       [
-        "Bunyodkor mahallasi"
+        "Bunyodkor mahallasi",
+        "мах. Бунёдкор",
+        "Bunyodkor Mahalla"
       ],
       [
         "C2 B Sayiljoyi maxallasi",
@@ -14460,7 +15545,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Дустлик махалля"
       ],
       [
-        "Egizbuloq"
+        "Egizbuloq",
+        "Егизбулок"
       ],
       [
         "G'allaorol",
@@ -14519,7 +15605,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Kipchak mahalla"
       ],
       [
-        "Kulankuli"
+        "Kulankuli",
+        "Куланкули"
       ],
       [
         "Madaniyat",
@@ -14531,7 +15618,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Madaniyat mahalla"
       ],
       [
-        "Malaka oshirish yotoqxonasi"
+        "Malaka oshirish yotoqxonasi",
+        "Малака ошириш ётокхонаси"
       ],
       [
         "Mikrarayon 3/1 ( Ittifoq mahallasi)",
@@ -14564,10 +15652,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Найман"
       ],
       [
-        "Nurliobod mahallasi"
+        "Nurliobod mahallasi",
+        "мах. Нурлиобод",
+        "Nurliobod Mahalla"
       ],
       [
-        "O'ratepalik mahallasi"
+        "O'ratepalik mahallasi",
+        "мах. Уратепалик",
+        "O'ratepalik Mahalla"
       ],
       [
         "Obod Maxallasi",
@@ -14579,23 +15671,32 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Almachi"
       ],
       [
-        "Olmazor mahallasi"
+        "Olmazor mahallasi",
+        "мах. Олмазор",
+        "Olmazor Mahalla"
       ],
       [
-        "Olmazor turar-joy majmuasi"
+        "Olmazor turar-joy majmuasi",
+        "Олмазор турар-джой комплекс",
+        "Olmazor turar-joy Complex"
       ],
       [
         "Oqbuloq",
         "Акбулак"
       ],
       [
-        "Oqqo'rg'onlik mahallasi"
+        "Oqqo'rg'onlik mahallasi",
+        "мах. Оккургонлик",
+        "Oqqo'rg'onlik Mahalla"
       ],
       [
-        "Otchopar massivi"
+        "Otchopar massivi",
+        "ж/м Отчопар",
+        "Otchopar Res. Area"
       ],
       [
-        "Paxtachi"
+        "Paxtachi",
+        "Пахтачи"
       ],
       [
         "Paxtakor",
@@ -14629,7 +15730,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Кассоблик махалля"
       ],
       [
-        "Qizil uylar"
+        "Qizil uylar",
+        "Кизил уйлар"
       ],
       [
         "Qiziltut",
@@ -14642,10 +15744,13 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Karangul"
       ],
       [
-        "Ravalliq mahallasi"
+        "Ravalliq mahallasi",
+        "мах. Раваллик",
+        "Ravalliq Mahalla"
       ],
       [
-        "S2"
+        "S2",
+        "С2"
       ],
       [
         "Sarbozor MFY",
@@ -14657,7 +15762,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Сайфин"
       ],
       [
-        "Sayiljoyi mahallasi"
+        "Sayiljoyi mahallasi",
+        "мах. Сайилджойи",
+        "Sayiljoyi Mahalla"
       ],
       [
         "Sharq Yulduzi",
@@ -14712,7 +15819,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Uzunbulak"
       ],
       [
-        "Viloyat Hokimiyati Mehmonxona Majmuasi"
+        "Viloyat Hokimiyati Mehmonxona Majmuasi",
+        "Вилоят Хокимияти Мехмонхона комплекс",
+        "Viloyat Hokimiyati Mehmonxona Complex"
       ],
       [
         "Xalqabod mahallasi",
@@ -14754,7 +15863,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
     ],
     "streets": [
       [
-        "1-Marjonli ko'chasi"
+        "1-Marjonli ko'chasi",
+        "1-Marjonli St.",
+        "ул. 1-Марджонли"
       ],
       [
         "8-mart ko'chasi",
@@ -14768,25 +15879,36 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Бегариқ улица",
-        "Дустлик улица"
+        "Дустлик улица",
+        "ул. Бегариқ | ул. Дустлик",
+        "Begariq St. | Dustlik St."
       ],
       [
-        "Большой Узбекский тракт улица"
+        "Большой Узбекский тракт улица",
+        "тр. Большой Узбекский",
+        "Bolshoy Uzbekskiy Hwy."
       ],
       [
-        "Джизак-Гагарин"
+        "Джизак-Гагарин",
+        "Dzhizak-Gagarin"
       ],
       [
-        "Джизак-Пахтакор"
+        "Джизак-Пахтакор",
+        "Dzhizak-Pakhtakor"
       ],
       [
-        "Пахтакор-Гагарин"
+        "Пахтакор-Гагарин",
+        "Pakhtakor-Gagarin"
       ],
       [
-        "Разбитая дорога"
+        "Разбитая дорога",
+        "дор. Разбитая",
+        "Razbitaya Rd."
       ],
       [
-        "Сарчашма улица"
+        "Сарчашма улица",
+        "ул. Сарчашма",
+        "Sarchashma St."
       ],
       [
         "Сhinozlik ko'chasi",
@@ -14797,13 +15919,19 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Тинчлик Ko’chasi"
       ],
       [
-        "улица А.Икромова"
+        "улица А.Икромова",
+        "ул. А.Икромова",
+        "A.Ikromova St."
       ],
       [
-        "Фаробий улица"
+        "Фаробий улица",
+        "ул. Фаробий",
+        "Farobiy St."
       ],
       [
-        "Шаббода улица"
+        "Шаббода улица",
+        "ул. Шаббода",
+        "Shabboda St."
       ],
       [
         "A. Azizov ko'chasi",
@@ -14913,7 +16041,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Afrosiyob street"
       ],
       [
-        "Afrosiyob yo'li"
+        "Afrosiyob yo'li",
+        "дор. Афросиаб",
+        "Afrosiyob Rd."
       ],
       [
         "Ahmad Yassaviy ko'chasi",
@@ -14921,7 +16051,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Yassaviy street"
       ],
       [
-        "Ahmad Yugnakiy Street"
+        "Ahmad Yugnakiy Street",
+        "ул. Ахмад Югнакий",
+        "Ahmad Yugnakiy St."
       ],
       [
         "Akmal Ikromov ko'chasi",
@@ -14936,7 +16068,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Al Buxoriy street"
       ],
       [
-        "Aliqulov ko'chasi"
+        "Aliqulov ko'chasi",
+        "ул. Аликулов",
+        "Aliqulov St."
       ],
       [
         "Alisher Navoiy ko'chasi",
@@ -14956,7 +16090,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Alpomish Street"
       ],
       [
-        "Amir Temur ko'chasi"
+        "Amir Temur ko'chasi",
+        "ул. Амир Темур",
+        "Amir Temur St."
       ],
       [
         "Anhor bo'yi ko'chasi",
@@ -14974,7 +16110,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Anhorli Street"
       ],
       [
-        "Ardoxshon ko'chasi"
+        "Ardoxshon ko'chasi",
+        "ул. Ардохшон",
+        "Ardoxshon St."
       ],
       [
         "Ariqli ko'chasi",
@@ -15024,7 +16162,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Azizbekov street"
       ],
       [
-        "B Sanoat Hududi ko'chasi"
+        "B Sanoat Hududi ko'chasi",
+        "ул. Б Саноат Худуди",
+        "B Sanoat Hududi St."
       ],
       [
         "B. Tursunov ko'chasi",
@@ -15151,7 +16291,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Beshquvur street"
       ],
       [
-        "Beshtom ko'chasi"
+        "Beshtom ko'chasi",
+        "ул. Бештом",
+        "Beshtom St."
       ],
       [
         "Bibixonim ko'chasi",
@@ -15169,7 +16311,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Birlashgan street"
       ],
       [
-        "Birlik ko'chasi"
+        "Birlik ko'chasi",
+        "ул. Бирлик",
+        "Birlik St."
       ],
       [
         "Bo'ston 5-ko'chasi",
@@ -15360,7 +16504,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Chulpon street"
       ],
       [
-        "Chuqursoy ko'chasi"
+        "Chuqursoy ko'chasi",
+        "ул. Чукурсой",
+        "Chuqursoy St."
       ],
       [
         "Darmon ko'chasi",
@@ -15425,7 +16571,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Elparvar-2 street"
       ],
       [
-        "Eminsoy ko'chasi"
+        "Eminsoy ko'chasi",
+        "ул. Еминсой",
+        "Eminsoy St."
       ],
       [
         "Ergash Jumanbulbul ko'chasi",
@@ -15504,7 +16652,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Фидокор улица"
       ],
       [
-        "Fidoyilar ko'chasi"
+        "Fidoyilar ko'chasi",
+        "ул. Фидойилар",
+        "Fidoyilar St."
       ],
       [
         "Firdavsiy ko'chasi",
@@ -15518,7 +16668,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Fitrat street"
       ],
       [
-        "Forish ko'chasi"
+        "Forish ko'chasi",
+        "ул. Фориш",
+        "Forish St."
       ],
       [
         "Furqat berk ko'chasi",
@@ -15579,7 +16731,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Gozikhonov street"
       ],
       [
-        "G'ulomov ko'chasi"
+        "G'ulomov ko'chasi",
+        "ул. Гуломов",
+        "G'ulomov St."
       ],
       [
         "Gandumtosh ko'chasi",
@@ -15670,7 +16824,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Gulzor street"
       ],
       [
-        "H. Halilov ko'chasi"
+        "H. Halilov ko'chasi",
+        "ул. Х. Халилов",
+        "H. Halilov St."
       ],
       [
         "H. Olimjon ko'chasi",
@@ -15723,7 +16879,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Hatilkent-2 street"
       ],
       [
-        "Hayrobod ko'chasi"
+        "Hayrobod ko'chasi",
+        "ул. Хайробод",
+        "Hayrobod St."
       ],
       [
         "Humo ko'chasi",
@@ -15986,7 +17144,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Kamalak street"
       ],
       [
-        "Kamoliddin Behzod ko'chasi"
+        "Kamoliddin Behzod ko'chasi",
+        "ул. Камолиддин Бехзод",
+        "Kamoliddin Behzod St."
       ],
       [
         "Kamolidin begzod ko'chasi",
@@ -16090,7 +17250,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Ko'tarma street"
       ],
       [
-        "Kok'kgumbaz ko'chasi"
+        "Kok'kgumbaz ko'chasi",
+        "ул. Коккгумбаз",
+        "Kok'kgumbaz St."
       ],
       [
         "Komil Yormatov ko'chasi",
@@ -16266,7 +17428,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Majnuntol street"
       ],
       [
-        "Maktab ko'chasi"
+        "Maktab ko'chasi",
+        "ул. Мактаб",
+        "Maktab St."
       ],
       [
         "Malak ko'chasi",
@@ -16395,10 +17559,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Mulkanlik street"
       ],
       [
-        "Mo'lkonlik ko'chasi"
+        "Mo'lkonlik ko'chasi",
+        "ул. Мулконлик",
+        "Mo'lkonlik St."
       ],
       [
-        "Mo'minobod ko'chasi"
+        "Mo'minobod ko'chasi",
+        "ул. Муминобод",
+        "Mo'minobod St."
       ],
       [
         "Mohlaroyim ko'chasi",
@@ -16516,7 +17684,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "N. Maxmudov street"
       ],
       [
-        "N. Normatov ko'chasi"
+        "N. Normatov ko'chasi",
+        "ул. Н. Норматов",
+        "N. Normatov St."
       ],
       [
         "N. O'narov ko'chasi",
@@ -16529,7 +17699,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "N. Ohundiy street"
       ],
       [
-        "N. Rahmonov ko'chasi"
+        "N. Rahmonov ko'chasi",
+        "ул. Н. Рахмонов",
+        "N. Rahmonov St."
       ],
       [
         "N. Raxmonov ko'chasi",
@@ -16831,7 +18003,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Ogoxiy street"
       ],
       [
-        "Ohangaron ko'chasi"
+        "Ohangaron ko'chasi",
+        "ул. Охангарон",
+        "Ohangaron St."
       ],
       [
         "Ohangrabo ko'chasi",
@@ -16892,7 +18066,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Omad street"
       ],
       [
-        "Omadli ko'chasi"
+        "Omadli ko'chasi",
+        "ул. Омадли",
+        "Omadli St."
       ],
       [
         "Oq Oltin ko'chasi",
@@ -16900,7 +18076,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Oq Oltin street"
       ],
       [
-        "Oqchashma ko'chasi"
+        "Oqchashma ko'chasi",
+        "ул. Окчашма",
+        "Oqchashma St."
       ],
       [
         "Oqdaryo ko'chasi",
@@ -17034,7 +18212,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Paxtakor street"
       ],
       [
-        "Paxtakor-Gagarin"
+        "Paxtakor-Gagarin",
+        "Пахтакор-Гагарин"
       ],
       [
         "Paxtaobod ko'chasi",
@@ -17057,7 +18236,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Porloq street"
       ],
       [
-        "Qahramon ko'chasi"
+        "Qahramon ko'chasi",
+        "ул. Кахрамон",
+        "Qahramon St."
       ],
       [
         "Qalandarov ko'chasi",
@@ -17072,7 +18253,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Qaliya street"
       ],
       [
-        "Qalqon ko'chasi"
+        "Qalqon ko'chasi",
+        "ул. Калкон",
+        "Qalqon St."
       ],
       [
         "Qambar yo'li ko'chasi",
@@ -17103,7 +18286,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Qatortol street"
       ],
       [
-        "Qatortut ko'chasi"
+        "Qatortut ko'chasi",
+        "ул. Катортут",
+        "Qatortut St."
       ],
       [
         "Qaxramon ko'chasi",
@@ -17111,7 +18296,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Qaxramon street"
       ],
       [
-        "Qaxramon street"
+        "Qaxramon street",
+        "ул. Кахрамон",
+        "Qaxramon St."
       ],
       [
         "Qaynarbuloq ko'chasi",
@@ -17170,7 +18357,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Hakimov street"
       ],
       [
-        "Qodiriy ko'chasi"
+        "Qodiriy ko'chasi",
+        "ул. Кодирий",
+        "Qodiriy St."
       ],
       [
         "Qodirjon Imomov ko'chasi",
@@ -17228,7 +18417,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Qulama street"
       ],
       [
-        "Quliniyoz ko'chasi"
+        "Quliniyoz ko'chasi",
+        "ул. Кулиниёз",
+        "Quliniyoz St."
       ],
       [
         "Qulpisar ko'chasi",
@@ -17264,7 +18455,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Rabo'chi street"
       ],
       [
-        "Rahabov ko'chasi"
+        "Rahabov ko'chasi",
+        "ул. Рахабов",
+        "Rahabov St."
       ],
       [
         "Rahimov ko'chasi",
@@ -17415,7 +18608,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Samo street"
       ],
       [
-        "Sangirova ko'chasi"
+        "Sangirova ko'chasi",
+        "ул. Сангирова",
+        "Sangirova St."
       ],
       [
         "Sangtarosh ko'chasi",
@@ -17572,7 +18767,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Sh.Umarov street"
       ],
       [
-        "Sh. Zokirov ko'chasi"
+        "Sh. Zokirov ko'chasi",
+        "ул. Ш. Зокиров",
+        "Sh. Zokirov St."
       ],
       [
         "Shabboda ko'chasi",
@@ -17628,7 +18825,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Sharq street"
       ],
       [
-        "Sharq Yulduzi ko'chasi"
+        "Sharq Yulduzi ko'chasi",
+        "ул. Шарк Юлдузи",
+        "Sharq Yulduzi St."
       ],
       [
         "Sharq Ziyokori ko'chasi",
@@ -17647,7 +18846,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Sharqiston street"
       ],
       [
-        "Sharshara ko'chasi"
+        "Sharshara ko'chasi",
+        "ул. Шаршара",
+        "Sharshara St."
       ],
       [
         "Sherdor ko'chasi",
@@ -17655,7 +18856,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Sherdor street"
       ],
       [
-        "Sherobod ko'chasi"
+        "Sherobod ko'chasi",
+        "ул. Шеробод",
+        "Sherobod St."
       ],
       [
         "Shifokor 3-ko'chasi",
@@ -17734,7 +18937,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Sugdiana street"
       ],
       [
-        "Sobir Abdulla ko'chasi"
+        "Sobir Abdulla ko'chasi",
+        "ул. Собир Абдулла",
+        "Sobir Abdulla St."
       ],
       [
         "Sobir Rahimov ko'chasi",
@@ -17854,7 +19059,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Taraqqiyot street"
       ],
       [
-        "Taroqli ko'chasi"
+        "Taroqli ko'chasi",
+        "ул. Тарокли",
+        "Taroqli St."
       ],
       [
         "Tashkent-Samarqand - Termez",
@@ -17866,7 +19073,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Taxtakupir Street"
       ],
       [
-        "Taxtaqo'riq ko'chasi"
+        "Taxtaqo'riq ko'chasi",
+        "ул. Тахтакурик",
+        "Taxtaqo'riq St."
       ],
       [
         "Temir Ko'prik ko'chasi",
@@ -17913,7 +19122,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Terakzor street"
       ],
       [
-        "Termiziy ko'chasi"
+        "Termiziy ko'chasi",
+        "ул. Термизий",
+        "Termiziy St."
       ],
       [
         "Tillakori ko'chasi",
@@ -18130,7 +19341,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Ural shokirov street"
       ],
       [
-        "Urinova ko'chasi"
+        "Urinova ko'chasi",
+        "ул. Уринова",
+        "Urinova St."
       ],
       [
         "Usmon Nosir ko'chasi",
@@ -18336,6 +19549,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Yakkasaroy ko'chasi",
+        "ул. Яккасарой",
+        "Yakkasaroy St.",
         "Yakkasaroy street"
       ],
       [
@@ -18349,7 +19564,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Yakkatut street"
       ],
       [
-        "Yangi Guliston ko'chasi"
+        "Yangi Guliston ko'chasi",
+        "ул. Янги Гулистон",
+        "Yangi Guliston St."
       ],
       [
         "Yangi Massiv ko'chasi",
@@ -18357,7 +19574,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Yangi Massiv street"
       ],
       [
-        "Yangi Toshkent ko'chasi"
+        "Yangi Toshkent ko'chasi",
+        "ул. Янги Ташкент",
+        "Yangi Toshkent St."
       ],
       [
         "Yangi Xayot berk ko'chasi",
@@ -18538,7 +19757,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Zamondosh Street"
       ],
       [
-        "Zangiota ko'chasi"
+        "Zangiota ko'chasi",
+        "ул. Зангиота",
+        "Zangiota St."
       ],
       [
         "Zarafshon ko’chasi",
@@ -18564,7 +19785,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Zarchashma street"
       ],
       [
-        "Zardo'zlik ko'chasi"
+        "Zardo'zlik ko'chasi",
+        "ул. Зардузлик",
+        "Zardo'zlik St."
       ],
       [
         "Zargarlik ko'chasi",
@@ -18667,32 +19890,49 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
   "Kattakurgan": {
     "streets": [
       [
-        "Зарифобод улица"
+        "Зарифобод улица",
+        "ул. Зарифобод",
+        "Zarifobod St."
       ],
       [
-        "Площадь Памяти и почестей"
+        "Площадь Памяти и почестей",
+        "пл. Памяти и почестей",
+        "Pamyati i pochestey Sq."
       ],
       [
         "Узбекистон улица",
-        "Узбекистанская улица"
+        "Узбекистанская улица",
+        "ул. Узбекистанская | ул. Узбекистон",
+        "Uzbekistanskaya St. | Uzbekiston St."
       ],
       [
-        "ул. Закира Рахманова (9й переулок)"
+        "ул. Закира Рахманова (9й переулок)",
+        "9-й пер. Закира Рахманова",
+        "Zakira Rakhmanova 9th Ln."
       ],
       [
-        "ул. Узбекистон"
+        "ул. Узбекистон",
+        "Uzbekiston St."
       ],
       [
-        "улица Алишер Навоий"
+        "улица Алишер Навоий",
+        "ул. Алишер Навоий",
+        "Alisher Navoiy St."
       ],
       [
-        "улица Беклар"
+        "улица Беклар",
+        "ул. Беклар",
+        "Beklar St."
       ],
       [
-        "улица Корадарё"
+        "улица Корадарё",
+        "ул. Корадарё",
+        "Koradaryo St."
       ],
       [
-        "Янгиобод кучаси"
+        "Янгиобод кучаси",
+        "ул. Янгиобод",
+        "Yangiobod St."
       ],
       [
         "Amir Temur ko'chasi",
@@ -18703,7 +19943,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Бабура"
       ],
       [
-        "Davlatobod ko'chasi"
+        "Davlatobod ko'chasi",
+        "ул. Давлатобод",
+        "Davlatobod St."
       ],
       [
         "E. Miraliev ko'chasi",
@@ -18714,24 +19956,32 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Алмазар улица"
       ],
       [
-        "Samarqand - Juma - Kattaqo‘rg‘on"
+        "Samarqand - Juma - Kattaqo‘rg‘on",
+        "Самарканд - Джума - Каттакургон",
+        "Samarqand - Juma - Kattaqo'rg'on"
       ],
       [
         "Sharof Rashidov ko'chasi",
         "улица Шарофа Рашидова"
       ],
       [
-        "Tinchlik Ko’chasi"
+        "Tinchlik Ko’chasi",
+        "ул. Тинчлик",
+        "Tinchlik St."
       ],
       [
         "U.Barnoev ko`chasi",
         "улица Улугбека Барноева"
       ],
       [
-        "Umar Xayyom ko‘chasi"
+        "Umar Xayyom ko‘chasi",
+        "ул. Умар Хайём",
+        "Umar Xayyom St."
       ],
       [
-        "Xosildor Ko’chasi"
+        "Xosildor Ko’chasi",
+        "ул. Хосилдор",
+        "Xosildor St."
       ],
       [
         "Yangi hayot ko'chasi",
@@ -18742,14 +19992,17 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
   "Khiva": {
     "localAreas": [
       [
-        "Гулшан"
+        "Гулшан",
+        "Gulshan"
       ],
       [
         "Buzxana",
         "Бузхана"
       ],
       [
-        "Gulchiroy ko'chasi 40-uy"
+        "Gulchiroy ko'chasi 40-uy",
+        "Гулчирой ул. 40-уй",
+        "Gulchiroy St. 40-uy"
       ],
       [
         "Tazaqiyat",
@@ -18767,16 +20020,24 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
     ],
     "streets": [
       [
-        "Таза-Баг улица"
+        "Таза-Баг улица",
+        "ул. Таза-Баг",
+        "Taza-Bag St."
       ],
       [
-        "улица М. Маткаримова"
+        "улица М. Маткаримова",
+        "ул. М. Маткаримова",
+        "M. Matkarimova St."
       ],
       [
-        "улица Навруз"
+        "улица Навруз",
+        "ул. Навруз",
+        "Navruz St."
       ],
       [
-        "Шараф улица"
+        "Шараф улица",
+        "ул. Шараф",
+        "Sharaf St."
       ],
       [
         "Abdullah Rahmonov ko'chasi",
@@ -18784,7 +20045,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Abdullah Rakhmonov street"
       ],
       [
-        "Al-Xorazmiy ko'chasi"
+        "Al-Xorazmiy ko'chasi",
+        "ул. Ал-Хоразмий",
+        "Al-Xorazmiy St."
       ],
       [
         "Amir Temur ko'chasi",
@@ -18793,7 +20056,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "خیابان امیر تیمور"
       ],
       [
-        "Avesto ko'chasi"
+        "Avesto ko'chasi",
+        "ул. Авесто",
+        "Avesto St."
       ],
       [
         "Axunbabaev ko'chasi",
@@ -18805,6 +20070,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Bo'yoqchilar ko'chasi",
+        "ул. Буёкчилар",
+        "Bo'yoqchilar St. | Buyoqchilar St.",
         "Buyoqchilar street"
       ],
       [
@@ -18852,10 +20119,13 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Madatkor street"
       ],
       [
-        "Mardlik"
+        "Mardlik",
+        "Мардлик"
       ],
       [
-        "Moziy ko‘chasi"
+        "Moziy ko‘chasi",
+        "ул. Мозий",
+        "Moziy St."
       ],
       [
         "Muqimiy ko'chasi",
@@ -18951,10 +20221,13 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "3rd microdistrict"
       ],
       [
-        "КС-5"
+        "КС-5",
+        "KS-5"
       ],
       [
-        "поселок Нефтебаза"
+        "поселок Нефтебаза",
+        "пос. Нефтебаза",
+        "Neftebaza Settlement"
       ],
       [
         "Abat MPJ",
@@ -19053,7 +20326,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица 40-лет"
       ],
       [
-        "Чимбаски Улитса"
+        "Чимбаски Улитса",
+        "Chimbaski St."
       ],
       [
         "A. Begimov kóshesi",
@@ -19321,14 +20595,17 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Жамбыл"
       ],
       [
-        "Jana jol kóshesi"
+        "Jana jol kóshesi",
+        "ул. Джана джол",
+        "Jana jol St."
       ],
       [
         "Jeńis kóshesi",
         "улица Женис"
       ],
       [
-        "Jipek joli"
+        "Jipek joli",
+        "Джипек джоли"
       ],
       [
         "Jipek Jolı kóshesi",
@@ -19358,7 +20635,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Кенегес"
       ],
       [
-        "Kenesgoy kóshesi"
+        "Kenesgoy kóshesi",
+        "ул. Кенесгой",
+        "Kenesgoy St."
       ],
       [
         "Kolxoznaya ko'shesi",
@@ -19925,7 +21204,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
   "Kogon": {
     "localAreas": [
       [
-        "Дехмирзаён"
+        "Дехмирзаён",
+        "Dekhmirzayon"
       ],
       [
         "Kogon",
@@ -19949,18 +21229,25 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Yangi Chapyk"
       ],
       [
-        "Zirabodi"
+        "Zirabodi",
+        "Зирабоди"
       ]
     ],
     "streets": [
       [
-        "Алтынкульская улица"
+        "Алтынкульская улица",
+        "ул. Алтынкульская",
+        "Altynkulskaya St."
       ],
       [
-        "Караулбазар проспект"
+        "Караулбазар проспект",
+        "пр-т Караулбазар",
+        "Karaulbazar Ave."
       ],
       [
-        "Элабад улица"
+        "Элабад улица",
+        "ул. Элабад",
+        "Elabad St."
       ],
       [
         "Adolat ko'chasi",
@@ -19994,7 +21281,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Bukhara avenue"
       ],
       [
-        "Depochilar ko'chasi"
+        "Depochilar ko'chasi",
+        "ул. Депочилар",
+        "Depochilar St."
       ],
       [
         "Do‘stlik ko‘chasi",
@@ -20005,7 +21294,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Элобад улица"
       ],
       [
-        "G'uzor-Nukus avtoshossesi"
+        "G'uzor-Nukus avtoshossesi",
+        "Гузор-Нукус автошоссеси"
       ],
       [
         "Gulzor ko'chasi",
@@ -20016,7 +21306,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Истирохат улица"
       ],
       [
-        "Jinjak"
+        "Jinjak",
+        "Джинджак"
       ],
       [
         "Madaniyat ko'chasi",
@@ -20036,13 +21327,19 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Nurabad street"
       ],
       [
-        "Obod ko’chasi"
+        "Obod ko’chasi",
+        "ул. Обод",
+        "Obod St."
       ],
       [
-        "Paxtakor ko'chasi"
+        "Paxtakor ko'chasi",
+        "ул. Пахтакор",
+        "Paxtakor St."
       ],
       [
-        "Taraqqiyot ko'chasi"
+        "Taraqqiyot ko'chasi",
+        "ул. Тараккиёт",
+        "Taraqqiyot St."
       ],
       [
         "Turkiston ko'chasi",
@@ -20085,19 +21382,24 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Abduvay"
       ],
       [
-        "Абдусамад"
+        "Абдусамад",
+        "Abdusamad"
       ],
       [
-        "Авчи"
+        "Авчи",
+        "Avchi"
       ],
       [
-        "Аимчакакыр"
+        "Аимчакакыр",
+        "Aimchakakyr"
       ],
       [
-        "Айдынбулак"
+        "Айдынбулак",
+        "Aydynbulak"
       ],
       [
-        "Айкишлак"
+        "Айкишлак",
+        "Aykishlak"
       ],
       [
         "Айритам",
@@ -20108,55 +21410,68 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Akbarabad"
       ],
       [
-        "Арабкурганча"
+        "Арабкурганча",
+        "Arabkurgancha"
       ],
       [
         "Ардахшан",
         "Ardakhshаn"
       ],
       [
-        "Арзиктепа"
+        "Арзиктепа",
+        "Arziktepa"
       ],
       [
-        "Ашуркулмерган"
+        "Ашуркулмерган",
+        "Ashurkulmergan"
       ],
       [
-        "Бабаходжа"
+        "Бабаходжа",
+        "Babakhodzha"
       ],
       [
         "Байбута",
         "Baybuta"
       ],
       [
-        "Балтакуль"
+        "Балтакуль",
+        "Baltakul"
       ],
       [
-        "Барзанги"
+        "Барзанги",
+        "Barzangi"
       ],
       [
         "Батырбай",
         "Batyrbay"
       ],
       [
-        "Бахшитал"
+        "Бахшитал",
+        "Bakhshital"
       ],
       [
-        "Бегвачча"
+        "Бегвачча",
+        "Begvachcha"
       ],
       [
-        "Бешага"
+        "Бешага",
+        "Beshaga"
       ],
       [
-        "Бешкапаболо"
+        "Бешкапаболо",
+        "Beshkapabolo"
       ],
       [
-        "Бешкапапаян"
+        "Бешкапапаян",
+        "Beshkapapayan"
       ],
       [
-        "Бешмирза"
+        "Бешмирза",
+        "Beshmirza"
       ],
       [
-        "Бешъэчки"
+        "Бешъэчки",
+        "Beshechki"
       ],
       [
         "Бойдаул",
@@ -20164,16 +21479,20 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Bаydaul"
       ],
       [
-        "ВОХИМ МФЙ"
+        "ВОХИМ МФЙ",
+        "VOKhIM MFY"
       ],
       [
-        "Гамбай"
+        "Гамбай",
+        "Gambay"
       ],
       [
-        "Ганидашт"
+        "Ганидашт",
+        "Ganidasht"
       ],
       [
-        "Гирри"
+        "Гирри",
+        "Girri"
       ],
       [
         "Гулистон",
@@ -20184,16 +21503,20 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Gulbay"
       ],
       [
-        "Гумайли"
+        "Гумайли",
+        "Gumayli"
       ],
       [
-        "Гунча"
+        "Гунча",
+        "Guncha"
       ],
       [
-        "Гуртепа"
+        "Гуртепа",
+        "Gurtepa"
       ],
       [
-        "Гыштхана"
+        "Гыштхана",
+        "Gyshtkhana"
       ],
       [
         "Давчар",
@@ -20216,13 +21539,16 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Dahanaqaqir"
       ],
       [
-        "Даштмахалла"
+        "Даштмахалла",
+        "Dashtmakhalla"
       ],
       [
-        "Даштхасан"
+        "Даштхасан",
+        "Dashtkhasan"
       ],
       [
-        "Даштчулпан"
+        "Даштчулпан",
+        "Dashtchulpan"
       ],
       [
         "Джаби",
@@ -20233,14 +21559,18 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Jamanjar"
       ],
       [
-        "Джангир"
+        "Джангир",
+        "Dzhangir"
       ],
       [
         "Джанкетман",
-        "Джанкетмень"
+        "Джанкетман | Джанкетмень",
+        "Джанкетмень",
+        "Dzhanketman | Dzhanketmen"
       ],
       [
-        "Джаркишлак"
+        "Джаркишлак",
+        "Dzharkishlak"
       ],
       [
         "Дунгкишлак",
@@ -20251,152 +21581,192 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Dungsaray"
       ],
       [
-        "Казикалан"
+        "Казикалан",
+        "Kazikalan"
       ],
       [
         "Казикузат",
         "Kazikuzat"
       ],
       [
-        "Какырчек"
+        "Какырчек",
+        "Kakyrchek"
       ],
       [
         "Калтатай",
         "Kaltatay"
       ],
       [
-        "Канизар"
+        "Канизар",
+        "Kanizar"
       ],
       [
-        "Караджийда"
+        "Караджийда",
+        "Karadzhiyda"
       ],
       [
         "Каракурпа",
         "Karakupra"
       ],
       [
-        "Каратепа"
+        "Каратепа",
+        "Karatepa"
       ],
       [
-        "Караязбаба"
+        "Караязбаба",
+        "Karayazbaba"
       ],
       [
         "Караянтак",
         "Karayantak"
       ],
       [
-        "Кармак"
+        "Кармак",
+        "Karmak"
       ],
       [
         "Катаган",
         "Katagan"
       ],
       [
-        "Катта-Амирабад"
+        "Катта-Амирабад",
+        "Katta-Amirabad"
       ],
       [
         "Катта-Араван",
         "Katta-Aravan"
       ],
       [
-        "Катта-Минглар"
+        "Катта-Минглар",
+        "Katta-Minglar"
       ],
       [
-        "Катта-Туртайгыр"
+        "Катта-Туртайгыр",
+        "Katta-Turtaygyr"
       ],
       [
-        "Каттакайнар"
+        "Каттакайнар",
+        "Kattakaynar"
       ],
       [
-        "Кашкакум"
+        "Кашкакум",
+        "Kashkakum"
       ],
       [
-        "Кимсанабад"
+        "Кимсанабад",
+        "Kimsanabad"
       ],
       [
-        "Кичик-Туртайгыр"
+        "Кичик-Туртайгыр",
+        "Kichik-Turtaygyr"
       ],
       [
-        "Кияли-Курганча"
+        "Кияли-Курганча",
+        "Kiyali-Kurgancha"
       ],
       [
-        "Кокдуппи"
+        "Кокдуппи",
+        "Kokduppi"
       ],
       [
-        "Кудаш"
+        "Кудаш",
+        "Kudash"
       ],
       [
-        "Кулал"
+        "Кулал",
+        "Kulal"
       ],
       [
-        "Кулбаба"
+        "Кулбаба",
+        "Kulbaba"
       ],
       [
-        "Кулибек"
+        "Кулибек",
+        "Kulibek"
       ],
       [
-        "Кульэлаш"
+        "Кульэлаш",
+        "Kulelash"
       ],
       [
-        "Курбанмерган"
+        "Курбанмерган",
+        "Kurbanmergan"
       ],
       [
-        "Курик"
+        "Курик",
+        "Kurik"
       ],
       [
-        "Курка"
+        "Курка",
+        "Kurka"
       ],
       [
         "Курултай",
         "Kurultay"
       ],
       [
-        "Кушчи"
+        "Кушчи",
+        "Kushchi"
       ],
       [
-        "Кызылкакыр"
+        "Кызылкакыр",
+        "Kyzylkakyr"
       ],
       [
-        "Кызылкияк"
+        "Кызылкияк",
+        "Kyzylkiyak"
       ],
       [
-        "Кыргызкишлак"
+        "Кыргызкишлак",
+        "Kyrgyzkishlak"
       ],
       [
-        "Маариф"
+        "Маариф",
+        "Maarif"
       ],
       [
-        "Маллахан"
+        "Маллахан",
+        "Mallakhan"
       ],
       [
-        "Мангыт"
+        "Мангыт",
+        "Mangyt"
       ],
       [
-        "Мехнатабад"
+        "Мехнатабад",
+        "Mekhnatabad"
       ],
       [
-        "Мирзаабад"
+        "Мирзаабад",
+        "Mirzaabad"
       ],
       [
-        "Мирзаходжа"
+        "Мирзаходжа",
+        "Mirzakhodzha"
       ],
       [
-        "Митан"
+        "Митан",
+        "Mitan"
       ],
       [
-        "Мулкабад"
+        "Мулкабад",
+        "Mulkabad"
       ],
       [
-        "Мусабек"
+        "Мусабек",
+        "Musabek"
       ],
       [
-        "Навбунёд"
+        "Навбунёд",
+        "Navbunyod"
       ],
       [
-        "Наймансай"
+        "Наймансай",
+        "Naymansay"
       ],
       [
-        "Нуманабад"
+        "Нуманабад",
+        "Numanabad"
       ],
       [
         "Палванташ",
@@ -20407,73 +21777,94 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Pastki-Tulash"
       ],
       [
-        "Пулаткурган"
+        "Пулаткурган",
+        "Pulatkurgan"
       ],
       [
-        "Раджабгарди"
+        "Раджабгарди",
+        "Radzhabgardi"
       ],
       [
         "Рапкан",
         "Rapkan"
       ],
       [
-        "Рахматулла"
+        "Рахматулла",
+        "Rakhmatulla"
       ],
       [
-        "Сайшилдир"
+        "Сайшилдир",
+        "Sayshildir"
       ],
       [
-        "Саланг"
+        "Саланг",
+        "Salang"
       ],
       [
-        "Санам"
+        "Санам",
+        "Sanam"
       ],
       [
-        "Сахил"
+        "Сахил",
+        "Sakhil"
       ],
       [
-        "Сачтепа"
+        "Сачтепа",
+        "Sachtepa"
       ],
       [
         "Соҳили Сир",
-        "Сохили Сир"
+        "Сохили Сир",
+        "Сохили Сир | Соҳили Сир",
+        "Sokhili Sir | Sohili Sir"
       ],
       [
-        "Сурпа"
+        "Сурпа",
+        "Surpa"
       ],
       [
-        "Тагай"
+        "Тагай",
+        "Tagay"
       ],
       [
-        "Таглик"
+        "Таглик",
+        "Taglik"
       ],
       [
-        "Таджик-Галча"
+        "Таджик-Галча",
+        "Tadzhik-Galcha"
       ],
       [
-        "Тамаша"
+        "Тамаша",
+        "Tamasha"
       ],
       [
-        "Таргава"
+        "Таргава",
+        "Targava"
       ],
       [
-        "Тиллатепа"
+        "Тиллатепа",
+        "Tillatepa"
       ],
       [
-        "Тулабай"
+        "Тулабай",
+        "Tulabay"
       ],
       [
-        "Тургай"
+        "Тургай",
+        "Turgay"
       ],
       [
-        "Туркман"
+        "Туркман",
+        "Turkman"
       ],
       [
         "Узак",
         "Uzak"
       ],
       [
-        "Узунчек"
+        "Узунчек",
+        "Uzunchek"
       ],
       [
         "Укчикошкунок",
@@ -20481,23 +21872,28 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Ukchikunak"
       ],
       [
-        "Укчитуман"
+        "Укчитуман",
+        "Ukchituman"
       ],
       [
-        "Уразбак"
+        "Уразбак",
+        "Urazbak"
       ],
       [
-        "Уразмерган"
+        "Уразмерган",
+        "Urazmergan"
       ],
       [
         "Урманабад",
         "Urmanabad"
       ],
       [
-        "Учуйли"
+        "Учуйли",
+        "Uchuyli"
       ],
       [
-        "Хаиткишлак"
+        "Хаиткишлак",
+        "Khaitkishlak"
       ],
       [
         "Хайдарабад",
@@ -20516,7 +21912,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Khatamtay"
       ],
       [
-        "Ходжамазар"
+        "Ходжамазар",
+        "Khodzhamazar"
       ],
       [
         "Худаярхан",
@@ -20531,35 +21928,44 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Chamach"
       ],
       [
-        "Чанкат"
+        "Чанкат",
+        "Chankat"
       ],
       [
-        "Чеккуприк"
+        "Чеккуприк",
+        "Chekkuprik"
       ],
       [
         "Чекчувалдак",
         "Chekchuvaldak"
       ],
       [
-        "Чекшариф"
+        "Чекшариф",
+        "Cheksharif"
       ],
       [
-        "Чекъер"
+        "Чекъер",
+        "Cheker"
       ],
       [
-        "Чилгиджийда"
+        "Чилгиджийда",
+        "Chilgidzhiyda"
       ],
       [
-        "Чиначак"
+        "Чиначак",
+        "Chinachak"
       ],
       [
-        "Чиркай"
+        "Чиркай",
+        "Chirkay"
       ],
       [
-        "Шабада"
+        "Шабада",
+        "Shabada"
       ],
       [
-        "Шаимбек"
+        "Шаимбек",
+        "Shaimbek"
       ],
       [
         "Шайтанкуль",
@@ -20574,45 +21980,57 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Shukurhoja"
       ],
       [
-        "Шункар"
+        "Шункар",
+        "Shunkar"
       ],
       [
-        "Шух"
+        "Шух",
+        "Shukh"
       ],
       [
         "Шухай",
         "Shuhay"
       ],
       [
-        "Элаш"
+        "Элаш",
+        "Elash"
       ],
       [
-        "Эльчи"
+        "Эльчи",
+        "Elchi"
       ],
       [
-        "Эски-Шилдир"
+        "Эски-Шилдир",
+        "Eski-Shildir"
       ],
       [
-        "Якатут"
+        "Якатут",
+        "Yakatut"
       ],
       [
-        "Якатутдашт"
+        "Якатутдашт",
+        "Yakatutdasht"
       ],
       [
-        "Яккамулла"
+        "Яккамулла",
+        "Yakkamulla"
       ],
       [
-        "Ялтир"
+        "Ялтир",
+        "Yaltir"
       ],
       [
         "Янги-Рапкан",
         "Yangi-Rapkan"
       ],
       [
-        "Яшик"
+        "Яшик",
+        "Yashik"
       ],
       [
-        "Abu Tayyib Xuqandiy mavzesi"
+        "Abu Tayyib Xuqandiy mavzesi",
+        "ж/м Абу Таййиб Хукандий",
+        "Abu Tayyib Xuqandiy Res. Area"
       ],
       [
         "Bekobod",
@@ -20706,7 +22124,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Eskikishlak"
       ],
       [
-        "G'alaba qishloq"
+        "G'alaba qishloq",
+        "Галаба село",
+        "G'alaba Village"
       ],
       [
         "G‘ani",
@@ -20778,7 +22198,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Kapasaray"
       ],
       [
-        "Katejlar"
+        "Katejlar",
+        "Катеджлар"
       ],
       [
         "Katta-Ganjiravon",
@@ -21148,102 +22569,161 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
     ],
     "streets": [
       [
-        "Гулистон йули"
+        "Гулистон йули",
+        "Guliston yuli"
       ],
       [
-        "Исламабадская"
+        "Исламабадская",
+        "Islamabadskaya"
       ],
       [
-        "Кази Калон улица"
+        "Кази Калон улица",
+        "ул. Кази Калон",
+        "Kazi Kalon St."
       ],
       [
-        "Мавераннахр улица"
+        "Мавераннахр улица",
+        "ул. Мавераннахр",
+        "Maverannakhr St."
       ],
       [
-        "Мовароуннахр улица"
+        "Мовароуннахр улица",
+        "ул. Мовароуннахр",
+        "Movarounnakhr St."
       ],
       [
-        "Парпашабаф улица"
+        "Парпашабаф улица",
+        "ул. Парпашабаф",
+        "Parpashabaf St."
       ],
       [
-        "Улица Бекобод"
+        "Улица Бекобод",
+        "ул. Бекобод",
+        "Bekobod St."
       ],
       [
-        "Фаргона Халка йули"
+        "Фаргона Халка йули",
+        "Fargona Khalka yuli"
       ],
       [
-        "Шалдирамок улица"
+        "Шалдирамок улица",
+        "ул. Шалдирамок",
+        "Shaldiramok St."
       ],
       [
-        "Шохрухабад улица"
+        "Шохрухабад улица",
+        "ул. Шохрухабад",
+        "Shokhrukhabad St."
       ],
       [
-        "A.Jomiy 1-tor ko'chasi"
+        "A.Jomiy 1-tor ko'chasi",
+        "1-й пр. А.Джомий",
+        "A.Jomiy 1st Ln."
       ],
       [
-        "A.Jomiy 2-tor ko'chasi"
+        "A.Jomiy 2-tor ko'chasi",
+        "2-й пр. А.Джомий",
+        "A.Jomiy 2nd Ln."
       ],
       [
-        "A.Jomiy 3-tor ko'chasi"
+        "A.Jomiy 3-tor ko'chasi",
+        "3-й пр. А.Джомий",
+        "A.Jomiy 3rd Ln."
       ],
       [
-        "A.Jomiy 4-tor ko'chasi"
+        "A.Jomiy 4-tor ko'chasi",
+        "4-й пр. А.Джомий",
+        "A.Jomiy 4th Ln."
       ],
       [
-        "A.Kaxxor ko'chasi"
+        "A.Kaxxor ko'chasi",
+        "ул. А.Каххор",
+        "A.Kaxxor St."
       ],
       [
-        "Abay ko'chasi"
+        "Abay ko'chasi",
+        "ул. Абай",
+        "Abay St."
       ],
       [
-        "Abdulla Qodiriy ko'chasi"
+        "Abdulla Qodiriy ko'chasi",
+        "ул. Абдулла Кодирий",
+        "Abdulla Qodiriy St."
       ],
       [
-        "Abdulla Qohhor ko'chasi"
+        "Abdulla Qohhor ko'chasi",
+        "ул. Абдулла Коххор",
+        "Abdulla Qohhor St."
       ],
       [
-        "Abdurahmon Jomiy ko'chasi"
+        "Abdurahmon Jomiy ko'chasi",
+        "ул. Абдурахмон Джомий",
+        "Abdurahmon Jomiy St."
       ],
       [
-        "Abduraxmon Jomiy ko'chasi"
+        "Abduraxmon Jomiy ko'chasi",
+        "ул. Абдурахмон Джомий",
+        "Abduraxmon Jomiy St."
       ],
       [
-        "Abror Hidoyatov ko'chasi"
+        "Abror Hidoyatov ko'chasi",
+        "ул. Аброр Хидоятов",
+        "Abror Hidoyatov St."
       ],
       [
         "Abu Tayyib Xuqandiy ko'chasi",
-        "Abu Tayyib Xuqandiy ko`chasi"
+        "ул. Абу Таййиб Хукандий",
+        "Abu Tayyib Xuqandiy ko`chasi",
+        "Abu Tayyib Xuqandiy St."
       ],
       [
-        "Abu Tayyib Xuqandiy mavzesi"
+        "Abu Tayyib Xuqandiy mavzesi",
+        "ж/м Абу Таййиб Хукандий",
+        "Abu Tayyib Xuqandiy Res. Area"
       ],
       [
         "Achchikkul ko'chasi",
         "Аччиккул улица"
       ],
       [
-        "Adabiyot ko'chasi"
+        "Adabiyot ko'chasi",
+        "ул. Адабиёт",
+        "Adabiyot St."
       ],
       [
-        "Adolat ko'chasi"
+        "Adolat ko'chasi",
+        "ул. Адолат",
+        "Adolat St."
       ],
       [
-        "Adrasbof ko'chasi"
+        "Adrasbof ko'chasi",
+        "ул. Адрасбоф",
+        "Adrasbof St."
       ],
       [
-        "Afgonbog ko'chasi"
+        "Afgonbog ko'chasi",
+        "ул. Афгонбог",
+        "Afgonbog St."
       ],
       [
-        "Afrosiyob ko'chasi"
+        "Afrosiyob ko'chasi",
+        "ул. Афросиаб",
+        "Afrosiyob St."
       ],
       [
-        "Ahmad al-Farg'oniy ko'chasi"
+        "Ahmad al-Farg'oniy ko'chasi",
+        "ул. Ахмад ал-Фаргоний",
+        "Ahmad al-Farg'oniy St."
       ],
       [
-        "Ahmad Yassaviy ko'chasi"
+        "Ahmad Yassaviy ko'chasi",
+        "ул. Ахмад Яссавий",
+        "Ahmad Yassaviy St."
       ],
       [
-        "Alachabof ko'chasi"
+        "Alachabof ko'chasi",
+        "ул. Алачабоф",
+        "Alachabof St."
       ],
       [
         "Alinazarota ko'chasi",
@@ -21252,16 +22732,20 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       [
         "Alisher Navoiy ko'chasi",
         "Алишер Навои улица",
-        "Алишера Навои улица"
+        "Алишера Навои улица",
+        "ул. Алишер Навои",
+        "Alisher Navoiy koʻchasi",
+        "Alisher Navoiy St."
       ],
       [
-        "Alisher Navoiy koʻchasi"
+        "Alisher Navoiy mavzesi",
+        "ж/м Алишер Навои",
+        "Alisher Navoiy Res. Area"
       ],
       [
-        "Alisher Navoiy mavzesi"
-      ],
-      [
-        "Alpomish ko'chasi"
+        "Alpomish ko'chasi",
+        "ул. Алпомиш",
+        "Alpomish St."
       ],
       [
         "Amir Temur ko'chasi",
@@ -21270,19 +22754,29 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Amir Temur ko`chasi"
       ],
       [
-        "Amir Umarxon ko'chasi"
+        "Amir Umarxon ko'chasi",
+        "ул. Амир Умархон",
+        "Amir Umarxon St."
       ],
       [
-        "Amudaryo ko'chasi"
+        "Amudaryo ko'chasi",
+        "ул. Амударё",
+        "Amudaryo St."
       ],
       [
-        "Anbar ko'chasi"
+        "Anbar ko'chasi",
+        "ул. Анбар",
+        "Anbar St."
       ],
       [
-        "Andijon ko'chasi"
+        "Andijon ko'chasi",
+        "ул. Андижан",
+        "Andijon St."
       ],
       [
-        "Anhor bo'yi ko'chasi"
+        "Anhor bo'yi ko'chasi",
+        "ул. Анхор буйи",
+        "Anhor bo'yi St."
       ],
       [
         "Arziktepa ko'chasi",
@@ -21290,75 +22784,117 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Арзик тепа улица"
       ],
       [
-        "Ashir Mirzo ko'chasi"
+        "Ashir Mirzo ko'chasi",
+        "ул. Ашир Мирзо",
+        "Ashir Mirzo St."
       ],
       [
-        "Ashxabod ko'chasi"
+        "Ashxabod ko'chasi",
+        "ул. Ашхабод",
+        "Ashxabod St."
       ],
       [
         "Avg'onbog' ko'chasi",
         "Авгонбог улица"
       ],
       [
-        "Axillik ko'chasi"
+        "Axillik ko'chasi",
+        "ул. Ахиллик",
+        "Axillik St."
       ],
       [
-        "Axmad Donish ko'chasi"
+        "Axmad Donish ko'chasi",
+        "ул. Ахмад Дониш",
+        "Axmad Donish St."
       ],
       [
-        "Ayniy ko'chasi"
+        "Ayniy ko'chasi",
+        "ул. Айний",
+        "Ayniy St."
       ],
       [
-        "Aynul xayot ko'chasi"
+        "Aynul xayot ko'chasi",
+        "ул. Айнул хаёт",
+        "Aynul xayot St."
       ],
       [
-        "Bag‘dod ko'chasi"
+        "Bag‘dod ko'chasi",
+        "ул. Багдод",
+        "Bag'dod St."
       ],
       [
-        "Bakovul ko'chasi"
+        "Bakovul ko'chasi",
+        "ул. Баковул",
+        "Bakovul St."
       ],
       [
-        "Baliqchi ko'chasi"
+        "Baliqchi ko'chasi",
+        "ул. Баликчи",
+        "Baliqchi St."
       ],
       [
-        "Bandi Eshon ko'chasi"
+        "Bandi Eshon ko'chasi",
+        "ул. Банди Ешон",
+        "Bandi Eshon St."
       ],
       [
-        "Bandi Yeshon ko'chasi"
+        "Bandi Yeshon ko'chasi",
+        "ул. Банди Ешон",
+        "Bandi Yeshon St."
       ],
       [
-        "Baqa Chorsu ko'chasi"
+        "Baqa Chorsu ko'chasi",
+        "ул. Бака Чорсу",
+        "Baqa Chorsu St."
       ],
       [
-        "Barkamol Avlod koʻchasi"
+        "Barkamol Avlod koʻchasi",
+        "ул. Баркамол Авлод",
+        "Barkamol Avlod St."
       ],
       [
-        "Barxayot koʻchasi"
+        "Barxayot koʻchasi",
+        "ул. Бархаёт",
+        "Barxayot St."
       ],
       [
-        "Baxmalbob 1-tor ko'chasi"
+        "Baxmalbob 1-tor ko'chasi",
+        "1-й пр. Бахмалбоб",
+        "Baxmalbob 1st Ln."
       ],
       [
-        "Baxmalbob ko'chasi"
+        "Baxmalbob ko'chasi",
+        "ул. Бахмалбоб",
+        "Baxmalbob St."
       ],
       [
-        "Baxor ko'chasi"
+        "Baxor ko'chasi",
+        "ул. Бахор",
+        "Baxor St."
       ],
       [
         "Baxovuddin Naqshbandiy ko'chasi",
         "Накшбанди улица"
       ],
       [
-        "Baxt ko'chasi"
+        "Baxt ko'chasi",
+        "ул. Бахт",
+        "Baxt St."
       ],
       [
-        "Baynalminal jangchilar ko'chasi"
+        "Baynalminal jangchilar ko'chasi",
+        "ул. Байналминал джангчилар",
+        "Baynalminal jangchilar St."
       ],
       [
-        "Baynalminal ko'chasi"
+        "Baynalminal ko'chasi",
+        "ул. Байналминал",
+        "Baynalminal St."
       ],
       [
-        "Baytkurgon ko'chasi"
+        "Baytkurgon ko'chasi",
+        "ул. Байткургон",
+        "Baytkurgon St."
       ],
       [
         "Bekbo'tabek ko'chasi",
@@ -21368,13 +22904,19 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Bekutabek Street"
       ],
       [
-        "Beklar Begi koʻchasi"
+        "Beklar Begi koʻchasi",
+        "ул. Беклар Беги",
+        "Beklar Begi St."
       ],
       [
-        "Berdaq ko'chasi"
+        "Berdaq ko'chasi",
+        "ул. Бердак",
+        "Berdaq St."
       ],
       [
-        "Beruniy ko'chasi"
+        "Beruniy ko'chasi",
+        "ул. Беруни",
+        "Beruniy St."
       ],
       [
         "Beshariq — Tojikiston hududi avtomobil yoʻli",
@@ -21397,28 +22939,44 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Бирдамлик улица"
       ],
       [
-        "Birlashgan ko'chasi"
+        "Birlashgan ko'chasi",
+        "ул. Бирлашган",
+        "Birlashgan St."
       ],
       [
-        "Birlik ko'chasi"
+        "Birlik ko'chasi",
+        "ул. Бирлик",
+        "Birlik St."
       ],
       [
-        "Bobobek ko'chasi"
+        "Bobobek ko'chasi",
+        "ул. Бобобек",
+        "Bobobek St."
       ],
       [
-        "Bobochinor ko'chasi"
+        "Bobochinor ko'chasi",
+        "ул. Бобочинор",
+        "Bobochinor St."
       ],
       [
-        "Bobokarvon ko'chasi"
+        "Bobokarvon ko'chasi",
+        "ул. Бобокарвон",
+        "Bobokarvon St."
       ],
       [
-        "Boborahim Mashrab ko'chasi"
+        "Boborahim Mashrab ko'chasi",
+        "ул. Боборахим Машраб",
+        "Boborahim Mashrab St."
       ],
       [
-        "Bobotarxon ko'chasi"
+        "Bobotarxon ko'chasi",
+        "ул. Боботархон",
+        "Bobotarxon St."
       ],
       [
-        "Bobur ko'chasi"
+        "Bobur ko'chasi",
+        "ул. Бобур",
+        "Bobur St."
       ],
       [
         "Bodomzor ko'chasi",
@@ -21426,115 +22984,181 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Badamzar Street"
       ],
       [
-        "Bog'banon ko'chasi"
+        "Bog'banon ko'chasi",
+        "ул. Богбанон",
+        "Bog'banon St."
       ],
       [
-        "Bog'i Atirgul ko'chasi"
+        "Bog'i Atirgul ko'chasi",
+        "ул. Боги Атиргул",
+        "Bog'i Atirgul St."
       ],
       [
-        "Bog'i Bexish ko'chasi"
+        "Bog'i Bexish ko'chasi",
+        "ул. Боги Бехиш",
+        "Bog'i Bexish St."
       ],
       [
-        "Bog'i Bo'ston ko'chasi"
+        "Bog'i Bo'ston ko'chasi",
+        "ул. Боги Бустон",
+        "Bog'i Bo'ston St."
       ],
       [
-        "Bog'i Naqshjaxon ko'chasi"
+        "Bog'i Naqshjaxon ko'chasi",
+        "ул. Боги Накшджахон",
+        "Bog'i Naqshjaxon St."
       ],
       [
-        "Bog'iraxmat ko'chasi"
+        "Bog'iraxmat ko'chasi",
+        "ул. Богирахмат",
+        "Bog'iraxmat St."
       ],
       [
-        "Bog'iston ko'chasi"
+        "Bog'iston ko'chasi",
+        "ул. Богистон",
+        "Bog'iston St."
       ],
       [
-        "Bogi Baland ko'chasi"
+        "Bogi Baland ko'chasi",
+        "ул. Боги Баланд",
+        "Bogi Baland St."
       ],
       [
-        "Bogibinafsha ko'chasi"
+        "Bogibinafsha ko'chasi",
+        "ул. Богибинафша",
+        "Bogibinafsha St."
       ],
       [
-        "Bogimardon ko'chasi"
+        "Bogimardon ko'chasi",
+        "ул. Богимардон",
+        "Bogimardon St."
       ],
       [
-        "Bozorkurgon ko'chasi"
+        "Bozorkurgon ko'chasi",
+        "ул. Бозоркургон",
+        "Bozorkurgon St."
       ],
       [
-        "Bozurgoniy ko'chasi"
+        "Bozurgoniy ko'chasi",
+        "ул. Бозургоний",
+        "Bozurgoniy St."
       ],
       [
-        "Buloqboshi ko'chasi"
+        "Buloqboshi ko'chasi",
+        "ул. Булокбоши",
+        "Buloqboshi St."
       ],
       [
-        "Bunyodkorlar ko'chasi"
+        "Bunyodkorlar ko'chasi",
+        "ул. Бунёдкорлар",
+        "Bunyodkorlar St."
       ],
       [
-        "Burchilik ko'chasi"
+        "Burchilik ko'chasi",
+        "ул. Бурчилик",
+        "Burchilik St."
       ],
       [
         "Chamanzor ko'chasi",
         "Чаманзар улица"
       ],
       [
-        "Chankatlik ko'chasi"
+        "Chankatlik ko'chasi",
+        "ул. Чанкатлик",
+        "Chankatlik St."
       ],
       [
-        "Charhiy ko'chasi"
+        "Charhiy ko'chasi",
+        "ул. Чархий",
+        "Charhiy St."
       ],
       [
         "Charxiy ko'chasi",
         "улица Чархий"
       ],
       [
-        "Chaxorbog ko'chasi"
+        "Chaxorbog ko'chasi",
+        "ул. Чахорбог",
+        "Chaxorbog St."
       ],
       [
-        "Chek yoʻli"
+        "Chek yoʻli",
+        "дор. Чек",
+        "Chek Rd."
       ],
       [
         "Chilangar ko'chasi",
         "Чилангар улица"
       ],
       [
-        "Chimkent ko'chasi"
+        "Chimkent ko'chasi",
+        "ул. Чимкент",
+        "Chimkent St."
       ],
       [
-        "Chinnisoy ko'chasi"
+        "Chinnisoy ko'chasi",
+        "ул. Чиннисой",
+        "Chinnisoy St."
       ],
       [
-        "Chinobod ko'chasi"
+        "Chinobod ko'chasi",
+        "ул. Чинобод",
+        "Chinobod St."
       ],
       [
-        "Chirchiq ko’chasi"
+        "Chirchiq ko’chasi",
+        "ул. Чирчик",
+        "Chirchiq St."
       ],
       [
-        "Cho'lpon ko'chasi"
+        "Cho'lpon ko'chasi",
+        "ул. Чулпон",
+        "Cho'lpon St."
       ],
       [
-        "Chorbog' ko'chasi"
+        "Chorbog' ko'chasi",
+        "ул. Чорбог'",
+        "Chorbog' St."
       ],
       [
-        "Chorchaman ko'chasi"
+        "Chorchaman ko'chasi",
+        "ул. Чорчаман",
+        "Chorchaman St."
       ],
       [
-        "Chorchinor ko'chasi"
+        "Chorchinor ko'chasi",
+        "ул. Чорчинор",
+        "Chorchinor St."
       ],
       [
-        "Chortoq ko'chasi"
+        "Chortoq ko'chasi",
+        "ул. Чорток",
+        "Chortoq St."
       ],
       [
-        "Chorvador ko'chasi"
+        "Chorvador ko'chasi",
+        "ул. Чорвадор",
+        "Chorvador St."
       ],
       [
-        "Chust ko'chasi"
+        "Chust ko'chasi",
+        "ул. Чуст",
+        "Chust St."
       ],
       [
-        "Dangara ko'chasi"
+        "Dangara ko'chasi",
+        "ул. Дангара",
+        "Dangara St."
       ],
       [
-        "Darveshobod ko'chasi"
+        "Darveshobod ko'chasi",
+        "ул. Дарвешобод",
+        "Darveshobod St."
       ],
       [
-        "Dastarbob ko'chasi"
+        "Dastarbob ko'chasi",
+        "ул. Дастарбоб",
+        "Dastarbob St."
       ],
       [
         "Davronbek ko'chasi",
@@ -21542,66 +23166,105 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Davronbek Street"
       ],
       [
-        "Degrezlik ko'chasi"
+        "Degrezlik ko'chasi",
+        "ул. Дегрезлик",
+        "Degrezlik St."
       ],
       [
         "Devonbegi ko'chasi",
+        "ул. Девонбеги",
+        "Devonbegi St.",
         "Devonbegi Street"
       ],
       [
-        "Dilkash ko'chasi"
+        "Dilkash ko'chasi",
+        "ул. Дилкаш",
+        "Dilkash St."
       ],
       [
-        "Dilshod ko'chasi"
+        "Dilshod ko'chasi",
+        "ул. Дилшод",
+        "Dilshod St."
       ],
       [
-        "Diyor 1-tor ko'chasi"
+        "Diyor 1-tor ko'chasi",
+        "1-й пр. Диёр",
+        "Diyor 1st Ln."
       ],
       [
-        "Diyor 2-tor ko'chasi"
+        "Diyor 2-tor ko'chasi",
+        "2-й пр. Диёр",
+        "Diyor 2nd Ln."
       ],
       [
-        "Diyor ko'chasi"
+        "Diyor ko'chasi",
+        "ул. Диёр",
+        "Diyor St."
       ],
       [
         "Do'stlik ko'chasi",
-        "Do’stlik ko’chasi"
+        "ул. Дустлик",
+        "Do’stlik ko’chasi",
+        "Do'stlik St."
       ],
       [
-        "Do'stlik ko'chyasi"
+        "Do'stlik ko'chyasi",
+        "Дустлик кучяси"
       ],
       [
-        "Do'stlikko'chasi"
+        "Do'stlikko'chasi",
+        "ул. Дустлик",
+        "Do'stlik St."
       ],
       [
-        "Dongdor ko'chasi"
+        "Dongdor ko'chasi",
+        "ул. Донгдор",
+        "Dongdor St."
       ],
       [
-        "Dustlik ko'chasi"
+        "Dustlik ko'chasi",
+        "ул. Дустлик",
+        "Dustlik St."
       ],
       [
-        "Egarchilik koʻchasi"
+        "Egarchilik koʻchasi",
+        "ул. Егарчилик",
+        "Egarchilik St."
       ],
       [
-        "Elaton 1-tor ko'chasi"
+        "Elaton 1-tor ko'chasi",
+        "1-й пр. Елатон",
+        "Elaton 1st Ln."
       ],
       [
-        "Elaton 2-tor ko'chasi"
+        "Elaton 2-tor ko'chasi",
+        "2-й пр. Елатон",
+        "Elaton 2nd Ln."
       ],
       [
-        "Elaton ko'chasi"
+        "Elaton ko'chasi",
+        "ул. Елатон",
+        "Elaton St."
       ],
       [
-        "Eski Arab ko'chasi"
+        "Eski Arab ko'chasi",
+        "ул. Ески Араб",
+        "Eski Arab St."
       ],
       [
-        "Eski Rabot ko'chasi"
+        "Eski Rabot ko'chasi",
+        "ул. Ески Работ",
+        "Eski Rabot St."
       ],
       [
-        "Eskikurgon ko'chasi"
+        "Eskikurgon ko'chasi",
+        "ул. Ескикургон",
+        "Eskikurgon St."
       ],
       [
-        "Ezgulik ko'chasi"
+        "Ezgulik ko'chasi",
+        "ул. Езгулик",
+        "Ezgulik St."
       ],
       [
         "Farg‘ona halqa yo‘li",
@@ -21617,121 +23280,175 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Фаргона Хакикати улица"
       ],
       [
-        "Farididdin Attor ko'chasi"
+        "Farididdin Attor ko'chasi",
+        "ул. Фаридиддин Аттор",
+        "Farididdin Attor St."
       ],
       [
-        "Farobiy ko'chasi"
+        "Farobiy ko'chasi",
+        "ул. Фароби",
+        "Farobiy St."
       ],
       [
-        "Farog'at ko'chasi"
+        "Farog'at ko'chasi",
+        "ул. Фарогат",
+        "Farog'at St."
       ],
       [
-        "Fasoxat ko'chasi"
+        "Fasoxat ko'chasi",
+        "ул. Фасохат",
+        "Fasoxat St."
       ],
       [
-        "Faxriylar ko'chasi"
+        "Faxriylar ko'chasi",
+        "ул. Фахрийлар",
+        "Faxriylar St."
       ],
       [
-        "Fidokor ko'chasi"
+        "Fidokor ko'chasi",
+        "ул. Фидокор",
+        "Fidokor St."
       ],
       [
-        "Firdavsiy ko'chasi"
+        "Firdavsiy ko'chasi",
+        "ул. Фирдавси",
+        "Firdavsiy St."
       ],
       [
-        "Firoqiy ko'chasi"
+        "Firoqiy ko'chasi",
+        "ул. Фирокий",
+        "Firoqiy St."
       ],
       [
-        "Fitrat ko'chasi"
+        "Fitrat ko'chasi",
+        "ул. Фитрат",
+        "Fitrat St."
       ],
       [
         "Furqat ko'chasi",
         "Фуркат улица"
       ],
       [
-        "Fuzuliy ko'chasi"
+        "Fuzuliy ko'chasi",
+        "ул. Фузулий",
+        "Fuzuliy St."
       ],
       [
-        "G'allakor ko'chasi"
+        "G'allakor ko'chasi",
+        "ул. Галлакор",
+        "G'allakor St."
       ],
       [
         "G'ofur G'ulom ko'chasi",
         "улица Гафура Гулама"
       ],
       [
-        "Galaba ko'chasi"
+        "Galaba ko'chasi",
+        "ул. Галаба",
+        "Galaba St."
       ],
       [
         "Gertsen ko'chasi",
         "Герстен улица"
       ],
       [
-        "Gʻoziyogʻliq koʻchasi"
+        "Gʻoziyogʻliq koʻchasi",
+        "ул. Гозиёглик",
+        "G'oziyog'liq St."
       ],
       [
-        "Glinka koʻchasi"
+        "Glinka koʻchasi",
+        "ул. Глинка",
+        "Glinka St."
       ],
       [
-        "Gulchaman"
+        "Gulchaman",
+        "Гулчаман"
       ],
       [
-        "Guldasta ko'chasi"
+        "Guldasta ko'chasi",
+        "ул. Гулдаста",
+        "Guldasta St."
       ],
       [
-        "Guliston ko'chasi"
+        "Guliston ko'chasi",
+        "ул. Гулистон",
+        "Guliston St."
       ],
       [
-        "Gulobod koʻchasi"
+        "Gulobod koʻchasi",
+        "ул. Гулобод",
+        "Gulobod St."
       ],
       [
-        "Gulshan ko'chasi"
+        "Gulshan ko'chasi",
+        "ул. Гулшан",
+        "Gulshan St."
       ],
       [
         "Gulxaniy ko'chasi",
         "Гульхани улица"
       ],
       [
-        "Guzar ko'chasi",
-        "улица Гузар"
-      ],
-      [
         "Guzar koʻchasi",
-        "Гузар улица"
+        "Гузар улица",
+        "улица Гузар",
+        "Guzar ko'chasi"
       ],
       [
-        "Hakimxon To'ra ko'chasi"
+        "Hakimxon To'ra ko'chasi",
+        "ул. Хакимхон Тура",
+        "Hakimxon To'ra St."
       ],
       [
-        "Hamdam Otaliq koʻchasi"
+        "Hamdam Otaliq koʻchasi",
+        "ул. Хамдам Оталик",
+        "Hamdam Otaliq St."
       ],
       [
-        "Hamid Olimjon koʻchasi"
+        "Hamid Olimjon koʻchasi",
+        "ул. Хамид Олимджон",
+        "Hamid Olimjon St."
       ],
       [
-        "Havaskor ko'chasi"
+        "Havaskor ko'chasi",
+        "ул. Хаваскор",
+        "Havaskor St."
       ],
       [
-        "Havaskor ko'chyasi"
+        "Havaskor ko'chyasi",
+        "Хаваскор кучяси"
       ],
       [
-        "Hoja Ahror Valiy ko'chasi"
+        "Hoja Ahror Valiy ko'chasi",
+        "ул. Ходжа Ахрор Валий",
+        "Hoja Ahror Valiy St."
       ],
       [
-        "Hojilar Ko'chasi"
+        "Hojilar Ko'chasi",
+        "ул. Ходжилар",
+        "Hojilar St."
       ],
       [
-        "Hurlik ko'chasi"
+        "Hurlik ko'chasi",
+        "ул. Хурлик",
+        "Hurlik St."
       ],
       [
-        "Huvaydo ko'chasi"
+        "Huvaydo ko'chasi",
+        "ул. Хувайдо",
+        "Huvaydo St."
       ],
       [
-        "Ibn Sino ko‘chasi"
+        "Ibn Sino ko‘chasi",
+        "ул. Ибн Сино",
+        "Ibn Sino koʻchasi",
+        "Ibn Sino St."
       ],
       [
-        "Ibn Sino koʻchasi"
-      ],
-      [
-        "Ibrat ko'chasi"
+        "Ibrat ko'chasi",
+        "ул. Ибрат",
+        "Ibrat St."
       ],
       [
         "Ijodkor ko'chasi",
@@ -21739,7 +23456,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Ijakor street"
       ],
       [
-        "Ilg'or ko'chasi"
+        "Ilg'or ko'chasi",
+        "ул. Илгор",
+        "Ilg'or St."
       ],
       [
         "Imom Al-Buxoriy ko'chasi",
@@ -21750,142 +23469,226 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Ипак Йули"
       ],
       [
-        "Islom Mirzo ko'chasi"
+        "Islom Mirzo ko'chasi",
+        "ул. Ислом Мирзо",
+        "Islom Mirzo St."
       ],
       [
         "Islomobod ko'chasi",
         "Исломобод улица"
       ],
       [
-        "Istiqlol 1-tor ko'chasi"
+        "Istiqlol 1-tor ko'chasi",
+        "1-й пр. Истиклол",
+        "Istiqlol 1st Ln."
       ],
       [
         "Istiqlol ko'chasi",
         "Истиклол улица"
       ],
       [
-        "Istirohat (sobiq N.To‘rakulov) ko'chasi"
+        "Istirohat (sobiq N.To‘rakulov) ko'chasi",
+        "ул. Истирохат (собик Н.Туракулов)",
+        "Istirohat (sobiq N.To'rakulov) St."
       ],
       [
-        "Ittifoq ko'chasi"
+        "Ittifoq ko'chasi",
+        "ул. Иттифок",
+        "Ittifoq St."
       ],
       [
-        "Jahon Otin ko'chasi"
+        "Jahon Otin ko'chasi",
+        "ул. Джахон Отин",
+        "Jahon Otin St."
       ],
       [
-        "Jahonoro 1-tor ko'chasi"
+        "Jahonoro 1-tor ko'chasi",
+        "1-й пр. Джахоноро",
+        "Jahonoro 1st Ln."
       ],
       [
-        "Jahonoro 2-tor ko'chasi"
+        "Jahonoro 2-tor ko'chasi",
+        "2-й пр. Джахоноро",
+        "Jahonoro 2nd Ln."
       ],
       [
-        "Jahonoro 3-tor ko'chasi"
+        "Jahonoro 3-tor ko'chasi",
+        "3-й пр. Джахоноро",
+        "Jahonoro 3rd Ln."
       ],
       [
-        "Jahonoro ko'chasi"
+        "Jahonoro ko'chasi",
+        "ул. Джахоноро",
+        "Jahonoro St."
       ],
       [
-        "Jalayer ko'chasi"
+        "Jalayer ko'chasi",
+        "ул. Джалаер",
+        "Jalayer St."
       ],
       [
-        "Jaloliddin ko'chasi"
+        "Jaloliddin ko'chasi",
+        "ул. Джалолиддин",
+        "Jaloliddin St."
       ],
       [
-        "Jalolobod ko'chasi"
+        "Jalolobod ko'chasi",
+        "ул. Джалолобод",
+        "Jalolobod St."
       ],
       [
-        "Jambul ko'chasi"
+        "Jambul ko'chasi",
+        "ул. Джамбул",
+        "Jambul St."
       ],
       [
-        "Jartepa ko'chasi"
+        "Jartepa ko'chasi",
+        "ул. Джартепа",
+        "Jartepa St."
       ],
       [
-        "Jasorat koʻchasi"
+        "Jasorat koʻchasi",
+        "ул. Джасорат",
+        "Jasorat St."
       ],
       [
-        "Jaxongir Mirzo ko'chasi"
+        "Jaxongir Mirzo ko'chasi",
+        "ул. Джахонгир Мирзо",
+        "Jaxongir Mirzo St."
       ],
       [
-        "Jayhun ko'chasi"
+        "Jayhun ko'chasi",
+        "ул. Джайхун",
+        "Jayhun St."
       ],
       [
-        "Jiydali bog' ko'chasi"
+        "Jiydali bog' ko'chasi",
+        "ул. Джийдали бог'",
+        "Jiydali bog' St."
       ],
       [
-        "K.Mirzo ko'chasi"
+        "K.Mirzo ko'chasi",
+        "ул. К.Мирзо",
+        "K.Mirzo St."
       ],
       [
-        "K.Xaydarov ko'chasi"
+        "K.Xaydarov ko'chasi",
+        "ул. К.Хайдаров",
+        "K.Xaydarov St."
       ],
       [
-        "Kamalak (sobiq Ozodlik) ko'chasi"
+        "Kamalak (sobiq Ozodlik) ko'chasi",
+        "ул. Камалак (собик Озодлик)",
+        "Kamalak (sobiq Ozodlik) St."
       ],
       [
-        "Kamalak ko'chasi"
+        "Kamalak ko'chasi",
+        "ул. Камалак",
+        "Kamalak St."
       ],
       [
-        "Kamoliddin Bexzod ko'chasi"
+        "Kamoliddin Bexzod ko'chasi",
+        "ул. Камолиддин Бехзод",
+        "Kamoliddin Bexzod St."
       ],
       [
-        "Kamolot koʻchasi"
+        "Kamolot koʻchasi",
+        "ул. Камолот",
+        "Kamolot St."
       ],
       [
-        "Kandakor ko'chasi"
+        "Kandakor ko'chasi",
+        "ул. Кандакор",
+        "Kandakor St."
       ],
       [
-        "Karbasbof ko'chasi"
+        "Karbasbof ko'chasi",
+        "ул. Карбасбоф",
+        "Karbasbof St."
       ],
       [
-        "Karvon Ko’chasi"
+        "Karvon Ko’chasi",
+        "ул. Карвон",
+        "Karvon St."
       ],
       [
-        "Kashkadaryo ko'chasi"
+        "Kashkadaryo ko'chasi",
+        "ул. Кашкадарё",
+        "Kashkadaryo St."
       ],
       [
-        "Katta ko'chasi"
+        "Katta ko'chasi",
+        "ул. Катта",
+        "Katta St."
       ],
       [
-        "Kattaqoʻrgʻon koʻchasi"
+        "Kattaqoʻrgʻon koʻchasi",
+        "ул. Каттакургон",
+        "Kattaqo'rg'on St."
       ],
       [
-        "Kaynar ko'chasi"
+        "Kaynar ko'chasi",
+        "ул. Кайнар",
+        "Kaynar St."
       ],
       [
-        "Kengash ko'chasi"
+        "Kengash ko'chasi",
+        "ул. Кенгаш",
+        "Kengash St."
       ],
       [
-        "Kiyalisoy ko'chasi"
+        "Kiyalisoy ko'chasi",
+        "ул. Киялисой",
+        "Kiyalisoy St."
       ],
       [
-        "Ko'k to'nli ota ko'chasi"
+        "Ko'k to'nli ota ko'chasi",
+        "ул. Кук тунли ота",
+        "Ko'k to'nli ota St."
       ],
       [
-        "Ko'rpabof koʻchasi"
+        "Ko'rpabof koʻchasi",
+        "ул. Курпабоф",
+        "Ko'rpabof St."
       ],
       [
         "Konstitutsiya ko'chasi",
         "улица Конституции"
       ],
       [
-        "Kukaldosh ko'chasi"
+        "Kukaldosh ko'chasi",
+        "ул. Кукалдош",
+        "Kukaldosh St."
       ],
       [
-        "Kukgumbaz ko'chasi"
+        "Kukgumbaz ko'chasi",
+        "ул. Кукгумбаз",
+        "Kukgumbaz St."
       ],
       [
-        "Kunsuluv ko'chasi"
+        "Kunsuluv ko'chasi",
+        "ул. Кунсулув",
+        "Kunsuluv St."
       ],
       [
-        "Lashkar ko'chasi"
+        "Lashkar ko'chasi",
+        "ул. Лашкар",
+        "Lashkar St."
       ],
       [
-        "Latofat ko'chasi"
+        "Latofat ko'chasi",
+        "ул. Латофат",
+        "Latofat St."
       ],
       [
-        "Loyixaviy ko'chasi"
+        "Loyixaviy ko'chasi",
+        "ул. Лойихавий",
+        "Loyixaviy St."
       ],
       [
-        "Lutfixon Sarimsoqova ko'chasi"
+        "Lutfixon Sarimsoqova ko'chasi",
+        "ул. Лутфихон Саримсокова",
+        "Lutfixon Sarimsoqova St."
       ],
       [
         "Lutfiy ko'chasi",
@@ -21896,65 +23699,103 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "М. Бехбубий улица"
       ],
       [
-        "M.Tarobiy ko'chasi"
+        "M.Tarobiy ko'chasi",
+        "ул. М.Таробий",
+        "M.Tarobiy St."
       ],
       [
-        "Ma’rifat ko'chasi"
+        "Ma’rifat ko'chasi",
+        "ул. Марифат",
+        "Ma'rifat St."
       ],
       [
-        "Mahzuna ko'chasi"
+        "Mahzuna ko'chasi",
+        "ул. Махзуна",
+        "Mahzuna St."
       ],
       [
         "Majnuntol ko'chasi",
         "Маджнунтол улица"
       ],
       [
-        "Maktab ko'chasi"
+        "Maktab ko'chasi",
+        "ул. Мактаб",
+        "Maktab St."
       ],
       [
-        "Marg'ilon ko'chasi"
+        "Marg'ilon ko'chasi",
+        "ул. Маргилон",
+        "Marg'ilon St."
       ],
       [
-        "Marxabo ko'chasi"
+        "Marxabo ko'chasi",
+        "ул. Мархабо",
+        "Marxabo St."
       ],
       [
-        "Mashrab ko'chasi"
+        "Mashrab ko'chasi",
+        "ул. Машраб",
+        "Mashrab St."
       ],
       [
-        "Mastona ko'chasi"
+        "Mastona ko'chasi",
+        "ул. Мастона",
+        "Mastona St."
       ],
       [
-        "Matonat ko'chasi"
+        "Matonat ko'chasi",
+        "ул. Матонат",
+        "Matonat St."
       ],
       [
-        "Maxorat ko'chasi"
+        "Maxorat ko'chasi",
+        "ул. Махорат",
+        "Maxorat St."
       ],
       [
-        "Maxram ko'chasi"
+        "Maxram ko'chasi",
+        "ул. Махрам",
+        "Maxram St."
       ],
       [
-        "Mazor oraliq ko'chasi"
+        "Mazor oraliq ko'chasi",
+        "ул. Мазор оралик",
+        "Mazor oraliq St."
       ],
       [
-        "Mevazor ko'chasi"
+        "Mevazor ko'chasi",
+        "ул. Мевазор",
+        "Mevazor St."
       ],
       [
-        "Mexnatobod ko'chasi"
+        "Mexnatobod ko'chasi",
+        "ул. Мехнатобод",
+        "Mexnatobod St."
       ],
       [
-        "Mexrigiyo ko'chasi"
+        "Mexrigiyo ko'chasi",
+        "ул. Мехригиё",
+        "Mexrigiyo St."
       ],
       [
-        "Mexrjon ko'chasi"
+        "Mexrjon ko'chasi",
+        "ул. Мехрджон",
+        "Mexrjon St."
       ],
       [
-        "Mirishkor ko'chasi"
+        "Mirishkor ko'chasi",
+        "ул. Миришкор",
+        "Mirishkor St."
       ],
       [
-        "Mirza Xuqandiy ko'chasi"
+        "Mirza Xuqandiy ko'chasi",
+        "ул. Мирза Хукандий",
+        "Mirza Xuqandiy St."
       ],
       [
-        "Mirzo Yodgor ko'chasi"
+        "Mirzo Yodgor ko'chasi",
+        "ул. Мирзо Ёдгор",
+        "Mirzo Yodgor St."
       ],
       [
         "Misgarlik ko'chasi",
@@ -21970,13 +23811,19 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Мавераннахр улица"
       ],
       [
-        "Moxlaroyim ko'chasi"
+        "Moxlaroyim ko'chasi",
+        "ул. Мохларойим",
+        "Moxlaroyim St."
       ],
       [
-        "Mulkobod ko'chasi"
+        "Mulkobod ko'chasi",
+        "ул. Мулкобод",
+        "Mulkobod St."
       ],
       [
-        "Mulla Boshmon ko'chasi"
+        "Mulla Boshmon ko'chasi",
+        "ул. Мулла Бошмон",
+        "Mulla Boshmon St."
       ],
       [
         "Munavvar ko'chasi",
@@ -21984,7 +23831,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Munavvar street"
       ],
       [
-        "Muqimiy ko'chasi"
+        "Muqimiy ko'chasi",
+        "ул. Мукимий",
+        "Muqimiy St."
       ],
       [
         "Muqimjonboy ko'chasi",
@@ -22008,28 +23857,44 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Мустакиллик улица"
       ],
       [
-        "Muxayyir ko'chasi"
+        "Muxayyir ko'chasi",
+        "ул. Мухаййир",
+        "Muxayyir St."
       ],
       [
-        "Muxsiniy 1-tor ko'chasi"
+        "Muxsiniy 1-tor ko'chasi",
+        "1-й пр. Мухсиний",
+        "Muxsiniy 1st Ln."
       ],
       [
-        "Muxsiniy ko'chasi"
+        "Muxsiniy ko'chasi",
+        "ул. Мухсиний",
+        "Muxsiniy St."
       ],
       [
-        "Nafosat ko'chasi"
+        "Nafosat ko'chasi",
+        "ул. Нафосат",
+        "Nafosat St."
       ],
       [
-        "Najjor koʻchasi"
+        "Najjor koʻchasi",
+        "ул. Наджджор",
+        "Najjor St."
       ],
       [
-        "Najmiddin Kubro 1-tor kochasi"
+        "Najmiddin Kubro 1-tor kochasi",
+        "1-й пр. Наджмиддин Кубро",
+        "Najmiddin Kubro 1st Ln."
       ],
       [
-        "Najmiddin Kubro ko'chasi"
+        "Najmiddin Kubro ko'chasi",
+        "ул. Наджмиддин Кубро",
+        "Najmiddin Kubro St."
       ],
       [
-        "Namangan ko'chasi"
+        "Namangan ko'chasi",
+        "ул. Наманган",
+        "Namangan St."
       ],
       [
         "Nasimiy ko'chasi",
@@ -22048,38 +23913,58 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Навруз"
       ],
       [
-        "Naymancha ko'chasi"
+        "Naymancha ko'chasi",
+        "ул. Найманча",
+        "Naymancha St."
       ],
       [
-        "Nixol (sobiq S.Boltaboev) ko'chasi"
+        "Nixol (sobiq S.Boltaboev) ko'chasi",
+        "ул. Нихол (собик С.Болтабоев)",
+        "Nixol (sobiq S.Boltaboev) St."
       ],
       [
-        "Nizomiy ko'chasi"
+        "Nizomiy ko'chasi",
+        "ул. Низомий",
+        "Nizomiy St."
       ],
       [
         "Nodira ko'chasi",
         "Улица Нодира"
       ],
       [
-        "Norbo'tabek ko'chasi"
+        "Norbo'tabek ko'chasi",
+        "ул. Норбутабек",
+        "Norbo'tabek St."
       ],
       [
-        "Norin ko'chasi"
+        "Norin ko'chasi",
+        "ул. Норин",
+        "Norin St."
       ],
       [
-        "Nurafshon ko'chasi"
+        "Nurafshon ko'chasi",
+        "ул. Нурафшон",
+        "Nurafshon St."
       ],
       [
-        "Nurli yo'l ko'chasi"
+        "Nurli yo'l ko'chasi",
+        "ул. Нурли ёл",
+        "Nurli yo'l St."
       ],
       [
-        "Nurobod ko'chasi"
+        "Nurobod ko'chasi",
+        "ул. Нуробод",
+        "Nurobod St."
       ],
       [
-        "Nuroniy ko'chasi"
+        "Nuroniy ko'chasi",
+        "ул. Нуроний",
+        "Nuroniy St."
       ],
       [
-        "O'qituvchilar ko'chasi"
+        "O'qituvchilar ko'chasi",
+        "ул. Укитувчилар",
+        "O'qituvchilar St."
       ],
       [
         "O'rdatagi 1-tor ko'chasi",
@@ -22090,52 +23975,76 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Урдатоги улица"
       ],
       [
-        "O'rta ko'chasi"
+        "O'rta ko'chasi",
+        "ул. Урта",
+        "O'rta St."
       ],
       [
-        "O'rta tagi ko'chasi"
+        "O'rta tagi ko'chasi",
+        "ул. Урта таги",
+        "O'rta tagi St."
       ],
       [
         "O’zbekiston Ko’chasi",
         "Узбекистан улица",
-        "O'zbekiston ko'chasi"
+        "ул. Узбекистон",
+        "O'zbekiston ko'chasi",
+        "O'zbekiston St.",
+        "Oʻzbekiston koʻchasi"
       ],
       [
         "Obidjon Mahmudov ko'chasi",
         "улица Обиджона Махмудова"
       ],
       [
-        "Obiravon ko'chasi"
+        "Obiravon ko'chasi",
+        "ул. Обиравон",
+        "Obiravon St."
       ],
       [
-        "Obod ko'chasi"
+        "Obod ko'chasi",
+        "ул. Обод",
+        "Obod St."
       ],
       [
-        "Obod o‘lka ko'chasi"
+        "Obod o‘lka ko'chasi",
+        "ул. Обод улка",
+        "Obod o'lka St."
       ],
       [
-        "Obod yurt ko'chasi"
+        "Obod yurt ko'chasi",
+        "ул. Обод юрт",
+        "Obod yurt St."
       ],
       [
-        "Obodon ko'chasi"
+        "Obodon ko'chasi",
+        "ул. Ободон",
+        "Obodon St."
       ],
       [
-        "Oftoboyim ko'chasi"
+        "Oftoboyim ko'chasi",
+        "ул. Офтобойим",
+        "Oftoboyim St."
       ],
       [
-        "Ogahiy ko'chasi"
+        "Ogahiy ko'chasi",
+        "ул. Огахий",
+        "Ogahiy St."
       ],
       [
-        "Oʻzbekiston koʻchasi"
+        "Olchazor ko'chasi",
+        "ул. Олчазор",
+        "Olchazor St."
       ],
       [
-        "Olchazor ko'chasi"
+        "Olimqul Dodxoh ko'chasi",
+        "ул. Олимкул Додхох",
+        "Olimqul Dodxoh St."
       ],
       [
-        "Olimqul Dodxoh ko'chasi"
-      ],
-      [
-        "Olmaota ko'chasi"
+        "Olmaota ko'chasi",
+        "ул. Олмаота",
+        "Olmaota St."
       ],
       [
         "Olmazor ko'chasi",
@@ -22147,32 +24056,48 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Алмас улица"
       ],
       [
-        "Oloy ko'chasi"
+        "Oloy ko'chasi",
+        "ул. Олой",
+        "Oloy St."
       ],
       [
-        "Oltiarik ko'chasi"
+        "Oltiarik ko'chasi",
+        "ул. Олтиарик",
+        "Oltiarik St."
       ],
       [
-        "Oltin Vodiy 1-tor ko'chasi"
+        "Oltin Vodiy 1-tor ko'chasi",
+        "1-й пр. Олтин Водий",
+        "Oltin Vodiy 1st Ln."
       ],
       [
         "Oltin Vodiy ko'chasi",
         "Олтин водий улица"
       ],
       [
-        "Oltinko'l ko'chasi"
+        "Oltinko'l ko'chasi",
+        "ул. Олтинкул",
+        "Oltinko'l St."
       ],
       [
-        "Omonlik ko'chasi"
+        "Omonlik ko'chasi",
+        "ул. Омонлик",
+        "Omonlik St."
       ],
       [
-        "Oq tumor ko'chasi"
+        "Oq tumor ko'chasi",
+        "ул. Ок тумор",
+        "Oq tumor St."
       ],
       [
-        "Oq Yo'l 1-tor ko'chasi"
+        "Oq Yo'l 1-tor ko'chasi",
+        "1-й пр. Ок Ёл",
+        "Oq Yo'l 1st Ln."
       ],
       [
-        "Oq Yo'l ko'chasi"
+        "Oq Yo'l ko'chasi",
+        "ул. Ок Ёл",
+        "Oq Yo'l St."
       ],
       [
         "Oqariq ko'chasi",
@@ -22183,17 +24108,23 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Актепасай улица"
       ],
       [
-        "Oqtosh ko'chasi"
+        "Oqtosh ko'chasi",
+        "ул. Октош",
+        "Oqtosh St."
       ],
       [
-        "Orasta ko'chasi"
+        "Orasta ko'chasi",
+        "ул. Ораста",
+        "Orasta St."
       ],
       [
         "Orzu ko'chasi",
         "Орзу улица"
       ],
       [
-        "Osh ko'chasi"
+        "Osh ko'chasi",
+        "ул. Ош",
+        "Osh St."
       ],
       [
         "Otabek Noib 1-tor ko'chasi",
@@ -22204,71 +24135,113 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Отабек Ноиб 2-тупик"
       ],
       [
-        "Otabek Noib 3-tor ko'chasi"
+        "Otabek Noib 3-tor ko'chasi",
+        "3-й пр. Отабек Ноиб",
+        "Otabek Noib 3rd Ln."
       ],
       [
-        "Otabek Noib 4-tor ko'chasi"
+        "Otabek Noib 4-tor ko'chasi",
+        "4-й пр. Отабек Ноиб",
+        "Otabek Noib 4th Ln."
       ],
       [
-        "Otabek Noib 5-tor ko'chasi"
+        "Otabek Noib 5-tor ko'chasi",
+        "5-й пр. Отабек Ноиб",
+        "Otabek Noib 5th Ln."
       ],
       [
-        "Otabek Noib 6-tor ko'chasi"
+        "Otabek Noib 6-tor ko'chasi",
+        "6-й пр. Отабек Ноиб",
+        "Otabek Noib 6th Ln."
       ],
       [
         "Otabek Noib ko'chasi",
         "улица Отабек Ноиб"
       ],
       [
-        "Oybek ko'chasi"
+        "Oybek ko'chasi",
+        "ул. Ойбек",
+        "Oybek St."
       ],
       [
-        "Oydin Buloq Ko'chasi"
+        "Oydin Buloq Ko'chasi",
+        "ул. Ойдин Булок",
+        "Oydin Buloq St."
       ],
       [
-        "Oydinko'l ko'chasi"
+        "Oydinko'l ko'chasi",
+        "ул. Ойдинкул",
+        "Oydinko'l St."
       ],
       [
-        "Ozodlik ko'chasi"
+        "Ozodlik ko'chasi",
+        "ул. Озодлик",
+        "Ozodlik St."
       ],
       [
-        "Ozodlik xiyoboni ko'chasi"
+        "Ozodlik xiyoboni ko'chasi",
+        "пр-т Озодлик",
+        "Ozodlik Ave."
       ],
       [
-        "Ozodyurt ko'chasi"
+        "Ozodyurt ko'chasi",
+        "ул. Озодюрт",
+        "Ozodyurt St."
       ],
       [
-        "Parkent ko'chasi"
+        "Parkent ko'chasi",
+        "ул. Паркент",
+        "Parkent St."
       ],
       [
-        "Parpashabof ko'chasi"
+        "Parpashabof ko'chasi",
+        "ул. Парпашабоф",
+        "Parpashabof St."
       ],
       [
-        "Parvoz ko'chasi"
+        "Parvoz ko'chasi",
+        "ул. Парвоз",
+        "Parvoz St."
       ],
       [
-        "Paxtakor ko'chasi"
+        "Paxtakor ko'chasi",
+        "ул. Пахтакор",
+        "Paxtakor St."
       ],
       [
-        "Pisandiy ko'chasi"
+        "Pisandiy ko'chasi",
+        "ул. Писандий",
+        "Pisandiy St."
       ],
       [
-        "Po'lat Qayumov ko'chasi"
+        "Po'lat Qayumov ko'chasi",
+        "ул. Пулат Каюмов",
+        "Po'lat Qayumov St."
       ],
       [
-        "Poʻstindoʻz koʻchasi"
+        "Poʻstindoʻz koʻchasi",
+        "ул. Пустиндуз",
+        "Po'stindo'z St."
       ],
       [
-        "Pomir ko'chasi"
+        "Pomir ko'chasi",
+        "ул. Помир",
+        "Pomir St."
       ],
       [
-        "Poyakilik ko'chasi"
+        "Poyakilik ko'chasi",
+        "ул. Поякилик",
+        "Poyakilik St."
       ],
       [
-        "Poytug ko'chasi"
+        "Poytug ko'chasi",
+        "ул. Пойтуг",
+        "Poytug St."
       ],
       [
-        "Qaxramon ko'chasi"
+        "Qaxramon ko'chasi",
+        "ул. Кахрамон",
+        "Qaxramon St."
       ],
       [
         "Qipchoqariq ko'chasi",
@@ -22279,13 +24252,19 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Киргиз улица"
       ],
       [
-        "Qizil ko'prik"
+        "Qizil ko'prik",
+        "Кизил мост",
+        "Qizil Bridge"
       ],
       [
-        "Qo’qon 1-tor Ko’chasi"
+        "Qo’qon 1-tor Ko’chasi",
+        "1-й пр. Кукон",
+        "Qo'qon 1st Ln."
       ],
       [
-        "Qo'qon Sadosi Ruznomasi ko'chasi"
+        "Qo'qon Sadosi Ruznomasi ko'chasi",
+        "ул. Кукон Садоси Рузномаси",
+        "Qo'qon Sadosi Ruznomasi St."
       ],
       [
         "Qo'rg'oncha ko'chasi",
@@ -22293,10 +24272,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Qo'rg'oncha  ko'chasi"
       ],
       [
-        "Qo'rg'ontepa ko'chasi"
+        "Qo'rg'ontepa ko'chasi",
+        "ул. Кургонтепа",
+        "Qo'rg'ontepa St."
       ],
       [
-        "Qo'rxona ko'chasi"
+        "Qo'rxona ko'chasi",
+        "ул. Курхона",
+        "Qo'rxona St."
       ],
       [
         "Qo‘shchinor ko'chasi",
@@ -22310,66 +24293,104 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "قۉقان — بېش‌اریق شاهیۉلی"
       ],
       [
-        "Quduqlik 1-tor ko'chasi"
+        "Quduqlik 1-tor ko'chasi",
+        "1-й пр. Кудуклик",
+        "Quduqlik 1st Ln."
       ],
       [
-        "Quduqlik 2-tor ko'chasi"
+        "Quduqlik 2-tor ko'chasi",
+        "2-й пр. Кудуклик",
+        "Quduqlik 2nd Ln."
       ],
       [
-        "Quduqlik ko'chasi"
+        "Quduqlik ko'chasi",
+        "ул. Кудуклик",
+        "Quduqlik St."
       ],
       [
-        "Qutlug' qadam ko'chasi"
+        "Qutlug' qadam ko'chasi",
+        "ул. Кутлуг' кадам",
+        "Qutlug' qadam St."
       ],
       [
-        "Rahima Aminova ko'chasi"
+        "Rahima Aminova ko'chasi",
+        "ул. Рахима Аминова",
+        "Rahima Aminova St."
       ],
       [
         "Rais ko'chasi",
         "Раис улица"
       ],
       [
-        "Rasta ko'chasi"
+        "Rasta ko'chasi",
+        "ул. Раста",
+        "Rasta St."
       ],
       [
-        "Ravot koʻchasi"
+        "Ravot koʻchasi",
+        "ул. Равот",
+        "Ravot St."
       ],
       [
-        "Rishton ko'chasi"
+        "Rishton ko'chasi",
+        "ул. Риштон",
+        "Rishton St."
       ],
       [
-        "Riskulibek ko'chasi"
+        "Riskulibek ko'chasi",
+        "ул. Рискулибек",
+        "Riskulibek St."
       ],
       [
-        "Risolatchi ko'chasi"
+        "Risolatchi ko'chasi",
+        "ул. Рисолатчи",
+        "Risolatchi St."
       ],
       [
-        "Roji Xuqandiy ko'chasi"
+        "Roji Xuqandiy ko'chasi",
+        "ул. Роджи Хукандий",
+        "Roji Xuqandiy St."
       ],
       [
-        "Rudakiy ko'chasi"
+        "Rudakiy ko'chasi",
+        "ул. Рудакий",
+        "Rudakiy St."
       ],
       [
-        "Sadakayragoch ko'chasi"
+        "Sadakayragoch ko'chasi",
+        "ул. Садакайрагоч",
+        "Sadakayragoch St."
       ],
       [
-        "Sadoqat ko'chasi"
+        "Sadoqat ko'chasi",
+        "ул. Садокат",
+        "Sadoqat St."
       ],
       [
-        "Sadriddin Ayniy ko'chasi"
+        "Sadriddin Ayniy ko'chasi",
+        "ул. Садриддин Айний",
+        "Sadriddin Ayniy St."
       ],
       [
-        "Salang Koʻchasi"
+        "Salang Koʻchasi",
+        "ул. Саланг",
+        "Salang St."
       ],
       [
-        "Samarqand ko'chasi"
+        "Samarqand ko'chasi",
+        "ул. Самарканд",
+        "Samarqand St."
       ],
       [
         "Sarbon ko’chasi",
-        "Sarbon ko'chasi"
+        "ул. Сарбон",
+        "Sarbon ko'chasi",
+        "Sarbon St."
       ],
       [
-        "Sarbotir ko'chasi"
+        "Sarbotir ko'chasi",
+        "ул. Сарботир",
+        "Sarbotir St."
       ],
       [
         "Sarboz ko`chasi",
@@ -22377,17 +24398,23 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Sarboz ko'chasi"
       ],
       [
-        "Sarikkurgon (sobiq A.Tukay) ko'chasi"
+        "Sarikkurgon (sobiq A.Tukay) ko'chasi",
+        "ул. Сариккургон (собик А.Тукай)",
+        "Sarikkurgon (sobiq A.Tukay) St."
       ],
       [
         "Sariqamish ko'chasi",
         "Сарик камыш улица"
       ],
       [
-        "Sarkor ko'chasi"
+        "Sarkor ko'chasi",
+        "ул. Саркор",
+        "Sarkor St."
       ],
       [
-        "Sarxovuz (sobiq U.Mamayusupov) ko'chasi"
+        "Sarxovuz (sobiq U.Mamayusupov) ko'chasi",
+        "ул. Сарховуз (собик У.Мамаюсупов)",
+        "Sarxovuz (sobiq U.Mamayusupov) St."
       ],
       [
         "Sayhon koʻchasi",
@@ -22395,56 +24422,88 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Sayhan Street"
       ],
       [
-        "Sayyod ko'chasi"
+        "Sayyod ko'chasi",
+        "ул. Сайёд",
+        "Sayyod St."
       ],
       [
-        "Shaldiramoq ko'chasi"
+        "Shaldiramoq ko'chasi",
+        "ул. Шалдирамок",
+        "Shaldiramoq St."
       ],
       [
-        "Sharkobod ko'chasi"
+        "Sharkobod ko'chasi",
+        "ул. Шаркобод",
+        "Sharkobod St."
       ],
       [
-        "Sharof Rashidov ko'chasi"
+        "Sharof Rashidov ko'chasi",
+        "ул. Шароф Рашидов",
+        "Sharof Rashidov St."
       ],
       [
-        "Sharq Birlashuv ko'chasi"
+        "Sharq Birlashuv ko'chasi",
+        "ул. Шарк Бирлашув",
+        "Sharq Birlashuv St."
       ],
       [
-        "Sharq ko'chasi"
+        "Sharq ko'chasi",
+        "ул. Шарк",
+        "Sharq St."
       ],
       [
-        "Sharq Tongi ko'chasi"
+        "Sharq Tongi ko'chasi",
+        "ул. Шарк Тонги",
+        "Sharq Tongi St."
       ],
       [
-        "Shaxrisabz ko'chasi"
+        "Shaxrisabz ko'chasi",
+        "ул. Шахрисабз",
+        "Shaxrisabz St."
       ],
       [
-        "Shayx Sa'diy ko'chasi"
+        "Shayx Sa'diy ko'chasi",
+        "ул. Шайх Садий",
+        "Shayx Sa'diy St."
       ],
       [
-        "Shayxon payon Ko’chasi"
+        "Shayxon payon Ko’chasi",
+        "ул. Шайхон паён",
+        "Shayxon payon St."
       ],
       [
-        "Shayxul Islom ko'chasi"
+        "Shayxul Islom ko'chasi",
+        "ул. Шайхул Ислом",
+        "Shayxul Islom St."
       ],
       [
         "Sherali Mingboshi ko'chasi",
         "Шерали Мингбаши улица"
       ],
       [
-        "Sherqadam ko'chasi"
+        "Sherqadam ko'chasi",
+        "ул. Шеркадам",
+        "Sherqadam St."
       ],
       [
-        "Shigovul ko'chasi"
+        "Shigovul ko'chasi",
+        "ул. Шиговул",
+        "Shigovul St."
       ],
       [
-        "Shijoat ko'chasi"
+        "Shijoat ko'chasi",
+        "ул. Шиджоат",
+        "Shijoat St."
       ],
       [
-        "Shikorgox ko'chasi"
+        "Shikorgox ko'chasi",
+        "ул. Шикоргох",
+        "Shikorgox St."
       ],
       [
-        "Shiroq ko'chasi"
+        "Shiroq ko'chasi",
+        "ул. Широк",
+        "Shiroq St."
       ],
       [
         "Shohruhobod koʻchasi",
@@ -22452,79 +24511,129 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Shahruhabad Street"
       ],
       [
-        "Shoir ko'chasi"
+        "Shoir ko'chasi",
+        "ул. Шоир",
+        "Shoir St."
       ],
       [
-        "Shoxidon ko'chasi"
+        "Shoxidon ko'chasi",
+        "ул. Шохидон",
+        "Shoxidon St."
       ],
       [
-        "Shoxiduz ko'chasi"
+        "Shoxiduz ko'chasi",
+        "ул. Шохидуз",
+        "Shoxiduz St."
       ],
       [
-        "Shoxnishin ko'chasi"
+        "Shoxnishin ko'chasi",
+        "ул. Шохнишин",
+        "Shoxnishin St."
       ],
       [
-        "Shoxsuvor ko'chasi"
+        "Shoxsuvor ko'chasi",
+        "ул. Шохсувор",
+        "Shoxsuvor St."
       ],
       [
-        "Shuxrat ko'chasi"
+        "Shuxrat ko'chasi",
+        "ул. Шухрат",
+        "Shuxrat St."
       ],
       [
-        "So'x ko'chasi"
+        "So'x ko'chasi",
+        "ул. Сух",
+        "So'x St."
       ],
       [
-        "Sobir Abdulla ko'chasi"
+        "Sobir Abdulla ko'chasi",
+        "ул. Собир Абдулла",
+        "Sobir Abdulla St."
       ],
       [
-        "Sobitqadam ko'chasi"
+        "Sobitqadam ko'chasi",
+        "ул. Собиткадам",
+        "Sobitqadam St."
       ],
       [
-        "Sog‘lom avlod ko‘chasi"
+        "Sog‘lom avlod ko‘chasi",
+        "ул. Соглом авлод",
+        "Sog'lom avlod St."
       ],
       [
-        "Sohibqiron koʻchasi"
+        "Sohibqiron koʻchasi",
+        "ул. Сохибкирон",
+        "Sohibqiron St."
       ],
       [
-        "Sovutsozlik ko'chasi"
+        "Sovutsozlik ko'chasi",
+        "ул. Совуцозлик",
+        "Sovutsozlik St."
       ],
       [
-        "Soxibkor ko'chasi"
+        "Soxibkor ko'chasi",
+        "ул. Сохибкор",
+        "Soxibkor St."
       ],
       [
-        "Sultonobod ko'chasi"
+        "Sultonobod ko'chasi",
+        "ул. Султонобод",
+        "Sultonobod St."
       ],
       [
-        "Suluvkurgon ko'chasi"
+        "Suluvkurgon ko'chasi",
+        "ул. Сулувкургон",
+        "Suluvkurgon St."
       ],
       [
-        "Sumbula ko'chasi"
+        "Sumbula ko'chasi",
+        "ул. Сумбула",
+        "Sumbula St."
       ],
       [
-        "Surxondaryo ko'chasi"
+        "Surxondaryo ko'chasi",
+        "ул. Сурхондарё",
+        "Surxondaryo St."
       ],
       [
-        "Suzanaduz ko'chasi"
+        "Suzanaduz ko'chasi",
+        "ул. Сузанадуз",
+        "Suzanaduz St."
       ],
       [
-        "T. Yo'ldashev ko'chasi"
+        "T. Yo'ldashev ko'chasi",
+        "ул. Т. Ёлдашев",
+        "T. Yo'ldashev St."
       ],
       [
-        "T.O'razboev ko'chasi"
+        "T.O'razboev ko'chasi",
+        "ул. Т.Уразбоев",
+        "T.O'razboev St."
       ],
       [
-        "Tabassum ko'chasi"
+        "Tabassum ko'chasi",
+        "ул. Табассум",
+        "Tabassum St."
       ],
       [
-        "Tadbirkor ko'chasi"
+        "Tadbirkor ko'chasi",
+        "ул. Тадбиркор",
+        "Tadbirkor St."
       ],
       [
-        "Taraqqiyot ko'chasi"
+        "Taraqqiyot ko'chasi",
+        "ул. Тараккиёт",
+        "Taraqqiyot St."
       ],
       [
-        "Taroqchilik ko'chasi"
+        "Taroqchilik ko'chasi",
+        "ул. Тарокчилик",
+        "Taroqchilik St."
       ],
       [
-        "Taxiyatosh koʻchasi"
+        "Taxiyatosh koʻchasi",
+        "ул. Тахиятош",
+        "Taxiyatosh St."
       ],
       [
         "Tegirmonboshi ko'chasi",
@@ -22536,42 +24645,62 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Темирйулчи улица"
       ],
       [
-        "Temirchilik ko'chasi"
+        "Temirchilik ko'chasi",
+        "ул. Темирчилик",
+        "Temirchilik St."
       ],
       [
-        "Temur Fattox ko'chasi"
+        "Temur Fattox ko'chasi",
+        "ул. Темур Фаттох",
+        "Temur Fattox St."
       ],
       [
-        "Temur Malik ko'chasi"
+        "Temur Malik ko'chasi",
+        "ул. Темур Малик",
+        "Temur Malik St."
       ],
       [
         "Tepa Qo'rg'on ko'chasi",
         "Тепакургон йули улица"
       ],
       [
-        "Tepaqurgʻon yoʻli"
+        "Tepaqurgʻon yoʻli",
+        "дор. Тепакургон",
+        "Tepaqurg'on Rd."
       ],
       [
-        "Terakzor ko'chasi"
+        "Terakzor ko'chasi",
+        "ул. Теракзор",
+        "Terakzor St."
       ],
       [
-        "Termiz ko'chasi"
+        "Termiz ko'chasi",
+        "ул. Термиз",
+        "Termiz St."
       ],
       [
-        "Tinchlik ko'chasi"
+        "Tinchlik ko'chasi",
+        "ул. Тинчлик",
+        "Tinchlik St."
       ],
       [
-        "To'g'onboshi ko'chasi"
+        "To'g'onboshi ko'chasi",
+        "ул. Тугонбоши",
+        "To'g'onboshi St."
       ],
       [
-        "To'maris ko'chasi"
+        "To'maris ko'chasi",
+        "ул. Тумарис",
+        "To'maris St."
       ],
       [
         "To'qqizbuloq ko'chasi",
         "улица Туккизбулок"
       ],
       [
-        "Tokzor ko'chasi"
+        "Tokzor ko'chasi",
+        "ул. Токзор",
+        "Tokzor St."
       ],
       [
         "Toshkent  ko'chasi",
@@ -22581,24 +24710,30 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Toshkent ko`chasi"
       ],
       [
-        "Toshlok ko'chasi"
+        "Toshlok ko'chasi",
+        "ул. Тошлок",
+        "Toshlok St."
       ],
       [
-        "Toshminor ko'chasi"
+        "Toshminor ko'chasi",
+        "ул. Тошминор",
+        "Toshminor St."
       ],
       [
-        "Toshqoʻrgʻon koʻchasi"
+        "Toshqoʻrgʻon koʻchasi",
+        "ул. Тошкургон",
+        "Toshqo'rg'on St."
       ],
       [
-        "Toshxovuz koʻchasi"
-      ],
-      [
-        "Turkiston ko'chasi",
-        "Туркистан улица"
+        "Toshxovuz koʻchasi",
+        "ул. Тошховуз",
+        "Toshxovuz St."
       ],
       [
         "Turkiston koʻchasi",
-        "улица Туркестан"
+        "Туркистан улица",
+        "улица Туркестан",
+        "Turkiston ko'chasi"
       ],
       [
         "Turon ko'chasi",
@@ -22606,13 +24741,18 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Турон улица"
       ],
       [
-        "Tursunobod ko'chasi"
+        "Tursunobod ko'chasi",
+        "ул. Турсунобод",
+        "Tursunobod St."
       ],
       [
-        "Uchkuprik ko'cha"
+        "Uchkuprik ko'cha",
+        "Учкуприк куча"
       ],
       [
-        "Uchqun ko'chasi"
+        "Uchqun ko'chasi",
+        "ул. Учкун",
+        "Uchqun St."
       ],
       [
         "Ulkansoy ko'chasi",
@@ -22623,22 +24763,34 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Улугбек улица"
       ],
       [
-        "Ulugʻbek koʻchasi"
+        "Ulugʻbek koʻchasi",
+        "ул. Улугбек",
+        "Ulug'bek St."
       ],
       [
-        "Umar Xayyom ko'chasi"
+        "Umar Xayyom ko'chasi",
+        "ул. Умар Хайём",
+        "Umar Xayyom St."
       ],
       [
-        "Ummat Valiy ko'chasi"
+        "Ummat Valiy ko'chasi",
+        "ул. Уммат Валий",
+        "Ummat Valiy St."
       ],
       [
-        "Urganch ko'chasi"
+        "Urganch ko'chasi",
+        "ул. Урганч",
+        "Urganch St."
       ],
       [
-        "Urganjibog ko'chasi"
+        "Urganjibog ko'chasi",
+        "ул. Урганджибог",
+        "Urganjibog St."
       ],
       [
-        "Urmonbog ko'chasi"
+        "Urmonbog ko'chasi",
+        "ул. Урмонбог",
+        "Urmonbog St."
       ],
       [
         "Usmon Nosir ko'chasi",
@@ -22646,237 +24798,368 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Usman Nasyr street"
       ],
       [
-        "Usmon Yusupov ko'chasi"
+        "Usmon Yusupov ko'chasi",
+        "ул. Усмон Юсупов",
+        "Usmon Yusupov St."
       ],
       [
         "Uvaysiy ko'chasi",
         "Улица Увайсий"
       ],
       [
-        "Uzlat koʻchasi"
+        "Uzlat koʻchasi",
+        "ул. Узлат",
+        "Uzlat St."
       ],
       [
-        "Valihon Tura Ko'chasi"
+        "Valihon Tura Ko'chasi",
+        "ул. Валихон Тура",
+        "Valihon Tura St."
       ],
       [
-        "Vatan ko'chasi"
+        "Vatan ko'chasi",
+        "ул. Ватан",
+        "Vatan St."
       ],
       [
-        "Vodil ko'chasi"
+        "Vodil ko'chasi",
+        "ул. Водил",
+        "Vodil St."
       ],
       [
-        "Vohim ko'chasi"
+        "Vohim ko'chasi",
+        "ул. Вохим",
+        "Vohim St."
       ],
       [
-        "X.Sheroziy ko’chasi"
+        "X.Sheroziy ko’chasi",
+        "ул. Х.Шерозий",
+        "X.Sheroziy St."
       ],
       [
-        "Xabibiy ko'chasi"
+        "Xabibiy ko'chasi",
+        "ул. Хабибий",
+        "Xabibiy St."
       ],
       [
-        "Xakikat ko'chasi"
+        "Xakikat ko'chasi",
+        "ул. Хакикат",
+        "Xakikat St."
       ],
       [
-        "Xakkulobod ko'chasi"
+        "Xakkulobod ko'chasi",
+        "ул. Хаккулобод",
+        "Xakkulobod St."
       ],
       [
-        "Xalifa Safo ko'chasi"
+        "Xalifa Safo ko'chasi",
+        "ул. Халифа Сафо",
+        "Xalifa Safo St."
       ],
       [
-        "Xalqlar Do'stligi ko'chasi"
+        "Xalqlar Do'stligi ko'chasi",
+        "ул. Халклар Дустлиги",
+        "Xalqlar Do'stligi St."
       ],
       [
-        "Xalqobod ko’chasi"
+        "Xalqobod ko’chasi",
+        "ул. Халкобод",
+        "Xalqobod St."
       ],
       [
-        "Xamid Olimjon ko'chasi"
+        "Xamid Olimjon ko'chasi",
+        "ул. Хамид Олимджон",
+        "Xamid Olimjon St."
       ],
       [
-        "Xamkorlik ko'chasi"
+        "Xamkorlik ko'chasi",
+        "ул. Хамкорлик",
+        "Xamkorlik St."
       ],
       [
         "Xamza ko'chasi",
         "Хамзы улица"
       ],
       [
-        "Xilol ko'chasi"
+        "Xilol ko'chasi",
+        "ул. Хилол",
+        "Xilol St."
       ],
       [
-        "Xiva ko'chasi"
+        "Xiva ko'chasi",
+        "ул. Хива",
+        "Xiva St."
       ],
       [
-        "Xoʻjakent 1-tor koʻchasi"
+        "Xoʻjakent 1-tor koʻchasi",
+        "1-й пр. Худжакент",
+        "Xo'jakent 1st Ln."
       ],
       [
-        "Xoʻjakent 2-tor koʻchasi"
+        "Xoʻjakent 2-tor koʻchasi",
+        "2-й пр. Худжакент",
+        "Xo'jakent 2nd Ln."
       ],
       [
-        "Xoʻjakent 3-tor koʻchasi"
+        "Xoʻjakent 3-tor koʻchasi",
+        "3-й пр. Худжакент",
+        "Xo'jakent 3rd Ln."
       ],
       [
-        "Xoʻjakent 4-tor koʻchasi"
+        "Xoʻjakent 4-tor koʻchasi",
+        "4-й пр. Худжакент",
+        "Xo'jakent 4th Ln."
       ],
       [
-        "Xoʻjakent 5-tor koʻchasi"
+        "Xoʻjakent 5-tor koʻchasi",
+        "5-й пр. Худжакент",
+        "Xo'jakent 5th Ln."
       ],
       [
-        "Xoʻjakent 6-tor koʻchasi"
+        "Xoʻjakent 6-tor koʻchasi",
+        "6-й пр. Худжакент",
+        "Xo'jakent 6th Ln."
       ],
       [
-        "Xoʻjakent 7-tor koʻchasi"
+        "Xoʻjakent 7-tor koʻchasi",
+        "7-й пр. Худжакент",
+        "Xo'jakent 7th Ln."
       ],
       [
-        "Xoʻjand ko'chasi"
+        "Xoʻjand ko'chasi",
+        "ул. Худжанд",
+        "Xo'jand St."
       ],
       [
-        "Xoja Dodxoh ko'chasi"
+        "Xoja Dodxoh ko'chasi",
+        "ул. Ходжа Додхох",
+        "Xoja Dodxoh St."
       ],
       [
-        "Xojirabot 1-tor ko'chasi"
+        "Xojirabot 1-tor ko'chasi",
+        "1-й пр. Ходжиработ",
+        "Xojirabot 1st Ln."
       ],
       [
-        "Xojirabot 2-tor ko'chasi"
+        "Xojirabot 2-tor ko'chasi",
+        "2-й пр. Ходжиработ",
+        "Xojirabot 2nd Ln."
       ],
       [
-        "Xojirabot 3-tor ko'chasi"
+        "Xojirabot 3-tor ko'chasi",
+        "3-й пр. Ходжиработ",
+        "Xojirabot 3rd Ln."
       ],
       [
-        "Xonaqoh koʻchasi"
+        "Xonaqoh koʻchasi",
+        "ул. Хонакох",
+        "Xonaqoh St."
       ],
       [
-        "Xonchorbog ko'chasi"
+        "Xonchorbog ko'chasi",
+        "ул. Хончорбог",
+        "Xonchorbog St."
       ],
       [
-        "Xorazm ko'chasi"
+        "Xorazm ko'chasi",
+        "ул. Хорезм",
+        "Xorazm St."
       ],
       [
-        "Xosil ko'chasi"
+        "Xosil ko'chasi",
+        "ул. Хосил",
+        "Xosil St."
       ],
       [
-        "Xujaarik ko'chasi"
+        "Xujaarik ko'chasi",
+        "ул. Худжаарик",
+        "Xujaarik St."
       ],
       [
-        "Xumo 1-tor ko'chasi"
+        "Xumo 1-tor ko'chasi",
+        "1-й пр. Хумо",
+        "Xumo 1st Ln."
       ],
       [
-        "Xumo 2-tor ko'chasi"
+        "Xumo 2-tor ko'chasi",
+        "2-й пр. Хумо",
+        "Xumo 2nd Ln."
       ],
       [
-        "Xumo 3-tor ko'chasi"
+        "Xumo 3-tor ko'chasi",
+        "3-й пр. Хумо",
+        "Xumo 3rd Ln."
       ],
       [
-        "Xumo 4-tor ko'chasi"
+        "Xumo 4-tor ko'chasi",
+        "4-й пр. Хумо",
+        "Xumo 4th Ln."
       ],
       [
-        "Yaksuvor ko'chasi"
+        "Yaksuvor ko'chasi",
+        "ул. Яксувор",
+        "Yaksuvor St."
       ],
       [
-        "Yalongoch Ota ko'chasi"
+        "Yalongoch Ota ko'chasi",
+        "ул. Ялонгоч Ота",
+        "Yalongoch Ota St."
       ],
       [
-        "Yangi Avlod koʻchasi"
+        "Yangi Avlod koʻchasi",
+        "ул. Янги Авлод",
+        "Yangi Avlod St."
       ],
       [
-        "Yangi bodom ko'chasi"
+        "Yangi bodom ko'chasi",
+        "ул. Янги бодом",
+        "Yangi bodom St."
       ],
       [
-        "Yangi Chorsu ko'chasi"
+        "Yangi Chorsu ko'chasi",
+        "ул. Янги Чорсу",
+        "Yangi Chorsu St."
       ],
       [
         "Yangi dehqon ko'chasi",
         "Янги дехкан улица"
       ],
       [
-        "Yangi hayot ko'chasi"
+        "Yangi hayot ko'chasi",
+        "ул. Янги хаёт",
+        "Yangi hayot St."
       ],
       [
-        "Yangi ko'prik"
+        "Yangi ko'prik",
+        "Янги мост",
+        "Yangi Bridge"
       ],
       [
-        "Yangiavlod ko'chasi"
+        "Yangiavlod ko'chasi",
+        "ул. Янгиавлод",
+        "Yangiavlod St."
       ],
       [
         "Yangihayot  ko'chasi",
-        "Yangihayot ko'chasi"
+        "ул. Янгихаёт",
+        "Yangihayot ko'chasi",
+        "Yangihayot St."
       ],
       [
-        "Yangiqo'rg'on ko'chasi"
+        "Yangiqo'rg'on ko'chasi",
+        "ул. Янгикургон",
+        "Yangiqo'rg'on St."
       ],
       [
-        "Yangiyul ko'chasi"
+        "Yangiyul ko'chasi",
+        "ул. Янгиюл",
+        "Yangiyul St."
       ],
       [
-        "Yaypan ko'chasi"
+        "Yaypan ko'chasi",
+        "ул. Яйпан",
+        "Yaypan St."
       ],
       [
-        "Yaypan yo’li ko’chasi"
+        "Yaypan yo’li ko’chasi",
+        "дор. Яйпан",
+        "Yaypan Rd."
       ],
       [
-        "Yong’oqzor Ko'chasi"
+        "Yong’oqzor Ko'chasi",
+        "ул. Ёнгокзор",
+        "Yong'oqzor St."
       ],
       [
-        "Yoriy ko'chasi"
+        "Yoriy ko'chasi",
+        "ул. Ёрий",
+        "Yoriy St."
       ],
       [
         "Yorkurgon ko'chasi",
         "Яркурган улица"
       ],
       [
-        "Yoshlar ko'chasi"
+        "Yoshlar ko'chasi",
+        "ул. Ёшлар",
+        "Yoshlar St."
       ],
       [
-        "Yoshlarobod ko'chasi"
+        "Yoshlarobod ko'chasi",
+        "ул. Ёшларобод",
+        "Yoshlarobod St."
       ],
       [
         "Yoshlik ko'chasi",
         "Ёшлик улица"
       ],
       [
-        "Yozlar ko'chasi"
+        "Yozlar ko'chasi",
+        "ул. Ёзлар",
+        "Yozlar St."
       ],
       [
-        "Zafar ko'chasi"
+        "Zafar ko'chasi",
+        "ул. Зафар",
+        "Zafar St."
       ],
       [
-        "Zaki Validiy ko'chasi"
+        "Zaki Validiy ko'chasi",
+        "ул. Заки Валидий",
+        "Zaki Validiy St."
       ],
       [
-        "Zamaxshariy ko'chasi"
+        "Zamaxshariy ko'chasi",
+        "ул. Замахшарий",
+        "Zamaxshariy St."
       ],
       [
-        "Zarafshon ko'chasi"
+        "Zarafshon ko'chasi",
+        "ул. Зарафшон",
+        "Zarafshon St."
       ],
       [
-        "Zarbhona ko'chasi"
+        "Zarbhona ko'chasi",
+        "ул. Зарбхона",
+        "Zarbhona St."
       ],
       [
-        "Zarbuloq ko'chasi"
+        "Zarbuloq ko'chasi",
+        "ул. Зарбулок",
+        "Zarbuloq St."
       ],
       [
-        "Zargarlik ko'chasi"
+        "Zargarlik ko'chasi",
+        "ул. Заргарлик",
+        "Zargarlik St."
       ],
       [
-        "Zarinsaroy ko'chasi"
+        "Zarinsaroy ko'chasi",
+        "ул. Заринсарой",
+        "Zarinsaroy St."
       ],
       [
-        "Zavkobod ko'chasi"
+        "Zavkobod ko'chasi",
+        "ул. Завкобод",
+        "Zavkobod St."
       ],
       [
         "Zavqiyobod ko'chasi",
         "Завкобод улица"
       ],
       [
-        "Ziyokor ko'chasi"
-      ],
-      [
-        "Ziyokor koʻchasi"
+        "Ziyokor ko'chasi",
+        "ул. Зиёкор",
+        "Ziyokor koʻchasi",
+        "Ziyokor St."
       ]
     ]
   },
   "Kosonsoy": {
     "localAreas": [
       [
-        "Ажек"
+        "Ажек",
+        "Azhek"
       ],
       [
         "Bo`ston",
@@ -23092,14 +25375,18 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Алишер Навои улица"
       ],
       [
-        "Beshikchilar ko'chasi"
+        "Beshikchilar ko'chasi",
+        "ул. Бешикчилар",
+        "Beshikchilar St."
       ],
       [
         "Doʻstlik ko'chasi",
         "Дустлик"
       ],
       [
-        "Gaznon ko'chasi"
+        "Gaznon ko'chasi",
+        "ул. Газнон",
+        "Gaznon St."
       ],
       [
         "Guliston 1-ko'cha",
@@ -23171,20 +25458,28 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Gulabad street"
       ],
       [
-        "Gulzor ko'chasi"
+        "Gulzor ko'chasi",
+        "ул. Гулзор",
+        "Gulzor St."
       ],
       [
-        "Gulzor Street"
+        "Gulzor Street",
+        "ул. Гулзор",
+        "Gulzor St."
       ],
       [
         "Hilol ko'chasi",
         "Хилол улица"
       ],
       [
-        "Hosiyalti ko'chasi"
+        "Hosiyalti ko'chasi",
+        "ул. Хосиялти",
+        "Hosiyalti St."
       ],
       [
-        "Jiyda koʻchasi"
+        "Jiyda koʻchasi",
+        "ул. Джийда",
+        "Jiyda St."
       ],
       [
         "Jomiy ko'chasi",
@@ -23192,7 +25487,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Jami Street"
       ],
       [
-        "Karvonsaroy ko'chasi"
+        "Karvonsaroy ko'chasi",
+        "ул. Карвонсарой",
+        "Karvonsaroy St."
       ],
       [
         "Karvonsaroy-1",
@@ -23219,7 +25516,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Муг кал`а"
       ],
       [
-        "Mug`qala"
+        "Mug`qala",
+        "Мугкала",
+        "Mug'qala"
       ],
       [
         "Naqqoshlik ko'chasi",
@@ -23235,23 +25534,33 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Наво улица"
       ],
       [
-        "Navobod ko'chasi"
+        "Navobod ko'chasi",
+        "ул. Навобод",
+        "Navobod St."
       ],
       [
-        "O'zbekiston ko'chasi"
+        "O'zbekiston ko'chasi",
+        "ул. Узбекистон",
+        "O'zbekiston St."
       ],
       [
         "Obod ko'chasi",
         "Обод улица"
       ],
       [
-        "Oltin zamin ko'chasi"
+        "Oltin zamin ko'chasi",
+        "ул. Олтин замин",
+        "Oltin zamin St."
       ],
       [
-        "Omilkor ko'chasi"
+        "Omilkor ko'chasi",
+        "ул. Омилкор",
+        "Omilkor St."
       ],
       [
-        "Rovot ko'chasi"
+        "Rovot ko'chasi",
+        "ул. Ровот",
+        "Rovot St."
       ],
       [
         "Sadaraykhon ko'chasi",
@@ -23276,10 +25585,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Халклар Дустлиги улица"
       ],
       [
-        "Yangiobod ko'chasi"
+        "Yangiobod ko'chasi",
+        "ул. Янгиобод",
+        "Yangiobod St."
       ],
       [
-        "Yoshlik ko'chasi"
+        "Yoshlik ko'chasi",
+        "ул. Ёшлик",
+        "Yoshlik St."
       ],
       [
         "Zarkent ko'chasi",
@@ -23296,10 +25609,12 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
   "Kungrad": {
     "localAreas": [
       [
-        "спуск Даут-ата"
+        "спуск Даут-ата",
+        "spusk Daut-ata"
       ],
       [
-        "Участок участника ВОВ Кудияра Уразалиева"
+        "Участок участника ВОВ Кудияра Уразалиева",
+        "Uchastok uchastnika VOV Kudiyara Urazalieva"
       ],
       [
         "Aday awıl",
@@ -23506,7 +25821,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
     ],
     "streets": [
       [
-        "улица М. Дарибаева"
+        "улица М. Дарибаева",
+        "ул. М. Дарибаева",
+        "M. Daribaeva St."
       ],
       [
         "A. Dawletov ko'shesi",
@@ -23530,7 +25847,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица А. Утопова"
       ],
       [
-        "A340"
+        "A340",
+        "А340"
       ],
       [
         "Abubakirov ko'shesi",
@@ -24093,7 +26411,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Сабыр Рахимова"
       ],
       [
-        "Sadıqlıq kóshesi"
+        "Sadıqlıq kóshesi",
+        "ул. Садıклıк",
+        "Sadıqlıq St."
       ],
       [
         "Sanaatshilar Ko'shesi",
@@ -24226,25 +26546,36 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
     ],
     "streets": [
       [
-        "2-й пр-д Зумрад"
+        "2-й пр-д Зумрад",
+        "2-y pr-d Zumrad"
       ],
       [
         "Аsilobod berk koʼchasi"
       ],
       [
-        "Ул. Омад"
+        "Ул. Омад",
+        "ул. Омад",
+        "Omad St."
       ],
       [
-        "Ул. Регистон"
+        "Ул. Регистон",
+        "ул. Регистон",
+        "Registon St."
       ],
       [
-        "Ул. Содакат"
+        "Ул. Содакат",
+        "ул. Содакат",
+        "Sodakat St."
       ],
       [
-        "Ул. Чеварчилик"
+        "Ул. Чеварчилик",
+        "ул. Чеварчилик",
+        "Chevarchilik St."
       ],
       [
-        "Ул. Янги чек"
+        "Ул. Янги чек",
+        "ул. Янги чек",
+        "Yangi chek St."
       ],
       [
         "Abdulla Qodiriy koʻchasi",
@@ -24279,11 +26610,11 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "2-й проезд Ахмада Яссавий"
       ],
       [
-        "Ahmad Yassaviy ko'chasi"
-      ],
-      [
+        "Ahmad Yassaviy ko'chasi",
+        "ул. Ахмад Яссавий",
+        "улица Ахмада Яссавий",
         "Ahmad Yassaviy koʻchasi",
-        "улица Ахмада Яссавий"
+        "Ahmad Yassaviy St."
       ],
       [
         "Al-Fargʻoniy koʻchasi",
@@ -24422,11 +26753,11 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Аввалбек"
       ],
       [
-        "Axkamdor ko‘chasi"
-      ],
-      [
         "Axkamdor koʻchasi",
-        "улица Ахкамдор"
+        "ул. Ахкамдор",
+        "улица Ахкамдор",
+        "Axkamdor ko‘chasi",
+        "Axkamdor St."
       ],
       [
         "Ayjuvozboshi koʻchasi",
@@ -24445,13 +26776,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Бахоуддина Накшбанди"
       ],
       [
-        "Baraka ko'chasi",
-        "улица Барака",
-        "Baraka koʻchasi"
-      ],
-      [
         "Baraka koʻchasi",
-        "улица Барака"
+        "улица Барака",
+        "Baraka ko'chasi"
       ],
       [
         "Barkamol Аvlod koʻchasi",
@@ -24478,11 +26805,11 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Бахтиёрлик"
       ],
       [
-        "Bayram ko'chasi"
-      ],
-      [
         "Bayram koʻchasi",
-        "улица Байрам"
+        "ул. Байрам",
+        "улица Байрам",
+        "Bayram ko'chasi",
+        "Bayram St."
       ],
       [
         "Bayturchi ko'chasi",
@@ -24495,7 +26822,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Bedil koʻchasi"
       ],
       [
-        "Beg'ubor ko'chasi"
+        "Beg'ubor ko'chasi",
+        "ул. Бегубор",
+        "Beg'ubor St."
       ],
       [
         "Behzod koʻchasi",
@@ -24526,10 +26855,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Бинафша"
       ],
       [
-        "Binafsha tor koʻchasi"
+        "Binafsha tor koʻchasi",
+        "пр. Бинафша",
+        "Binafsha Ln."
       ],
       [
-        "Binokor ko'chasi"
+        "Binokor ko'chasi",
+        "ул. Бинокор",
+        "Binokor St."
       ],
       [
         "Birdamlik koʻchasi",
@@ -24576,22 +26909,22 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "9-й проезд Бободехкон"
       ],
       [
-        "Bobodehqon koʻchasi"
-      ],
-      [
+        "Bobodehqon koʻchasi",
+        "ул. Бободехкон",
+        "улица Бободехкон",
         "Bobodehqon koʼchasi",
-        "улица Бободехкон"
+        "Bobodehqon St."
       ],
       [
         "Boborahim Mashrab koʻchasi",
         "улица Боборахима Машраба"
       ],
       [
-        "Bobur ko'chasi"
-      ],
-      [
+        "Bobur ko'chasi",
+        "ул. Бобур",
+        "улица Бабура",
         "Bobur koʻchasi",
-        "улица Бабура"
+        "Bobur St."
       ],
       [
         "Boburjon Ganiev koʻchasi",
@@ -24606,7 +26939,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Бог таги"
       ],
       [
-        "Bogchasaroy 3-tor koʻchasi"
+        "Bogchasaroy 3-tor koʻchasi",
+        "3-й пр. Богчасарой",
+        "Bogchasaroy 3rd Ln."
       ],
       [
         "Bogʻchasaroy koʻchasi",
@@ -24625,7 +26960,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "1-й проезд Бозор"
       ],
       [
-        "Bozor 2-tor koʻchasi"
+        "Bozor 2-tor koʻchasi",
+        "2-й пр. Бозор",
+        "Bozor 2nd Ln."
       ],
       [
         "Bozor 3-berk koʻchasi",
@@ -24703,13 +27040,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Чорбог"
       ],
       [
-        "Chorchinor ko'chasi",
-        "улица Чорчинор",
-        "Chorchinor koʻchasi"
-      ],
-      [
         "Chorchinor koʻchasi",
-        "улица Чорчинор"
+        "улица Чорчинор",
+        "Chorchinor ko'chasi"
       ],
       [
         "Chulkuvar koʻchasi",
@@ -24769,11 +27102,11 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Эзгулик"
       ],
       [
-        "Fabrika ko'chasi"
-      ],
-      [
+        "Fabrika ko'chasi",
+        "ул. Фабрика",
+        "улица Фабрика",
         "Fabrika koʻchasi",
-        "улица Фабрика"
+        "Fabrika St."
       ],
       [
         "Farg‘ona halqa yo‘li",
@@ -24793,11 +27126,11 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Ферганская улица"
       ],
       [
-        "Farhod Ko’chasi"
-      ],
-      [
+        "Farhod Ko’chasi",
+        "ул. Фарход",
+        "улица Фарход",
         "Farhod koʻchasi",
-        "улица Фарход"
+        "Farhod St."
       ],
       [
         "Fayz koʻchasi",
@@ -24850,7 +27183,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Гульбахор"
       ],
       [
-        "Gulhayo ko'chasi"
+        "Gulhayo ko'chasi",
+        "ул. Гулхаё",
+        "Gulhayo St."
       ],
       [
         "Gulinur koʻchasi",
@@ -24884,11 +27219,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Gumbaz koʻchasi"
       ],
       [
-        "Gumbaz koʻchasi",
-        "улица Гумбаз"
-      ],
-      [
-        "Hamid Olimjon ko'chasi"
+        "Hamid Olimjon ko'chasi",
+        "ул. Хамид Олимджон",
+        "Hamid Olimjon St."
       ],
       [
         "Hamkorlik koʻchasi",
@@ -24913,14 +27246,18 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Hunarmandlar koʻchasi"
       ],
       [
-        "Huvaydo tor koʼchasi"
+        "Huvaydo tor koʼchasi",
+        "пр. Хувайдо",
+        "Huvaydo Ln."
       ],
       [
         "Ibn Sino koʻchasi",
         "улица Ибн Сино"
       ],
       [
-        "Ibrat koʻchasi"
+        "Ibrat koʻchasi",
+        "ул. Ибрат",
+        "Ibrat St."
       ],
       [
         "Iftixor koʻchasi",
@@ -24943,7 +27280,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Имама ат-Термизи"
       ],
       [
-        "Imom Buxoriy ko'chasi"
+        "Imom Buxoriy ko'chasi",
+        "ул. Имом Бухорий",
+        "Imom Buxoriy St."
       ],
       [
         "Imom Moturidiy 1-tor koʻchasi",
@@ -25076,11 +27415,11 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Икбол"
       ],
       [
-        "Islomobod ko‘chasi"
-      ],
-      [
+        "Islomobod ko‘chasi",
+        "ул. Исломобод",
+        "улица Исломобод",
         "Islomobod koʻchasi",
-        "улица Исломобод"
+        "Islomobod St."
       ],
       [
         "Istiqbol koʻchasi",
@@ -25115,7 +27454,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "3-й проезд Жалолиддина Руми"
       ],
       [
-        "Jaloliddin Rumiy 4-tor koʻchasi"
+        "Jaloliddin Rumiy 4-tor koʻchasi",
+        "4-й пр. Джалолиддин Румий",
+        "Jaloliddin Rumiy 4th Ln."
       ],
       [
         "Jaloliddin Rumiy 5-tor koʼchasi",
@@ -25138,7 +27479,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Жалолиддина Руми"
       ],
       [
-        "Jambul ko'chasi"
+        "Jambul ko'chasi",
+        "ул. Джамбул",
+        "Jambul St."
       ],
       [
         "Jayxun koʻchasi",
@@ -25187,10 +27530,6 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Kichik Koʻnchilik koʻchasi"
       ],
       [
-        "Kichik Koʻnchilik koʻchasi",
-        "улица Кичик кунчилик"
-      ],
-      [
         "Ko'kbuloq ko'chasi",
         "улица Кукбулок"
       ],
@@ -25211,11 +27550,11 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Куркам"
       ],
       [
-        "Koinot ko'chasi"
-      ],
-      [
         "Koinot koʻchasi",
-        "улица Коинот"
+        "ул. Коинот",
+        "улица Коинот",
+        "Koinot ko'chasi",
+        "Koinot St."
       ],
       [
         "Kosibchilik koʻchasi",
@@ -25249,22 +27588,20 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       [
         "Madali Hofiz ko'chasi",
         "улица Мадали Хофиз",
-        "Madali Xofiz koʻchasi"
-      ],
-      [
+        "улица Мадали Хофиза",
         "Madali Hofiz koʻchasi",
-        "улица Мадали Хофиза"
+        "Madali Xofiz koʻchasi"
       ],
       [
         "Madaniyat 1-tor koʻchasi",
         "1-й проезд Маданият"
       ],
       [
-        "Madaniyat ko'chasi"
-      ],
-      [
+        "Madaniyat ko'chasi",
+        "ул. Маданият",
+        "улица Маданият",
         "Madaniyat koʻchasi",
-        "улица Маданият"
+        "Madaniyat St."
       ],
       [
         "Maftunkor 1-tor koʼchasi",
@@ -25295,11 +27632,11 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Мажнунтол"
       ],
       [
-        "Maktab ko'chasi"
-      ],
-      [
+        "Maktab ko'chasi",
+        "ул. Мактаб",
+        "улица Мактаб",
         "Maktab koʻchasi",
-        "улица Мактаб"
+        "Maktab St."
       ],
       [
         "Mamlakat koʻchasi",
@@ -25336,11 +27673,11 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Maʼmurjon Uzoqov koʻchasi"
       ],
       [
-        "Mehnatobod ko‘chasi"
-      ],
-      [
+        "Mehnatobod ko‘chasi",
+        "ул. Мехнатобод",
+        "улица Мехнатобод",
         "Mehnatobod koʻchasi",
-        "улица Мехнатобод"
+        "Mehnatobod St."
       ],
       [
         "Mehr koʻchasi",
@@ -25355,11 +27692,11 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Мехридарё"
       ],
       [
-        "Mehrigiyo ko'chasi"
-      ],
-      [
+        "Mehrigiyo ko'chasi",
+        "ул. Мехригиё",
+        "улица Мехригиё",
         "Mehrigiyo koʻchasi",
-        "улица Мехригиё"
+        "Mehrigiyo St."
       ],
       [
         "Mehrjon koʻchasi",
@@ -25418,12 +27755,10 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       [
         "Mustaqillik ko‘chasi",
         "Мустакиллик улица",
-        "Mustaqillik ko’chasi"
-      ],
-      [
-        "Mustaqillik koʻchasi",
         "улица Мустакиллик",
-        "Mustakillik street"
+        "Mustakillik street",
+        "Mustaqillik ko’chasi",
+        "Mustaqillik koʻchasi"
       ],
       [
         "Nadirmat 1-tor koʻchasi",
@@ -25442,10 +27777,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Намуна"
       ],
       [
-        "Nargiz 1-tor ko‘chasi"
+        "Nargiz 1-tor ko‘chasi",
+        "1-й пр. Наргиз",
+        "Nargiz 1st Ln."
       ],
       [
-        "Nargiz 2-tor ko‘chasi"
+        "Nargiz 2-tor ko‘chasi",
+        "2-й пр. Наргиз",
+        "Nargiz 2nd Ln."
       ],
       [
         "Nargiz 3-tor koʻchasi",
@@ -25456,11 +27795,11 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Наргиз"
       ],
       [
-        "Navbahor ko'chasi"
-      ],
-      [
         "Navbahor koʻchasi",
-        "улица Навбахор"
+        "ул. Навбахор",
+        "улица Навбахор",
+        "Navbahor ko'chasi",
+        "Navbahor St."
       ],
       [
         "Navbaxor ko’chasi",
@@ -25517,7 +27856,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Обод Маргилан"
       ],
       [
-        "Obod turmush ko'chasi"
+        "Obod turmush ko'chasi",
+        "ул. Обод турмуш",
+        "Obod turmush St."
       ],
       [
         "Ochiqhovuz koʻchasi",
@@ -25529,11 +27870,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Oʻrikzor ko'chasi",
-        "улица Урикзор"
-      ],
-      [
-        "Oʻrikzor koʻchasi",
-        "улица Урикзор"
+        "улица Урикзор",
+        "Oʻrikzor koʻchasi"
       ],
       [
         "Oʻrta ariq koʻchasi",
@@ -25561,14 +27899,16 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Олтин Мерос"
       ],
       [
-        "Oltin vodiy ko'chasi"
-      ],
-      [
+        "Oltin vodiy ko'chasi",
+        "ул. Олтин водий",
+        "улица Олтин Водий",
         "Oltin Vodiy koʻchasi",
-        "улица Олтин Водий"
+        "Oltin vodiy St."
       ],
       [
-        "Omad ko'chasi"
+        "Omad ko'chasi",
+        "ул. Омад",
+        "Omad St."
       ],
       [
         "Oq yoʻl koʻchasi",
@@ -25603,15 +27943,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Орзу"
       ],
       [
-        "Orzu koʻchasi 2-tor koʻchasi"
+        "Orzu koʻchasi 2-tor koʻchasi",
+        "2-й пр. Орзу",
+        "Orzu 2nd Ln."
       ],
       [
         "Oybek ko'chasi",
-        "улица Ойбек"
-      ],
-      [
-        "Oybek koʻchasi",
-        "улица Ойбек"
+        "улица Ойбек",
+        "Oybek koʻchasi"
       ],
       [
         "Oydin ko'chasi",
@@ -25626,10 +27965,6 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Ozoda ko'chasi",
         "улица Озода",
         "Ozoda koʻchasi"
-      ],
-      [
-        "Ozoda koʻchasi",
-        "улица Озода"
       ],
       [
         "Ozodlik maydoni koʻchasi",
@@ -25656,14 +27991,16 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Порлок"
       ],
       [
-        "Qadriyat ko'chasi"
-      ],
-      [
         "Qadriyat koʻchasi",
-        "улица Кадрият"
+        "ул. Кадрият",
+        "улица Кадрият",
+        "Qadriyat ko'chasi",
+        "Qadriyat St."
       ],
       [
-        "Qahramon koʻchasi"
+        "Qahramon koʻchasi",
+        "ул. Кахрамон",
+        "Qahramon St."
       ],
       [
         "Qandahor koʻchasi",
@@ -25674,7 +28011,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Кандолатчи"
       ],
       [
-        "Qandolatchi tor ko‘chasi"
+        "Qandolatchi tor ko‘chasi",
+        "пр. Кандолатчи",
+        "Qandolatchi Ln."
       ],
       [
         "Qashkar 1-tor koʼchasi",
@@ -25751,10 +28090,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Qoʻrgʻoncha koʻchasi"
       ],
       [
-        "Qo‘rg‘ontagi ko‘chasi"
+        "Qo‘rg‘ontagi ko‘chasi",
+        "ул. Кургонтаги",
+        "Qo'rg'ontagi St."
       ],
       [
-        "Qo‘rg‘ontagi tor ko‘chasi"
+        "Qo‘rg‘ontagi tor ko‘chasi",
+        "пр. Кургонтаги",
+        "Qo'rg'ontagi Ln."
       ],
       [
         "Qori Niyoziy koʻchasi",
@@ -25779,19 +28122,17 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Райхон"
       ],
       [
-        "S. Olloyor ko'chasi",
-        "улица С. Оллоёра"
-      ],
-      [
         "S.Olloyor koʻchasi",
-        "улица С.Оллоёр"
-      ],
-      [
-        "Sabzavot ko'chasi"
+        "улица С. Оллоёра",
+        "улица С.Оллоёр",
+        "S. Olloyor ko'chasi"
       ],
       [
         "Sabzavot koʻchasi",
-        "улица Сабзавот"
+        "ул. Сабзавот",
+        "улица Сабзавот",
+        "Sabzavot ko'chasi",
+        "Sabzavot St."
       ],
       [
         "Sadaf koʻchasi",
@@ -25834,24 +28175,20 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Саодат"
       ],
       [
-        "Sarbon ko'chasi"
-      ],
-      [
         "Sarbon koʻchasi",
-        "улица Сарбон"
+        "ул. Сарбон",
+        "улица Сарбон",
+        "Sarbon ko'chasi",
+        "Sarbon St."
       ],
       [
         "Sarmazor koʻchasi",
         "улица Сармазор"
       ],
       [
-        "Saroy ko'chasi",
-        "улица Сарой",
-        "Saroy koʻchasi"
-      ],
-      [
         "Saroy koʻchasi",
-        "улица Сарой"
+        "улица Сарой",
+        "Saroy ko'chasi"
       ],
       [
         "Satqoq koʻchasi",
@@ -25866,7 +28203,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Саховат"
       ],
       [
-        "Sayohat ko'chasi"
+        "Sayohat ko'chasi",
+        "ул. Саёхат",
+        "Sayohat St."
       ],
       [
         "Sebzor ko'chasi",
@@ -25897,7 +28236,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Шаршара"
       ],
       [
-        "Sherdor ko'chasi"
+        "Sherdor ko'chasi",
+        "ул. Шердор",
+        "Sherdor St."
       ],
       [
         "Shifokorlar kochasi",
@@ -25913,7 +28254,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Шижоаткор"
       ],
       [
-        "Shodiyona koʻchasi"
+        "Shodiyona koʻchasi",
+        "ул. Шодиёна",
+        "Shodiyona St."
       ],
       [
         "Shodlik koʻchasi",
@@ -25928,7 +28271,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Шохмансур"
       ],
       [
-        "Sholdirama ko‘chasi"
+        "Sholdirama ko‘chasi",
+        "ул. Шолдирама",
+        "Sholdirama St."
       ],
       [
         "Shuhrat koʻchasi",
@@ -25956,11 +28301,11 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Сохибкирон"
       ],
       [
-        "Soy bo'yi ko'chasi"
-      ],
-      [
-        "Soy boʻyi koʻchasi",
-        "улица Сой буйи"
+        "Soy bo'yi ko'chasi",
+        "ул. Сой буйи",
+        "улица Сой буйи",
+        "Soy bo'yi St.",
+        "Soy boʻyi koʻchasi"
       ],
       [
         "Subhidam koʻchasi",
@@ -25991,10 +28336,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Темирйул"
       ],
       [
-        "Temur Malik 1-tor ko‘chasi"
+        "Temur Malik 1-tor ko‘chasi",
+        "1-й пр. Темур Малик",
+        "Temur Malik 1st Ln."
       ],
       [
-        "Temur Malik 2-tor ko‘chasi"
+        "Temur Malik 2-tor ko‘chasi",
+        "2-й пр. Темур Малик",
+        "Temur Malik 2nd Ln."
       ],
       [
         "Temur Malik 3-tor koʻchasi",
@@ -26013,11 +28362,11 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "8-й проезд Темура Малика"
       ],
       [
-        "Temur Malik ko'chasi"
-      ],
-      [
+        "Temur Malik ko'chasi",
+        "ул. Темур Малик",
+        "улица Темура Малика",
         "Temur Malik koʻchasi",
-        "улица Темура Малика"
+        "Temur Malik St."
       ],
       [
         "Tepa tagi koʻchasi",
@@ -26051,10 +28400,6 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "To'ralar ko'chasi",
         "улица Туралар",
         "Toʻralar koʻchasi"
-      ],
-      [
-        "Toʻralar koʻchasi",
-        "улица Туралар"
       ],
       [
         "Tokzor koʻchasi",
@@ -26103,11 +28448,11 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Туркистон"
       ],
       [
-        "Turon ko'chasi"
-      ],
-      [
+        "Turon ko'chasi",
+        "ул. Турон",
+        "улица Турон",
         "Turon koʻchasi",
-        "улица Турон"
+        "Turon St."
       ],
       [
         "Uchqun ko'chasi",
@@ -26127,7 +28472,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Урам"
       ],
       [
-        "Usmon Nosir 1-tor koʻchasi"
+        "Usmon Nosir 1-tor koʻchasi",
+        "1-й пр. Усмон Носир",
+        "Usmon Nosir 1st Ln."
       ],
       [
         "Usmon Nosir 2-tor koʻchasi",
@@ -26146,11 +28493,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "5-й проезд Усмана Носира"
       ],
       [
-        "Usmon Nosir 6-tor koʻchasi"
-      ],
-      [
-        "Usmon Nosir ko‘chasi",
-        "Усман Насыр улица"
+        "Usmon Nosir 6-tor koʻchasi",
+        "6-й пр. Усмон Носир",
+        "Usmon Nosir 6th Ln."
       ],
       [
         "Usmon Nosir ko‘chasiУл. Усмон Носир",
@@ -26158,7 +28503,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Usmon Nosir koʻchasi",
-        "улица Усмона Носира"
+        "улица Усмона Носира",
+        "Усман Насыр улица",
+        "Usmon Nosir ko‘chasi"
       ],
       [
         "Usta Olim ko'chasi",
@@ -26166,22 +28513,34 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Usta Olim koʻchasi"
       ],
       [
-        "Ustoz 1-tor ko'chasi"
+        "Ustoz 1-tor ko'chasi",
+        "1-й пр. Устоз",
+        "Ustoz 1st Ln."
       ],
       [
-        "Ustoz 2-tor ko'chasi"
+        "Ustoz 2-tor ko'chasi",
+        "2-й пр. Устоз",
+        "Ustoz 2nd Ln."
       ],
       [
-        "Ustoz 3-tor koʻchasi"
+        "Ustoz 3-tor koʻchasi",
+        "3-й пр. Устоз",
+        "Ustoz 3rd Ln."
       ],
       [
-        "Ustoz 4-tor koʻchasi"
+        "Ustoz 4-tor koʻchasi",
+        "4-й пр. Устоз",
+        "Ustoz 4th Ln."
       ],
       [
-        "Ustoz ko'chasi"
+        "Ustoz ko'chasi",
+        "ул. Устоз",
+        "Ustoz St."
       ],
       [
-        "Uvaysiy ko'chasi"
+        "Uvaysiy ko'chasi",
+        "ул. Увайсий",
+        "Uvaysiy St."
       ],
       [
         "Uzumzor ko'chasi",
@@ -26217,18 +28576,20 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "1-й проезд Водий"
       ],
       [
-        "Vodiy 2-tor ko‘chasi"
+        "Vodiy 2-tor ko‘chasi",
+        "2-й пр. Водий",
+        "Vodiy 2nd Ln."
       ],
       [
         "Vodiy 3-tor koʼchasi",
         "3-й проезд Водий"
       ],
       [
-        "Vodiy ko'chasi"
-      ],
-      [
         "Vodiy koʻchasi",
-        "улица Водий"
+        "ул. Водий",
+        "улица Водий",
+        "Vodiy ko'chasi",
+        "Vodiy St."
       ],
       [
         "X. Rojiy koʻchasi",
@@ -26244,37 +28605,37 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Хавас"
       ],
       [
-        "Xaziniy ko'chasi"
-      ],
-      [
         "Xaziniy koʻchasi",
-        "улица Хазиний"
+        "ул. Хазиний",
+        "улица Хазиний",
+        "Xaziniy ko'chasi",
+        "Xaziniy St."
       ],
       [
-        "Xazrat Oppoq xo‘ja ko‘chasi"
+        "Xazrat Oppoq xo‘ja ko‘chasi",
+        "ул. Хазрат Оппок худжа",
+        "Xazrat Oppoq xo'ja St."
       ],
       [
         "Xidoya koʻchasi",
         "улица Хидоя"
       ],
       [
-        "Xiyobon ko'chasi"
-      ],
-      [
+        "Xiyobon ko'chasi",
+        "ул. Хиёбон",
+        "улица Хиёбон",
         "Xiyobon koʻchasi",
-        "улица Хиёбон"
+        "Xiyobon St."
       ],
       [
         "Xoʻja Egiz 1-tor ko'chasi",
         "1-й проезд Хужа Егиз"
       ],
       [
-        "Xoʻja Egiz ko'chasi",
-        "улица Хужа Егиз"
-      ],
-      [
         "Xoʻja Egiz koʻchasi",
-        "улица Хужа Эгиз"
+        "улица Хужа Егиз",
+        "улица Хужа Эгиз",
+        "Xoʻja Egiz ko'chasi"
       ],
       [
         "Xoʻja Porso koʻchasi",
@@ -26324,11 +28685,11 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Yangi bogʻ koʻchasi"
       ],
       [
-        "Yangi Chek ko'chasi"
-      ],
-      [
         "Yangi Chek koʻchasi",
-        "улица Янги Чек"
+        "ул. Янги Чек",
+        "улица Янги Чек",
+        "Yangi Chek ko'chasi",
+        "Yangi Chek St."
       ],
       [
         "Yangi Fargʻona koʻchasi",
@@ -26349,7 +28710,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Yangi Marginal Street"
       ],
       [
-        "Yangi Margʻilon tor koʻchasi"
+        "Yangi Margʻilon tor koʻchasi",
+        "пр. Янги Маргилон",
+        "Yangi Marg'ilon Ln."
       ],
       [
         "Yangi turmush ko'chasi",
@@ -26357,7 +28720,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Yangi turmush koʻchasi"
       ],
       [
-        "Yangi yer koʻchasi"
+        "Yangi yer koʻchasi",
+        "ул. Янги ер",
+        "Yangi yer St."
       ],
       [
         "Yangiobod koʻchasi",
@@ -26429,7 +28794,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Зарафшан"
       ],
       [
-        "Zargarlik ko'chasi"
+        "Zargarlik ko'chasi",
+        "ул. Заргарлик",
+        "Zargarlik St."
       ],
       [
         "Zartepa ko'chasi",
@@ -26448,14 +28815,16 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Зийнат"
       ],
       [
-        "Ziyo ko'chasi"
-      ],
-      [
         "Ziyo koʻchasi",
-        "улица Зиё"
+        "ул. Зиё",
+        "улица Зиё",
+        "Ziyo ko'chasi",
+        "Ziyo St."
       ],
       [
-        "Ziyokor ko'chasi"
+        "Ziyokor ko'chasi",
+        "ул. Зиёкор",
+        "Ziyokor St."
       ],
       [
         "Ziyolilar koʻchasi",
@@ -26470,7 +28839,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Зумрад"
       ],
       [
-        "Zuxro ko'chasi"
+        "Zuxro ko'chasi",
+        "ул. Зухро",
+        "Zuxro St."
       ]
     ]
   },
@@ -26481,13 +28852,16 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "бывш. пионерлагерь \"Рахат\""
       ],
       [
-        "бывш. очист. сооружения"
+        "бывш. очист. сооружения",
+        "byvsh. ochist. sooruzheniya"
       ],
       [
-        "мыс Тигровый Хвост"
+        "мыс Тигровый Хвост",
+        "mys Tigrovyy Khvost"
       ],
       [
-        "Урочище Кызылшалы"
+        "Урочище Кызылшалы",
+        "Urochishche Kyzylshaly"
       ],
       [
         "Урочище Тигровый Хвост",
@@ -26868,7 +29242,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "8-й тупик 1-й улицы Достон"
       ],
       [
-        "1-Gʻallakor koʻchasi"
+        "1-Gʻallakor koʻchasi",
+        "1-G'allakor St.",
+        "ул. 1-Галлакор"
       ],
       [
         "1-Gulbogʻ koʻchasi",
@@ -26895,7 +29271,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "1-я улица Ойдинкул"
       ],
       [
-        "1-Sokin 2-tor koʻchasi"
+        "1-Sokin 2-tor koʻchasi",
+        "1-Sokin 2nd Ln.",
+        "2-й пр. 1-Сокин"
       ],
       [
         "2-Adirobod koʻchasi",
@@ -26914,7 +29292,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "2-я улица Достон"
       ],
       [
-        "2-Gʻallakor koʻchasi"
+        "2-Gʻallakor koʻchasi",
+        "2-G'allakor St.",
+        "ул. 2-Галлакор"
       ],
       [
         "2-Guliston koʻchasi",
@@ -26975,7 +29355,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "2-й тупик 3-го проезда Ахси"
       ],
       [
-        "3-Axsikent koʻchasi"
+        "3-Axsikent koʻchasi",
+        "3-Axsikent St.",
+        "ул. 3-Ахсикент"
       ],
       [
         "3-Binokor koʻchasi",
@@ -26986,7 +29368,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "3-я улица Бугдойзор"
       ],
       [
-        "3-Gʻallakor koʻchasi"
+        "3-Gʻallakor koʻchasi",
+        "3-G'allakor St.",
+        "ул. 3-Галлакор"
       ],
       [
         "3-Guliston koʻchasi",
@@ -27010,14 +29394,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "3-Saxovat ko'chasi",
+        "3-я улица Саховат",
+        "3-Saxovat koʻchasi",
         "улица 3-Саховат"
       ],
       [
-        "3-Saxovat koʻchasi",
-        "3-я улица Саховат"
-      ],
-      [
-        "4-Gʻallakor koʻchasi"
+        "4-Gʻallakor koʻchasi",
+        "4-G'allakor St.",
+        "ул. 4-Галлакор"
       ],
       [
         "4-Saxovat ko'chasi",
@@ -27028,7 +29412,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "4-я Шахрисабзская улица"
       ],
       [
-        "5-Gʻallakor koʻchasi"
+        "5-Gʻallakor koʻchasi",
+        "5-G'allakor St.",
+        "ул. 5-Галлакор"
       ],
       [
         "5-Oromgox ko'chasi",
@@ -27047,7 +29433,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "3-й проезд 6-й улицы Камалак"
       ],
       [
-        "7-Mingchinor ko'chasi"
+        "7-Mingchinor ko'chasi",
+        "7-Mingchinor St.",
+        "ул. 7-Мингчинор"
       ],
       [
         "7-Soli Adashev koʻchasi",
@@ -27058,7 +29446,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица 8-март"
       ],
       [
-        "9-Gallakor koʻchasi"
+        "9-Gallakor koʻchasi",
+        "9-Gallakor St.",
+        "ул. 9-Галлакор"
       ],
       [
         "9-Kamalak koʻchasi",
@@ -27158,8 +29548,10 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Галаба",
+        "Галаба | ул. Галаба | ул. Ғалаба",
         "Галаба улица",
-        "Ғалаба кўчаси"
+        "Ғалаба кўчаси",
+        "Galaba | Galaba St. | Ghalaba St."
       ],
       [
         "Равнак улица",
@@ -27170,16 +29562,22 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "1-й тупик 3-го проезда Туракурган"
       ],
       [
-        "улица А. Хужаева"
+        "улица А. Хужаева",
+        "ул. А. Хужаева",
+        "A. Khuzhaeva St."
       ],
       [
         "Улица Галаба",
         "Галаба улица",
-        "Ғалаба кўчаси"
+        "Ғалаба кўчаси",
+        "ул. Галаба | ул. Ғалаба",
+        "Galaba St. | Ghalaba St."
       ],
       [
         "улица Хотира",
-        "Хотира улица"
+        "ул. Хотира",
+        "Хотира улица",
+        "Khotira St."
       ],
       [
         "A. Avloniy ko‘chasi",
@@ -27306,13 +29704,10 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "9-й проезд Афрасиаб"
       ],
       [
-        "Afrosiyob ko`chasi",
-        "Афрасиаб улица",
-        "Afrosiyob koʻchasi"
-      ],
-      [
         "Afrosiyob koʻchasi",
-        "улица Афросиёб"
+        "Афрасиаб улица",
+        "улица Афросиёб",
+        "Afrosiyob ko`chasi"
       ],
       [
         "Afsonalar vodiysi koʻchasi",
@@ -27341,11 +29736,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Al Farg'oniy koʻchasi",
-        "улица Ал Фаргоний"
-      ],
-      [
-        "Al Fargʻoniy koʻchasi",
-        "улица Ал Фаргоний"
+        "улица Ал Фаргоний",
+        "Al Fargʻoniy koʻchasi"
       ],
       [
         "Al-Xorazmiy 1-tor koʻchasi",
@@ -27368,14 +29760,11 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "5-й тупик Алишера Навои"
       ],
       [
-        "Alisher Navoiy ko'chasi",
-        "Алишер Навоий кўчаси",
-        "улица Алишера Навои"
-      ],
-      [
-        "Amir Temur koʻchasi",
+        "Amir Temur ko'chasi",
         "Амир Темур кўчаси",
-        "улица Амира Темура"
+        "улица Амира Темура",
+        "улица АмираТемура",
+        "Amir Temur koʻchasi"
       ],
       [
         "Andijon ko'chasi",
@@ -27414,7 +29803,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "5-я улица Ашхабад"
       ],
       [
-        "Ashxobod ko'chasi"
+        "Ashxobod ko'chasi",
+        "ул. Ашхобод",
+        "Ashxobod St."
       ],
       [
         "Atirgul koʻchasi",
@@ -27442,17 +29833,15 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Axsi ko'chasi",
-        "улица Ахси",
-        "Akhsi street"
-      ],
-      [
-        "Axsi koʻchasi",
         "Ахси улица",
         "улица Ахси",
-        "Akhsi street"
+        "Akhsi street",
+        "Axsi koʻchasi"
       ],
       [
-        "Axsikent koʻchasi"
+        "Axsikent koʻchasi",
+        "ул. Ахсикент",
+        "Axsikent St."
       ],
       [
         "B.Mashrab ko'chasi",
@@ -27617,12 +30006,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Баркамол Авлод"
       ],
       [
-        "Barkamol ko'chasi",
-        "улица Баркамол"
-      ],
-      [
         "Barkamol koʻchasi",
-        "улица Баркамол"
+        "улица Баркамол",
+        "Barkamol ko'chasi"
       ],
       [
         "Baxtiyor koʻchasi",
@@ -27959,7 +30345,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Бойчечак"
       ],
       [
-        "Bozor 1-berk koʻchasi"
+        "Bozor 1-berk koʻchasi",
+        "1-й туп. Бозор",
+        "Bozor 1st Dead End"
       ],
       [
         "Bozor koʻchasi",
@@ -28364,19 +30752,19 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "3-й проезд Дильшод"
       ],
       [
-        "Dilshod 4-tor 1-berk koʻchasi"
+        "Dilshod 4-tor 1-berk koʻchasi",
+        "1-й туп. 4-го пр. Дилшод",
+        "Dilshod 4th Ln., 1st Dead End"
       ],
       [
         "Dilshod 4-tor koʻchasi",
         "4-й проезд Дильшод"
       ],
       [
-        "Diyor ko'chasi",
-        "улица Диор"
-      ],
-      [
         "Diyor koʻchasi",
-        "улица Диёр"
+        "улица Диёр",
+        "улица Диор",
+        "Diyor ko'chasi"
       ],
       [
         "Doʻstlik 2-tor koʻchasi",
@@ -28559,10 +30947,6 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Ғалаба кўчаси"
       ],
       [
-        "G'alcha ko'chasi",
-        "Галча улица"
-      ],
-      [
         "G'ayrat 3-tor koʻchasi",
         "3-й проезд Гайрат"
       ],
@@ -28583,16 +30967,13 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "8-й проезд Гайрат"
       ],
       [
-        "G'azina ko'chasi",
-        "Ганзиза улица",
-        "Ganiza street"
-      ],
-      [
         "G'isht ko'prik koʻchasi",
         "улица Гишт куприк"
       ],
       [
-        "Gallakor koʻchasi 2 berk 8-koʻchasi"
+        "Gallakor koʻchasi 2 berk 8-koʻchasi",
+        "2-й туп. 8-й ул. Галлакор",
+        "Gallakor 8th St., 2nd Dead End"
       ],
       [
         "Gʻafur Gʻulom 1-berk koʻchasi",
@@ -28644,7 +31025,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Gʻalcha koʻchasi",
-        "улица Галча"
+        "Галча улица",
+        "улица Галча",
+        "G'alcha ko'chasi"
       ],
       [
         "Gʻallakor 5-koʻchasi",
@@ -28655,7 +31038,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "6-я улица Галлакор"
       ],
       [
-        "Gʻallakor koʻchasi"
+        "Gʻallakor koʻchasi",
+        "ул. Галлакор",
+        "G'allakor St."
       ],
       [
         "Gʻayrat 1-tor koʻchasi",
@@ -28707,7 +31092,10 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Gʻazina koʻchasi",
-        "улица Газина"
+        "Ганзиза улица",
+        "улица Газина",
+        "G'azina ko'chasi",
+        "Ganiza street"
       ],
       [
         "Gʻirvonsoy 4-tor 1-berk koʻchasi",
@@ -28760,11 +31148,11 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "3-й проезд Гирвонсой"
       ],
       [
+        "Girvonsoy koʼchasi",
+        "ул. Гирвонсой",
+        "улица Гирвонсой",
         "Girvonsoy koʻchasi",
-        "улица Гирвонсой"
-      ],
-      [
-        "Girvonsoy koʼchasi"
+        "Girvonsoy St."
       ],
       [
         "Go'zal Diyor ko'chasi",
@@ -28980,7 +31368,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Гульзор"
       ],
       [
-        "Guzal koʻchasi 3 berk koʻchasi"
+        "Guzal koʻchasi 3 berk koʻchasi",
+        "3-й туп. Гузал",
+        "Guzal 3rd Dead End"
       ],
       [
         "Guzar koʻchasi",
@@ -29019,82 +31409,104 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "2-й проезд Хамида Алимджана"
       ],
       [
-        "Hamid Olimjon ko'chasi",
-        "улица Хамида Алимджана"
-      ],
-      [
         "Hamid Olimjon koʻchasi",
+        "улица Хамида Алимджана",
         "улица Хамида Олимжана",
-        "улица Хамида Олимжона"
+        "улица Хамида Олимжона",
+        "Hamid Olimjon ko'chasi"
       ],
       [
         "Hamkor 1-berk koʻchasi",
         "1-й тупик Хамкор"
       ],
       [
-        "Hamkor 1-tor koʻchasi"
-      ],
-      [
         "Hamkor 1-tor koʼchasi",
-        "1-й проезд Хамкор"
+        "1-й пр. Хамкор",
+        "1-й проезд Хамкор",
+        "Hamkor 1-tor koʻchasi",
+        "Hamkor 1st Ln."
       ],
       [
         "Hamkor 2-berk koʻchasi",
         "2-й тупик Хамкор"
       ],
       [
-        "Hamkor 2-tor koʻchasi"
-      ],
-      [
+        "Hamkor 2-tor koʻchasi",
+        "2-й пр. Хамкор",
+        "2-й проезд Хамкор",
         "Hamkor 2-tor koʼchasi",
-        "2-й проезд Хамкор"
+        "Hamkor 2nd Ln."
       ],
       [
         "Hamkor 3-berk koʻchasi",
         "3-й тупик Хамкор"
       ],
       [
-        "Hamkor 3-tor koʻchasi"
+        "Hamkor 3-tor koʻchasi",
+        "3-й пр. Хамкор",
+        "Hamkor 3rd Ln."
       ],
       [
-        "Hamkor 4-berk koʻchasi"
+        "Hamkor 4-berk koʻchasi",
+        "4-й туп. Хамкор",
+        "Hamkor 4th Dead End"
       ],
       [
-        "Hamkor 4-tor koʻchasi"
+        "Hamkor 4-tor koʻchasi",
+        "4-й пр. Хамкор",
+        "Hamkor 4th Ln."
       ],
       [
-        "Hamkor 5-berk koʻchasi"
+        "Hamkor 5-berk koʻchasi",
+        "5-й туп. Хамкор",
+        "Hamkor 5th Dead End"
       ],
       [
-        "Hamkor 5-tor koʻchasi"
+        "Hamkor 5-tor koʻchasi",
+        "5-й пр. Хамкор",
+        "Hamkor 5th Ln."
       ],
       [
-        "Hamkor 6-tor koʻchasi"
+        "Hamkor 6-tor koʻchasi",
+        "6-й пр. Хамкор",
+        "Hamkor 6th Ln."
       ],
       [
-        "Hamkor 7-berk koʻchasi"
+        "Hamkor 7-berk koʻchasi",
+        "7-й туп. Хамкор",
+        "Hamkor 7th Dead End"
       ],
       [
-        "Hamkor 7-tor koʻchasi"
+        "Hamkor 7-tor koʻchasi",
+        "7-й пр. Хамкор",
+        "Hamkor 7th Ln."
       ],
       [
-        "Hamkor 8-berk koʻchasi"
+        "Hamkor 8-berk koʻchasi",
+        "8-й туп. Хамкор",
+        "Hamkor 8th Dead End"
       ],
       [
-        "Hamkor 8-tor koʻchasi"
+        "Hamkor 8-tor koʻchasi",
+        "8-й пр. Хамкор",
+        "Hamkor 8th Ln."
       ],
       [
-        "Hamkor 9-berk koʻchasi"
+        "Hamkor 9-berk koʻchasi",
+        "9-й туп. Хамкор",
+        "Hamkor 9th Dead End"
       ],
       [
-        "Hamkor 9-tor koʻchasi"
+        "Hamkor 9-tor koʻchasi",
+        "9-й пр. Хамкор",
+        "Hamkor 9th Ln."
       ],
       [
-        "Hamkor ko'chasi"
-      ],
-      [
+        "Hamkor ko'chasi",
+        "ул. Хамкор",
+        "улица Хамкор",
         "Hamkor koʻchasi",
-        "улица Хамкор"
+        "Hamkor St."
       ],
       [
         "Hamroh 1-tor 1-berk koʻchasi",
@@ -29201,10 +31613,6 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       [
         "Ibrat 1-tor koʻchasi",
         "1-й проезд Ибрат"
-      ],
-      [
-        "Ibrat ko'chasi",
-        "Ибрат улица"
       ],
       [
         "Ibroxim Majnunov 1-tor 2-berk koʻchasi",
@@ -29344,12 +31752,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "8-й тупик Индиры Ганди"
       ],
       [
-        "Indira Gandi ko'chasi",
-        "улица Индиры Ганди"
-      ],
-      [
         "Indira Gandi koʻchasi",
-        "улица Индиры Ганди"
+        "улица Индиры Ганди",
+        "Indira Gandi ko'chasi"
       ],
       [
         "Ipak Yoʻli 1-tor koʻchasi",
@@ -29397,11 +31802,6 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Ишонч"
       ],
       [
-        "Islom Karimov ko'chasi",
-        "проспект Ислама Каримова",
-        "Islam Karimov Street"
-      ],
-      [
         "Islom Karimov kochasi",
         "проспект Ислама Каримова"
       ],
@@ -29410,15 +31810,12 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "4-й проезд Исломабад"
       ],
       [
-        "Istiqlol ko'chasi",
-        "Истиклол улица",
-        "Istiklol Street",
-        "Istiqlol ko‘chasi"
-      ],
-      [
         "Istiqlol koʻchasi",
+        "Истиклол улица",
         "улица Истиклол",
-        "Istiklol Street"
+        "Istiklol Street",
+        "Istiqlol ko'chasi",
+        "Istiqlol ko‘chasi"
       ],
       [
         "Ixlos 1-berk koʼchasi",
@@ -29513,19 +31910,18 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "4-й проезд Жамбул"
       ],
       [
-        "Jambul ko'chasi",
-        "улица Жамбул"
-      ],
-      [
         "Jambul koʻchasi",
-        "улица Жамбул"
+        "улица Жамбул",
+        "Jambul ko'chasi"
       ],
       [
         "Janubiy Аylanma Yo'li 2-berk koʼchasi",
         "2-й тупик Джанубий айланма йули"
       ],
       [
-        "Janubiy aylanma yoʻl"
+        "Janubiy aylanma yoʻl",
+        "Джанубий айланма ёл",
+        "Janubiy aylanma yo'l"
       ],
       [
         "Janubiy aylanma yoʻli",
@@ -29722,11 +32118,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Kamolot ko`chasi",
-        "улица Камолот"
-      ],
-      [
-        "Kamolot koʻchasi",
-        "улица Камолот"
+        "улица Камолот",
+        "Kamolot koʻchasi"
       ],
       [
         "Kamtar 1-berk koʻchasi",
@@ -30105,7 +32498,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Maʻrifat koʻchasi",
-        "улица Маърифат"
+        "улица Марифат",
+        "улица Маърифат",
+        "Maʼrifat ko'chasi"
       ],
       [
         "Mamarasulov ko'chasi",
@@ -30117,11 +32512,6 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       [
         "Maqsud Shayxzoda koʻchasi",
         "лица Максуда Шайхзаде"
-      ],
-      [
-        "Marg'ilon ko'chasi",
-        "Маргилан улица",
-        "Марғилон кўчаси"
       ],
       [
         "Margʻilon 1-tor 1-berk koʻchasi",
@@ -30202,8 +32592,10 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Margʻilon koʻchasi",
+        "Маргилан улица",
         "Марғилон кўчаси",
-        "улица Маргилан"
+        "улица Маргилан",
+        "Marg'ilon ko'chasi"
       ],
       [
         "Mashhur 2-koʻchasi",
@@ -30248,10 +32640,6 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       [
         "Mayna Xasanova koʻchasi",
         "улица Майна Хасанова"
-      ],
-      [
-        "Maʼrifat ko'chasi",
-        "улица Марифат"
       ],
       [
         "Mehmondoʻst koʻchasi",
@@ -30306,7 +32694,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "6-й проезд Мисгар"
       ],
       [
-        "Mu’mminjanovlar ko‘chasi"
+        "Mu’mminjanovlar ko‘chasi",
+        "ул. Мумминджановлар",
+        "Mu'mminjanovlar St."
       ],
       [
         "Mulla Axmadjon koʻchasi",
@@ -30503,14 +32893,12 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "3-й проезд Намангансой"
       ],
       [
-        "Namangansoy ko'chasi",
-        "Намангансай улица",
-        "Namangansay street"
-      ],
-      [
         "Namangansoy koʻchasi",
+        "Намангансай улица",
         "улица Намангансай",
-        "улица Намангансой"
+        "улица Намангансой",
+        "Namangansay street",
+        "Namangansoy ko'chasi"
       ],
       [
         "Namuna 2-berk koʻchasi",
@@ -30529,7 +32917,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Намуна"
       ],
       [
-        "Naqshband ko'chasi"
+        "Naqshband ko'chasi",
+        "ул. Накшбанд",
+        "Naqshband St."
       ],
       [
         "Navbaxor koʻchasi",
@@ -30626,7 +33016,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "5-й тупик Нодима Намангони"
       ],
       [
-        "Nodim Nomongoniy 2-berk koʻchasi"
+        "Nodim Nomongoniy 2-berk koʻchasi",
+        "2-й туп. Нодим Номонгоний",
+        "Nodim Nomongoniy 2nd Dead End"
       ],
       [
         "Nodira 2-berk koʻchasi",
@@ -30742,7 +33134,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "O'rikzor koʻchasi",
-        "улица Урикзор"
+        "улица Урикзор",
+        "Oʻrikzor koʻchasi"
       ],
       [
         "O‘zbekiston 1-tor ko‘chasi",
@@ -30806,10 +33199,6 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       [
         "Oʻrikzor 6-berk koʻchasi",
         "6-й тупик Урикзор"
-      ],
-      [
-        "Oʻrikzor koʻchasi",
-        "улица Урикзор"
       ],
       [
         "Oʻrta Rovuston koʻchasi",
@@ -31503,10 +33892,6 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "1-й проезд Саади Ширази"
       ],
       [
-        "Saʻdiy Sheroziy koʻchasi",
-        "улица Саади Шерози"
-      ],
-      [
         "Samandar ko‘chasi",
         "улица Самандар"
       ],
@@ -31662,16 +34047,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "9-й тупик Саховат"
       ],
       [
-        "Saxovat ko'chasi",
-        "улица Саховат"
-      ],
-      [
         "Saxovat koʻchasi",
-        "улица Саховат"
+        "улица Саховат",
+        "Saxovat ko'chasi"
       ],
       [
         "Saʼdiy Sheroziy koʻchasi",
-        "улица Саади Шерози"
+        "улица Саади Шерози",
+        "Saʻdiy Sheroziy koʻchasi"
       ],
       [
         "Sevinch 2-berk koʻchasi",
@@ -31938,14 +34321,10 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "9-й проезд Шаршара"
       ],
       [
-        "Sharshara ko'chasi",
-        "улица Шаршара",
-        "Шаршара улица",
-        "Sharshara street"
-      ],
-      [
         "Sharshara koʻchasi",
         "улица Шаршара",
+        "Шаршара улица",
+        "Sharshara ko'chasi",
         "Sharshara street"
       ],
       [
@@ -31969,12 +34348,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Шерозий"
       ],
       [
-        "Shifokor 1-tor koʻchasi",
-        "1-й проезд Шифокор"
-      ],
-      [
         "Shifokor 1-tor koʼchasi",
-        "1-й проезд Шифокор"
+        "1-й проезд Шифокор",
+        "Shifokor 1-tor koʻchasi"
       ],
       [
         "Shifokor 3-tor koʼchasi",
@@ -32109,7 +34485,11 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Sergeli street"
       ],
       [
-        "So'lim ko'chasi"
+        "So'lim ko'chasi",
+        "ул. Сулим",
+        "улица Сулим",
+        "So'lim St.",
+        "Soʻlim koʻchasi"
       ],
       [
         "Sogʻlom avlod 2-berk koʻchasi",
@@ -32121,11 +34501,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Sohibkor 1-koʻchasi",
-        "1-я улица Сохибкор"
-      ],
-      [
-        "Sohibkor 1-koʼchasi",
-        "1-я улица Сохибкор"
+        "1-я улица Сохибкор",
+        "Sohibkor 1-koʼchasi"
       ],
       [
         "Sohibkor 2-ko‘chasining 1-tor ko‘chasi",
@@ -32168,13 +34545,10 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "6-я улица Сохибкор"
       ],
       [
-        "Sohibkor ko'chasi",
-        "улица Сохибкор",
-        "Sahibkor street"
-      ],
-      [
         "Sohibkor koʻchasi",
-        "улица Сохибкор"
+        "улица Сохибкор",
+        "Sahibkor street",
+        "Sohibkor ko'chasi"
       ],
       [
         "Sohibkor-2 ko‘chasining 6-tor ko‘chasi",
@@ -32290,10 +34664,6 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       [
         "Soʻlim 7-koʻchasi",
         "7-я улица Сулим"
-      ],
-      [
-        "Soʻlim koʻchasi",
-        "улица Сулим"
       ],
       [
         "Sokin 1-tor koʼchasi",
@@ -32425,7 +34795,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "1-й тупик 5-го проезда Соли Адашева"
       ],
       [
-        "Southern bypass road"
+        "Southern bypass road",
+        "дор. южная объездная",
+        "Southern bypass Rd."
       ],
       [
         "Soxil 1-tor 1-berk koʻchasi",
@@ -32436,10 +34808,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "5-й проезд Сохил Буйи"
       ],
       [
-        "Soxil boʻyi koʻchasi 2 tor koʻchasi"
+        "Soxil boʻyi koʻchasi 2 tor koʻchasi",
+        "2-й пр. Сохил буйи",
+        "Soxil bo'yi 2nd Ln."
       ],
       [
-        "Soxil koʻchasi"
+        "Soxil koʻchasi",
+        "ул. Сохил",
+        "Soxil St."
       ],
       [
         "Sufi Olloyor 1-berk ko'chasi",
@@ -32466,7 +34842,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Сумалак"
       ],
       [
-        "Sumbula 1-berk koʻchasi"
+        "Sumbula 1-berk koʻchasi",
+        "1-й туп. Сумбула",
+        "Sumbula 1st Dead End"
       ],
       [
         "Sumbula koʻchasi",
@@ -32610,10 +34988,17 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "5-й проезд Темир"
       ],
       [
-        "Temir ko'chasi"
+        "Temir ko'chasi",
+        "ул. Темир",
+        "Temir St."
       ],
       [
-        "Temir yo'l ko'chasi"
+        "Temir yo'l ko'chasi",
+        "ул. Темир ёл",
+        "улица Темир Йул",
+        "Temir yo'l St.",
+        "Temir yoʻl koʻchasi",
+        "Temir Yoʻl koʻchasi"
       ],
       [
         "Temir Yoʻl 1-tor 7-berk koʻchasi",
@@ -32674,11 +35059,6 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       [
         "Temir Yoʻl 7-tor koʻchasi",
         "7-й проезд Темир Йул"
-      ],
-      [
-        "Temir yoʻl koʻchasi",
-        "улица Темир Йул",
-        "Temir Yoʻl koʻchasi"
       ],
       [
         "Temir Yoʼl 3-tor 1-berk koʼchasi",
@@ -32769,17 +35149,16 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Тимур Малика"
       ],
       [
-        "Tinchlik ko'chasi",
-        "улица Тинчлик"
-      ],
-      [
         "Tinchlik koʻchasi",
-        "улица Тинчлик"
+        "улица Тинчлик",
+        "Tinchlik ko'chasi"
       ],
       [
         "To'qmoq guzari ko'chasi",
         "улица Тукмак Гузари",
         "улица Тукмок гузари",
+        "улица Тукмок Гузари",
+        "Toʻqmoq Guzari koʻchasi",
         "Tukmak Guzari street"
       ],
       [
@@ -32848,12 +35227,6 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "8-й тупик Тукмок Гузари"
       ],
       [
-        "Toʻqmoq Guzari koʻchasi",
-        "улица Тукмак Гузари",
-        "улица Тукмок Гузари",
-        "Tukmak Guzari street"
-      ],
-      [
         "Toʻraqoʻrgʻon 11-tor koʻchasi",
         "11-й проезд Туракургон"
       ],
@@ -32874,7 +35247,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "5-й проезд Туракурган"
       ],
       [
-        "Toʻraqoʻrgʻon 8-berk koʻchasi"
+        "Toʻraqoʻrgʻon 8-berk koʻchasi",
+        "8-й туп. Туракургон",
+        "To'raqo'rg'on 8th Dead End"
       ],
       [
         "Toʻraqoʻrgʻon 8-tor koʻchasi",
@@ -32938,12 +35313,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "6-й проезд Токзор"
       ],
       [
-        "Tokzor 7-tor koʻchasi",
-        "7-й проезд Токзор"
-      ],
-      [
         "Tokzor 7-tor koʼchasi",
-        "7-й проезд Токзор"
+        "7-й проезд Токзор",
+        "Tokzor 7-tor koʻchasi"
       ],
       [
         "Tokzor 8-tor koʻchasi",
@@ -33043,7 +35415,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "3-й проезд Туракурган"
       ],
       [
-        "Turaqoʻrgʻon 5-tor 1-berk koʻchasi"
+        "Turaqoʻrgʻon 5-tor 1-berk koʻchasi",
+        "1-й туп. 5-го пр. Туракургон",
+        "Turaqo'rg'on 5th Ln., 1st Dead End"
       ],
       [
         "Turgʻun Poʻlat 1-tor koʻchasi",
@@ -33151,7 +35525,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "У. Насыр улица"
       ],
       [
-        "Usmon Yusupov koʻchasi"
+        "Usmon Yusupov koʻchasi",
+        "ул. Усмон Юсупов",
+        "Usmon Yusupov St."
       ],
       [
         "Usta Roʻzimatxon 1-berk koʻchasi",
@@ -33238,16 +35614,13 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "7-й проезд Уйчи"
       ],
       [
-        "Uychi ko’chasi",
+        "Uychi koʻchasi",
         "Уйчи кўчаси",
         "Уйчи улица",
         "улица Уйчи",
         "Uychi ko'chasi",
+        "Uychi ko’chasi",
         "Uychi street"
-      ],
-      [
-        "Uychi koʻchasi",
-        "улица Уйчи"
       ],
       [
         "Uzumzor 1-berk 1-koʻchasi",
@@ -33306,7 +35679,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "1-й тупик Водий"
       ],
       [
-        "Vodiy 2 berk koʻchasi"
+        "Vodiy 2 berk koʻchasi",
+        "2-й туп. Водий",
+        "Vodiy 2nd Dead End"
       ],
       [
         "Vodiy 3-berk koʻchasi",
@@ -33325,7 +35700,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "6-й тупик Водий"
       ],
       [
-        "Vodiy ko'chasi"
+        "Vodiy ko'chasi",
+        "ул. Водий",
+        "Vodiy St."
       ],
       [
         "X. Kaxxarov koʻchasi",
@@ -33364,13 +35741,12 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "2-й проезд Хамрох"
       ],
       [
-        "Xamrox ko'chasi",
-        "Oxunboboyev ko'chasi"
-      ],
-      [
         "Xamrox koʻchasi",
+        "ул. Охунбобоев | ул. Хамрох",
         "улица Хамрох",
-        "Oxunboboyev ko'chasi"
+        "Oxunboboyev ko'chasi",
+        "Oxunboboyev St. | Xamrox St.",
+        "Xamrox ko'chasi"
       ],
       [
         "Xasanobod 1-koʻchasi",
@@ -33437,10 +35813,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "5-я улица Хасанабад"
       ],
       [
-        "Xasanobod 6-koʻchasi"
+        "Xasanobod 6-koʻchasi",
+        "6-я ул. Хасанобод",
+        "Xasanobod 6th St."
       ],
       [
-        "Xasanobod koʻchasi"
+        "Xasanobod koʻchasi",
+        "ул. Хасанобод",
+        "Xasanobod St."
       ],
       [
         "Xidiraliyev 1-tor koʻchasi",
@@ -33460,10 +35840,10 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Xiva ko'chasi",
-        "Хива улица"
-      ],
-      [
-        "Xiva koʻchasi"
+        "ул. Хива",
+        "Хива улица",
+        "Xiva koʻchasi",
+        "Xiva St."
       ],
       [
         "Xorazm koʻchasi",
@@ -33569,19 +35949,13 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "2-й проезд Янги арык"
       ],
       [
-        "Yangi ariq ko‘chasi"
-      ],
-      [
         "Yangi Asr 1-berk koʻchasi",
         "1-й тупик Янги Аср"
       ],
       [
-        "Yangi Asr 1-tor koʻchasi",
-        "1-й проезд Янги Аср"
-      ],
-      [
         "Yangi Asr 1-tor koʼchasi",
-        "1-й проезд Янги Аср"
+        "1-й проезд Янги Аср",
+        "Yangi Asr 1-tor koʻchasi"
       ],
       [
         "Yangi Asr 10-tor koʻchasi",
@@ -33621,19 +35995,13 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Yangi Asr 2-tor koʻchasi",
-        "2-й проезд Янги Аср"
-      ],
-      [
-        "Yangi Asr 2-tor koʼchasi",
-        "2-й проезд Янги Аср"
-      ],
-      [
-        "Yangi Asr 3-tor koʻchasi",
-        "3-й проезд Янги Аср"
+        "2-й проезд Янги Аср",
+        "Yangi Asr 2-tor koʼchasi"
       ],
       [
         "Yangi Asr 3-tor koʼchasi",
-        "3-й проезд Янги Аср"
+        "3-й проезд Янги Аср",
+        "Yangi Asr 3-tor koʻchasi"
       ],
       [
         "Yangi Asr 4-tor koʻchasi",
@@ -33700,7 +36068,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Янги тонг"
       ],
       [
-        "Yangi xayot koʻchasi 1 tor koʻchasi"
+        "Yangi xayot koʻchasi 1 tor koʻchasi",
+        "1-й пр. Янги хаёт",
+        "Yangi xayot 1st Ln."
       ],
       [
         "Yangi Yer 1-tor koʻchasi",
@@ -33893,11 +36263,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Yangiobod 10-berk koʻchasi",
-        "10-й тупик Янгиабад"
-      ],
-      [
-        "Yangiobod 10-berk koʼchasi",
-        "10-й тупик Янгиобод"
+        "10-й тупик Янгиабад",
+        "10-й тупик Янгиобод",
+        "Yangiobod 10-berk koʼchasi"
       ],
       [
         "Yangiobod 10a berk koʻchasi",
@@ -33933,12 +36301,10 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Yangiobod ko'chasi",
-        "Янгиобод улица"
-      ],
-      [
-        "Yangiobod koʻchasi",
         "улица Янгиабад",
-        "Yangiabad Street"
+        "Янгиобод улица",
+        "Yangiabad Street",
+        "Yangiobod koʻchasi"
       ],
       [
         "Yangiqoʻrgʻon 1-berk koʻchasi",
@@ -34191,11 +36557,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Zarafshon 1-tor koʻchasi",
-        "1-й проезд Зарафшон"
-      ],
-      [
-        "Zarafshon 1-tor koʼchasi",
-        "1-й проезд Зарафшан"
+        "1-й проезд Зарафшан",
+        "1-й проезд Зарафшон",
+        "Zarafshon 1-tor koʼchasi"
       ],
       [
         "Zarafshon 2-tor 1-berk koʼchasi",
@@ -34584,15 +36948,20 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
     ],
     "residentialComplexes": [
       [
-        "ISFAAN Residence"
+        "ISFAAN Residence",
+        "ЖК ИСФААН"
       ]
     ],
     "streets": [
       [
-        "улица Супутник Кургони"
+        "улица Супутник Кургони",
+        "ул. Супутник Кургони",
+        "Suputnik Kurgoni St."
       ],
       [
-        "улица Тонг юлдузи"
+        "улица Тонг юлдузи",
+        "ул. Тонг юлдузи",
+        "Tong yulduzi St."
       ],
       [
         "A. Avloniy ko'chasi",
@@ -35022,7 +37391,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Шифокорлар"
       ],
       [
-        "Shijoat ko'chasi"
+        "Shijoat ko'chasi",
+        "ул. Шиджоат",
+        "Shijoat St."
       ],
       [
         "Shodlik ko'chasi",
@@ -35395,16 +37766,23 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица 9-мая"
       ],
       [
-        "ЖД Базар көшеси"
+        "ЖД Базар көшеси",
+        "ZhD Bazar koshesi"
       ],
       [
-        "Набережная"
+        "Набережная",
+        "наб.",
+        "Naberezhnaya"
       ],
       [
-        "Улица Ерназара Алакоза"
+        "Улица Ерназара Алакоза",
+        "ул. Ерназара Алакоза",
+        "Ernazara Alakoza St."
       ],
       [
-        "улица Проектная"
+        "улица Проектная",
+        "ул. Проектная",
+        "Proektnaya St."
       ],
       [
         "A. Begimov kóshesi",
@@ -37879,6 +40257,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "P.Seytov kóshesi",
+        "ул. П.Сейтов | ул. Пирджан Сейтов",
+        "P.Seytov St. | Pirjan Seytov St.",
         "Pirjan Seytov ko'shesi"
       ],
       [
@@ -39488,7 +41868,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "7th microdistrict"
       ],
       [
-        "Абидида"
+        "Абидида",
+        "Abidida"
       ],
       [
         "Денов",
@@ -39497,23 +41878,28 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Denau"
       ],
       [
-        "Отчопар"
+        "Отчопар",
+        "Otchopar"
       ],
       [
-        "Паст-Кавчин"
+        "Паст-Кавчин",
+        "Past-Kavchin"
       ],
       [
-        "Пистали"
+        "Пистали",
+        "Pistali"
       ],
       [
         "Ташли",
         "Tashli"
       ],
       [
-        "Ушактепа"
+        "Ушактепа",
+        "Ushaktepa"
       ],
       [
-        "Этак"
+        "Этак",
+        "Etak"
       ],
       [
         "A. Temur mahallasi",
@@ -39529,7 +41915,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Балхияк"
       ],
       [
-        "Batosh mahallasi"
+        "Batosh mahallasi",
+        "мах. Батош",
+        "Batosh Mahalla"
       ],
       [
         "Beglar mahallasi",
@@ -39584,7 +41972,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Darvaza-tutak mahalla"
       ],
       [
-        "Dasht"
+        "Dasht",
+        "Дашт"
       ],
       [
         "Dilkusho mahallasi",
@@ -39592,7 +41981,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Dilkusho mahalla"
       ],
       [
-        "Do'ng Qovchin"
+        "Do'ng Qovchin",
+        "Дунг Ковчин"
       ],
       [
         "Eskianhor mahallasi",
@@ -39646,10 +42036,12 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Hudoyzod mahalla"
       ],
       [
-        "imperator_111"
+        "imperator_111",
+        "император_111"
       ],
       [
-        "Istiqbol"
+        "Istiqbol",
+        "Истикбол"
       ],
       [
         "Istiqlol mahallasi",
@@ -39816,7 +42208,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Karlukbogot mahalla"
       ],
       [
-        "Qarshi City"
+        "Qarshi City",
+        "Карши Ситй"
       ],
       [
         "Qarshi mahallasi",
@@ -40015,23 +42408,34 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
     ],
     "streets": [
       [
-        "Закирова"
+        "Закирова",
+        "Zakirova"
       ],
       [
-        "улица Жизза"
+        "улица Жизза",
+        "ул. Жизза",
+        "Zhizza St."
       ],
       [
-        "улица Ойдин"
+        "улица Ойдин",
+        "ул. Ойдин",
+        "Oydin St."
       ],
       [
-        "улица Осиё"
+        "улица Осиё",
+        "ул. Осиё",
+        "Osiyo St."
       ],
       [
-        "улица чор чинор"
+        "улица чор чинор",
+        "ул. чор чинор",
+        "chor chinor St."
       ],
       [
         "Хазрати Башир улица",
-        "улица Хазрати Башир"
+        "ул. Хазрати Башир",
+        "улица Хазрати Башир",
+        "Khazrati Bashir St."
       ],
       [
         "A. Yulbarisov ko'chasi",
@@ -40060,7 +42464,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Алмазар"
       ],
       [
-        "ALPOMISH KO'CHASI"
+        "ALPOMISH KO'CHASI",
+        "ул. АЛПОМИШ",
+        "ALPOMISH St."
       ],
       [
         "Amin Zaripova ko'chasi",
@@ -40075,24 +42481,32 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Андижон"
       ],
       [
-        "ATLASCHI KO'CHASI"
+        "ATLASCHI KO'CHASI",
+        "ул. АТЛАСЧИ",
+        "ATLASCHI St."
       ],
       [
         "Axmad Yassaviy ko'chasi",
         "улица Ахмад Яссави"
       ],
       [
-        "Bahodir Sherqulov ko‘chasi"
+        "Bahodir Sherqulov ko‘chasi",
+        "ул. Баходир Шеркулов",
+        "Bahodir Sherqulov St."
       ],
       [
-        "BAHOR KO'CHASI"
+        "BAHOR KO'CHASI",
+        "ул. БАХОР",
+        "BAHOR St."
       ],
       [
         "Bakinskaya ko'chasi",
         "улица Бакинская"
       ],
       [
-        "Baxmalsoy koʻchasi"
+        "Baxmalsoy koʻchasi",
+        "ул. Бахмалсой",
+        "Baxmalsoy St."
       ],
       [
         "Bekzoda ko'chasi",
@@ -40129,24 +42543,32 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Биллур"
       ],
       [
-        "BINOKOR KO'CHASI"
+        "BINOKOR KO'CHASI",
+        "ул. БИНОКОР",
+        "BINOKOR St."
       ],
       [
         "Bodomzor ko'chasi",
         "улица Бодомзор"
       ],
       [
-        "BOG'ARIQ KO'CHASI"
+        "BOG'ARIQ KO'CHASI",
+        "ул. БОГАРИК",
+        "BOG'ARIQ St."
       ],
       [
         "Bog'iston ko'chasi",
         "улица Богистан"
       ],
       [
-        "BOG'OBOD KO'CHASI"
+        "BOG'OBOD KO'CHASI",
+        "ул. БОГОБОД",
+        "BOG'OBOD St."
       ],
       [
-        "Bog'tepa ko'chasi"
+        "Bog'tepa ko'chasi",
+        "ул. Богтепа",
+        "Bog'tepa St."
       ],
       [
         "Boston ko'chasi",
@@ -40157,13 +42579,13 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Булоктепа"
       ],
       [
-        "Bunyodkor ko'chasi"
+        "Buston ko'chasi",
+        "ул. Бустон",
+        "Buston St."
       ],
       [
-        "Buston ko'chasi"
-      ],
-      [
-        "Buyuk Ipak Yuli"
+        "Buyuk Ipak Yuli",
+        "Буюк Ипак Юли"
       ],
       [
         "Chaman bog' ko'chasi",
@@ -40179,27 +42601,36 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Чапкиргок"
       ],
       [
-        "CHINOR KO'CHASI"
+        "CHINOR KO'CHASI",
+        "ул. ЧИНОР",
+        "CHINOR St."
       ],
       [
-        "CHORCHINOR KO'CHASI"
+        "CHORCHINOR KO'CHASI",
+        "ул. ЧОРЧИНОР",
+        "CHORCHINOR St."
       ],
       [
         "Denov ko'chasi",
         "улица Денов"
       ],
       [
-        "Dilkash"
+        "Dilkash",
+        "Дилкаш"
       ],
       [
         "Elbek ko'chasi",
         "улица Элбек"
       ],
       [
-        "Ezgulik Ko'chasi"
+        "Ezgulik Ko'chasi",
+        "ул. Езгулик",
+        "Ezgulik St."
       ],
       [
-        "Farovon ko'chasi"
+        "Farovon ko'chasi",
+        "ул. Фаровон",
+        "Farovon St."
       ],
       [
         "Fayiz ko'chasi",
@@ -40235,10 +42666,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Гулмасжид"
       ],
       [
-        "GULXAN KO'CHASI"
+        "GULXAN KO'CHASI",
+        "ул. ГУЛХАН",
+        "GULXAN St."
       ],
       [
-        "Gulxaniy koʻchasi"
+        "Gulxaniy koʻchasi",
+        "ул. Гулханий",
+        "Gulxaniy St."
       ],
       [
         "Guzor ko'chasi",
@@ -40268,13 +42703,19 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Jayxun street"
       ],
       [
-        "Jo'ra Baliq ko'chasi"
+        "Jo'ra Baliq ko'chasi",
+        "ул. Джура Балик",
+        "Jo'ra Baliq St."
       ],
       [
-        "Kasbi ko'chasi"
+        "Kasbi ko'chasi",
+        "ул. Касби",
+        "Kasbi St."
       ],
       [
-        "Kattabog' ko'chasi"
+        "Kattabog' ko'chasi",
+        "ул. Каттабог'",
+        "Kattabog' St."
       ],
       [
         "Kattamachid ko'chasi",
@@ -40302,7 +42743,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Льва Толстого"
       ],
       [
-        "LAG'MON KO'CHASI"
+        "LAG'MON KO'CHASI",
+        "ул. ЛАГМОН",
+        "LAG'MON St."
       ],
       [
         "Lolazor",
@@ -40315,7 +42758,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Просвещения"
       ],
       [
-        "MAFTUNA KO'CHASI"
+        "MAFTUNA KO'CHASI",
+        "ул. МАФТУНА",
+        "MAFTUNA St."
       ],
       [
         "Majnuntol ko‘chasi",
@@ -40327,7 +42772,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Мангуберди"
       ],
       [
-        "MASHRAB KO'CHASI"
+        "MASHRAB KO'CHASI",
+        "ул. МАШРАБ",
+        "MASHRAB St."
       ],
       [
         "Masxab ko'chasi",
@@ -40339,10 +42786,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Махмуда Курбанова"
       ],
       [
-        "Maydontepa ko'chasi"
+        "Maydontepa ko'chasi",
+        "ул. Майдонтепа",
+        "Maydontepa St."
       ],
       [
-        "MEHNATCHI KO'CHASI"
+        "MEHNATCHI KO'CHASI",
+        "ул. МЕХНАТЧИ",
+        "MEHNATCHI St."
       ],
       [
         "Mexnat ko'chasi",
@@ -40388,7 +42839,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Намуна"
       ],
       [
-        "Namunalilar Ko'chasi"
+        "Namunalilar Ko'chasi",
+        "ул. Намуналилар",
+        "Namunalilar St."
       ],
       [
         "Nasaf ko‘chasi",
@@ -40406,7 +42859,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Navruz street"
       ],
       [
-        "NAVRO'ZTEPA KO'CHASI"
+        "NAVRO'ZTEPA KO'CHASI",
+        "ул. НАВРУЗТЕПА",
+        "NAVRO'ZTEPA St."
       ],
       [
         "Nikolaev ko‘prigi",
@@ -40426,10 +42881,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Нурбог"
       ],
       [
-        "Nuroniylar ko'chasi"
+        "Nuroniylar ko'chasi",
+        "ул. Нуронийлар",
+        "Nuroniylar St."
       ],
       [
-        "O'lka mahalla"
+        "O'lka mahalla",
+        "мах. Улка",
+        "O'lka Mahalla"
       ],
       [
         "O'rikzor ko'chasi",
@@ -40441,10 +42900,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Узбекистон овози"
       ],
       [
-        "Obizamzam koʻchasi"
+        "Obizamzam koʻchasi",
+        "ул. Обизамзам",
+        "Obizamzam St."
       ],
       [
-        "Olmazor ko‘chasi"
+        "Olmazor ko‘chasi",
+        "ул. Олмазор",
+        "Olmazor St."
       ],
       [
         "Olmozor",
@@ -40452,7 +42915,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Олмозор"
       ],
       [
-        "Oqarko'l ko'chasi"
+        "Oqarko'l ko'chasi",
+        "ул. Окаркул",
+        "Oqarko'l St."
       ],
       [
         "Paxtachi ko‘chasi",
@@ -40464,7 +42929,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Петровская"
       ],
       [
-        "Puduna qishlog'i"
+        "Puduna qishlog'i",
+        "Пудуна село",
+        "Puduna Village"
       ],
       [
         "Qarshi halqa yoʻli",
@@ -40477,7 +42944,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "قرشی حلقه یۉلی"
       ],
       [
-        "Qarshi-Bukhara road"
+        "Qarshi-Bukhara road",
+        "дор. Карши-Букхара",
+        "Qarshi-Bukhara Rd."
       ],
       [
         "Qavali ko'chasi",
@@ -40508,7 +42977,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Кумзор"
       ],
       [
-        "R.XAMRAYEV KO'CHASI"
+        "R.XAMRAYEV KO'CHASI",
+        "ул. Р.ХАМРАЕВ",
+        "R.XAMRAYEV St."
       ],
       [
         "Rashid Orzikulov ko'chasi",
@@ -40544,7 +43015,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Саидо Насафий"
       ],
       [
-        "Sayilgoh Street"
+        "Sayilgoh Street",
+        "ул. Сайилгох",
+        "Sayilgoh St."
       ],
       [
         "Saylgoh ko‘chasi",
@@ -40560,7 +43033,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Серкуёш"
       ],
       [
-        "Shakarjoy ko'chasi"
+        "Shakarjoy ko'chasi",
+        "ул. Шакарджой",
+        "Shakarjoy St."
       ],
       [
         "Sharof Rashidov ko'chasi",
@@ -40580,7 +43055,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Шаршара"
       ],
       [
-        "Sherali mahalla"
+        "Sherali mahalla",
+        "мах. Шерали",
+        "Sherali Mahalla"
       ],
       [
         "Shibaeva ko'chasi",
@@ -40596,7 +43073,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "eski Yo‘ldosh Oxunboboyev ko‘chasi"
       ],
       [
-        "Shohbekat ko`chasi"
+        "Shohbekat ko`chasi",
+        "ул. Шохбекат",
+        "Shohbekat St."
       ],
       [
         "Soxil ko'chasi",
@@ -40611,7 +43090,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Ташназар Маматова"
       ],
       [
-        "TEMIR YO'LCHILAR KO'CHAIS"
+        "TEMIR YO'LCHILAR KO'CHAIS",
+        "ТЕМИР ЁЛЧИЛАР КУЧАИС"
       ],
       [
         "Tenglik ko'chasi",
@@ -40624,7 +43104,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Tinchlik street"
       ],
       [
-        "To'rtgumbaz ko'chasi"
+        "To'rtgumbaz ko'chasi",
+        "ул. Туртгумбаз",
+        "To'rtgumbaz St."
       ],
       [
         "To'ytepa ko'chasi",
@@ -40637,7 +43119,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Tong street"
       ],
       [
-        "Toshbaland Koʻchasi"
+        "Toshbaland Koʻchasi",
+        "ул. Тошбаланд",
+        "Toshbaland St."
       ],
       [
         "Toshquduq ko'chasi",
@@ -40700,20 +43184,25 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Yorqin khayot street"
       ],
       [
-        "Yoshlar ko'chasi"
+        "Yoshlar ko'chasi",
+        "ул. Ёшлар",
+        "Yoshlar St."
       ],
       [
-        "Yozyovon"
+        "Yozyovon",
+        "Ёзёвон"
       ],
       [
+        "Zakovat koʻchasi",
+        "ул. Заковат",
+        "улица Заковат",
         "Zakovat ko'chasi",
-        "улица Заковат"
+        "Zakovat St."
       ],
       [
-        "Zakovat koʻchasi"
-      ],
-      [
-        "Zardo'zlik ko'chasi"
+        "Zardo'zlik ko'chasi",
+        "ул. Зардузлик",
+        "Zardo'zlik St."
       ],
       [
         "Ziyolilar-3 ko'chasi",
@@ -40724,16 +43213,20 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
   "Samarkand": {
     "localAreas": [
       [
-        "Имам Аль Мотрудий"
+        "Имам Аль Мотрудий",
+        "Imam Al Motrudiy"
       ],
       [
-        "Махаля Садаф"
+        "Махаля Садаф",
+        "Makhalya Sadaf"
       ],
       [
-        "Резиденция Хокима"
+        "Резиденция Хокима",
+        "Rezidentsiya Khokima"
       ],
       [
-        "Сайхун"
+        "Сайхун",
+        "Saykhun"
       ],
       [
         "Afrosiyob mahallasi",
@@ -40793,7 +43286,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Chashma mahalla"
       ],
       [
-        "Devori Ko'ndalang"
+        "Devori Ko'ndalang",
+        "Девори Кундаланг"
       ],
       [
         "Furqat mahallasi",
@@ -40801,7 +43295,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Furkat mahalla"
       ],
       [
-        "Geologs Mini City"
+        "Geologs Mini City",
+        "Геологс Мини Ситй"
       ],
       [
         "Gʻafur Gʻulom mahallasi",
@@ -40955,10 +43450,12 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "1 тупик"
       ],
       [
-        "1-й туп.Базарова"
+        "1-й туп.Базарова",
+        "1-y tup.Bazarova"
       ],
       [
-        "1-й туп.Гагарина"
+        "1-й туп.Гагарина",
+        "1-y tup.Gagarina"
       ],
       [
         "1-y pr-d X. Dexlevi",
@@ -40988,7 +43485,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "3 тупик"
       ],
       [
-        "4 pr-d Turakula Zexni"
+        "4 pr-d Turakula Zexni",
+        "4-й пр-д Туракула Зехни"
       ],
       [
         "4 Tupik",
@@ -41012,19 +43510,28 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Bog'i baland"
       ],
       [
-        "Боги Рохат Улица"
+        "Боги Рохат Улица",
+        "ул. Боги Рохат",
+        "Bogi Rokhat St."
       ],
       [
-        "Вильнюсская Улица"
+        "Вильнюсская Улица",
+        "ул. Вильнюсская",
+        "Vilnyusskaya St."
       ],
       [
-        "Гиждуванская улица"
+        "Гиждуванская улица",
+        "ул. Гиждуванская",
+        "Gizhduvanskaya St."
       ],
       [
-        "Гулабад курган"
+        "Гулабад курган",
+        "Gulabad kurgan"
       ],
       [
-        "Джалал Кудукская улица"
+        "Джалал Кудукская улица",
+        "ул. Джалал Кудукская",
+        "Dzhalal Kudukskaya St."
       ],
       [
         "Зарафшанская улица",
@@ -41032,29 +43539,40 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Zarofshon Street"
       ],
       [
-        "ЗИЁЛИЛАР"
+        "ЗИЁЛИЛАР",
+        "ZIYoLILAR"
       ],
       [
-        "Зиёлилар кўчаси"
+        "Зиёлилар кўчаси",
+        "ул. Зиёлилар",
+        "Ziyolilar St."
       ],
       [
-        "Иштыханская улица"
+        "Иштыханская улица",
+        "ул. Иштыханская",
+        "Ishtykhanskaya St."
       ],
       [
-        "Маргилон"
+        "Маргилон",
+        "Margilon"
       ],
       [
-        "Миръякубова Ибрагимова улица"
+        "Миръякубова Ибрагимова улица",
+        "ул. Миръякубова Ибрагимова",
+        "Miryakubova Ibragimova St."
       ],
       [
-        "Нурлы Хает"
+        "Нурлы Хает",
+        "Nurly Khaet"
       ],
       [
         "Садаф улица",
         "Sadaf street"
       ],
       [
-        "Сапёрная ул"
+        "Сапёрная ул",
+        "ул. Сапёрная",
+        "Sapyornaya St."
       ],
       [
         "Суфи Аллаяра улица",
@@ -41071,10 +43589,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Anakboy ko'chasi"
       ],
       [
-        "ул.Гарм"
+        "ул.Гарм",
+        "ул. Гарм",
+        "Garm St."
       ],
       [
-        "ул.Попова"
+        "ул.Попова",
+        "ул. Попова",
+        "Popova St."
       ],
       [
         "улица Ахмадижон",
@@ -41082,22 +43604,34 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "улица Бустон",
-        "улица Бустан"
+        "ул. Бустан | ул. Бустон",
+        "улица Бустан",
+        "Bustan St. | Buston St."
       ],
       [
-        "улица Ватанпарвар"
+        "улица Ватанпарвар",
+        "ул. Ватанпарвар",
+        "Vatanparvar St."
       ],
       [
-        "улица Гиясиддина Джамшида"
+        "улица Гиясиддина Джамшида",
+        "ул. Гиясиддина Джамшида",
+        "Giyasiddina Dzhamshida St."
       ],
       [
-        "улица Заводская"
+        "улица Заводская",
+        "ул. Заводская",
+        "Zavodskaya St."
       ],
       [
-        "улица Менделеева"
+        "улица Менделеева",
+        "ул. Менделеева",
+        "Mendeleeva St."
       ],
       [
-        "улица Нуроний"
+        "улица Нуроний",
+        "ул. Нуроний",
+        "Nuroniy St."
       ],
       [
         "Улица Оби-Рахмат, 3-й проезд",
@@ -41111,10 +43645,13 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "УМИД",
-        "ул.Умид"
+        "ул. Умид | УМИД",
+        "ул.Умид",
+        "Umid St. | UMID"
       ],
       [
-        "Юкори Хужа Соат"
+        "Юкори Хужа Соат",
+        "Yukori Khuzha Soat"
       ],
       [
         "A. Yassaviy ko'chasi",
@@ -41305,7 +43842,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Ашгабатская ул."
       ],
       [
-        "Atoiy ko'chasi"
+        "Atoiy ko'chasi",
+        "ул. Атоий",
+        "Atoiy St."
       ],
       [
         "Avesto ko'chasi",
@@ -41393,10 +43932,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Bogi Baland street"
       ],
       [
-        "Bog'i Obod ko'chasi"
+        "Bog'i Obod ko'chasi",
+        "ул. Боги Обод",
+        "Bog'i Obod St."
       ],
       [
-        "Bog'ikalon ko'chasi"
+        "Bog'ikalon ko'chasi",
+        "ул. Богикалон",
+        "Bog'ikalon St."
       ],
       [
         "Botkin ko'chasi",
@@ -41452,7 +43995,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Chapanata street"
       ],
       [
-        "Chorraha Street"
+        "Chorraha Street",
+        "ул. Чорраха",
+        "Chorraha St."
       ],
       [
         "Chorraxa ko'chasi",
@@ -41476,7 +44021,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Damarik street"
       ],
       [
-        "Dargomijskiy ko'chasi"
+        "Dargomijskiy ko'chasi",
+        "ул. Даргомиджский",
+        "Dargomijskiy St."
       ],
       [
         "Darvin ko'chasi",
@@ -41502,7 +44049,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Denau Street"
       ],
       [
-        "Dilkusho ko'chasi"
+        "Dilkusho ko'chasi",
+        "ул. Дилкушо",
+        "Dilkusho St."
       ],
       [
         "Dilkushot Street",
@@ -41564,7 +44113,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "خیابان فردوسی"
       ],
       [
-        "Fitrat P/R ko'chasi"
+        "Fitrat P/R ko'chasi",
+        "ул. Фитрат П/Р",
+        "Fitrat P/R St."
       ],
       [
         "Gagarin ko'chasi",
@@ -41576,7 +44127,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "بلوار گاگارین"
       ],
       [
-        "Ganchkorlar ko'chasi"
+        "Ganchkorlar ko'chasi",
+        "ул. Ганчкорлар",
+        "Ganchkorlar St."
       ],
       [
         "Go'ro'g'li ko'chasi",
@@ -41621,10 +44174,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Гульзар улица"
       ],
       [
-        "H. Olimjon ko'chasi 2-Yo'lak"
+        "H. Olimjon ko'chasi 2-Yo'lak",
+        "Х. Олимджон ул. 2-Ёлак",
+        "H. Olimjon St. 2-Yo'lak"
       ],
       [
-        "H.Obiddinova ko'chasi"
+        "H.Obiddinova ko'chasi",
+        "ул. Х.Обиддинова",
+        "H.Obiddinova St."
       ],
       [
         "Hakim at-Termiziy ko'chasi",
@@ -41748,7 +44305,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "ул.Джалалиддина Руми"
       ],
       [
-        "Jambul ko'chasi"
+        "Jambul ko'chasi",
+        "ул. Джамбул",
+        "Jambul St."
       ],
       [
         "Jarqo'rg'on ko'chasi",
@@ -41763,7 +44322,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Джизакская улица"
       ],
       [
-        "Jo'yichuqur k'ochasi"
+        "Jo'yichuqur k'ochasi",
+        "ул. Джуйичукур",
+        "Jo'yichuqur St."
       ],
       [
         "JoMboy Street",
@@ -41818,7 +44379,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Klavikho street"
       ],
       [
-        "Krim Torg"
+        "Krim Torg",
+        "Крим Торг"
       ],
       [
         "kul street",
@@ -41909,7 +44471,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Mahmud Xuja Behbudiy kuchasi"
       ],
       [
-        "Malokakand ko'chasi"
+        "Malokakand ko'chasi",
+        "ул. Малокаканд",
+        "Malokakand St."
       ],
       [
         "margelon Street",
@@ -42037,7 +44601,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Mulloqandov street"
       ],
       [
-        "Muqimiy 1-o'tish ko'chasi"
+        "Muqimiy 1-o'tish ko'chasi",
+        "ул. Мукимий 1-утиш",
+        "Muqimiy 1-o'tish St."
       ],
       [
         "Muqimiy ko'chasi",
@@ -42045,7 +44611,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Муқими улица"
       ],
       [
-        "Muqumiy ko'chasi"
+        "Muqumiy ko'chasi",
+        "ул. Мукумий",
+        "Muqumiy St."
       ],
       [
         "Namozgoh ko'chasi",
@@ -42067,7 +44635,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "street Narpay"
       ],
       [
-        "Navro'ziy 1-Yo'lak"
+        "Navro'ziy 1-Yo'lak",
+        "Наврузий 1-Ёлак"
       ],
       [
         "Navro'ziy ko'chasi",
@@ -42092,7 +44661,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Nur Yakubov Street"
       ],
       [
-        "Nor Yoqubov ko'chasi 1-Yo'lak"
+        "Nor Yoqubov ko'chasi 1-Yo'lak",
+        "Нор Ёкубов ул. 1-Ёлак",
+        "Nor Yoqubov St. 1-Yo'lak"
       ],
       [
         "O'zbekiston ko'chasi",
@@ -42128,10 +44699,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Ona Vatan ko'chasi",
-        "Namuna ko'chasi"
+        "ул. Намуна | ул. Она Ватан",
+        "Namuna ko'chasi",
+        "Namuna St. | Ona Vatan St."
       ],
       [
-        "Orzu Mahmudov ko'chasi"
+        "Orzu Mahmudov ko'chasi",
+        "ул. Орзу Махмудов",
+        "Orzu Mahmudov St."
       ],
       [
         "Orzu Maxmudov ko'chasi",
@@ -42154,7 +44729,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Oydin Yul street"
       ],
       [
-        "Ozod 2-Yo'lak ko'chasi"
+        "Ozod 2-Yo'lak ko'chasi",
+        "2-й пер. Озод",
+        "Ozod 2nd Alley"
       ],
       [
         "Ozod sharq ko'chasi",
@@ -42176,7 +44753,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Панжабская ул."
       ],
       [
-        "Park Street"
+        "Park Street",
+        "ул. парк",
+        "Park St."
       ],
       [
         "Pasdarg'om ko'chasi",
@@ -42349,10 +44928,13 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Saidiy street"
       ],
       [
-        "Sabzazor"
+        "Sabzazor",
+        "Сабзазор"
       ],
       [
-        "Sabzazor ko'chasi"
+        "Sabzazor ko'chasi",
+        "ул. Сабзазор",
+        "Sabzazor St."
       ],
       [
         "Sadriddin Ayni ko'chasi",
@@ -42364,23 +44946,21 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "ул.Самария"
       ],
       [
-        "Samarqand - Juma - Kattaqo‘rg‘on"
-      ],
-      [
-        "Samarqand halqa yo'li",
-        "Самаркандская Кольцевая Автомобильная Дорога",
-        "Samarkand Ring Automobile Road",
-        "سمرقند حلقه یۉلی",
-        "کمربندی سمرقند"
+        "Samarqand - Juma - Kattaqo‘rg‘on",
+        "Самарканд - Джума - Каттакургон",
+        "Samarqand - Juma - Kattaqo'rg'on"
       ],
       [
         "Samarqand halqa yoʻli",
         "Роҳи ҳалқаи Самарқанд",
         "Самаркандская Кольцевая Автомобильная Дорога",
         "Самарқанд ҳалқа йўли",
+        "Samarkand Ring Automobile Road",
         "Samarkand Ring Road",
+        "Samarqand halqa yo'li",
         "جاده کمربندی سمرقند",
-        "سمرقند حلقه یۉلی"
+        "سمرقند حلقه یۉلی",
+        "کمربندی سمرقند"
       ],
       [
         "Samarqand xalqa yo'li",
@@ -42411,10 +44991,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "sarxavuz street"
       ],
       [
-        "Sarxovuz 2-Tor ko'chasi"
+        "Sarxovuz 2-Tor ko'chasi",
+        "2-й пр. Сарховуз",
+        "Sarxovuz 2nd Ln."
       ],
       [
-        "Sarxovuz ko'chasi"
+        "Sarxovuz ko'chasi",
+        "ул. Сарховуз",
+        "Sarxovuz St."
       ],
       [
         "Sevali ota ko'chasi",
@@ -42465,7 +45049,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Shoidona street"
       ],
       [
-        "Shodiyona ko'chasi"
+        "Shodiyona ko'chasi",
+        "ул. Шодиёна",
+        "Shodiyona St."
       ],
       [
         "Shohizinda ko'chasi",
@@ -42535,7 +45121,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "ул.Сулеймановой"
       ],
       [
-        "Suleymon"
+        "Suleymon",
+        "Сулеймон"
       ],
       [
         "Suzangaran tor ko'chasi",
@@ -42559,7 +45146,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "ул.Темирчилар"
       ],
       [
-        "Termez 2-Yo'lak ko'chasi"
+        "Termez 2-Yo'lak ko'chasi",
+        "2-й пер. Термез",
+        "Termez 2nd Alley"
       ],
       [
         "Termez ko'chasi",
@@ -42634,10 +45223,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "turon street"
       ],
       [
-        "Tursunov Sok ko'chasi"
+        "Tursunov Sok ko'chasi",
+        "ул. Турсунов Сок",
+        "Tursunov Sok St."
       ],
       [
-        "U. Rajabov ko'chasi"
+        "U. Rajabov ko'chasi",
+        "ул. У. Раджабов",
+        "U. Rajabov St."
       ],
       [
         "Umarov ko'chasi",
@@ -42719,7 +45312,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "x Guseynov street"
       ],
       [
-        "Xabib Abdullayev ko'chasi"
+        "Xabib Abdullayev ko'chasi",
+        "ул. Хабиб Абдуллаев",
+        "Xabib Abdullayev St."
       ],
       [
         "Xabiba Abdullaeva ko'chasi",
@@ -42732,6 +45327,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Xalqlar Do’stligi",
+        "Халклар Дустлиги | ул. Халклар Дустлиги",
+        "Xalqlar Do'stligi | Xalqlar Do'stligi St.",
         "Xalqlar Doʻstligi Street"
       ],
       [
@@ -42748,7 +45345,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Ходжасахат улица"
       ],
       [
-        "Xo'jasoat 2-Tor ko'chasi"
+        "Xo'jasoat 2-Tor ko'chasi",
+        "2-й пр. Худжасоат",
+        "Xo'jasoat 2nd Ln."
       ],
       [
         "Xo'jayli ko'chasi",
@@ -42814,10 +45413,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "ул.Фозил Юлдаша"
       ],
       [
-        "Yulduz street"
+        "Yulduz street",
+        "ул. Юлдуз",
+        "Yulduz St."
       ],
       [
-        "Yusuf Hamadoniy ko'chasi"
+        "Yusuf Hamadoniy ko'chasi",
+        "ул. Юсуф Хамадоний",
+        "Yusuf Hamadoniy St."
       ],
       [
         "Yusuf Hos Hojib ko'chasi",
@@ -42830,10 +45433,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "street Yusuf Xos-Xodjoba"
       ],
       [
-        "Yutuq ko'chasi"
+        "Yutuq ko'chasi",
+        "ул. Ютук",
+        "Yutuq St."
       ],
       [
-        "Zafar 1-Tor ko'chasi"
+        "Zafar 1-Tor ko'chasi",
+        "1-й пр. Зафар",
+        "Zafar 1st Ln."
       ],
       [
         "Zafar ko'chasi",
@@ -42864,7 +45471,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Zargaran street"
       ],
       [
-        "Zargartepa 2-Tor  ko'chasi"
+        "Zargartepa 2-Tor  ko'chasi",
+        "2-й пр. Заргартепа",
+        "Zargartepa 2nd Ln."
       ],
       [
         "Zargartepa ko'chasi",
@@ -42896,7 +45505,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
   "Shahrixon": {
     "localAreas": [
       [
-        "Abdubiy"
+        "Abdubiy",
+        "Абдубий"
       ],
       [
         "Saroy",
@@ -42905,46 +45515,73 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
     ],
     "streets": [
       [
-        "Қўрғонча"
+        "Қўрғонча",
+        "Qorghoncha"
       ],
       [
-        "Озодлик улица"
+        "Озодлик улица",
+        "ул. Озодлик",
+        "Ozodlik St."
       ],
       [
-        "улица Йодгорова"
+        "улица Йодгорова",
+        "ул. Йодгорова",
+        "Yodgorova St."
       ],
       [
-        "Chinobod ko'chasi"
+        "Chinobod ko'chasi",
+        "ул. Чинобод",
+        "Chinobod St."
       ],
       [
-        "D.Abduraxmonov ko'chasi"
+        "D.Abduraxmonov ko'chasi",
+        "ул. Д.Абдурахмонов",
+        "D.Abduraxmonov St."
       ],
       [
-        "Mullado‘st ko‘chasi"
+        "Mullado‘st ko‘chasi",
+        "ул. Мулладуст",
+        "Mullado'st St."
       ],
       [
-        "Musa Jalil ko'chasi"
+        "Musa Jalil ko'chasi",
+        "ул. Муса Джалил",
+        "Musa Jalil St."
       ],
       [
-        "Nasirdinov ko'chasi"
+        "Nasirdinov ko'chasi",
+        "ул. Насирдинов",
+        "Nasirdinov St."
       ],
       [
-        "Nazarmaxram ko'chasi"
+        "Nazarmaxram ko'chasi",
+        "ул. Назармахрам",
+        "Nazarmaxram St."
       ],
       [
-        "Nodira ko’chasi"
+        "Nodira ko’chasi",
+        "ул. Нодира",
+        "Nodira St."
       ],
       [
-        "O'rta ariq ko'chasi"
+        "O'rta ariq ko'chasi",
+        "ул. Урта арик",
+        "O'rta ariq St."
       ],
       [
-        "Poloson ko'chasi"
+        "Poloson ko'chasi",
+        "ул. Полосон",
+        "Poloson St."
       ],
       [
-        "Qizil arab ko`chasi"
+        "Qizil arab ko`chasi",
+        "ул. Кизил араб",
+        "Qizil arab St."
       ],
       [
-        "Qo'rg'oncha ko'chasi"
+        "Qo'rg'oncha ko'chasi",
+        "ул. Кургонча",
+        "Qo'rg'oncha St."
       ],
       [
         "Ravnaq ko'chasi",
@@ -42955,13 +45592,19 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Шахрихан проспект"
       ],
       [
-        "Shaydullayev koʻchasi"
+        "Shaydullayev koʻchasi",
+        "ул. Шайдуллаев",
+        "Shaydullayev St."
       ],
       [
-        "Turongʻuzor koʻchasi"
+        "Turongʻuzor koʻchasi",
+        "ул. Туронгузор",
+        "Turong'uzor St."
       ],
       [
-        "X. Olimjon ko'chasi"
+        "X. Olimjon ko'chasi",
+        "ул. Х. Олимджон",
+        "X. Olimjon St."
       ],
       [
         "X.Bobojonov ko'chasi",
@@ -42973,46 +45616,69 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Khamza street"
       ],
       [
-        "Yoshlar ko'chasi"
+        "Yoshlar ko'chasi",
+        "ул. Ёшлар",
+        "Yoshlar St."
       ]
     ]
   },
   "Shakhrisabz": {
     "localAreas": [
       [
-        "Ammag'on"
+        "Ammag'on",
+        "Аммагон"
       ]
     ],
     "streets": [
       [
-        "Некуз улица"
+        "Некуз улица",
+        "ул. Некуз",
+        "Nekuz St."
       ],
       [
-        "Тарагая Баходира улица"
+        "Тарагая Баходира улица",
+        "ул. Тарагая Баходира",
+        "Taragaya Bakhodira St."
       ],
       [
-        "улица Бирдамлик"
+        "улица Бирдамлик",
+        "ул. Бирдамлик",
+        "Birdamlik St."
       ],
       [
-        "улица Кунчикар"
+        "улица Кунчикар",
+        "ул. Кунчикар",
+        "Kunchikar St."
       ],
       [
-        "улица Некуз"
+        "улица Некуз",
+        "ул. Некуз",
+        "Nekuz St."
       ],
       [
-        "улица Пахтакор"
+        "улица Пахтакор",
+        "ул. Пахтакор",
+        "Pakhtakor St."
       ],
       [
-        "улица Сангохир"
+        "улица Сангохир",
+        "ул. Сангохир",
+        "Sangokhir St."
       ],
       [
-        "улица Тараккиёт"
+        "улица Тараккиёт",
+        "ул. Тараккиёт",
+        "Tarakkiyot St."
       ],
       [
-        "улица Фусункор"
+        "улица Фусункор",
+        "ул. Фусункор",
+        "Fusunkor St."
       ],
       [
-        "улица Эшонпир"
+        "улица Эшонпир",
+        "ул. Эшонпир",
+        "Eshonpir St."
       ],
       [
         "Archazor koʻchasi",
@@ -43020,7 +45686,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Archazar street"
       ],
       [
-        "Hovuz Mardon Ko’chasi"
+        "Hovuz Mardon Ko’chasi",
+        "ул. Ховуз Мардон",
+        "Hovuz Mardon St."
       ],
       [
         "Ipak yo'li ko'chasi",
@@ -43029,7 +45697,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Ipak Yo'li ko'chasi"
       ],
       [
-        "Lolazor"
+        "Lolazor",
+        "Лолазор"
       ],
       [
         "Mirtemir ko'chasi",
@@ -43043,7 +45712,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "شهرسبز - کتاب اَیلنمه یۉلی"
       ],
       [
-        "Shahrisabz ko'chasi"
+        "Shahrisabz ko'chasi",
+        "ул. Шахрисабз",
+        "Shahrisabz St."
       ],
       [
         "Sheroziy ko'chasi",
@@ -43054,16 +45725,20 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
   "Shirin": {
     "localAreas": [
       [
-        "1 блок"
+        "1 блок",
+        "1 blok"
       ],
       [
-        "2 блок"
+        "2 блок",
+        "2 blok"
       ],
       [
-        "3 блок"
+        "3 блок",
+        "3 blok"
       ],
       [
-        "4 блок"
+        "4 блок",
+        "4 blok"
       ],
       [
         "Alisher Navoiy",
@@ -43106,58 +45781,81 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
     "streets": [
       [
         "Муйдинова",
-        "Зелёная"
+        "Зелёная",
+        "Зелёная | Муйдинова",
+        "Zelyonaya | Muydinova"
       ],
       [
-        "Нодирабегим"
+        "Нодирабегим",
+        "Nodirabegim"
       ],
       [
-        "Нодирабегим улица"
+        "Нодирабегим улица",
+        "ул. Нодирабегим",
+        "Nodirabegim St."
       ],
       [
         "РҶ068",
         "RJ068"
       ],
       [
-        "улица Амра Темура"
+        "улица Амра Темура",
+        "ул. Амра Темура",
+        "Amra Temura St."
       ],
       [
-        "улица Собир Рахимов"
+        "улица Собир Рахимов",
+        "ул. Собир Рахимов",
+        "Sobir Rakhimov St."
       ],
       [
-        "Фархадская улица"
+        "Фархадская улица",
+        "ул. Фархадская",
+        "Farkhadskaya St."
       ],
       [
-        "Функ"
+        "Функ",
+        "Funk"
       ],
       [
-        "Халклар Дустлиги"
+        "Халклар Дустлиги",
+        "Khalklar Dustligi"
       ],
       [
-        "Шароф Рашидов"
+        "Шароф Рашидов",
+        "Sharof Rashidov"
       ],
       [
-        "Шароф Рашидова улица"
+        "Шароф Рашидова улица",
+        "ул. Шароф Рашидова",
+        "Sharof Rashidova St."
       ],
       [
-        "Энергетиков"
+        "Энергетиков",
+        "Energetikov"
       ],
       [
         "Amir Temur ko'chasi",
         "улица Амра Темура"
       ],
       [
-        "Beruniy ko'chasi"
+        "Beruniy ko'chasi",
+        "ул. Беруни",
+        "Beruniy St."
       ],
       [
-        "Buyuk turon ko'chasi"
+        "Buyuk turon ko'chasi",
+        "ул. Буюк турон",
+        "Buyuk turon St."
       ],
       [
         "Ibn Sino ko'chasi",
         "улица Ибн Сино"
       ],
       [
-        "Xalqlar Do'stligi ko'chasi"
+        "Xalqlar Do'stligi ko'chasi",
+        "ул. Халклар Дустлиги",
+        "Xalqlar Do'stligi St."
       ]
     ]
   },
@@ -43310,7 +46008,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Арал"
       ],
       [
-        "Arbashi kochasi"
+        "Arbashi kochasi",
+        "ул. Арбаши",
+        "Arbashi St."
       ],
       [
         "Asan Begimov kóshesi",
@@ -43485,7 +46185,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Ибн Сина"
       ],
       [
-        "Iftihor kochasi"
+        "Iftihor kochasi",
+        "ул. Ифтихор",
+        "Iftihor St."
       ],
       [
         "Jalil kóshesi",
@@ -44040,7 +46742,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Atchapar-1 mahalla"
       ],
       [
-        "1000 мелочей"
+        "1000 мелочей",
+        "1000 melochey"
       ],
       [
         "2-Otchopar mahallasi",
@@ -44064,24 +46767,29 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Aktepa krug"
       ],
       [
-        "Атчапарская (Ипподромовская) Развилка"
+        "Атчапарская (Ипподромовская) Развилка",
+        "Atchaparskaya (Ippodromovskaya) Razvilka"
       ],
       [
         "Братские могилы",
         "Bratskiye Mogili"
       ],
       [
-        "Бурджарская развязка"
+        "Бурджарская развязка",
+        "Burdzharskaya razvyazka"
       ],
       [
         "быв. ВЧ 93908",
-        "ВЧ 93908 Полк связи"
+        "быв. ВЧ 93908 | ВЧ 93908 Полк связи",
+        "ВЧ 93908 Полк связи",
+        "byv. VCh 93908 | VCh 93908 Polk svyazi"
       ],
       [
         "Бывшая K1 Arena (Закртыто)"
       ],
       [
-        "Бывшый центр плова"
+        "Бывшый центр плова",
+        "Byvshyy tsentr plova"
       ],
       [
         "Дархан",
@@ -44104,13 +46812,17 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Al-Khwarizmi krug"
       ],
       [
-        "Массив 95А"
+        "Массив 95А",
+        "ж/м 95А",
+        "Res. Area 95A"
       ],
       [
-        "Назарбек мост"
+        "Назарбек мост",
+        "Nazarbek Bridge"
       ],
       [
-        "Общежитие Текстильного Института"
+        "Общежитие Текстильного Института",
+        "Obshchezhitie Tekstilnogo Instituta"
       ],
       [
         "Океан",
@@ -44131,7 +46843,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "خیابان مست"
       ],
       [
-        "Сергели-4 \"Переезд\""
+        "Сергели-4 \"Переезд\"",
+        "Sergeli-4 \"Pereezd\""
       ],
       [
         "Спорт товары",
@@ -44142,7 +46855,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Tamozhnya"
       ],
       [
-        "Яма"
+        "Яма",
+        "Yama"
       ],
       [
         "A. Fitrat mahallasi",
@@ -44807,7 +47521,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Ганга"
       ],
       [
-        "Gardens"
+        "Gardens",
+        "Гарденс"
       ],
       [
         "Gavxar mahallasi",
@@ -44827,7 +47542,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Guzal mahalla"
       ],
       [
-        "Golden house Parkent village"
+        "Golden house Parkent village",
+        "Голден хоусе Паркент село"
       ],
       [
         "Gospitalka",
@@ -45257,7 +47973,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Mevazar mahalla"
       ],
       [
-        "Milliy"
+        "Milliy",
+        "Миллий"
       ],
       [
         "Mingo'rik",
@@ -45388,7 +48105,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Nugaykurgan mahalla"
       ],
       [
-        "NovaStroy"
+        "NovaStroy",
+        "Новастрой"
       ],
       [
         "Novomoskovkaya turar-joy kompleksi",
@@ -46515,6 +49233,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       [
         "ЖК \"Семейный\"",
         "1 майский рынок",
+        "1 майский рынок | ЖК \"Семейный\" | Первомайский рынок | Тезековка | Тезековский рынок",
+        "1 mayskiy Market | RC \"Semeynyy\" | Pervomayskiy Market | Tezekovka | Tezekovskiy Market",
         "Первомайский рынок",
         "Тезековка",
         "Тезековский рынок"
@@ -46545,7 +49265,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Akay City"
       ],
       [
-        "Baku Residence"
+        "Baku Residence",
+        "ЖК Баку"
       ],
       [
         "Gagarin Plaza TJM",
@@ -46582,7 +49303,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Фарфоровый завод"
       ],
       [
-        "Renaissance TJM"
+        "Renaissance TJM",
+        "Ренаиссансе ТДЖМ"
       ],
       [
         "Rohat TJM",
@@ -46616,54 +49338,86 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
     ],
     "streets": [
       [
-        "1-й проезд Ёшлик"
+        "1-й проезд Ёшлик",
+        "1-й пр-д Ёшлик",
+        "Yoshlik 1st Passage"
       ],
       [
-        "1-й проезд Мустакиллик"
+        "1-й проезд Мустакиллик",
+        "1-й пр-д Мустакиллик",
+        "Mustakillik 1st Passage"
       ],
       [
         "1-й проезд Нишопурий",
+        "1-й пр-д Нишопурий | ул. Марказий | ул. Центральная",
         "Марказий улица",
-        "Центральная улица"
+        "Центральная улица",
+        "Nishopuriy 1st Passage | Markaziy St. | Tsentralnaya St."
       ],
       [
-        "1-й проезд Нозимахоним, 9"
+        "1-й проезд Нозимахоним, 9",
+        "1-й пр-д Нозимахоним, 9",
+        "Nozimakhonim, 9 1st Passage"
       ],
       [
-        "1-й проезд Тинчлик"
+        "1-й проезд Тинчлик",
+        "1-й пр-д Тинчлик",
+        "Tinchlik 1st Passage"
       ],
       [
-        "1-й проезд Тоирова"
+        "1-й проезд Тоирова",
+        "1-й пр-д Тоирова",
+        "Toirova 1st Passage"
       ],
       [
-        "1-й тупик Ёшлик"
+        "1-й тупик Ёшлик",
+        "1-й туп. Ёшлик",
+        "Yoshlik 1st Dead End"
       ],
       [
-        "1-й тупик Мустакиллик"
+        "1-й тупик Мустакиллик",
+        "1-й туп. Мустакиллик",
+        "Mustakillik 1st Dead End"
       ],
       [
-        "1-я улица Фаровон"
+        "1-я улица Фаровон",
+        "1-я ул. Фаровон",
+        "Farovon 1st St."
       ],
       [
-        "2-й проезд Ёшлик"
+        "2-й проезд Ёшлик",
+        "2-й пр-д Ёшлик",
+        "Yoshlik 2nd Passage"
       ],
       [
-        "2-й проезд Мустакиллик"
+        "2-й проезд Мустакиллик",
+        "2-й пр-д Мустакиллик",
+        "Mustakillik 2nd Passage"
       ],
       [
-        "2-й Проезд Сугдиёна"
+        "2-й Проезд Сугдиёна",
+        "2-й пр-д Сугдиёна",
+        "Sugdiyona 2nd Passage"
       ],
       [
-        "2-й проезд Тинчлик"
+        "2-й проезд Тинчлик",
+        "2-й пр-д Тинчлик",
+        "Tinchlik 2nd Passage"
       ],
       [
-        "2-й тупик Мустакиллик"
+        "2-й тупик Мустакиллик",
+        "2-й туп. Мустакиллик",
+        "Mustakillik 2nd Dead End"
       ],
       [
-        "2-ой проезд Бузарык"
+        "2-ой проезд Бузарык",
+        "2-ой пр-д Бузарык",
+        "2-oy Passage Buzaryk"
       ],
       [
-        "2-я улица Гагарин худуди"
+        "2-я улица Гагарин худуди",
+        "2-я ул. Гагарин худуди",
+        "Gagarin khududi 2nd St."
       ],
       [
         "2-я улица Фаровон",
@@ -46676,16 +49430,24 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "street Gissar, 3 driveway"
       ],
       [
-        "3-й проезд Ёшлик"
+        "3-й проезд Ёшлик",
+        "3-й пр-д Ёшлик",
+        "Yoshlik 3rd Passage"
       ],
       [
-        "3-й проезд Тинчлик"
+        "3-й проезд Тинчлик",
+        "3-й пр-д Тинчлик",
+        "Tinchlik 3rd Passage"
       ],
       [
-        "3-я улица Хонка"
+        "3-я улица Хонка",
+        "3-я ул. Хонка",
+        "Khonka 3rd St."
       ],
       [
-        "4-й проезд Мустакиллик"
+        "4-й проезд Мустакиллик",
+        "4-й пр-д Мустакиллик",
+        "Mustakillik 4th Passage"
       ],
       [
         "4-я улица Фаровон",
@@ -46693,17 +49455,23 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Farovon 4 ko'cha"
       ],
       [
-        "4-я улица Хонка"
+        "4-я улица Хонка",
+        "4-я ул. Хонка",
+        "Khonka 4th St."
       ],
       [
         "4-Sharof tor ko'chasi",
         "Шароф 4-й проезд"
       ],
       [
-        "5-й проезд Мустакиллик"
+        "5-й проезд Мустакиллик",
+        "5-й пр-д Мустакиллик",
+        "Mustakillik 5th Passage"
       ],
       [
-        "5-проезд СамарБону"
+        "5-проезд СамарБону",
+        "5-пр-д СамарБону",
+        "SamarBonu 5th Passage"
       ],
       [
         "5-я улица Фаровон",
@@ -46711,13 +49479,19 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Farovon 5 ko'cha"
       ],
       [
-        "6-й тупик Сокин"
+        "6-й тупик Сокин",
+        "6-й туп. Сокин",
+        "Sokin 6th Dead End"
       ],
       [
-        "7-й проезд Нурлы Хаёт"
+        "7-й проезд Нурлы Хаёт",
+        "7-й пр-д Нурлы Хаёт",
+        "Nurly Khayot 7th Passage"
       ],
       [
-        "7-й проезд Тоирова"
+        "7-й проезд Тоирова",
+        "7-й пр-д Тоирова",
+        "Toirova 7th Passage"
       ],
       [
         "7-burilish Тоирова",
@@ -46768,11 +49542,15 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Azimtepa passage-3"
       ],
       [
-        "Азимтепа 5-й проезд"
+        "Азимтепа 5-й проезд",
+        "5-й пр-д Азимтепа",
+        "Azimtepa 5th Passage"
       ],
       [
         "Азимтепа улица",
-        "Ахмаджона Бориева улица"
+        "Ахмаджона Бориева улица",
+        "ул. Азимтепа | ул. Ахмаджона Бориева",
+        "Azimtepa St. | Akhmadzhona Borieva St."
       ],
       [
         "Алайская улица",
@@ -46792,13 +49570,19 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Alayskiy Bazar Passage"
       ],
       [
-        "Алат улица"
+        "Алат улица",
+        "ул. Алат",
+        "Alat St."
       ],
       [
-        "Али Кушчи улица"
+        "Али Кушчи улица",
+        "ул. Али Кушчи",
+        "Ali Kushchi St."
       ],
       [
-        "Алиджана Халикова проезд"
+        "Алиджана Халикова проезд",
+        "пр-д Алиджана Халикова",
+        "Alidzhana Khalikova Passage"
       ],
       [
         "Аллея",
@@ -46811,10 +49595,13 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Parade Alley"
       ],
       [
-        "Аллея Ц-13"
+        "Аллея Ц-13",
+        "Alleya Ts-13"
       ],
       [
-        "Аллон улица"
+        "Аллон улица",
+        "ул. Аллон",
+        "Allon St."
       ],
       [
         "Алока улица",
@@ -46822,17 +49609,25 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Aloka Street"
       ],
       [
-        "Алпомиш улица"
+        "Алпомиш улица",
+        "ул. Алпомиш",
+        "Alpomish St."
       ],
       [
         "Аль-Хорезми улица",
-        "Восточная улица"
+        "Восточная улица",
+        "ул. Аль-Хорезми | ул. Восточная",
+        "Al-Khorezmi St. | Vostochnaya St."
       ],
       [
-        "Амина Турдиева улица"
+        "Амина Турдиева улица",
+        "ул. Амина Турдиева",
+        "Amina Turdieva St."
       ],
       [
-        "Амина Умари улица"
+        "Амина Умари улица",
+        "ул. Амина Умари",
+        "Amina Umari St."
       ],
       [
         "Амирабад улица",
@@ -46845,13 +49640,17 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Ангарская улица",
+        "ул. Ангарская | ул. Анкара | ул. Дальневосточная",
         "улица Анкара",
-        "улица Дальневосточная"
+        "улица Дальневосточная",
+        "Angarskaya St. | Ankara St. | Dalnevostochnaya St."
       ],
       [
         "Ангрен улица",
         "Ангренская улица",
-        "улица Ангрен"
+        "ул. Ангрен | ул. Ангренская",
+        "улица Ангрен",
+        "Angren St. | Angrenskaya St."
       ],
       [
         "Анжирабад",
@@ -46861,10 +49660,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Анхор Буйи улица",
-        "Набережная Анхора"
+        "Набережная Анхора",
+        "ул. Анхор Буйи | наб. Анхора",
+        "Ankhor Buyi St. | Ankhora Embankment"
       ],
       [
-        "Арай улица"
+        "Арай улица",
+        "ул. Арай",
+        "Aray St."
       ],
       [
         "Арнасайская улица",
@@ -46878,35 +49681,53 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Афзал улица",
-        "Генерала Муллажона Узакова 4 проезд, Шуманай 7 проезд"
+        "Генерала Муллажона Узакова 4 проезд, Шуманай 7 проезд",
+        "ул. Афзал | 4-й пр-д Генерала Муллажона Узакова, 7-й пр-д Шуманай",
+        "Afzal St. | Generala Mullazhona Uzakova 4th Passage, Shumanay 7th Passage"
       ],
       [
-        "Ахроробод улица"
+        "Ахроробод улица",
+        "ул. Ахроробод",
+        "Akhrorobod St."
       ],
       [
         "Ахсикат улица",
+        "ул. Ахсикат | ул. Бакинская | ул. Матросская",
         "улица Бакинская",
-        "улица Матросская"
+        "улица Матросская",
+        "Akhsikat St. | Bakinskaya St. | Matrosskaya St."
       ],
       [
-        "Ашт улица"
+        "Ашт улица",
+        "ул. Ашт",
+        "Asht St."
       ],
       [
-        "Аэровокзальная площадь"
+        "Аэровокзальная площадь",
+        "пл. Аэровокзальная",
+        "Aerovokzalnaya Sq."
       ],
       [
         "Аэропорт-Восточный",
+        "Аэропорт-Восточный | ул. Кузнечная | ул. Темирчи",
         "улица Кузнечная",
-        "улица Темирчи"
+        "улица Темирчи",
+        "Airport-Vostochnyy | Kuznechnaya St. | Temirchi St."
       ],
       [
-        "Баёт улица"
+        "Баёт улица",
+        "ул. Баёт",
+        "Bayot St."
       ],
       [
-        "Базарная улица"
+        "Базарная улица",
+        "ул. Базарная",
+        "Bazarnaya St."
       ],
       [
-        "Байрам улица"
+        "Байрам улица",
+        "ул. Байрам",
+        "Bayram St."
       ],
       [
         "Балыкчи улица",
@@ -46915,45 +49736,69 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Барака улица",
-        "Шарифбая Казакбаева улица"
+        "ул. Барака | ул. Шарифбая Казакбаева",
+        "Шарифбая Казакбаева улица",
+        "Baraka St. | Sharifbaya Kazakbaeva St."
       ],
       [
-        "Баратходжа улица"
+        "Баратходжа улица",
+        "ул. Баратходжа",
+        "Baratkhodzha St."
       ],
       [
-        "Бархаёт Улица"
+        "Бархаёт Улица",
+        "ул. Бархаёт",
+        "Barkhayot St."
       ],
       [
-        "Бастакор улица"
+        "Бастакор улица",
+        "ул. Бастакор",
+        "Bastakor St."
       ],
       [
-        "Батау 1-й проезд"
+        "Батау 1-й проезд",
+        "1-й пр-д Батау",
+        "Batau 1st Passage"
       ],
       [
-        "Батау 2-й проезд"
+        "Батау 2-й проезд",
+        "2-й пр-д Батау",
+        "Batau 2nd Passage"
       ],
       [
-        "Батау 3-й проезд"
+        "Батау 3-й проезд",
+        "3-й пр-д Батау",
+        "Batau 3rd Passage"
       ],
       [
-        "Батау 4-й проезд"
+        "Батау 4-й проезд",
+        "4-й пр-д Батау",
+        "Batau 4th Passage"
       ],
       [
-        "Бату улица"
+        "Бату улица",
+        "ул. Бату",
+        "Batu St."
       ],
       [
-        "Бахадыр улица"
+        "Бахадыр улица",
+        "ул. Бахадыр",
+        "Bakhadyr St."
       ],
       [
         "Бахмал улица",
-        "Брак улица"
+        "Брак улица",
+        "ул. Бахмал | ул. Брак",
+        "Bakhmal St. | Brak St."
       ],
       [
         "Баховуддина Накшбанди улица",
         "Bakhovuddin Nakshbandiy street"
       ],
       [
-        "Бедил улица"
+        "Бедил улица",
+        "ул. Бедил",
+        "Bedil St."
       ],
       [
         "Безакчилик улица",
@@ -46972,16 +49817,24 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Bekabad Street"
       ],
       [
-        "Бектупи улица"
+        "Бектупи улица",
+        "ул. Бектупи",
+        "Bektupi St."
       ],
       [
-        "Беларик улица"
+        "Беларик улица",
+        "ул. Беларик",
+        "Belarik St."
       ],
       [
-        "Бехзод 2 тупик"
+        "Бехзод 2 тупик",
+        "2-й туп. Бехзод",
+        "Bekhzod 2nd Dead End"
       ],
       [
-        "Бехзод проезд"
+        "Бехзод проезд",
+        "пр-д Бехзод",
+        "Bekhzod Passage"
       ],
       [
         "Бешагач улица",
@@ -46990,30 +49843,44 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Beshagach Street"
       ],
       [
-        "Бешкентская 1-й тупик улица"
+        "Бешкентская 1-й тупик улица",
+        "1-й туп. Бешкентская",
+        "Beshkentskaya 1st Dead End"
       ],
       [
-        "Бешлола проезд"
+        "Бешлола проезд",
+        "пр-д Бешлола",
+        "Beshlola Passage"
       ],
       [
-        "Библиотечная тупик"
+        "Библиотечная тупик",
+        "туп. Библиотечная",
+        "Bibliotechnaya Dead End"
       ],
       [
-        "Бий улица"
+        "Бий улица",
+        "ул. Бий",
+        "Biy St."
       ],
       [
-        "Бинокор улица"
+        "Бинокор улица",
+        "ул. Бинокор",
+        "Binokor St."
       ],
       [
         "Бободехкон улица",
-        "улица Баходыра Тиллаева"
+        "ул. Бободехкон | ул. Баходыра Тиллаева",
+        "улица Баходыра Тиллаева",
+        "Bobodekhkon St. | Bakhodyra Tillaeva St."
       ],
       [
         "Бобохонова улица",
         "Bobohonova Street"
       ],
       [
-        "Бобур боги улица"
+        "Бобур боги улица",
+        "ул. Бобур боги",
+        "Bobur bogi St."
       ],
       [
         "Бог улица",
@@ -47046,7 +49913,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Bogistan street"
       ],
       [
-        "Бойкент улица"
+        "Бойкент улица",
+        "ул. Бойкент",
+        "Boykent St."
       ],
       [
         "Боситхон улица",
@@ -47065,27 +49934,39 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Buzkucha Street"
       ],
       [
-        "Бунёдкор улица"
+        "Бунёдкор улица",
+        "ул. Бунёдкор",
+        "Bunyodkor St."
       ],
       [
         "Бурхона Маргилани улица",
-        "Бурхана Маргилани улица"
+        "Бурхана Маргилани улица",
+        "ул. Бурхана Маргилани | ул. Бурхона Маргилани",
+        "Burkhana Margilani St. | Burkhona Margilani St."
       ],
       [
-        "В. Успенского улица"
+        "В. Успенского улица",
+        "ул. В. Успенского",
+        "V. Uspenskogo St."
       ],
       [
         "Виждон улица",
         "Vijdon ko‘chasi"
       ],
       [
-        "Висол улица"
+        "Висол улица",
+        "ул. Висол",
+        "Visol St."
       ],
       [
-        "Газалхон улица"
+        "Газалхон улица",
+        "ул. Газалхон",
+        "Gazalkhon St."
       ],
       [
-        "Гайрати улица"
+        "Гайрати улица",
+        "ул. Гайрати",
+        "Gayrati St."
       ],
       [
         "Галаба улица",
@@ -47093,36 +49974,52 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Galaba Street"
       ],
       [
-        "Гёте улица"
+        "Гёте улица",
+        "ул. Гёте",
+        "Gyote St."
       ],
       [
         "Гишткурган улица",
-        "Беруни улица"
+        "Беруни улица",
+        "ул. Беруни | ул. Гишткурган",
+        "Beruni St. | Gishtkurgan St."
       ],
       [
         "Гишткургон улица",
         "Беруни улица",
-        "Гишткурган улица"
+        "Гишткурган улица",
+        "ул. Беруни | ул. Гишткурган | ул. Гишткургон",
+        "Beruni St. | Gishtkurgan St. | Gishtkurgon St."
       ],
       [
-        "Гузаль улица"
+        "Гузаль улица",
+        "ул. Гузаль",
+        "Guzal St."
       ],
       [
-        "Гулирайхон улица"
+        "Гулирайхон улица",
+        "ул. Гулирайхон",
+        "Guliraykhon St."
       ],
       [
-        "Гулирано проезд"
+        "Гулирано проезд",
+        "пр-д Гулирано",
+        "Gulirano Passage"
       ],
       [
         "Гулчаман улица",
-        "Саидханова улица"
+        "Саидханова улица",
+        "ул. Гулчаман | ул. Саидханова",
+        "Gulchaman St. | Saidkhanova St."
       ],
       [
         "Гульбог улица",
         "Gulbog street"
       ],
       [
-        "Гульрано проезд"
+        "Гульрано проезд",
+        "пр-д Гульрано",
+        "Gulrano Passage"
       ],
       [
         "Гунафша улица",
@@ -47134,7 +50031,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Дарвоза проезд",
-        "Дарваза проезд"
+        "Дарваза проезд",
+        "пр-д Дарваза | пр-д Дарвоза",
+        "Darvaza Passage | Darvoza Passage"
       ],
       [
         "Дарвозакент улица",
@@ -47145,7 +50044,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Дарё буйи улица",
-        "улица Заречная"
+        "ул. Дарё буйи | ул. Заречная",
+        "улица Заречная",
+        "Daryo buyi St. | Zarechnaya St."
       ],
       [
         "Дархан улица",
@@ -47153,7 +50054,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Дегрез улица",
-        "Болтаева улица"
+        "Болтаева улица",
+        "ул. Болтаева | ул. Дегрез",
+        "Boltaeva St. | Degrez St."
       ],
       [
         "Дехконабад улица",
@@ -47165,20 +50068,28 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Dekhkonabad street"
       ],
       [
-        "Джамила Ташканди улица"
+        "Джамила Ташканди улица",
+        "ул. Джамила Ташканди",
+        "Dzhamila Tashkandi St."
       ],
       [
-        "Джамшид улица"
+        "Джамшид улица",
+        "ул. Джамшид",
+        "Dzhamshid St."
       ],
       [
         "Джийдазар улица",
         "Dzhiydazar Street"
       ],
       [
-        "Джийдазор 1-й проезд"
+        "Джийдазор 1-й проезд",
+        "1-й пр-д Джийдазор",
+        "Dzhiydazor 1st Passage"
       ],
       [
-        "Джунарык улица"
+        "Джунарык улица",
+        "ул. Джунарык",
+        "Dzhunaryk St."
       ],
       [
         "Джурджани улица",
@@ -47186,28 +50097,40 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Дийдор улица",
-        "Ислама Усманова улица"
+        "Ислама Усманова улица",
+        "ул. Дийдор | ул. Ислама Усманова",
+        "Diydor St. | Islama Usmanova St."
       ],
       [
-        "Дилафкоф улица"
+        "Дилафкоф улица",
+        "ул. Дилафкоф",
+        "Dilafkof St."
       ],
       [
-        "Дилбог улица"
+        "Дилбог улица",
+        "ул. Дилбог",
+        "Dilbog St."
       ],
       [
-        "Дильрабо улица"
+        "Дильрабо улица",
+        "ул. Дильрабо",
+        "Dilrabo St."
       ],
       [
         "Домбрабад улица",
         "Chilonzor Street"
       ],
       [
-        "Донгдор улица"
+        "Донгдор улица",
+        "ул. Донгдор",
+        "Dongdor St."
       ],
       [
         "Дорхантепа улица",
         "Механическая улица",
-        "улица Раима Салиева"
+        "ул. Дорхантепа | ул. Механическая | ул. Раима Салиева",
+        "улица Раима Салиева",
+        "Dorkhantepa St. | Mekhanicheskaya St. | Raima Salieva St."
       ],
       [
         "Достоевского улица",
@@ -47216,10 +50139,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Дурмон йули проезд",
-        "Дурмень йули проезд"
+        "Дурмень йули проезд",
+        "пр-д Дурмень йули | пр-д Дурмон йули",
+        "Durmen yuli Passage | Durmon yuli Passage"
       ],
       [
-        "Дустлик улица"
+        "Дустлик улица",
+        "ул. Дустлик",
+        "Dustlik St."
       ],
       [
         "Дучар улица",
@@ -47228,29 +50155,45 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Duchar Street"
       ],
       [
-        "Ёркин улица"
+        "Ёркин улица",
+        "ул. Ёркин",
+        "Yorkin St."
       ],
       [
-        "Ёрмухамедова улица"
+        "Ёрмухамедова улица",
+        "ул. Ёрмухамедова",
+        "Yormukhamedova St."
       ],
       [
-        "Ёшлик 3 проезд"
+        "Ёшлик 3 проезд",
+        "3-й пр-д Ёшлик",
+        "Yoshlik 3rd Passage"
       ],
       [
-        "Ёшлик проезд 2"
+        "Ёшлик проезд 2",
+        "2-й пр-д Ёшлик",
+        "Yoshlik 2nd Passage"
       ],
       [
-        "Ёшлик проезд 3"
+        "Ёшлик проезд 3",
+        "3-й пр-д Ёшлик",
+        "Yoshlik 3rd Passage"
       ],
       [
-        "Ёшлик улица"
+        "Ёшлик улица",
+        "ул. Ёшлик",
+        "Yoshlik St."
       ],
       [
-        "Ёшлик улица 1"
+        "Ёшлик улица 1",
+        "1-я ул. Ёшлик",
+        "Yoshlik 1st St."
       ],
       [
         "Жалоир улица",
-        "Проектная Г-35 улица"
+        "Проектная Г-35 улица",
+        "ул. Жалоир | ул. Проектная Г-35",
+        "Zhaloir St. | Proektnaya G-35 St."
       ],
       [
         "Жалолитдина Румий улица",
@@ -47262,13 +50205,19 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Zhumamaszhid Street"
       ],
       [
-        "Завкий улица"
+        "Завкий улица",
+        "ул. Завкий",
+        "Zavkiy St."
       ],
       [
-        "Закария Рузи улица"
+        "Закария Рузи улица",
+        "ул. Закария Рузи",
+        "Zakariya Ruzi St."
       ],
       [
-        "Замахшари улица"
+        "Замахшари улица",
+        "ул. Замахшари",
+        "Zamakhshari St."
       ],
       [
         "Зангиота улица",
@@ -47278,23 +50227,33 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Zangiota Street"
       ],
       [
-        "Зарбдор улица"
+        "Зарбдор улица",
+        "ул. Зарбдор",
+        "Zarbdor St."
       ],
       [
         "Зарипова улица",
-        "Инструментальная улица"
+        "Инструментальная улица",
+        "ул. Зарипова | ул. Инструментальная",
+        "Zaripova St. | Instrumentalnaya St."
       ],
       [
-        "Зарунар проезд"
+        "Зарунар проезд",
+        "пр-д Зарунар",
+        "Zarunar Passage"
       ],
       [
         "Зохидова улица",
         "40 лет Октября",
+        "40 лет Октября | ул. Захидова | ул. Зохидова | ул. Зохидон",
+        "40 let Oktyabrya | Zakhidova St. | Zokhidova St. | Zokhidon St.",
         "Захидова улица",
         "улица Зохидон"
       ],
       [
-        "Ибрагимова улица"
+        "Ибрагимова улица",
+        "ул. Ибрагимова",
+        "Ibragimova St."
       ],
       [
         "Ибрат улица",
@@ -47302,14 +50261,18 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Избоскан улица",
-        "З. Максудова улица"
+        "З. Максудова улица",
+        "ул. З. Максудова | ул. Избоскан",
+        "Z. Maksudova St. | Izboskan St."
       ],
       [
         "Изза улица",
         "Izza street"
       ],
       [
-        "Илгари тупик"
+        "Илгари тупик",
+        "туп. Илгари",
+        "Ilgari Dead End"
       ],
       [
         "Инжобод улица",
@@ -47325,26 +50288,38 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Intizom Street"
       ],
       [
-        "Ипподромная улица"
+        "Ипподромная улица",
+        "ул. Ипподромная",
+        "Ippodromnaya St."
       ],
       [
-        "Исламабад улица"
+        "Исламабад улица",
+        "ул. Исламабад",
+        "Islamabad St."
       ],
       [
         "Иссиксув улица",
         "Темура Малика улица",
-        "Фонтанная улица"
+        "ул. Иссиксув | ул. Темура Малика | ул. Фонтанная",
+        "Фонтанная улица",
+        "Issiksuv St. | Temura Malika St. | Fontannaya St."
       ],
       [
-        "Иттифок улица"
+        "Иттифок улица",
+        "ул. Иттифок",
+        "Ittifok St."
       ],
       [
         "Ихлос улица",
-        "улица Узбекистанская"
+        "ул. Ихлос | ул. Узбекистанская",
+        "улица Узбекистанская",
+        "Ikhlos St. | Uzbekistanskaya St."
       ],
       [
         "Йуларик улица",
-        "Санобар Одиловой улица"
+        "Санобар Одиловой улица",
+        "ул. Йуларик | ул. Санобар Одиловой",
+        "Yularik St. | Sanobar Odilovoy St."
       ],
       [
         "К. Зарипова тупик",
@@ -47357,10 +50332,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Kazitarnov street"
       ],
       [
-        "Каланова тупик"
+        "Каланова тупик",
+        "туп. Каланова",
+        "Kalanova Dead End"
       ],
       [
-        "Калтарой улица"
+        "Калтарой улица",
+        "ул. Калтарой",
+        "Kaltaroy St."
       ],
       [
         "Калтатой улица",
@@ -47377,14 +50356,20 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Kanibadam street"
       ],
       [
-        "Карамзина улица"
+        "Карамзина улица",
+        "ул. Карамзина",
+        "Karamzina St."
       ],
       [
-        "Каранкуль проезд"
+        "Каранкуль проезд",
+        "пр-д Каранкуль",
+        "Karankul Passage"
       ],
       [
         "Каримова улица",
-        "Б. Каримова улица"
+        "Б. Каримова улица",
+        "ул. Б. Каримова | ул. Каримова",
+        "B. Karimova St. | Karimova St."
       ],
       [
         "Карнок улица",
@@ -47395,7 +50380,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       [
         "Катта Канъи улица",
         "Катта Каъни улица",
-        "Пограничная улица"
+        "Пограничная улица",
+        "ул. Катта Канъи | ул. Катта Каъни | ул. Пограничная",
+        "Katta Kani St. | Pogranichnaya St."
       ],
       [
         "Катта Олмос 1 проезд",
@@ -47422,28 +50409,40 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Kattabog Street"
       ],
       [
-        "Кашгари 3-й проезд"
+        "Кашгари 3-й проезд",
+        "3-й пр-д Кашгари",
+        "Kashgari 3rd Passage"
       ],
       [
-        "Кашгари 5-й проезд"
+        "Кашгари 5-й проезд",
+        "5-й пр-д Кашгари",
+        "Kashgari 5th Passage"
       ],
       [
-        "Кашгари улица"
+        "Кашгари улица",
+        "ул. Кашгари",
+        "Kashgari St."
       ],
       [
         "Кашкадарьинская улица",
-        "улица Солдатенко"
+        "ул. Кашкадарьинская | ул. Солдатенко",
+        "улица Солдатенко",
+        "Kashkadarinskaya St. | Soldatenko St."
       ],
       [
         "Келес йули",
-        "с Келеса"
+        "Келес йули | с Келеса",
+        "с Келеса",
+        "Keles yuli | s Kelesa"
       ],
       [
         "Кизил Шарк улица",
         "Kizil Shark Street"
       ],
       [
-        "Кизилкурган проезд"
+        "Кизилкурган проезд",
+        "пр-д Кизилкурган",
+        "Kizilkurgan Passage"
       ],
       [
         "Кизилсув улица",
@@ -47452,19 +50451,27 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Kyzylsu street"
       ],
       [
-        "Кирки проезд"
+        "Кирки проезд",
+        "пр-д Кирки",
+        "Kirki Passage"
       ],
       [
         "Кирки улица",
-        "Кирки проезд"
+        "Кирки проезд",
+        "пр-д Кирки | ул. Кирки",
+        "Kirki Passage | Kirki St."
       ],
       [
         "Киркйигит улица",
-        "улица Интернациональная"
+        "ул. Киркйигит | ул. Интернациональная",
+        "улица Интернациональная",
+        "Kirkyigit St. | Internatsionalnaya St."
       ],
       [
         "Киркогайни улица",
-        "Шаумяна улица"
+        "ул. Киркогайни | ул. Шаумяна",
+        "Шаумяна улица",
+        "Kirkogayni St. | Shaumyana St."
       ],
       [
         "Кичкирик 2-й проезд",
@@ -47472,28 +50479,40 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Kichkirik passage-2"
       ],
       [
-        "Киялик улица"
+        "Киялик улица",
+        "ул. Киялик",
+        "Kiyalik St."
       ],
       [
-        "Ковунчи проезд"
+        "Ковунчи проезд",
+        "пр-д Ковунчи",
+        "Kovunchi Passage"
       ],
       [
-        "Ковунчи тупик"
+        "Ковунчи тупик",
+        "туп. Ковунчи",
+        "Kovunchi Dead End"
       ],
       [
         "Козитарнов 1-й проезд",
+        "1-й пр-д Козитарнов | ул. Козитарнов | ул. Чувашская",
         "Козитарнов улица",
-        "Чувашская улица"
+        "Чувашская улица",
+        "Kozitarnov 1st Passage | Kozitarnov St. | Chuvashskaya St."
       ],
       [
         "Козитарнов 2-й проезд",
         "Башкирская улица",
         "Маджида Баходырова улица",
-        "Мирали Миркаримова улица"
+        "Мирали Миркаримова улица",
+        "ул. Башкирская | 2-й пр-д Козитарнов | ул. Маджида Баходырова | ул. Мирали Миркаримова",
+        "Bashkirskaya St. | Kozitarnov 2nd Passage | Madzhida Bakhodyrova St. | Mirali Mirkarimova St."
       ],
       [
         "Козитарнов 3-й проезд",
-        "Гемеля Станкевича улица"
+        "Гемеля Станкевича улица",
+        "ул. Гемеля Станкевича | 3-й пр-д Козитарнов",
+        "Gemelya Stankevicha St. | Kozitarnov 3rd Passage"
       ],
       [
         "Корабулок улица",
@@ -47503,10 +50522,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Кориёгди улица",
-        "Содика Мирзаева улица"
+        "Содика Мирзаева улица",
+        "ул. Кориёгди | ул. Содика Мирзаева",
+        "Koriyogdi St. | Sodika Mirzaeva St."
       ],
       [
-        "Кох-ота проезд"
+        "Кох-ота проезд",
+        "пр-д Кох-ота",
+        "Kokh-ota Passage"
       ],
       [
         "Кошкурган 1-й проезд",
@@ -47519,14 +50542,20 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Kubeytepa street"
       ],
       [
-        "Кубрарик 1-й проезд"
+        "Кубрарик 1-й проезд",
+        "1-й пр-д Кубрарик",
+        "Kubrarik 1st Passage"
       ],
       [
-        "Кува улица"
+        "Кува улица",
+        "ул. Кува",
+        "Kuva St."
       ],
       [
         "Куддус 4-й проезд",
-        "улица Богданова"
+        "4-й пр-д Куддус | ул. Богданова",
+        "улица Богданова",
+        "Kuddus 4th Passage | Bogdanova St."
       ],
       [
         "Куйи Бузсув улица",
@@ -47535,10 +50564,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Куйлюк улица",
-        "улица Ефимова"
+        "ул. Куйлюк | ул. Ефимова",
+        "улица Ефимова",
+        "Kuylyuk St. | Efimova St."
       ],
       [
-        "Куклам улица"
+        "Куклам улица",
+        "ул. Куклам",
+        "Kuklam St."
       ],
       [
         "Кукча улица",
@@ -47546,7 +50579,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Kukcha Street"
       ],
       [
-        "Кукюнгунча проезд"
+        "Кукюнгунча проезд",
+        "пр-д Кукюнгунча",
+        "Kukyunguncha Passage"
       ],
       [
         "Кулолтупрок улица",
@@ -47559,44 +50594,64 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Kumbulak street"
       ],
       [
-        "Кундуз переулок"
+        "Кундуз переулок",
+        "пер. Кундуз",
+        "Kunduz Ln."
       ],
       [
         "Куприкли улица",
-        "улица Сеченова"
+        "ул. Куприкли | ул. Сеченова",
+        "улица Сеченова",
+        "Kuprikli St. | Sechenova St."
       ],
       [
         "Кургазма улица",
         "Кутузова 2я улица",
         "Мусоргского улица",
         "Сандиккургон проезд 5",
-        "Хабибы Юсуповой улица"
+        "ул. Кургазма | 2-я ул. Кутузова | ул. Мусоргского | 5-й пр-д Сандиккургон | ул. Хабибы Юсуповой",
+        "Хабибы Юсуповой улица",
+        "Kurgazma St. | Kutuzova 2ya St. | Musorgskogo St. | Sandikkurgon 5th Passage | Khabiby Yusupovoy St."
       ],
       [
         "Курганча улица",
         "Kurgancha Street"
       ],
       [
-        "Курилиш улица"
+        "Курилиш улица",
+        "ул. Курилиш",
+        "Kurilish St."
       ],
       [
-        "Куркам 1-й проезд"
+        "Куркам 1-й проезд",
+        "1-й пр-д Куркам",
+        "Kurkam 1st Passage"
       ],
       [
-        "Куркам 2-й проезд"
+        "Куркам 2-й проезд",
+        "2-й пр-д Куркам",
+        "Kurkam 2nd Passage"
       ],
       [
-        "Куркам 3-й проезд"
+        "Куркам 3-й проезд",
+        "3-й пр-д Куркам",
+        "Kurkam 3rd Passage"
       ],
       [
-        "Куркам 5-й проезд"
+        "Куркам 5-й проезд",
+        "5-й пр-д Куркам",
+        "Kurkam 5th Passage"
       ],
       [
         "Курувчилар улица",
-        "Строительная улица"
+        "Строительная улица",
+        "ул. Курувчилар | ул. Строительная",
+        "Kuruvchilar St. | Stroitelnaya St."
       ],
       [
-        "Кустанай улица"
+        "Кустанай улица",
+        "ул. Кустанай",
+        "Kustanay St."
       ],
       [
         "Кутб улица",
@@ -47604,30 +50659,42 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Kutb street"
       ],
       [
-        "Кушаева улица"
+        "Кушаева улица",
+        "ул. Кушаева",
+        "Kushaeva St."
       ],
       [
         "Кушжувоз улица",
-        "Самолётная улица"
+        "Самолётная улица",
+        "ул. Кушжувоз | ул. Самолётная",
+        "Kushzhuvoz St. | Samolyotnaya St."
       ],
       [
         "Кушкунди 1-й проезд",
         "Дорис ас-салом улица",
-        "Дорисалом улица"
+        "Дорисалом улица",
+        "ул. Дорис ас-салом | ул. Дорисалом | 1-й пр-д Кушкунди",
+        "Doris as-salom St. | Dorisalom St. | Kushkundi 1st Passage"
       ],
       [
         "Кушкунди улица",
-        "Хожиназара Худайберганова улица"
+        "ул. Кушкунди | ул. Хожиназара Худайберганова",
+        "Хожиназара Худайберганова улица",
+        "Kushkundi St. | Khozhinazara Khudayberganova St."
       ],
       [
-        "Кызыларват тупик"
+        "Кызыларват тупик",
+        "туп. Кызыларват",
+        "Kyzylarvat Dead End"
       ],
       [
         "Кызылкум улица",
         "Kyzylkum Street"
       ],
       [
-        "Қизил-Токзор тупик"
+        "Қизил-Токзор тупик",
+        "туп. Қизил-Токзор",
+        "Qizil-Tokzor Dead End"
       ],
       [
         "Лабихавуз улица",
@@ -47636,16 +50703,24 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Лайлакобод улица",
-        "Софийский тупик"
+        "Софийский тупик",
+        "ул. Лайлакобод | туп. Софийский",
+        "Laylakobod St. | Sofiyskiy Dead End"
       ],
       [
-        "Латофат тупик"
+        "Латофат тупик",
+        "туп. Латофат",
+        "Latofat Dead End"
       ],
       [
-        "Латофат улица"
+        "Латофат улица",
+        "ул. Латофат",
+        "Latofat St."
       ],
       [
-        "Лола тупик"
+        "Лола тупик",
+        "туп. Лола",
+        "Lola Dead End"
       ],
       [
         "Ломоносова улица",
@@ -47662,20 +50737,30 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Lev Tolsty Street"
       ],
       [
-        "Мавланы Риёзи тупик"
+        "Мавланы Риёзи тупик",
+        "туп. Мавланы Риёзи",
+        "Mavlany Riyozi Dead End"
       ],
       [
-        "Мавлона Табарий Ёкут улица"
+        "Мавлона Табарий Ёкут улица",
+        "ул. Мавлона Табарий Ёкут",
+        "Mavlona Tabariy Yokut St."
       ],
       [
-        "Мажлиси проезд"
+        "Мажлиси проезд",
+        "пр-д Мажлиси",
+        "Mazhlisi Passage"
       ],
       [
-        "Макола улица"
+        "Макола улица",
+        "ул. Макола",
+        "Makola St."
       ],
       [
         "Мактаб улица",
-        "улица Тожибоя Бекматова"
+        "ул. Мактаб | ул. Тожибоя Бекматова",
+        "улица Тожибоя Бекматова",
+        "Maktab St. | Tozhiboya Bekmatova St."
       ],
       [
         "Маориф улица",
@@ -47684,18 +50769,25 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Maorif Street"
       ],
       [
-        "Мардлик"
+        "Мардлик",
+        "Mardlik"
       ],
       [
-        "Мардлик улица"
+        "Мардлик улица",
+        "ул. Мардлик",
+        "Mardlik St."
       ],
       [
-        "Мархабо улица"
+        "Мархабо улица",
+        "ул. Мархабо",
+        "Markhabo St."
       ],
       [
         "Марьям Якубова улица",
         "Андревская улица",
-        "Дубицкого улица"
+        "Дубицкого улица",
+        "ул. Андревская | ул. Дубицкого | ул. Марьям Якубова",
+        "Andrevskaya St. | Dubitskogo St. | Maryam Yakubova St."
       ],
       [
         "Матонат улица",
@@ -47709,41 +50801,64 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Ghandi Street"
       ],
       [
-        "Махзуна тупик"
+        "Махзуна тупик",
+        "туп. Махзуна",
+        "Makhzuna Dead End"
       ],
       [
-        "Махзуна улица"
+        "Махзуна улица",
+        "ул. Махзуна",
+        "Makhzuna St."
       ],
       [
         "Махмура 1-й проезд",
-        "улица Махмура"
+        "1-й пр-д Махмура | ул. Махмура",
+        "улица Махмура",
+        "Makhmura 1st Passage | Makhmura St."
       ],
       [
-        "Махмура 1-й тупик"
+        "Махмура 1-й тупик",
+        "1-й туп. Махмура",
+        "Makhmura 1st Dead End"
       ],
       [
-        "Махмура 2-й проезд"
+        "Махмура 2-й проезд",
+        "2-й пр-д Махмура",
+        "Makhmura 2nd Passage"
       ],
       [
-        "Махмура улца"
+        "Махмура улца",
+        "Makhmura ultsa"
       ],
       [
-        "Махорат улица"
+        "Махорат улица",
+        "ул. Махорат",
+        "Makhorat St."
       ],
       [
-        "Махтукули улица"
+        "Махтукули улица",
+        "ул. Махтукули",
+        "Makhtukuli St."
       ],
       [
-        "Махтумкули 1-й проезд"
+        "Махтумкули 1-й проезд",
+        "1-й пр-д Махтумкули",
+        "Makhtumkuli 1st Passage"
       ],
       [
-        "Махтумкули 2-й проезд"
+        "Махтумкули 2-й проезд",
+        "2-й пр-д Махтумкули",
+        "Makhtumkuli 2nd Passage"
       ],
       [
-        "Махтумкули 3-й проезд"
+        "Махтумкули 3-й проезд",
+        "3-й пр-д Махтумкули",
+        "Makhtumkuli 3rd Passage"
       ],
       [
-        "Махтумкули улица"
+        "Махтумкули улица",
+        "ул. Махтумкули",
+        "Makhtumkuli St."
       ],
       [
         "Машхур проезд",
@@ -47755,13 +50870,19 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "местная дорога для выхода из леса",
-        "Ок уй 2-й проезд"
+        "местная дор. для выхода из леса | 2-й пр-д Ок уй",
+        "Ок уй 2-й проезд",
+        "mestnaya Rd. dlya vykhoda iz lesa | Ok uy 2nd Passage"
       ],
       [
-        "Мехмондуст тупик"
+        "Мехмондуст тупик",
+        "туп. Мехмондуст",
+        "Mekhmondust Dead End"
       ],
       [
-        "Мехмондуст улица"
+        "Мехмондуст улица",
+        "ул. Мехмондуст",
+        "Mekhmondust St."
       ],
       [
         "Мехнаткаш улица",
@@ -47770,10 +50891,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       [
         "Мехнатобод улица",
         "Мехнатабад улица",
-        "Файзуллы Абдуллаева улица"
+        "ул. Мехнатабад | ул. Мехнатобод | ул. Файзуллы Абдуллаева",
+        "Файзуллы Абдуллаева улица",
+        "Mekhnatabad St. | Mekhnatobod St. | Fayzully Abdullaeva St."
       ],
       [
-        "Мехрибон улица"
+        "Мехрибон улица",
+        "ул. Мехрибон",
+        "Mekhribon St."
       ],
       [
         "Миглар улица",
@@ -47783,23 +50908,33 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       [
         "Мингурик тупик",
         "Брестская улица",
-        "Мичурина улица"
+        "Мичурина улица",
+        "ул. Брестская | туп. Мингурик | ул. Мичурина",
+        "Brestskaya St. | Mingurik Dead End | Michurina St."
       ],
       [
-        "Мингурюк улица"
+        "Мингурюк улица",
+        "ул. Мингурюк",
+        "Minguryuk St."
       ],
       [
         "Минор улица",
         "Minor Street"
       ],
       [
-        "Мирзо Бабура 1 проезд"
+        "Мирзо Бабура 1 проезд",
+        "1-й пр-д Мирзо Бабура",
+        "Mirzo Babura 1st Passage"
       ],
       [
-        "Мирзо Бабура 2 проезд"
+        "Мирзо Бабура 2 проезд",
+        "2-й пр-д Мирзо Бабура",
+        "Mirzo Babura 2nd Passage"
       ],
       [
-        "Мирхонд улица"
+        "Мирхонд улица",
+        "ул. Мирхонд",
+        "Mirkhond St."
       ],
       [
         "Мойкурган улица",
@@ -47811,20 +50946,30 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       [
         "Мохичехра улица",
         "Кошкургон улица",
-        "Педагогическая Педагогическая"
+        "Педагогическая Педагогическая",
+        "ул. Кошкургон | ул. Мохичехра | Педагогическая Педагогическая",
+        "Koshkurgon St. | Mokhichekhra St. | Pedagogicheskaya Pedagogicheskaya"
       ],
       [
-        "Мохларойим 2-й тупик"
+        "Мохларойим 2-й тупик",
+        "2-й туп. Мохларойим",
+        "Mokhlaroyim 2nd Dead End"
       ],
       [
-        "Мохларойим 4-й тупик"
+        "Мохларойим 4-й тупик",
+        "4-й туп. Мохларойим",
+        "Mokhlaroyim 4th Dead End"
       ],
       [
         "Моштабиб улица",
-        "Елизоаетинская улица"
+        "Елизоаетинская улица",
+        "ул. Елизоаетинская | ул. Моштабиб",
+        "Elizoaetinskaya St. | Moshtabib St."
       ],
       [
-        "Муазамхон улица"
+        "Муазамхон улица",
+        "ул. Муазамхон",
+        "Muazamkhon St."
       ],
       [
         "Мужирмабад 1-й проезд",
@@ -47832,7 +50977,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Mujrim Abid 1st passage"
       ],
       [
-        "Муканна тупик"
+        "Муканна тупик",
+        "туп. Муканна",
+        "Mukanna Dead End"
       ],
       [
         "Муканна улица",
@@ -47840,13 +50987,19 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Мулойим улица",
-        "улица Белова"
+        "ул. Мулойим | ул. Белова",
+        "улица Белова",
+        "Muloyim St. | Belova St."
       ],
       [
-        "Мунисобод улица"
+        "Мунисобод улица",
+        "ул. Мунисобод",
+        "Munisobod St."
       ],
       [
-        "Мураб проезд"
+        "Мураб проезд",
+        "пр-д Мураб",
+        "Murab Passage"
       ],
       [
         "Мурабби кучаси",
@@ -47854,41 +51007,65 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Murabbi Street"
       ],
       [
-        "Мурабби улица"
+        "Мурабби улица",
+        "ул. Мурабби",
+        "Murabbi St."
       ],
       [
         "Мусаввир улица",
-        "улица Пионерская"
+        "ул. Мусаввир | ул. Пионерская",
+        "улица Пионерская",
+        "Musavvir St. | Pionerskaya St."
       ],
       [
-        "Мусаффо улица"
+        "Мусаффо улица",
+        "ул. Мусаффо",
+        "Musaffo St."
       ],
       [
-        "Муссобака улица"
+        "Муссобака улица",
+        "ул. Муссобака",
+        "Mussobaka St."
       ],
       [
-        "Мухаббат улица"
+        "Мухаббат улица",
+        "ул. Мухаббат",
+        "Mukhabbat St."
       ],
       [
-        "Мухокама улица"
+        "Мухокама улица",
+        "ул. Мухокама",
+        "Mukhokama St."
       ],
       [
-        "Навнихол улица"
+        "Навнихол улица",
+        "ул. Навнихол",
+        "Navnikhol St."
       ],
       [
-        "Наво улица"
+        "Наво улица",
+        "ул. Наво",
+        "Navo St."
       ],
       [
-        "Навруз 3 тупик"
+        "Навруз 3 тупик",
+        "3-й туп. Навруз",
+        "Navruz 3rd Dead End"
       ],
       [
-        "Навруз проезд 5"
+        "Навруз проезд 5",
+        "5-й пр-д Навруз",
+        "Navruz 5th Passage"
       ],
       [
-        "Навруз проезд 6"
+        "Навруз проезд 6",
+        "6-й пр-д Навруз",
+        "Navruz 6th Passage"
       ],
       [
-        "Навруз улица"
+        "Навруз улица",
+        "ул. Навруз",
+        "Navruz St."
       ],
       [
         "Найман улица",
@@ -47930,21 +51107,31 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Нокзор улица",
-        "Нокзар улица"
+        "Нокзар улица",
+        "ул. Нокзар | ул. Нокзор",
+        "Nokzar St. | Nokzor St."
       ],
       [
         "Норин улица",
-        "улица Дербентская"
+        "ул. Норин | ул. Дербентская",
+        "улица Дербентская",
+        "Norin St. | Derbentskaya St."
       ],
       [
         "Носира улица",
-        "Насира улица"
+        "Насира улица",
+        "ул. Насира | ул. Носира",
+        "Nasira St. | Nosira St."
       ],
       [
-        "Нур улица"
+        "Нур улица",
+        "ул. Нур",
+        "Nur St."
       ],
       [
-        "Нуравшан тупик"
+        "Нуравшан тупик",
+        "туп. Нуравшан",
+        "Nuravshan Dead End"
       ],
       [
         "Нуравшан улица",
@@ -47952,16 +51139,22 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Nuravshan street"
       ],
       [
-        "Нуробод улица"
+        "Нуробод улица",
+        "ул. Нуробод",
+        "Nurobod St."
       ],
       [
         "Нуронийлар улица",
         "Ататюрка улица",
         "Зерабулакская улица",
-        "Опанасенко улица"
+        "Опанасенко улица",
+        "ул. Ататюрка | ул. Зерабулакская | ул. Нуронийлар | ул. Опанасенко",
+        "Atatyurka St. | Zerabulakskaya St. | Nuroniylar St. | Opanasenko St."
       ],
       [
-        "Обидова улица"
+        "Обидова улица",
+        "ул. Обидова",
+        "Obidova St."
       ],
       [
         "Обирахмат улица",
@@ -47988,10 +51181,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Abad Street"
       ],
       [
-        "Оборонная улица"
+        "Оборонная улица",
+        "ул. Оборонная",
+        "Oboronnaya St."
       ],
       [
-        "Огахи улица"
+        "Огахи улица",
+        "ул. Огахи",
+        "Ogakhi St."
       ],
       [
         "Озодлик улица",
@@ -47999,7 +51196,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Ozodlik street"
       ],
       [
-        "Ойдин улица"
+        "Ойдин улица",
+        "ул. Ойдин",
+        "Oydin St."
       ],
       [
         "Ойдынкуль улица",
@@ -48014,7 +51213,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Окила Шарафутдинова улица",
-        "Раний проезд"
+        "Раний проезд",
+        "ул. Окила Шарафутдинова | пр-д Раний",
+        "Okila Sharafutdinova St. | Raniy Passage"
       ],
       [
         "Окилота улица",
@@ -48023,21 +51224,31 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Akilata Street"
       ],
       [
-        "Оккургон 1-й проезд"
+        "Оккургон 1-й проезд",
+        "1-й пр-д Оккургон",
+        "Okkurgon 1st Passage"
       ],
       [
-        "Октепа проезд"
+        "Октепа проезд",
+        "пр-д Октепа",
+        "Oktepa Passage"
       ],
       [
         "Окшом улица",
-        "Окшом проезд 1"
+        "1-й пр-д Окшом | ул. Окшом",
+        "Окшом проезд 1",
+        "Okshom 1st Passage | Okshom St."
       ],
       [
-        "Олий Химмат улица"
+        "Олий Химмат улица",
+        "ул. Олий Химмат",
+        "Oliy Khimmat St."
       ],
       [
         "Олмос улица",
-        "улица Камтара Отабоева"
+        "ул. Олмос | ул. Камтара Отабоева",
+        "улица Камтара Отабоева",
+        "Olmos St. | Kamtara Otaboeva St."
       ],
       [
         "Олой улица",
@@ -48058,11 +51269,15 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Орифон 1-й проезд",
-        "Акмалхона Сафихонова улица"
+        "Акмалхона Сафихонова улица",
+        "ул. Акмалхона Сафихонова | 1-й пр-д Орифон",
+        "Akmalkhona Safikhonova St. | Orifon 1st Passage"
       ],
       [
         "Орифон 2-й проезд",
-        "Кутбиддина Шамсиева улица"
+        "Кутбиддина Шамсиева улица",
+        "ул. Кутбиддина Шамсиева | 2-й пр-д Орифон",
+        "Kutbiddina Shamsieva St. | Orifon 2nd Passage"
       ],
       [
         "Оромгох улица",
@@ -48091,13 +51306,18 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Pahtakor Street"
       ],
       [
-        "Пешкадам улица"
+        "Пешкадам улица",
+        "ул. Пешкадам",
+        "Peshkadam St."
       ],
       [
-        "Плац"
+        "Плац",
+        "Plats"
       ],
       [
-        "площадь Актепе"
+        "площадь Актепе",
+        "пл. Актепе",
+        "Aktepe Sq."
       ],
       [
         "Площадь Космонавтов",
@@ -48110,13 +51330,18 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Parlak Street"
       ],
       [
-        "Пуштибог улица"
+        "Пуштибог улица",
+        "ул. Пуштибог",
+        "Pushtibog St."
       ],
       [
-        "Равон улица"
+        "Равон улица",
+        "ул. Равон",
+        "Ravon St."
       ],
       [
-        "разворот"
+        "разворот",
+        "razvorot"
       ],
       [
         "Ракат улица",
@@ -48125,10 +51350,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Rakat Street"
       ],
       [
-        "Ранняя улица"
+        "Ранняя улица",
+        "ул. Ранняя",
+        "Rannyaya St."
       ],
       [
-        "Рафикдарвоз улица"
+        "Рафикдарвоз улица",
+        "ул. Рафикдарвоз",
+        "Rafikdarvoz St."
       ],
       [
         "Рахат",
@@ -48139,7 +51368,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Rakhat 1st passage"
       ],
       [
-        "С. Джураева улица"
+        "С. Джураева улица",
+        "ул. С. Джураева",
+        "S. Dzhuraeva St."
       ],
       [
         "Саватчи улица",
@@ -48147,34 +51378,48 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Savatchi street"
       ],
       [
-        "Садаф улица"
+        "Садаф улица",
+        "ул. Садаф",
+        "Sadaf St."
       ],
       [
-        "Садий"
+        "Садий",
+        "Sadiy"
       ],
       [
-        "Садокат улица"
+        "Садокат улица",
+        "ул. Садокат",
+        "Sadokat St."
       ],
       [
-        "Саиба Хужаева проезд"
+        "Саиба Хужаева проезд",
+        "пр-д Саиба Хужаева",
+        "Saiba Khuzhaeva Passage"
       ],
       [
-        "Саида Камолхона улица"
+        "Саида Камолхона улица",
+        "ул. Саида Камолхона",
+        "Saida Kamolkhona St."
       ],
       [
-        "Сайкали улица"
+        "Сайкали улица",
+        "ул. Сайкали",
+        "Saykali St."
       ],
       [
         "Сайрам тупик",
         "Sayram dead end"
       ],
       [
-        "Саларские ключи"
+        "Саларские ключи",
+        "Salarskie klyuchi"
       ],
       [
         "Салом улица",
+        "ул. Салом | ул. А. Убайдуллаходжаева | ул. Национальная",
         "улица А. Убайдуллаходжаева",
-        "улица Национальная"
+        "улица Национальная",
+        "Salom St. | A. Ubaydullakhodzhaeva St. | Natsionalnaya St."
       ],
       [
         "Самарканд Дарбаза улица",
@@ -48184,9 +51429,11 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Сандикли улица",
+        "ул. Сандикли | ул. Вышинского | ул. Дыбенко | ул. Ершова",
         "улица Вышинского",
         "улица Дыбенко",
-        "улица Ершова"
+        "улица Ершова",
+        "Sandikli St. | Vyshinskogo St. | Dybenko St. | Ershova St."
       ],
       [
         "Сапёрная Площадь",
@@ -48200,17 +51447,25 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Sarbon street"
       ],
       [
-        "Сарыкульская площадь"
+        "Сарыкульская площадь",
+        "пл. Сарыкульская",
+        "Sarykulskaya Sq."
       ],
       [
-        "Саховат проезд"
+        "Саховат проезд",
+        "пр-д Саховат",
+        "Sakhovat Passage"
       ],
       [
-        "Саховат улица"
+        "Саховат улица",
+        "ул. Саховат",
+        "Sakhovat St."
       ],
       [
         "Севинчбону улица",
-        "Краснофлотская улица"
+        "Краснофлотская улица",
+        "ул. Краснофлотская | ул. Севинчбону",
+        "Krasnoflotskaya St. | Sevinchbonu St."
       ],
       [
         "Собира Рахимова улица",
@@ -48218,21 +51473,30 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Sabir Rakhimov Street"
       ],
       [
-        "Сомони улица"
+        "Сомони улица",
+        "ул. Сомони",
+        "Somoni St."
       ],
       [
         "Софдил улица",
+        "2-я ул. Ахунбабаев | ул. Лутфуллы Назруллаева | ул. Софдил",
         "Ахунбабаев 2 улица",
-        "Лутфуллы Назруллаева улица"
+        "Лутфуллы Назруллаева улица",
+        "Akhunbabaev 2 St. | Lutfully Nazrullaeva St. | Sofdil St."
       ],
       [
-        "Сохибкор улица"
+        "Сохибкор улица",
+        "ул. Сохибкор",
+        "Sokhibkor St."
       ],
       [
-        "Специалистов тупик"
+        "Специалистов тупик",
+        "туп. Специалистов",
+        "Spetsialistov Dead End"
       ],
       [
-        "Сув буйи"
+        "Сув буйи",
+        "Suv buyi"
       ],
       [
         "Сузук ота улица",
@@ -48250,11 +51514,15 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Сумбула улица",
+        "ул. Сумбула | ул. Женотдела | ул. Фоменко",
         "улица Женотдела",
-        "улица Фоменко"
+        "улица Фоменко",
+        "Sumbula St. | Zhenotdela St. | Fomenko St."
       ],
       [
-        "Суфизода улица"
+        "Суфизода улица",
+        "ул. Суфизода",
+        "Sufizoda St."
       ],
       [
         "Т. Арсланкулова улица",
@@ -48262,16 +51530,23 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Т. Рыскулова улица",
-        "ул. Т. Рыскулова"
+        "ул. Т. Рыскулова",
+        "T. Ryskulova St."
       ],
       [
-        "Табибий улица"
+        "Табибий улица",
+        "ул. Табибий",
+        "Tabibiy St."
       ],
       [
-        "Табрик улица"
+        "Табрик улица",
+        "ул. Табрик",
+        "Tabrik St."
       ],
       [
-        "Тавалло улица"
+        "Тавалло улица",
+        "ул. Тавалло",
+        "Tavallo St."
       ],
       [
         "Тагора улица",
@@ -48279,37 +51554,52 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Tagora Street"
       ],
       [
-        "Такачи 2-й проезд"
+        "Такачи 2-й проезд",
+        "2-й пр-д Такачи",
+        "Takachi 2nd Passage"
       ],
       [
-        "Такачи 3-й проезд"
+        "Такачи 3-й проезд",
+        "3-й пр-д Такачи",
+        "Takachi 3rd Passage"
       ],
       [
-        "Такачи 4-й проезд"
+        "Такачи 4-й проезд",
+        "4-й пр-д Такачи",
+        "Takachi 4th Passage"
       ],
       [
         "Такачи улица",
-        "Рахимбабаева улица"
+        "Рахимбабаева улица",
+        "ул. Рахимбабаева | ул. Такачи",
+        "Rakhimbabaeva St. | Takachi St."
       ],
       [
-        "Таларык 2 улица"
+        "Таларык 2 улица",
+        "2-я ул. Таларык",
+        "Talaryk 2 St."
       ],
       [
         "Тарона улица",
+        "ул. Тарона | ул. Фазила Одилова | ул. Фазыла Адылова",
         "Фазила Одилова улица",
-        "Фазыла Адылова улица"
+        "Фазыла Адылова улица",
+        "Tarona St. | Fazila Odilova St. | Fazyla Adylova St."
       ],
       [
         "Ташаббускор улица",
         "Tashabbuskor Street"
       ],
       [
-        "Ташкент-Келес"
+        "Ташкент-Келес",
+        "Tashkent-Keles"
       ],
       [
         "Темирйулувчилар проезд",
         "Железнодорожников проезд",
-        "улица Бакинская"
+        "пр-д Железнодорожников | пр-д Темирйулувчилар | ул. Бакинская",
+        "улица Бакинская",
+        "Zheleznodorozhnikov Passage | Temiryuluvchilar Passage | Bakinskaya St."
       ],
       [
         "Тепакурган улица",
@@ -48318,7 +51608,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Tepakurgan street"
       ],
       [
-        "Терак тупик"
+        "Терак тупик",
+        "туп. Терак",
+        "Terak Dead End"
       ],
       [
         "Термиз 2 тупик",
@@ -48327,14 +51619,20 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Termez 2nd dead end"
       ],
       [
-        "Термиз проезд"
+        "Термиз проезд",
+        "пр-д Термиз",
+        "Termiz Passage"
       ],
       [
         "Термиз тупик",
-        "Алиджана Халикова тупик"
+        "Алиджана Халикова тупик",
+        "туп. Алиджана Халикова | туп. Термиз",
+        "Alidzhana Khalikova Dead End | Termiz Dead End"
       ],
       [
-        "Тикланиш улица"
+        "Тикланиш улица",
+        "ул. Тикланиш",
+        "Tiklanish St."
       ],
       [
         "Тимирйул улица",
@@ -48342,22 +51640,34 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Timiryul Street"
       ],
       [
-        "Тинчлик 1 проезд"
+        "Тинчлик 1 проезд",
+        "1-й пр-д Тинчлик",
+        "Tinchlik 1st Passage"
       ],
       [
-        "Тинчлик 2 проезд"
+        "Тинчлик 2 проезд",
+        "2-й пр-д Тинчлик",
+        "Tinchlik 2nd Passage"
       ],
       [
-        "Тинчлик 3 проезд"
+        "Тинчлик 3 проезд",
+        "3-й пр-д Тинчлик",
+        "Tinchlik 3rd Passage"
       ],
       [
-        "Тинчлик 6 проезд"
+        "Тинчлик 6 проезд",
+        "6-й пр-д Тинчлик",
+        "Tinchlik 6th Passage"
       ],
       [
-        "Тинчлик 7 проезд"
+        "Тинчлик 7 проезд",
+        "7-й пр-д Тинчлик",
+        "Tinchlik 7th Passage"
       ],
       [
-        "Тинчлик проезд"
+        "Тинчлик проезд",
+        "пр-д Тинчлик",
+        "Tinchlik Passage"
       ],
       [
         "Тинчлик улица",
@@ -48365,7 +51675,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Tinchlik Street"
       ],
       [
-        "Тонг улица"
+        "Тонг улица",
+        "ул. Тонг",
+        "Tong St."
       ],
       [
         "Торкуча улица",
@@ -48383,7 +51695,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Toshkucha Street"
       ],
       [
-        "Тошлок тупик"
+        "Тошлок тупик",
+        "туп. Тошлок",
+        "Toshlok Dead End"
       ],
       [
         "Тошлок улица",
@@ -48392,21 +51706,29 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Тулпор проезд",
-        "улица Азовская"
+        "пр-д Тулпор | ул. Азовская",
+        "улица Азовская",
+        "Tulpor Passage | Azovskaya St."
       ],
       [
         "Тулпор улица",
-        "улица Конармейская"
+        "ул. Тулпор | ул. Конармейская",
+        "улица Конармейская",
+        "Tulpor St. | Konarmeyskaya St."
       ],
       [
         "Тупик",
         "Dead end"
       ],
       [
-        "тупик Мустакиллик"
+        "тупик Мустакиллик",
+        "туп. Мустакиллик",
+        "Mustakillik Dead End"
       ],
       [
-        "Тургуна Ризаева улица"
+        "Тургуна Ризаева улица",
+        "ул. Тургуна Ризаева",
+        "Turguna Rizaeva St."
       ],
       [
         "Турккургон (Барнаульская) улица",
@@ -48434,12 +51756,16 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Tutzor Street"
       ],
       [
-        "Узбекистан улица"
+        "Узбекистан улица",
+        "ул. Узбекистан",
+        "Uzbekistan St."
       ],
       [
         "Узбексельмаш улица",
+        "ул. Узбексельмаш | ул. Узбеккишлокмаш",
         "улица Узбеккишлокмаш",
-        "улица Узбексельмаш"
+        "улица Узбексельмаш",
+        "Uzbekselmash St. | Uzbekkishlokmash St."
       ],
       [
         "Уйгуна улица",
@@ -48447,7 +51773,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Uyguna Street"
       ],
       [
-        "Уйгур-Кокчинор тупик"
+        "Уйгур-Кокчинор тупик",
+        "туп. Уйгур-Кокчинор",
+        "Uygur-Kokchinor Dead End"
       ],
       [
         "Укитувчилар улица",
@@ -48455,42 +51783,64 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Уккоша 1-й проезд",
-        "Закира Магруфова проезд 1"
+        "1-й пр-д Закира Магруфова | 1-й пр-д Уккоша",
+        "Закира Магруфова проезд 1",
+        "Zakira Magrufova 1st Passage | Ukkosha 1st Passage"
       ],
       [
         "Уккоша 2-й проезд",
-        "Закира Магруфова проезд 2"
+        "2-й пр-д Закира Магруфова | 2-й пр-д Уккоша",
+        "Закира Магруфова проезд 2",
+        "Zakira Magrufova 2nd Passage | Ukkosha 2nd Passage"
       ],
       [
         "Уккоша 3-й проезд",
-        "Закира Магруфова проезд 3"
+        "3-й пр-д Закира Магруфова | 3-й пр-д Уккоша",
+        "Закира Магруфова проезд 3",
+        "Zakira Magrufova 3rd Passage | Ukkosha 3rd Passage"
       ],
       [
         "Уккоша 4-й проезд",
-        "Закира Магруфова проезд 4"
+        "4-й пр-д Закира Магруфова | 4-й пр-д Уккоша",
+        "Закира Магруфова проезд 4",
+        "Zakira Magrufova 4th Passage | Ukkosha 4th Passage"
       ],
       [
         "Уккоша 5-й проезд",
-        "Закира Магруфова проезд 5"
+        "5-й пр-д Закира Магруфова | 5-й пр-д Уккоша",
+        "Закира Магруфова проезд 5",
+        "Zakira Magrufova 5th Passage | Ukkosha 5th Passage"
       ],
       [
         "Уккоша улица",
-        "Закира Магруфова улица"
+        "Закира Магруфова улица",
+        "ул. Закира Магруфова | ул. Уккоша",
+        "Zakira Magrufova St. | Ukkosha St."
       ],
       [
-        "улица Анхор"
+        "улица Анхор",
+        "ул. Анхор",
+        "Ankhor St."
       ],
       [
-        "улица Байналминал"
+        "улица Байналминал",
+        "ул. Байналминал",
+        "Baynalminal St."
       ],
       [
-        "Улица Богичинар"
+        "Улица Богичинар",
+        "ул. Богичинар",
+        "Bogichinar St."
       ],
       [
-        "улица Гулистон"
+        "улица Гулистон",
+        "ул. Гулистон",
+        "Guliston St."
       ],
       [
-        "улица Ёшлик"
+        "улица Ёшлик",
+        "ул. Ёшлик",
+        "Yoshlik St."
       ],
       [
         "улица Иттифок",
@@ -48499,34 +51849,54 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "улица Катта Олмос",
-        "улица Навруз"
+        "ул. Катта Олмос | ул. Навруз",
+        "улица Навруз",
+        "Katta Olmos St. | Navruz St."
       ],
       [
-        "улица Лисунова"
+        "улица Лисунова",
+        "ул. Лисунова",
+        "Lisunova St."
       ],
       [
-        "улица М. Рахимова"
+        "улица М. Рахимова",
+        "ул. М. Рахимова",
+        "M. Rakhimova St."
       ],
       [
-        "улица Марказий Чинор"
+        "улица Марказий Чинор",
+        "ул. Марказий Чинор",
+        "Markaziy Chinor St."
       ],
       [
-        "улица Мирзо Бабура"
+        "улица Мирзо Бабура",
+        "ул. Мирзо Бабура",
+        "Mirzo Babura St."
       ],
       [
-        "улица Миробод"
+        "улица Миробод",
+        "ул. Миробод",
+        "Mirobod St."
       ],
       [
-        "улица Мукими"
+        "улица Мукими",
+        "ул. Мукими",
+        "Mukimi St."
       ],
       [
-        "улица Мустакиллик"
+        "улица Мустакиллик",
+        "ул. Мустакиллик",
+        "Mustakillik St."
       ],
       [
-        "улица Мухандис"
+        "улица Мухандис",
+        "ул. Мухандис",
+        "Mukhandis St."
       ],
       [
-        "улица Навбахор"
+        "улица Навбахор",
+        "ул. Навбахор",
+        "Navbakhor St."
       ],
       [
         "улица Неъмата",
@@ -48536,28 +51906,44 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Nemata Street"
       ],
       [
-        "улица Озодлик"
+        "улица Озодлик",
+        "ул. Озодлик",
+        "Ozodlik St."
       ],
       [
-        "улица Охунбобоева"
+        "улица Охунбобоева",
+        "ул. Охунбобоева",
+        "Okhunboboeva St."
       ],
       [
-        "улица С. Сафарова"
+        "улица С. Сафарова",
+        "ул. С. Сафарова",
+        "S. Safarova St."
       ],
       [
-        "улица Саида Абдуллаева"
+        "улица Саида Абдуллаева",
+        "ул. Саида Абдуллаева",
+        "Saida Abdullaeva St."
       ],
       [
-        "улица Саодат"
+        "улица Саодат",
+        "ул. Саодат",
+        "Saodat St."
       ],
       [
-        "улица Султонобод"
+        "улица Султонобод",
+        "ул. Султонобод",
+        "Sultonobod St."
       ],
       [
-        "улица Тараккиёт"
+        "улица Тараккиёт",
+        "ул. Тараккиёт",
+        "Tarakkiyot St."
       ],
       [
-        "улица Тоирова"
+        "улица Тоирова",
+        "ул. Тоирова",
+        "Toirova St."
       ],
       [
         "улица Узумзор",
@@ -48565,10 +51951,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Uzumzar Street"
       ],
       [
-        "Улица Файз"
+        "Улица Файз",
+        "ул. Файз",
+        "Fayz St."
       ],
       [
-        "улица Фаровон Хаёт"
+        "улица Фаровон Хаёт",
+        "ул. Фаровон Хаёт",
+        "Farovon Khayot St."
       ],
       [
         "улица Х. Джураева",
@@ -48576,14 +51966,20 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "H. Juraev street"
       ],
       [
-        "улица Шукура Бурханова"
+        "улица Шукура Бурханова",
+        "ул. Шукура Бурханова",
+        "Shukura Burkhanova St."
       ],
       [
-        "улица Юнуса Раджабий"
+        "улица Юнуса Раджабий",
+        "ул. Юнуса Раджабий",
+        "Yunusa Radzhabiy St."
       ],
       [
         "улица Янгитурмуш",
-        "Янгитурмуш улица"
+        "ул. Янгитурмуш",
+        "Янгитурмуш улица",
+        "Yangiturmush St."
       ],
       [
         "улицы Шокирарик",
@@ -48591,27 +51987,38 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Улмаса Умарбекова улица",
-        "2я хирургическая улица"
+        "2я хирургическая улица",
+        "2ya khirurgicheskaya St. | Ulmasa Umarbekova St.",
+        "ул. 2я хирургическая | ул. Улмаса Умарбекова"
       ],
       [
-        "Улугбека улица"
+        "Улугбека улица",
+        "ул. Улугбека",
+        "Ulugbeka St."
       ],
       [
         "Уртайул улица",
-        "удица Перова"
+        "удица Перова",
+        "удица Перова | ул. Уртайул",
+        "uditsa Perova | Urtayul St."
       ],
       [
-        "Уртасарой улица"
+        "Уртасарой улица",
+        "ул. Уртасарой",
+        "Urtasaroy St."
       ],
       [
-        "Усман Юсупов"
+        "Усман Юсупов",
+        "Usman Yusupov"
       ],
       [
         "Уста Ширин улица",
         "Usta Shirin street"
       ],
       [
-        "Уткира Расула улица"
+        "Уткира Расула улица",
+        "ул. Уткира Расула",
+        "Utkira Rasula St."
       ],
       [
         "Уч тут улица",
@@ -48620,44 +52027,68 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Учтепа улица",
-        "Хабиба Абдуллаева улица"
+        "ул. Учтепа | ул. Хабиба Абдуллаева",
+        "Хабиба Абдуллаева улица",
+        "Uchtepa St. | Khabiba Abdullaeva St."
       ],
       [
         "Файзибаланд улица",
         "Fayzibaland street"
       ],
       [
-        "Факири 1-й проезд"
+        "Факири 1-й проезд",
+        "1-й пр-д Факири",
+        "Fakiri 1st Passage"
       ],
       [
-        "Факири 2-й проезд"
+        "Факири 2-й проезд",
+        "2-й пр-д Факири",
+        "Fakiri 2nd Passage"
       ],
       [
-        "Факири 3-й проезд"
+        "Факири 3-й проезд",
+        "3-й пр-д Факири",
+        "Fakiri 3rd Passage"
       ],
       [
-        "Факири 4-й проезд"
+        "Факири 4-й проезд",
+        "4-й пр-д Факири",
+        "Fakiri 4th Passage"
       ],
       [
-        "Факири улица"
+        "Факири улица",
+        "ул. Факири",
+        "Fakiri St."
       ],
       [
-        "Фарнух 1-й проезд"
+        "Фарнух 1-й проезд",
+        "1-й пр-д Фарнух",
+        "Farnukh 1st Passage"
       ],
       [
-        "Фарнух 2-й проезд"
+        "Фарнух 2-й проезд",
+        "2-й пр-д Фарнух",
+        "Farnukh 2nd Passage"
       ],
       [
-        "Фарнух 3-й проезд"
+        "Фарнух 3-й проезд",
+        "3-й пр-д Фарнух",
+        "Farnukh 3rd Passage"
       ],
       [
-        "Фарнух 4-й проезд"
+        "Фарнух 4-й проезд",
+        "4-й пр-д Фарнух",
+        "Farnukh 4th Passage"
       ],
       [
-        "Фарнух улица"
+        "Фарнух улица",
+        "ул. Фарнух",
+        "Farnukh St."
       ],
       [
-        "Фаровон улица"
+        "Фаровон улица",
+        "ул. Фаровон",
+        "Farovon St."
       ],
       [
         "Феруз улица",
@@ -48666,7 +52097,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Feruz street"
       ],
       [
-        "Фидойилар 1-й проезд"
+        "Фидойилар 1-й проезд",
+        "1-й пр-д Фидойилар",
+        "Fidoyilar 1st Passage"
       ],
       [
         "Фирдавсий улица",
@@ -48674,50 +52107,74 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Firdavsiy Street"
       ],
       [
-        "Фузули проезд"
+        "Фузули проезд",
+        "пр-д Фузули",
+        "Fuzuli Passage"
       ],
       [
-        "Фурката улица"
+        "Фурката улица",
+        "ул. Фурката",
+        "Furkata St."
       ],
       [
-        "Х. Бориевой улица"
+        "Х. Бориевой улица",
+        "ул. Х. Бориевой",
+        "Kh. Borievoy St."
       ],
       [
         "Хаваст улица",
-        "Хавастская"
+        "ул. Хаваст | Хавастская",
+        "Хавастская",
+        "Khavast St. | Khavastskaya"
       ],
       [
         "Хакикат проезд",
         "Hakikat Passage"
       ],
       [
-        "Хакикат улица"
+        "Хакикат улица",
+        "ул. Хакикат",
+        "Khakikat St."
       ],
       [
-        "Хакимбабаева улица"
+        "Хакимбабаева улица",
+        "ул. Хакимбабаева",
+        "Khakimbabaeva St."
       ],
       [
         "Хакимзаде 13-й проезд",
         "Hakimzode 13th Passage"
       ],
       [
-        "Хамал проезд"
+        "Хамал проезд",
+        "пр-д Хамал",
+        "Khamal Passage"
       ],
       [
-        "Хамза улица"
+        "Хамза улица",
+        "ул. Хамза",
+        "Khamza St."
       ],
       [
-        "Хамидуллы Арипова улица"
+        "Хамидуллы Арипова улица",
+        "ул. Хамидуллы Арипова",
+        "Khamidully Aripova St."
       ],
       [
-        "Хамидуллы Каримова тупик 2"
+        "Хамидуллы Каримова тупик 2",
+        "2-й туп. Хамидуллы Каримова",
+        "Khamidully Karimova 2nd Dead End"
       ],
       [
-        "Хамкор улица"
+        "Хамкор улица",
+        "ул. Хамкор",
+        "Khamkor St."
       ],
       [
         "Хамроз 1-й проезд",
-        "Харьковская 1-я улица"
+        "1-й пр-д Хамроз | 1-я ул. Харьковская",
+        "Харьковская 1-я улица",
+        "Khamroz 1st Passage | Kharkovskaya 1-ya St."
       ],
       [
         "Хамроз улица",
@@ -48732,15 +52189,21 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Khanabad street"
       ],
       [
-        "Хандам тупик"
+        "Хандам тупик",
+        "туп. Хандам",
+        "Khandam Dead End"
       ],
       [
         "Хандамир улица",
-        "Хондамир улица"
+        "ул. Хандамир | ул. Хондамир",
+        "Хондамир улица",
+        "Khandamir St. | Khondamir St."
       ],
       [
         "Хасанарик улица",
-        "Бахт улица"
+        "Бахт улица",
+        "ул. Бахт | ул. Хасанарик",
+        "Bakht St. | Khasanarik St."
       ],
       [
         "Хасанбай улица",
@@ -48748,17 +52211,25 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Hasanbay street"
       ],
       [
-        "Хатирчи улица"
+        "Хатирчи улица",
+        "ул. Хатирчи",
+        "Khatirchi St."
       ],
       [
         "Хиромий улица",
-        "Храмий улица"
+        "ул. Хиромий | ул. Храмий",
+        "Храмий улица",
+        "Khiromiy St. | Khramiy St."
       ],
       [
-        "Хислат улица"
+        "Хислат улица",
+        "ул. Хислат",
+        "Khislat St."
       ],
       [
-        "Хисор 2-й проезд"
+        "Хисор 2-й проезд",
+        "2-й пр-д Хисор",
+        "Khisor 2nd Passage"
       ],
       [
         "Хисор улица",
@@ -48773,7 +52244,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Hаvlibog street"
       ],
       [
-        "Ходжа Ахрор улица"
+        "Ходжа Ахрор улица",
+        "ул. Ходжа Ахрор",
+        "Khodzha Akhror St."
       ],
       [
         "Ходжентская улица",
@@ -48781,54 +52254,80 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Hozhentskiy Lane"
       ],
       [
-        "Ходи Зариф улица"
+        "Ходи Зариф улица",
+        "ул. Ходи Зариф",
+        "Khodi Zarif St."
       ],
       [
         "Хондамир 4-й проезд",
-        "Хандамир 4-й проезд"
+        "4-й пр-д Хандамир | 4-й пр-д Хондамир",
+        "Хандамир 4-й проезд",
+        "Khandamir 4th Passage | Khondamir 4th Passage"
       ],
       [
         "Хондамир 5-й проезд",
-        "Хандамир 5-й проезд"
+        "5-й пр-д Хандамир | 5-й пр-д Хондамир",
+        "Хандамир 5-й проезд",
+        "Khandamir 5th Passage | Khondamir 5th Passage"
       ],
       [
         "Хондамир улица",
-        "Хандамир улица"
+        "ул. Хандамир | ул. Хондамир",
+        "Хандамир улица",
+        "Khandamir St. | Khondamir St."
       ],
       [
         "Хонзодабегим улица",
-        "Крупской улица"
+        "Крупской улица",
+        "ул. Крупской | ул. Хонзодабегим",
+        "Krupskoy St. | Khonzodabegim St."
       ],
       [
         "Хонка 5-й проезд",
-        "5-я улица Хонка"
+        "5-я ул. Хонка | 5-й пр-д Хонка",
+        "5-я улица Хонка",
+        "Khonka 5th St. | Khonka 5th Passage"
       ],
       [
-        "Хонка улица"
+        "Хонка улица",
+        "ул. Хонка",
+        "Khonka St."
       ],
       [
-        "Хотира улица"
+        "Хотира улица",
+        "ул. Хотира",
+        "Khotira St."
       ],
       [
         "Хужайли улица",
-        "Хожиакбара Отажонова улица"
+        "ул. Хожиакбара Отажонова | ул. Хужайли",
+        "Хожиакбара Отажонова улица",
+        "Khozhiakbara Otazhonova St. | Khuzhayli St."
       ],
       [
-        "Хужайли улица тупик"
+        "Хужайли улица тупик",
+        "туп. Хужайли",
+        "Khuzhayli Dead End"
       ],
       [
-        "Хумдонсой проезд"
+        "Хумдонсой проезд",
+        "пр-д Хумдонсой",
+        "Khumdonsoy Passage"
       ],
       [
         "Хуррият улица",
         "Hurriyat Street"
       ],
       [
-        "Хусани улица"
+        "Хусани улица",
+        "ул. Хусани",
+        "Khusani St."
       ],
       [
         "Хусанхона Мушкина улица",
-        "Хусанхана Мушкина улица"
+        "ул. Хусанхана Мушкина | ул. Хусанхона Мушкина",
+        "Хусанхана Мушкина улица",
+        "Khusankhana Mushkina St. | Khusankhona Mushkina St."
       ],
       [
         "Хушруй улица",
@@ -48836,31 +52335,46 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Hushruy Street"
       ],
       [
-        "Чавандоз тупик"
+        "Чавандоз тупик",
+        "туп. Чавандоз",
+        "Chavandoz Dead End"
       ],
       [
         "Чагминий улица",
-        "Чакмани улица"
+        "ул. Чагминий | ул. Чакмани",
+        "Чакмани улица",
+        "Chagminiy St. | Chakmani St."
       ],
       [
-        "Чарвакская трасса"
+        "Чарвакская трасса",
+        "Charvakskaya trassa"
       ],
       [
         "Чарогон 1-й проезд",
-        "улица Азиза Хамидова"
+        "ул. Азиза Хамидова | 1-й пр-д Чарогон",
+        "улица Азиза Хамидова",
+        "Aziza Khamidova St. | Charogon 1st Passage"
       ],
       [
-        "Чахбуд улица"
+        "Чахбуд улица",
+        "ул. Чахбуд",
+        "Chakhbud St."
       ],
       [
-        "Чигатай Дарвоза улица"
+        "Чигатай Дарвоза улица",
+        "ул. Чигатай Дарвоза",
+        "Chigatay Darvoza St."
       ],
       [
-        "Чигатай проезд"
+        "Чигатай проезд",
+        "пр-д Чигатай",
+        "Chigatay Passage"
       ],
       [
         "Чимкургон улица",
-        "Чимкурган улица"
+        "ул. Чимкурган | ул. Чимкургон",
+        "Чимкурган улица",
+        "Chimkurgan St. | Chimkurgon St."
       ],
       [
         "Чинар улица",
@@ -48883,16 +52397,24 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Shejh Zajnidin Street"
       ],
       [
-        "Шамсия улица"
+        "Шамсия улица",
+        "ул. Шамсия",
+        "Shamsiya St."
       ],
       [
-        "Шарк тонги проезд"
+        "Шарк тонги проезд",
+        "пр-д Шарк тонги",
+        "Shark tongi Passage"
       ],
       [
-        "Шарк улица"
+        "Шарк улица",
+        "ул. Шарк",
+        "Shark St."
       ],
       [
-        "Шароф улица"
+        "Шароф улица",
+        "ул. Шароф",
+        "Sharof St."
       ],
       [
         "Шарофутдина Илокий улица",
@@ -48901,7 +52423,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Sharofutdina Ilokiy Street"
       ],
       [
-        "Шаршара проезд"
+        "Шаршара проезд",
+        "пр-д Шаршара",
+        "Sharshara Passage"
       ],
       [
         "Шастри улица",
@@ -48916,13 +52440,17 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Ширинарик улица",
+        "ул. Белова | ул. Корнея Чуковского | ул. Ширинарик",
         "улица Белова",
-        "улица Корнея Чуковского"
+        "улица Корнея Чуковского",
+        "Belova St. | Korneya Chukovskogo St. | Shirinarik St."
       ],
       [
         "Ширинкудук улица",
         "Неъмат Тошпулат",
-        "Шифокор улица"
+        "Неъмат Тошпулат | ул. Ширинкудук | ул. Шифокор",
+        "Шифокор улица",
+        "Nemat Toshpulat | Shirinkuduk St. | Shifokor St."
       ],
       [
         "Шифокор улица",
@@ -48934,7 +52462,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Shifokor Street"
       ],
       [
-        "Шоир улица"
+        "Шоир улица",
+        "ул. Шоир",
+        "Shoir St."
       ],
       [
         "Шохжахон улица",
@@ -48946,22 +52476,32 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Shohruhiya street"
       ],
       [
-        "Шохсанам тупик"
+        "Шохсанам тупик",
+        "туп. Шохсанам",
+        "Shokhsanam Dead End"
       ],
       [
         "Шохсанам улица",
+        "ул. Зебо Шамсутдиновой | ул. Радости | ул. Шахсанам | ул. Шохсанам",
         "улица Зебо Шамсутдиновой",
         "улица Радости",
-        "Шахсанам улица"
+        "Шахсанам улица",
+        "Zebo Shamsutdinovoy St. | Radosti St. | Shakhsanam St. | Shokhsanam St."
       ],
       [
-        "Шуманай проезд 5"
+        "Шуманай проезд 5",
+        "5-й пр-д Шуманай",
+        "Shumanay 5th Passage"
       ],
       [
-        "Шуманай улица"
+        "Шуманай улица",
+        "ул. Шуманай",
+        "Shumanay St."
       ],
       [
-        "Шуманский 6-й проезд"
+        "Шуманский 6-й проезд",
+        "6-й пр-д Шуманский",
+        "Shumanskiy 6th Passage"
       ],
       [
         "Шуртепа улица",
@@ -48981,34 +52521,46 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Элобод улица",
+        "ул. Элабад | ул. Элобод | ул. Эльбруса",
         "Элабад улица",
-        "Эльбруса улица"
+        "Эльбруса улица",
+        "Elabad St. | Elobod St. | Elbrusa St."
       ],
       [
         "Элтузар 1-й проезд",
-        "Элтузар проезд 2"
+        "1-й пр-д Элтузар | 2-й пр-д Элтузар",
+        "Элтузар проезд 2",
+        "Eltuzar 1st Passage | Eltuzar 2nd Passage"
       ],
       [
         "Эркин улица",
         "Yerkin Street"
       ],
       [
-        "Эски Катартал улица"
+        "Эски Катартал улица",
+        "ул. Эски Катартал",
+        "Eski Katartal St."
       ],
       [
         "Эшона Бобохонова улица",
+        "ул. Урожайная | ул. Эшана Бобохонова | ул. Эшона Бобохонова",
         "Урожайная улица",
-        "Эшана Бобохонова улица"
+        "Эшана Бобохонова улица",
+        "Urozhaynaya St. | Eshana Bobokhonova St. | Eshona Bobokhonova St."
       ],
       [
         "Эшонхона Тошканди улица",
         "Хамзы",
+        "Хамзы | ул. Эшанходжи Тошканди | ул. Эшахана Ташканди | ул. Эшонхона Тошканди",
         "Эшанходжи Тошканди улица",
-        "Эшахана Ташканди улица"
+        "Эшахана Ташканди улица",
+        "Khamzy | Eshankhodzhi Toshkandi St. | Eshakhana Tashkandi St. | Eshonkhona Toshkandi St."
       ],
       [
         "Юзработ улица",
-        "улица Кобзева"
+        "ул. Кобзева | ул. Юзработ",
+        "улица Кобзева",
+        "Kobzeva St. | Yuzrabot St."
       ],
       [
         "Юкори Коракамиш улица",
@@ -49032,13 +52584,19 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Jusufa Hamadoni Street"
       ],
       [
-        "Я. Ниезмухаммада улица"
+        "Я. Ниезмухаммада улица",
+        "ул. Я. Ниезмухаммада",
+        "Ya. Niezmukhammada St."
       ],
       [
-        "Якдил улица"
+        "Якдил улица",
+        "ул. Якдил",
+        "Yakdil St."
       ],
       [
-        "Яккабог улица"
+        "Яккабог улица",
+        "ул. Яккабог",
+        "Yakkabog St."
       ],
       [
         "Якоба Коласа улица",
@@ -49052,44 +52610,66 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Янги Амир Тимур кучаси",
-        "Янги Амир Тимур улица"
+        "ул. Янги Амир Тимур",
+        "Янги Амир Тимур улица",
+        "Yangi Amir Timur St."
       ],
       [
-        "Янги Амир Тимур кучаси 6 проезд"
+        "Янги Амир Тимур кучаси 6 проезд",
+        "6-й пр-д Янги Амир Тимур",
+        "Yangi Amir Timur 6th Passage"
       ],
       [
-        "Янги Амир Тимур кучаси, проезд 6"
+        "Янги Амир Тимур кучаси, проезд 6",
+        "6-й пр-д Янги Амир Тимур",
+        "Yangi Amir Timur 6th Passage"
       ],
       [
         "Янги Амир Тимур кучаси, тупик 1",
-        "Янги Амир Тимур 1 тупик"
+        "1-й туп. Янги Амир Тимур",
+        "Янги Амир Тимур 1 тупик",
+        "Yangi Amir Timur 1st Dead End"
       ],
       [
         "Янги Амир Тимур кучаси, тупик 2",
-        "Янги Амир Тимур 2 тупик"
+        "2-й туп. Янги Амир Тимур",
+        "Янги Амир Тимур 2 тупик",
+        "Yangi Amir Timur 2nd Dead End"
       ],
       [
         "Янги Амир Тимур кучаси, тупик 3",
-        "Янги Амир Тимур 3 тупик"
+        "3-й туп. Янги Амир Тимур",
+        "Янги Амир Тимур 3 тупик",
+        "Yangi Amir Timur 3rd Dead End"
       ],
       [
         "Янги Амир Тимур кучаси, тупик 4",
-        "Янги Амир Тимур 4 тупик"
+        "4-й туп. Янги Амир Тимур",
+        "Янги Амир Тимур 4 тупик",
+        "Yangi Amir Timur 4th Dead End"
       ],
       [
         "Янги Амир Тимур кучаси, тупик 5",
-        "Янги Амир Тимур 5 тупик"
+        "5-й туп. Янги Амир Тимур",
+        "Янги Амир Тимур 5 тупик",
+        "Yangi Amir Timur 5th Dead End"
       ],
       [
         "Янги Лабзак улица",
         "Низомеддина Хужаева улица",
-        "Холиды Саматовой"
+        "ул. Низомеддина Хужаева | Холиды Саматовой | ул. Янги Лабзак",
+        "Холиды Саматовой",
+        "Nizomeddina Khuzhaeva St. | Kholidy Samatovoy | Yangi Labzak St."
       ],
       [
-        "Янгилик улица"
+        "Янгилик улица",
+        "ул. Янгилик",
+        "Yangilik St."
       ],
       [
-        "Янгитарнов улица"
+        "Янгитарнов улица",
+        "ул. Янгитарнов",
+        "Yangitarnov St."
       ],
       [
         "Янгиюль улица",
@@ -49097,7 +52677,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Jangijul Street"
       ],
       [
-        "Яшин тупик"
+        "Яшин тупик",
+        "туп. Яшин",
+        "Yashin Dead End"
       ],
       [
         "A.Shoshiy 1-chi berk ko'cha",
@@ -49742,13 +53324,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Anhor bo‘yi ko‘chasi",
         "Анхор Буйи улица",
         "Набережная Анхора",
-        "Anhor Buyi street"
-      ],
-      [
+        "Ahror Buyi Street",
         "Anhor boʻyi koʻchasi",
-        "Анхор Буйи улица",
-        "Набережная Анхора",
-        "Ahror Buyi Street"
+        "Anhor Buyi street"
       ],
       [
         "Anorzor 2-o'tish ko'chasi",
@@ -50424,14 +54002,10 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Belaryk 2nd passage"
       ],
       [
-        "Belariq ko'chasi",
-        "Беларык улица",
-        "улица Островского",
-        "Belaryk Street"
-      ],
-      [
         "Belariq koʻchasi",
         "Беларык улица",
+        "улица Островского",
+        "Belariq ko'chasi",
         "Belaryk Street"
       ],
       [
@@ -50497,11 +54071,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       [
         "Beruniy ko'chasi",
         "Беруни улица",
-        "Beruniy street"
-      ],
-      [
         "Beruniy koʻchasi",
-        "Беруни улица",
+        "Beruniy street",
         "Beruniy Street"
       ],
       [
@@ -50697,17 +54268,13 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Beshkurgon passage"
       ],
       [
-        "Beshyog'och ko'chasi",
-        "Бешагач улица",
-        "Beshagach Street"
-      ],
-      [
         "Beshyogʻoch koʻchasi",
         "9 января улица",
         "Бешагач улица",
         "Туроба Тулы улица",
         "Beshagach Street",
         "Beshjogoch strato",
+        "Beshyog'och ko'chasi",
         "Beshyogʻoch maydoni"
       ],
       [
@@ -50834,16 +54401,13 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Birlik ko'chasi",
-        "Бирлик улица",
-        "Birlik ​ko'chasi",
-        "Birlik Street"
-      ],
-      [
-        "Birlik koʻchasi",
         "Берлик улица",
         "Бирлик улица",
         "Центральная улица",
-        "Birlik street"
+        "Birlik ​ko'chasi",
+        "Birlik koʻchasi",
+        "Birlik street",
+        "Birlik Street"
       ],
       [
         "Bo'ston 1-berk ko'chasi",
@@ -51122,7 +54686,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Bogcha Street"
       ],
       [
-        "Bog'i Eram"
+        "Bog'i Eram",
+        "Боги Ерам"
       ],
       [
         "Bog'i Eram 5-tor",
@@ -51672,7 +55237,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Buzbazar street"
       ],
       [
-        "Buzrikvor"
+        "Buzrikvor",
+        "Бузриквор"
       ],
       [
         "Chagminiy 1-o'tish ko'chasi",
@@ -52215,7 +55781,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Chinobad Street"
       ],
       [
-        "Chinor 3-o'tar ko'chasi"
+        "Chinor 3-o'tar ko'chasi",
+        "ул. Чинор 3-утар",
+        "Chinor 3-o'tar St."
       ],
       [
         "Chinor ko'chasi",
@@ -52872,7 +56440,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Dilnoz Street"
       ],
       [
-        "Dilnur 4-berk"
+        "Dilnur 4-berk",
+        "4-й туп. Дилнур",
+        "Dilnur 4th Dead End"
       ],
       [
         "Dilqush 1-o'tish ko'chasi",
@@ -53131,10 +56701,12 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Dostaevskiy Drive"
       ],
       [
-        "Dovon"
+        "Dovon",
+        "Довон"
       ],
       [
-        "Dovultepa"
+        "Dovultepa",
+        "Довултепа"
       ],
       [
         "Dukchi Eshon ko'chasi",
@@ -53169,7 +56741,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Дурбек улица"
       ],
       [
-        "Duslik 1-chi tupik ko'cha"
+        "Duslik 1-chi tupik ko'cha",
+        "Дуслик 1-чи туп. куча",
+        "Duslik 1-chi Dead End ko'cha"
       ],
       [
         "Dutorchi o'tish yo'li",
@@ -53524,7 +57098,10 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Farg'ona yo'li 10-berk ko'chasi",
-        "Фергана йули 10-й тупик"
+        "Фергана йули 10-й тупик",
+        "Фергана Йули 10-й тупик",
+        "Fargʻona yoʻli 10-berk koʻchasi",
+        "Fegrana Yuli 10th dead end"
       ],
       [
         "Farg'ona yo'li 11-berk ko'chasi",
@@ -53578,11 +57155,6 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Farg'ona Yo'lli 2-tor qo'chasi",
         "Фергана йули 2-й проезд",
         "Fergana Yuli 2nd passage"
-      ],
-      [
-        "Fargʻona yoʻli 10-berk koʻchasi",
-        "Фергана Йули 10-й тупик",
-        "Fegrana Yuli 10th dead end"
       ],
       [
         "Fargona Yo'li 4-berk ko'chasi",
@@ -53720,13 +57292,15 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Fayzilat Street"
       ],
       [
-        "Fayziobod 1-muyulishli koʻchasi"
+        "Fayziobod 1-muyulishli koʻchasi",
+        "ул. Файзиобод 1-муюлишли",
+        "Fayziobod 1-muyulishli St."
       ],
       [
-        "Fayziobod 1-tor ko'chasi"
-      ],
-      [
-        "Fayziobod 1-tor koʻchasi"
+        "Fayziobod 1-tor ko'chasi",
+        "1-й пр. Файзиобод",
+        "Fayziobod 1-tor koʻchasi",
+        "Fayziobod 1st Ln."
       ],
       [
         "Fayziobod 10-tor ko'chasi",
@@ -53734,33 +57308,47 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Fayziabad passage-10"
       ],
       [
-        "Fayziobod 11-tor ko'chasi"
+        "Fayziobod 11-tor ko'chasi",
+        "11-й пр. Файзиобод",
+        "Fayziobod 11th Ln."
       ],
       [
-        "Fayziobod 12-tor ko'chasi"
+        "Fayziobod 12-tor ko'chasi",
+        "12-й пр. Файзиобод",
+        "Fayziobod 12th Ln."
       ],
       [
-        "Fayziobod 2-muyulishli koʻchasi"
+        "Fayziobod 2-muyulishli koʻchasi",
+        "ул. Файзиобод 2-муюлишли",
+        "Fayziobod 2-muyulishli St."
       ],
       [
         "Fayziobod 2-tor ko'chasi",
         "улица Ташходжаева"
       ],
       [
-        "Fayziobod 3-muyulishli koʻchasi"
+        "Fayziobod 3-muyulishli koʻchasi",
+        "ул. Файзиобод 3-муюлишли",
+        "Fayziobod 3-muyulishli St."
       ],
       [
         "Fayziobod 3-tor ko'chasi",
         "улица Ташходжаева"
       ],
       [
-        "Fayziobod 4-muyulishli koʻchasi"
+        "Fayziobod 4-muyulishli koʻchasi",
+        "ул. Файзиобод 4-муюлишли",
+        "Fayziobod 4-muyulishli St."
       ],
       [
-        "Fayziobod 5-tor ko'chasi"
+        "Fayziobod 5-tor ko'chasi",
+        "5-й пр. Файзиобод",
+        "Fayziobod 5th Ln."
       ],
       [
-        "Fayziobod 9-tor ko'chasi"
+        "Fayziobod 9-tor ko'chasi",
+        "9-й пр. Файзиобод",
+        "Fayziobod 9th Ln."
       ],
       [
         "Fayziobod ko'chasi",
@@ -53788,7 +57376,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Fayzabad passage-4"
       ],
       [
-        "Fayzobod 6-tor ko'chasi"
+        "Fayzobod 6-tor ko'chasi",
+        "6-й пр. Файзобод",
+        "Fayzobod 6th Ln."
       ],
       [
         "Fayzobod 7-o'tish ko'chasi",
@@ -53801,7 +57391,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Fayzabad passage-8"
       ],
       [
-        "Fayzobod 9-tor ko'chasi"
+        "Fayzobod 9-tor ko'chasi",
+        "9-й пр. Файзобод",
+        "Fayzobod 9th Ln."
       ],
       [
         "Fayzobod ko'chasi",
@@ -53855,7 +57447,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Фидойлар улица"
       ],
       [
-        "Fidoiylar street"
+        "Fidoiylar street",
+        "ул. Фидоийлар",
+        "Fidoiylar St."
       ],
       [
         "Fidokor ko'chasi",
@@ -54318,7 +57912,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Gulnor 1-tor koʻchasi",
+        "1-й пр-д Гулнор | 1-й пр. Гулнор | ул. Хасан Пулат",
         "Gulnor 1-passage street",
+        "Gulnor 1st Passage | Gulnor 1st Ln. | Hasan Po'lat St.",
         "Hasan Poʻlat koʻchasi"
       ],
       [
@@ -54334,6 +57930,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Gulnor koʻchasi",
+        "ул. Гулнор",
+        "Gulnor St.",
         "Gulnor Street"
       ],
       [
@@ -55476,15 +59074,13 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Исламабад 9-й проезд"
       ],
       [
-        "Ismoil Ota koʻchasi",
-        "Исмаил Ата улица",
-        "Печерская улица",
-        "Ismail Ata Street"
-      ],
-      [
         "Ismoil-ota ko'chasi",
+        "Исмаил Ата улица",
         "Исмаил-ата улица",
-        "Ismail-ata Street"
+        "Печерская улица",
+        "Ismail Ata Street",
+        "Ismail-ata Street",
+        "Ismoil Ota koʻchasi"
       ],
       [
         "Issiqsuv 1-tor ko'chasi",
@@ -55763,17 +59359,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Zhasorat 2-dead end"
       ],
       [
-        "Jasorat ko'chasi",
-        "Жасорат улица",
-        "Zhasorat stato",
-        "Zhasorat Street"
-      ],
-      [
         "Jasorat koʻchasi",
         "Жасорат улица",
+        "Jasorat ko'chasi",
         "Jasorat street",
         "Jasorat Street",
-        "Jasorat StreetJasorat Street"
+        "Jasorat StreetJasorat Street",
+        "Zhasorat stato",
+        "Zhasorat Street"
       ],
       [
         "Jilonota ko‘chasi",
@@ -56576,7 +60169,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Kukcha Street"
       ],
       [
-        "Ko'kdala"
+        "Ko'kdala",
+        "Кукдала"
       ],
       [
         "Ko'ksaroy ko'chasi",
@@ -57217,7 +60811,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Marifat Street"
       ],
       [
-        "Madad"
+        "Madad",
+        "Мадад"
       ],
       [
         "Madaniyat ko'chasi",
@@ -57577,7 +61172,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Maysazar ​street"
       ],
       [
-        "Mehnatobod"
+        "Mehnatobod",
+        "Мехнатобод"
       ],
       [
         "Mehnatobod 1-o'tish ko'chasi",
@@ -57968,19 +61564,17 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Mirzaabad 4th dead end"
       ],
       [
-        "Mirzaobod ko'chasi",
-        "Мирзаабад улица",
-        "улица Тургуна Мирзаева",
-        "Mirzaаbаd street"
-      ],
-      [
         "Mirzaobod koʻchasi",
         "Мирзаабад улица",
         "улица Тургуна Мирзаева",
-        "Mirzaabad street"
+        "Mirzaаbаd street",
+        "Mirzaabad street",
+        "Mirzaobod ko'chasi"
       ],
       [
-        "Mirzo Bobur ko‘chasi"
+        "Mirzo Bobur ko‘chasi",
+        "ул. Мирзо Бобур",
+        "Mirzo Bobur St."
       ],
       [
         "Mirzo Golib 1-chi berk ko'chasi",
@@ -58059,15 +61653,11 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Mirzo Tursunzoda ko'chasi",
-        "Мирзо Турсунзаде улица",
-        "Проектная Г-64М улица",
-        "Mirzo Tursunzoda strato",
-        "Mirzo Tursunzoda Street"
-      ],
-      [
-        "Mirzo Tursunzoda koʻchasi",
         "Ислама Саттарова проезд 2",
         "Мирзо Турсунзаде улица",
+        "Проектная Г-64М улица",
+        "Mirzo Tursunzoda koʻchasi",
+        "Mirzo Tursunzoda strato",
         "Mirzo Tursunzoda Street"
       ],
       [
@@ -58157,10 +61747,13 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Hamidully Aripova Street"
       ],
       [
-        "Moviyko'l"
+        "Moviyko'l",
+        "Мовийкул"
       ],
       [
-        "Moviyko'l 1-tor"
+        "Moviyko'l 1-tor",
+        "1-й пр. Мовийкул",
+        "Moviyko'l 1st Ln."
       ],
       [
         "Moyariq 1-chi o'tish yo'li",
@@ -58248,7 +61841,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Muallim Street"
       ],
       [
-        "Muborak"
+        "Muborak",
+        "Муборак"
       ],
       [
         "Mudofachilar ko`chasi",
@@ -58405,13 +61999,11 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Muqanna ko'chasi",
-        "Муканны",
-        "улица Фурката"
-      ],
-      [
-        "Muqanna koʻchasi",
         "Муканна улица",
-        "Mukanna Street"
+        "Муканны",
+        "улица Фурката",
+        "Mukanna Street",
+        "Muqanna koʻchasi"
       ],
       [
         "Muqimiy 1-tor koʻchasi",
@@ -58494,7 +62086,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Mustakillik Avenue"
       ],
       [
-        "Mustaqillik Street"
+        "Mustaqillik Street",
+        "ул. Мустакиллик",
+        "Mustaqillik St."
       ],
       [
         "Mustaxkamlash o'tish yo'li",
@@ -59050,12 +62644,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Noraztepa 2nd passage"
       ],
       [
-        "Noraztepa 2-o'tish ko'chasi",
-        "Норазтепа 2-й проезд"
-      ],
-      [
         "Noraztepa 2-oʻtish ko'chasi",
         "Норазтепа 2-й проезд",
+        "Noraztepa 2-o'tish ko'chasi",
         "Noraztepa passage-2"
       ],
       [
@@ -59180,7 +62771,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Назира Кайюмова тупик 1"
       ],
       [
-        "Nozirlar"
+        "Nozirlar",
+        "Нозирлар"
       ],
       [
         "Nufuzli 2-tor ko'chasi",
@@ -59251,7 +62843,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Nurfayz passage"
       ],
       [
-        "Nurli Zamin"
+        "Nurli Zamin",
+        "Нурли Замин"
       ],
       [
         "Nurmakon ko'chasi",
@@ -59351,13 +62944,6 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       [
         "O'kituvchilar 3-o'tish ko'chasi",
         "Укитувчилар 3-й проезд"
-      ],
-      [
-        "O'qituvchi ko'chasi",
-        "Укитувчи улица",
-        "улица Учительская",
-        "Ukituvchi stato",
-        "Ukituvchi Street"
       ],
       [
         "O'ratepa o'tish yo'li",
@@ -59566,7 +63152,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Obishir Sstreet"
       ],
       [
-        "Obizarang"
+        "Obizarang",
+        "Обизаранг"
       ],
       [
         "Obodon o'tish yo'li",
@@ -59697,6 +63284,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       [
         "Oʻqituvchi koʻchasi",
         "Укитувчи улица",
+        "улица Учительская",
+        "O'qituvchi ko'chasi",
+        "Ukituvchi stato",
         "Ukituvchi Street"
       ],
       [
@@ -59749,7 +63339,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Alchazar street"
       ],
       [
-        "Olchin"
+        "Olchin",
+        "Олчин"
       ],
       [
         "Olimkent 1-berk ko'chasi",
@@ -59896,7 +63487,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "тупик 2 Венгерская"
       ],
       [
-        "Oltinbeshik"
+        "Oltinbeshik",
+        "Олтинбешик"
       ],
       [
         "Oltinko'l 1-chi o'tish yo'li",
@@ -60308,7 +63900,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Aktash passage"
       ],
       [
-        "Orasta Kochasi"
+        "Orasta Kochasi",
+        "ул. Ораста",
+        "Orasta St."
       ],
       [
         "Orifon Shokh koʻchasi",
@@ -60678,7 +64272,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Pilla Street"
       ],
       [
-        "Piskom 1-berk"
+        "Piskom 1-berk",
+        "1-й туп. Писком",
+        "Piskom 1st Dead End"
       ],
       [
         "Po'lat Xafizov kochasi",
@@ -60700,14 +64296,7 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Polvonyor ko'chasi",
         "Карбышева улица",
         "Полвонёр улица",
-        "Polvonyor strato",
-        "Polvonyor Street"
-      ],
-      [
         "Polvonyor koʻchasi",
-        "Карбышева улица",
-        "Полвонёр улица",
-        "Polvonyor ko'chasi",
         "Polvonyor strato",
         "Polvonyor Street"
       ],
@@ -60780,7 +64369,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Калдыргоч улица"
       ],
       [
-        "Qalmoq"
+        "Qalmoq",
+        "Калмок"
       ],
       [
         "Qalqon ko'chasi",
@@ -61061,10 +64651,13 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Qirqog'ayni ​ko'chasi"
       ],
       [
-        "Qiyatariq 1-o'tar ko'chasi"
+        "Qiyatariq 1-o'tar ko'chasi",
+        "ул. Киятарик 1-утар",
+        "Qiyatariq 1-o'tar St."
       ],
       [
-        "Qizg'aldoq"
+        "Qizg'aldoq",
+        "Кизгалдок"
       ],
       [
         "Qizg'aldoq 1-chi o'tish yo'li",
@@ -61141,11 +64734,13 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Qo'qon darvoza ko'chasi",
+        "Коканд Давраза улица",
         "Коканд Дарваза улица",
         "Коканд дарвоза улица",
         "улица Полевая",
         "Kokand Darvaza Street",
-        "Qo'qon Darvoza ko'chasi"
+        "Qo'qon Darvoza ko'chasi",
+        "Qoʻqon Darvoza koʻchasi"
       ],
       [
         "Qo'rg'ontepa ko'cha",
@@ -61319,11 +64914,6 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Qodirdon stato"
       ],
       [
-        "Qoʻqon Darvoza koʻchasi",
-        "Коканд Давраза улица",
-        "Kokand Darvaza Street"
-      ],
-      [
         "Qoʻrgʻoncha 7-tor koʻchasi",
         "Курганча 7-й проезд",
         "Kurgancha 7th passage"
@@ -61491,12 +65081,6 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Qorasub Boyi Street"
       ],
       [
-        "Qorasuv 2-koʻchasi",
-        "Карасу 2-я улица",
-        "Улица Карасу-2",
-        "Karasu 2nd street"
-      ],
-      [
         "Qorasuv Bo‘yi koʻchasi",
         "Карасу Буйи улица",
         "Фонтанная улица",
@@ -61513,7 +65097,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Qorasuv-2 ko'chasi",
         "Карасу 2-я улица",
         "Удлица Карасу-2",
-        "Karasu 2nd street"
+        "Улица Карасу-2",
+        "Karasu 2nd street",
+        "Qorasuv 2-koʻchasi"
       ],
       [
         "Qoratosh ko'chasi",
@@ -62287,6 +65873,7 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Саъди Сиражиддинов улица",
         "Саъди Сиражиддинова улица",
         "Sadi Sirajiddinov Street",
+        "Saʼdi Sirojiddinov koʻchasi",
         "Sirojiddinov ko'chasi",
         "Sirojiddinov strato"
       ],
@@ -62731,14 +66318,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Samarkand Darbaza Street",
         "Samarkand Darvaza street",
         "Samarkand Darvaza Street",
-        "Samarqand Darvoza ko‘chasi"
-      ],
-      [
-        "Samarqand Darvoza koʻchasi",
-        "Самарканд Дарваза улица",
-        "Samarkand Darbaza strato",
-        "Samarkand Darbaza Street",
-        "Samarkand Darvaza Street"
+        "Samarqand Darvoza ko‘chasi",
+        "Samarqand Darvoza koʻchasi"
       ],
       [
         "San'at ko'chasi",
@@ -62963,7 +66544,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Saraymulkhanim Street"
       ],
       [
-        "Sartyuz"
+        "Sartyuz",
+        "Сартюз"
       ],
       [
         "Savatchi ​ko'chasi",
@@ -63006,7 +66588,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Savr street"
       ],
       [
-        "Saxiy"
+        "Saxiy",
+        "Сахий"
       ],
       [
         "Sayhun 1-o'tish ko'chasi",
@@ -63128,13 +66711,6 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Sayxun Street"
       ],
       [
-        "Saʼdi Sirojiddinov koʻchasi",
-        "Саъди Сиражиддинов улица",
-        "Sadi Sirajiddinov Street",
-        "Sirojiddinov ko'chasi",
-        "Sirojiddinov strato"
-      ],
-      [
         "Sergeli 1-tor ko'chasi",
         "Сергели 1-й проезд",
         "Sergeli 1st passage"
@@ -63156,7 +66732,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Usmon Nosir 2-o'tish ko'chasi"
       ],
       [
-        "Serquyosh"
+        "Serquyosh",
+        "Серкуёш"
       ],
       [
         "Serquyosh 1-o'tish ko'chasi",
@@ -63552,19 +67129,11 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Shimoliy Almazar street"
       ],
       [
+        "Shirin koʻchasi",
+        "Ивана Франко улица",
+        "Подмосковная улица",
+        "Ширин улица",
         "Shirin ko'chasi",
-        "Ивана Франко улица",
-        "Подмосковная улица",
-        "Ширин улица",
-        "Shirin koʻchasi",
-        "Shirin strato",
-        "Shirin Street"
-      ],
-      [
-        "Shirin koʻchasi",
-        "Ивана Франко улица",
-        "Подмосковная улица",
-        "Ширин улица",
         "Shirin strato",
         "Shirin Street"
       ],
@@ -64133,7 +67702,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Subhidam street"
       ],
       [
-        "Subxidam"
+        "Subxidam",
+        "Субхидам"
       ],
       [
         "Suhayl ko'chasi",
@@ -64237,7 +67807,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Sumbula street"
       ],
       [
-        "Surur"
+        "Surur",
+        "Сурур"
       ],
       [
         "T. Ashurov 1-berk ko'chasi",
@@ -64334,7 +67905,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Tamara Khanum Street"
       ],
       [
-        "Tanobchilar"
+        "Tanobchilar",
+        "Танобчилар"
       ],
       [
         "Tantana ko'chasi",
@@ -64843,7 +68415,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Tong Street"
       ],
       [
-        "Tong Yulduzi"
+        "Tong Yulduzi",
+        "Тонг Юлдузи"
       ],
       [
         "Toshbuloq ko'chasi",
@@ -64900,17 +68473,11 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Tashkentbayev Sstreet"
       ],
       [
-        "Toshko'cha ko'chasi",
-        "Ташкуча улица",
-        "Шоахмада Шамахмудова улица",
-        "Tashkucha Street",
-        "Toshkucha strato"
-      ],
-      [
         "Toshkoʻcha koʻchasi",
         "Ташкуча улица",
         "Шоахмада Шамахмудова улица",
         "Tashkucha Street",
+        "Toshko'cha ko'chasi",
         "Toshkucha strato"
       ],
       [
@@ -65019,20 +68586,16 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Турккурган улица",
         "Турккургон улица",
         "Турккургaн улица",
+        "улица Архитекторов",
         "Turkkurgan Street",
         "Turkkurgon strato",
-        "Turkkurgon Street"
+        "Turkkurgon Street",
+        "Turkqoʻrgʻon koʻchasi"
       ],
       [
         "Turkqo`rg`on 1-otish ko`chasi",
         "Турккурган 1-й проезд",
         "Turkkurgan passage 1"
-      ],
-      [
-        "Turkqoʻrgʻon koʻchasi",
-        "Турккурган улица",
-        "улица Архитекторов",
-        "Turkkurgan Street"
       ],
       [
         "Turon 1-berk ko'chasi",
@@ -65081,7 +68644,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Убая Махмудова проезд"
       ],
       [
-        "Ucchinor Street"
+        "Ucchinor Street",
+        "ул. Усчинор",
+        "Ucchinor St."
       ],
       [
         "Uch Qahramon ko'chasi",
@@ -65517,12 +69082,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       [
         "Uzumzor ko'chasi",
         "Узумзар улица",
-        "Uzumzаr Street"
-      ],
-      [
-        "Uzumzor koʻchasi",
-        "Узумзар улица",
-        "Uzumzar Street"
+        "Uzumzаr Street",
+        "Uzumzar Street",
+        "Uzumzor koʻchasi"
       ],
       [
         "Vishnyovaya ko'chasi",
@@ -65562,11 +69124,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Visol ko'chasi",
-        "Висол улица"
-      ],
-      [
-        "Visol koʻchasi",
         "Висол улица",
+        "Visol koʻchasi",
         "Visol Street"
       ],
       [
@@ -65970,14 +69529,11 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Xiyobontepa ko'chasi",
-        "Хиёбонтепа улица"
-      ],
-      [
-        "Xiyobontepa koʻchasi",
         "Курортная улица",
         "Мирзо Юсуфа улица",
         "Хиебонтепа улица",
         "Хиёбонтепа улица",
+        "Xiyobontepa koʻchasi",
         "Xiyobontepa Street"
       ],
       [
@@ -66102,15 +69658,11 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Khanabad 4th passage"
       ],
       [
-        "Xonobod ko'chasi",
+        "Xonobod koʻchasi",
         "улица Проектная Г-100",
         "Ханабад улица",
-        "Khanabad Street"
-      ],
-      [
-        "Xonobod koʻchasi",
-        "Ханабад улица",
-        "Khanabad Street"
+        "Khanabad Street",
+        "Xonobod ko'chasi"
       ],
       [
         "Xonobodtepa shoh ko'chasi",
@@ -66556,7 +70108,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Yangi Tashkent passage"
       ],
       [
-        "Yangi Uzbekistan Street"
+        "Yangi Uzbekistan Street",
+        "ул. Янги Узбекистан",
+        "Yangi Uzbekistan St."
       ],
       [
         "Yangi Yunusobod ko'chasi",
@@ -66997,15 +70551,12 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Yoshlik 4-passage"
       ],
       [
-        "Yoshlik ko'chasi",
+        "Yoshlik koʻchasi",
         "А. Хасанова улица",
         "Абдуллы Хошимова улица",
         "Ёшлик улица",
+        "Yoshlik ko'chasi",
         "Yoshlik street"
-      ],
-      [
-        "Yoshlik koʻchasi",
-        "Ёшлик улица"
       ],
       [
         "Yozuvchilar ko'chasi",
@@ -67321,7 +70872,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Закария Рузи 3-й проезд"
       ],
       [
-        "Zakariya Roziy 1-tor ko'chasi"
+        "Zakariya Roziy 1-tor ko'chasi",
+        "1-й пр. Закария Розий",
+        "Zakariya Roziy 1st Ln."
       ],
       [
         "Zaki Validiy 1-o'tish ko'chasi",
@@ -67535,6 +71088,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Zarbulak",
+        "Зарбулак | Зарбулок",
+        "Zarbulak | Zarbuloq",
         "Zarbuloq"
       ],
       [
@@ -67687,10 +71242,12 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Ziyo Street"
       ],
       [
-        "Ziyokor"
+        "Ziyokor",
+        "Зиёкор"
       ],
       [
-        "Ziyoli"
+        "Ziyoli",
+        "Зиёли"
       ],
       [
         "Ziyolilar ko'chasi",
@@ -67773,32 +71330,40 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
   "Termez": {
     "localAreas": [
       [
-        "Автогараж"
+        "Автогараж",
+        "Avtogarazh"
       ],
       [
-        "Дарбанд"
+        "Дарбанд",
+        "Darband"
       ],
       [
-        "Кайран"
+        "Кайран",
+        "Kayran"
       ],
       [
-        "Каттаган"
+        "Каттаган",
+        "Kattagan"
       ],
       [
-        "Комендатура"
+        "Комендатура",
+        "Komendatura"
       ],
       [
         "Паттакесар",
         "Патта-Гиссар",
+        "Патта-Гиссар | Паттагисар | Паттакесар | Пахта-Гисар",
         "Паттагисар",
-        "Пахта-Гисар"
+        "Пахта-Гисар",
+        "Patta-Gissar | Pattagisar | Pattakesar | Pakhta-Gisar"
       ],
       [
         "Урочище Алатакыр",
         "Urochishche Alatakyr"
       ],
       [
-        "Урочище Джейранхана"
+        "Урочище Джейранхана",
+        "Urochishche Dzheyrankhana"
       ],
       [
         "Урочище Зиндан",
@@ -67813,16 +71378,20 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Urochishche Ulakkyryldy"
       ],
       [
-        "Участок Имени Куйбышева"
+        "Участок Имени Куйбышева",
+        "Uchastok Imeni Kuybysheva"
       ],
       [
-        "Участок Имени Чапаева"
+        "Участок Имени Чапаева",
+        "Uchastok Imeni Chapaeva"
       ],
       [
-        "Янгирузгар"
+        "Янгирузгар",
+        "Yangiruzgar"
       ],
       [
-        "Янгишахар"
+        "Янгишахар",
+        "Yangishakhar"
       ],
       [
         "Angor",
@@ -67834,7 +71403,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Вакhоristаn"
       ],
       [
-        "Cafeshop"
+        "Cafeshop",
+        "Сафешоп"
       ],
       [
         "Farovon massivi",
@@ -67860,7 +71430,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Karvan"
       ],
       [
-        "Mening uyim"
+        "Mening uyim",
+        "Менинг уйим"
       ],
       [
         "O'rtaariq",
@@ -67925,29 +71496,43 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
     "streets": [
       [
         "Гафур Гулом Тор кучаси",
-        "Гафур Гуляма проезд"
+        "Гафур Гуляма проезд",
+        "пр. Гафур Гулом | пр-д Гафур Гуляма",
+        "Gafur Gulom Ln. | Gafur Gulyama Passage"
       ],
       [
-        "Захириддина Мухаммада Бабура Улица"
+        "Захириддина Мухаммада Бабура Улица",
+        "ул. Захириддина Мухаммада Бабура",
+        "Zakhiriddina Mukhammada Babura St."
       ],
       [
         "Мehridaryo ko'chasi",
         "улица Мехридарё"
       ],
       [
-        "Улица Лутфи"
+        "Улица Лутфи",
+        "ул. Лутфи",
+        "Lutfi St."
       ],
       [
-        "улица Махмуда Кашгари"
+        "улица Махмуда Кашгари",
+        "ул. Махмуда Кашгари",
+        "Makhmuda Kashgari St."
       ],
       [
-        "улица Мирзо Улугбек"
+        "улица Мирзо Улугбек",
+        "ул. Мирзо Улугбек",
+        "Mirzo Ulugbek St."
       ],
       [
-        "улица Р. Узакова"
+        "улица Р. Узакова",
+        "ул. Р. Узакова",
+        "R. Uzakova St."
       ],
       [
-        "улица Сафара Сахибова"
+        "улица Сафара Сахибова",
+        "ул. Сафара Сахибова",
+        "Safara Sakhibova St."
       ],
       [
         "Abay ko'chasi",
@@ -67958,7 +71543,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Афрасиёб"
       ],
       [
-        "Ahmad Donish"
+        "Ahmad Donish",
+        "Ахмад Дониш"
       ],
       [
         "Ali Qushchi ko'chasi",
@@ -67990,7 +71576,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "At-Termiziy ko'chasi"
       ],
       [
-        "Atirgul ko'chasi 1-burulish"
+        "Atirgul ko'chasi 1-burulish",
+        "Атиргул ул. 1-бурулиш",
+        "Atirgul St. 1-burulish"
       ],
       [
         "B. Zokirov ko'chasi",
@@ -68006,11 +71594,15 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Bandar Hyratan to Joq Joq",
+        "Бандар Хйратан то Джок Джок | дор. Калдар Дистрист",
+        "Bandar Hyratan to Joq Joq | Kaldar District Rd.",
         "Kaldar District Road"
       ],
       [
         "Barchinoy ko'chasi",
-        "A. To'rayev ko'chasi"
+        "ул. А. Тураев | ул. Барчиной",
+        "A. To'rayev ko'chasi",
+        "A. To'rayev St. | Barchinoy St."
       ],
       [
         "Barkamol avlod ko'chasi",
@@ -68033,14 +71625,18 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Бинафша"
       ],
       [
-        "Burhonuddin Marg'inoniy ko'chasi"
+        "Burhonuddin Marg'inoniy ko'chasi",
+        "ул. Бурхонуддин Маргиноний",
+        "Burhonuddin Marg'inoniy St."
       ],
       [
         "Buxaro ko'chasi",
         "улица Бухара"
       ],
       [
-        "Buyuk ipak yo'li"
+        "Buyuk ipak yo'li",
+        "дор. Буюк ипак",
+        "Buyuk ipak Rd."
       ],
       [
         "Chilanzar ko'chasi",
@@ -68048,6 +71644,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Daryaamo Bashirli Village to Hayratan Road",
+        "дор. Даряамо Баширли село то Хайратан | дор. Таш Гозар",
+        "Daryaamo Bashirli Village to Hayratan Rd. | Tash Gozar Rd.",
         "Tash Gozar Road"
       ],
       [
@@ -68078,7 +71676,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Фидокор улица"
       ],
       [
-        "Fidokorlar ko'chasi"
+        "Fidokorlar ko'chasi",
+        "ул. Фидокорлар",
+        "Fidokorlar St."
       ],
       [
         "G'uncha ko'chasi",
@@ -68118,6 +71718,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Islam Sufla to Tash Gozar",
+        "Ислам Суфла то Таш Гозар | дор. Шортепа",
+        "Islam Sufla to Tash Gozar | Shortepa Rd.",
         "Shortepa Road"
       ],
       [
@@ -68176,7 +71778,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Мехр мурувват"
       ],
       [
-        "Mehr nuri"
+        "Mehr nuri",
+        "Мехр нури"
       ],
       [
         "Mustaqillik ko'chasi",
@@ -68206,7 +71809,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Омонхона"
       ],
       [
-        "Oysuluv ko'chasi"
+        "Oysuluv ko'chasi",
+        "ул. Ойсулув",
+        "Oysuluv St."
       ],
       [
         "Oytumor ko'chasi",
@@ -68219,17 +71824,21 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "Pul Hayratan to Do Rahe Hayratan",
+        "Пул Хайратан то До Рахе Хайратан",
         "سرک حیرتان"
       ],
       [
-        "Qoshiy ko'chasi"
+        "Qoshiy ko'chasi",
+        "ул. Коший",
+        "Qoshiy St."
       ],
       [
         "Rudakiy ko'chasi",
         "улица Рудакий"
       ],
       [
-        "Rumiy"
+        "Rumiy",
+        "Румий"
       ],
       [
         "S. Ayni ko'chasi",
@@ -68285,7 +71894,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Шифокор"
       ],
       [
-        "Shimoliy Darvoza ko`chasi"
+        "Shimoliy Darvoza ko`chasi",
+        "ул. Шимолий Дарвоза",
+        "Shimoliy Darvoza St."
       ],
       [
         "Shodlik ko'chasi",
@@ -68296,10 +71907,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Шахи Зинда"
       ],
       [
-        "Shohrux Mirzo ko'chasi"
+        "Shohrux Mirzo ko'chasi",
+        "ул. Шохрух Мирзо",
+        "Shohrux Mirzo St."
       ],
       [
-        "Sinoat koʻchasi"
+        "Sinoat koʻchasi",
+        "ул. Синоат",
+        "Sinoat St."
       ],
       [
         "So`fi Olloyor ko`chasi",
@@ -68330,7 +71945,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Термизилар"
       ],
       [
-        "Tinchlik guzari"
+        "Tinchlik guzari",
+        "Тинчлик гузари"
       ],
       [
         "Tinchlik ko'chasi",
@@ -68353,7 +71969,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Хоразм"
       ],
       [
-        "Xurshid Yoqubov"
+        "Xurshid Yoqubov",
+        "Хуршид Ёкубов"
       ],
       [
         "Xush kelibsiz ko'chasi",
@@ -68364,7 +71981,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Ёшлар"
       ],
       [
-        "Yoshlik Street"
+        "Yoshlik Street",
+        "ул. Ёшлик",
+        "Yoshlik St."
       ],
       [
         "Yunus Rajabiy ko'chasi",
@@ -68386,6 +72005,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
       ],
       [
         "جاده حیرتان",
+        "дор. Хайратон",
+        "Hairatan Rd.",
         "سرک حیرتان"
       ]
     ]
@@ -68393,17 +72014,22 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
   "Turtkul": {
     "localAreas": [
       [
-        "Anhorli Mahallasi powered by DTezkor"
+        "Anhorli Mahallasi powered by DTezkor",
+        "Анхорли мах. поверед бй Дтезкор",
+        "Anhorli Mahalla powered by DTezkor"
       ],
       [
         "Beruniy Mahallasi",
         "Беруний махалля"
       ],
       [
-        "Do'stlik Mahallasi"
+        "Do'stlik Mahallasi",
+        "мах. Дустлик",
+        "Do'stlik Mahalla"
       ],
       [
-        "O'zbekiston ovuli"
+        "O'zbekiston ovuli",
+        "Узбекистон овули"
       ],
       [
         "Tórtkúl",
@@ -68417,7 +72043,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "图尔特库里"
       ],
       [
-        "Ullibog'"
+        "Ullibog'",
+        "Уллибог'"
       ],
       [
         "Yangiobod mahallasi",
@@ -68426,19 +72053,28 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
     ],
     "streets": [
       [
-        "1-chi Paxtachi ko'chasi"
+        "1-chi Paxtachi ko'chasi",
+        "1-chi Paxtachi St.",
+        "ул. 1-чи Пахтачи"
       ],
       [
-        "2-chi Ilgor prospekti"
+        "2-chi Ilgor prospekti",
+        "2-чи Илгор проспекти",
+        "2-chi Ilgor Ave."
       ],
       [
-        "Тортдевор"
+        "Тортдевор",
+        "Tortdevor"
       ],
       [
-        "улица раисхужа"
+        "улица раисхужа",
+        "ул. раисхужа",
+        "raiskhuzha St."
       ],
       [
-        "Улица Темирйулчилар"
+        "Улица Темирйулчилар",
+        "ул. Темирйулчилар",
+        "Temiryulchilar St."
       ],
       [
         "A. Farabiy ko'shesi",
@@ -68461,27 +72097,36 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица А. Пирманова"
       ],
       [
-        "A380-Buxoro"
+        "A380-Buxoro",
+        "А380-Бухара"
       ],
       [
-        "Abay ko'chasi"
+        "Abay ko'chasi",
+        "ул. Абай",
+        "Abay St."
       ],
       [
         "Abdiraxmanov ko'shesi",
         "улица Абдирахманова"
       ],
       [
-        "Abdulla Qodiriy ko'chasi"
+        "Abdulla Qodiriy ko'chasi",
+        "ул. Абдулла Кодирий",
+        "Abdulla Qodiriy St."
       ],
       [
         "Aeroport kóshesi",
         "улица Аэропорт"
       ],
       [
-        "Ahilobod ko'chasi"
+        "Ahilobod ko'chasi",
+        "ул. Ахилобод",
+        "Ahilobod St."
       ],
       [
-        "Alisher Navoiy ko'chasi"
+        "Alisher Navoiy ko'chasi",
+        "ул. Алишер Навои",
+        "Alisher Navoiy St."
       ],
       [
         "Alisher Nawayi ko'shesi",
@@ -68496,13 +72141,19 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Амиробод"
       ],
       [
-        "Amudaryo ko'chasi"
+        "Amudaryo ko'chasi",
+        "ул. Амударё",
+        "Amudaryo St."
       ],
       [
-        "An'ana ko'chasi"
+        "An'ana ko'chasi",
+        "ул. Анана",
+        "An'ana St."
       ],
       [
-        "Anorzor ko'chasi"
+        "Anorzor ko'chasi",
+        "ул. Анорзор",
+        "Anorzor St."
       ],
       [
         "Aqshuraev ko'shesi",
@@ -68525,96 +72176,144 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Бабур"
       ],
       [
-        "Bahor ko'chasi"
+        "Bahor ko'chasi",
+        "ул. Бахор",
+        "Bahor St."
       ],
       [
-        "Barkamol Avlod ko'chasi"
+        "Barkamol Avlod ko'chasi",
+        "ул. Баркамол Авлод",
+        "Barkamol Avlod St."
       ],
       [
         "Begjap ko'shesi",
         "улица Бегжап"
       ],
       [
-        "Begoyim ko'chasi"
+        "Begoyim ko'chasi",
+        "ул. Бегойим",
+        "Begoyim St."
       ],
       [
-        "Berdaq ko'chasi"
+        "Berdaq ko'chasi",
+        "ул. Бердак",
+        "Berdaq St."
       ],
       [
-        "Beruniy ko'chasi"
+        "Beruniy ko'chasi",
+        "ул. Беруни",
+        "Beruniy St."
       ],
       [
-        "Beruniy tupik ko'chasi"
+        "Beruniy tupik ko'chasi",
+        "туп. Беруни",
+        "Beruniy Dead End"
       ],
       [
-        "Birdamlik ko'chasi"
+        "Birdamlik ko'chasi",
+        "ул. Бирдамлик",
+        "Birdamlik St."
       ],
       [
-        "Bog' ko'chasi"
+        "Bog' ko'chasi",
+        "ул. Бог'",
+        "Bog' St."
       ],
       [
-        "Bostonlik ko'chasi"
+        "Bostonlik ko'chasi",
+        "ул. Бостонлик",
+        "Bostonlik St."
       ],
       [
-        "Boychechak ko'chasi"
+        "Boychechak ko'chasi",
+        "ул. Бойчечак",
+        "Boychechak St."
       ],
       [
-        "Buston ko'chasi"
+        "Buston ko'chasi",
+        "ул. Бустон",
+        "Buston St."
       ],
       [
-        "Buzyop ko'chasi"
+        "Buzyop ko'chasi",
+        "ул. Бузёп",
+        "Buzyop St."
       ],
       [
-        "Charagon ko'chasi"
+        "Charagon ko'chasi",
+        "ул. Чарагон",
+        "Charagon St."
       ],
       [
         "Chulquvar ko'shesi",
         "улица Чулкувар"
       ],
       [
-        "Diyonat ko'chasi"
+        "Diyonat ko'chasi",
+        "ул. Диёнат",
+        "Diyonat St."
       ],
       [
-        "Do'stobod ko'chasi"
+        "Do'stobod ko'chasi",
+        "ул. Дустобод",
+        "Do'stobod St."
       ],
       [
-        "Donishmandlar ko'chasi"
+        "Donishmandlar ko'chasi",
+        "ул. Донишмандлар",
+        "Donishmandlar St."
       ],
       [
-        "Eshonbobo ko'chasi"
+        "Eshonbobo ko'chasi",
+        "ул. Ешонбобо",
+        "Eshonbobo St."
       ],
       [
-        "Furqat ko'chasi"
+        "Furqat ko'chasi",
+        "ул. Фуркат",
+        "Furqat St."
       ],
       [
         "G. Gulam ko'shesi",
         "улица Гафур Гуляма"
       ],
       [
-        "G'alaba ko'chasi"
+        "G'alaba ko'chasi",
+        "ул. Галаба",
+        "G'alaba St."
       ],
       [
         "G'alaba ko'shesi",
         "улица Галаба"
       ],
       [
-        "Gagarin ko'chasi"
+        "Gagarin ko'chasi",
+        "ул. Гагарин",
+        "Gagarin St."
       ],
       [
         "Gu'listan ko'shesi",
         "улица Гулистан"
       ],
       [
-        "Gulsum ko'chasi"
+        "Gulsum ko'chasi",
+        "ул. Гулсум",
+        "Gulsum St."
       ],
       [
-        "Gulsumbul ko'chasi powered by DTezkor"
+        "Gulsumbul ko'chasi powered by DTezkor",
+        "Гулсумбул ул. поверед бй Дтезкор",
+        "Gulsumbul St. powered by DTezkor"
       ],
       [
-        "Hamid Olimjon ko'chasi"
+        "Hamid Olimjon ko'chasi",
+        "ул. Хамид Олимджон",
+        "Hamid Olimjon St."
       ],
       [
-        "Hunarmandlar ko'chasi"
+        "Hunarmandlar ko'chasi",
+        "ул. Хунармандлар",
+        "Hunarmandlar St."
       ],
       [
         "I. Abdullaev ko'shesi",
@@ -68625,32 +72324,48 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица И. Ахмедова"
       ],
       [
-        "Ibn Sino ko'chasi"
+        "Ibn Sino ko'chasi",
+        "ул. Ибн Сино",
+        "Ibn Sino St."
       ],
       [
-        "Ibn Sino ko'chasi powered by DTezkor"
+        "Ibn Sino ko'chasi powered by DTezkor",
+        "Ибн Сино ул. поверед бй Дтезкор",
+        "Ibn Sino St. powered by DTezkor"
       ],
       [
-        "Ibratli ko'chasi"
+        "Ibratli ko'chasi",
+        "ул. Ибратли",
+        "Ibratli St."
       ],
       [
         "Ibray Xoja Nasir ko'shesi",
         "улица Ибра Хожа Насир"
       ],
       [
-        "Ishchilar ko'chasi"
+        "Ishchilar ko'chasi",
+        "ул. Ишчилар",
+        "Ishchilar St."
       ],
       [
-        "Islohot ko'chasi"
+        "Islohot ko'chasi",
+        "ул. Ислохот",
+        "Islohot St."
       ],
       [
-        "Istiqlol ko'cahsi"
+        "Istiqlol ko'cahsi",
+        "ул. Истиклол",
+        "Istiqlol St."
       ],
       [
-        "Istiqlol ko'chasi"
+        "Istiqlol ko'chasi",
+        "ул. Истиклол",
+        "Istiqlol St."
       ],
       [
-        "Izzat ko'chasi"
+        "Izzat ko'chasi",
+        "ул. Иззат",
+        "Izzat St."
       ],
       [
         "J. Manguberdi ko'shesi",
@@ -68661,10 +72376,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Жанакесова"
       ],
       [
-        "Janibekov ko'chasi"
+        "Janibekov ko'chasi",
+        "ул. Джанибеков",
+        "Janibekov St."
       ],
       [
-        "Jannat ko'chasi"
+        "Jannat ko'chasi",
+        "ул. Джаннат",
+        "Jannat St."
       ],
       [
         "Jumaniyazov ko'shesi",
@@ -68676,52 +72395,76 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица К. Ниязимбетова"
       ],
       [
-        "K. Otaniyazov ko'chasi"
+        "K. Otaniyazov ko'chasi",
+        "ул. К. Отаниязов",
+        "K. Otaniyazov St."
       ],
       [
-        "Kabutar ko'chasi"
+        "Kabutar ko'chasi",
+        "ул. Кабутар",
+        "Kabutar St."
       ],
       [
         "Kaltaminor ko'chasi",
         "улица Матнафакова"
       ],
       [
-        "Kamalak ko'chasi"
+        "Kamalak ko'chasi",
+        "ул. Камалак",
+        "Kamalak St."
       ],
       [
-        "Ma'rifat ko'chasi"
+        "Ma'rifat ko'chasi",
+        "ул. Марифат",
+        "Ma'rifat St."
       ],
       [
-        "Majnuntol ko'chasi"
+        "Majnuntol ko'chasi",
+        "ул. Маджнунтол",
+        "Majnuntol St."
       ],
       [
-        "Markaziy ko'chasi powered by DTezkor"
+        "Markaziy ko'chasi powered by DTezkor",
+        "Марказий ул. поверед бй Дтезкор",
+        "Markaziy St. powered by DTezkor"
       ],
       [
         "Mashal ko'shesi",
         "улица Машъал"
       ],
       [
-        "Mehirgiyo ko'chasi"
+        "Mehirgiyo ko'chasi",
+        "ул. Мехиргиё",
+        "Mehirgiyo St."
       ],
       [
-        "Mevazor ko'chasi"
+        "Mevazor ko'chasi",
+        "ул. Мевазор",
+        "Mevazor St."
       ],
       [
-        "Monand ko'chasi"
+        "Monand ko'chasi",
+        "ул. Монанд",
+        "Monand St."
       ],
       [
-        "Mustaqillik ko'chasi"
+        "Mustaqillik ko'chasi",
+        "ул. Мустакиллик",
+        "Mustaqillik St."
       ],
       [
         "N. Kurbanbaev ko'shesi",
         "улица Н. Курбанбаева"
       ],
       [
-        "Nafosat ko'chasi"
+        "Nafosat ko'chasi",
+        "ул. Нафосат",
+        "Nafosat St."
       ],
       [
-        "Namoish ko'chasi"
+        "Namoish ko'chasi",
+        "ул. Намоиш",
+        "Namoish St."
       ],
       [
         "Nargiz ko'chasi",
@@ -68732,58 +72475,88 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Навбахор"
       ],
       [
-        "Nizomiy ko'chasi"
+        "Nizomiy ko'chasi",
+        "ул. Низомий",
+        "Nizomiy St."
       ],
       [
-        "Nodirabegim ko'chasi"
+        "Nodirabegim ko'chasi",
+        "ул. Нодирабегим",
+        "Nodirabegim St."
       ],
       [
-        "Nukus ko'chasi"
+        "Nukus ko'chasi",
+        "ул. Нукус",
+        "Nukus St."
       ],
       [
         "Nurafshon ko'chasi",
-        "Nurafshon Ko'chasi"
+        "ул. Нурафшон",
+        "Nurafshon Ko'chasi",
+        "Nurafshon St."
       ],
       [
-        "Nurota ko'chasi"
+        "Nurota ko'chasi",
+        "ул. Нурота",
+        "Nurota St."
       ],
       [
         "Nurpeksov ko'shesi",
         "улица Нурпексова"
       ],
       [
-        "O. Xudoyshukurov ko'chasi"
+        "O. Xudoyshukurov ko'chasi",
+        "ул. О. Худойшукуров",
+        "O. Xudoyshukurov St."
       ],
       [
-        "O'zbekiston ovozi ko'chasi"
+        "O'zbekiston ovozi ko'chasi",
+        "ул. Узбекистон овози",
+        "O'zbekiston ovozi St."
       ],
       [
-        "Obod turmush ko'chasi"
+        "Obod turmush ko'chasi",
+        "ул. Обод турмуш",
+        "Obod turmush St."
       ],
       [
-        "Obodlik ko'chasi"
+        "Obodlik ko'chasi",
+        "ул. Ободлик",
+        "Obodlik St."
       ],
       [
-        "Obodlik ko'chasi powered by DTezkor"
+        "Obodlik ko'chasi powered by DTezkor",
+        "Ободлик ул. поверед бй Дтезкор",
+        "Obodlik St. powered by DTezkor"
       ],
       [
         "Ogahiy ko'shesi",
         "улица Огахий"
       ],
       [
-        "Olmazor ko'chasi"
+        "Olmazor ko'chasi",
+        "ул. Олмазор",
+        "Olmazor St."
       ],
       [
-        "Ostona ko'chasi"
+        "Ostona ko'chasi",
+        "ул. Остона",
+        "Ostona St."
       ],
       [
-        "Oybek ko'cahsi"
+        "Oybek ko'cahsi",
+        "ул. Ойбек",
+        "Oybek St."
       ],
       [
-        "Oynai Jahon ko'chasi"
+        "Oynai Jahon ko'chasi",
+        "ул. Ойнаи Джахон",
+        "Oynai Jahon St."
       ],
       [
-        "Ozod ko'chasi"
+        "Ozod ko'chasi",
+        "ул. Озод",
+        "Ozod St."
       ],
       [
         "P. Radjapbaev ko'shesi",
@@ -68794,16 +72567,24 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Панкратова"
       ],
       [
-        "Parizod Ko'chasi"
+        "Parizod Ko'chasi",
+        "ул. Паризод",
+        "Parizod St."
       ],
       [
-        "Paxtachi shox ko'chasi"
+        "Paxtachi shox ko'chasi",
+        "ул. Пахтачи шох",
+        "Paxtachi shox St."
       ],
       [
-        "Paxtakor ko'chasi"
+        "Paxtakor ko'chasi",
+        "ул. Пахтакор",
+        "Paxtakor St."
       ],
       [
-        "Peshvoz ko'shesi"
+        "Peshvoz ko'shesi",
+        "ул. Пешвоз",
+        "Peshvoz St."
       ],
       [
         "Petro Aleksandrovsk kóshesi",
@@ -68818,7 +72599,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Почтовая"
       ],
       [
-        "Pokizalik ko'chasi"
+        "Pokizalik ko'chasi",
+        "ул. Покизалик",
+        "Pokizalik St."
       ],
       [
         "Ponton ko'pir",
@@ -68826,7 +72609,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Pontoon bridge"
       ],
       [
-        "Posbonlar ko'chasi"
+        "Posbonlar ko'chasi",
+        "ул. Посбонлар",
+        "Posbonlar St."
       ],
       [
         "Pushkin ko'shesi",
@@ -68849,27 +72634,37 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Кырыккыз"
       ],
       [
-        "Qiriqqiz shossesi"
+        "Qiriqqiz shossesi",
+        "Кириккиз шоссеси",
+        "Qiriqqiz Hwy."
       ],
       [
-        "Qiyot ko'chasi"
+        "Qiyot ko'chasi",
+        "ул. Киёт",
+        "Qiyot St."
       ],
       [
-        "Qozog'iston ko'chasi"
+        "Qozog'iston ko'chasi",
+        "ул. Козогистон",
+        "Qozog'iston St."
       ],
       [
         "Qozog'ston ko'chasi",
         "улица Казахстан"
       ],
       [
-        "Qurbon Jrau ko'chasi"
+        "Qurbon Jrau ko'chasi",
+        "ул. Курбон Джрау",
+        "Qurbon Jrau St."
       ],
       [
         "Quruvchilar ko'shesi",
         "улица Курувчилар"
       ],
       [
-        "Qushbegi ko'chasi"
+        "Qushbegi ko'chasi",
+        "ул. Кушбеги",
+        "Qushbegi St."
       ],
       [
         "R. Atajanov ko'shesi",
@@ -68888,16 +72683,24 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Р. Рахимберганова"
       ],
       [
-        "Ravshanlik ko'chasi"
+        "Ravshanlik ko'chasi",
+        "ул. Равшанлик",
+        "Ravshanlik St."
       ],
       [
-        "Rayhon ko'chasi"
+        "Rayhon ko'chasi",
+        "ул. Райхон",
+        "Rayhon St."
       ],
       [
-        "Rivoj ko'chasi"
+        "Rivoj ko'chasi",
+        "ул. Риводж",
+        "Rivoj St."
       ],
       [
-        "Roxat ko'chasi"
+        "Roxat ko'chasi",
+        "ул. Рохат",
+        "Roxat St."
       ],
       [
         "S. Qurbanov ko'shesi",
@@ -68912,7 +72715,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Сафарова"
       ],
       [
-        "Salomatlik ko'chasi"
+        "Salomatlik ko'chasi",
+        "ул. Саломатлик",
+        "Salomatlik St."
       ],
       [
         "Samandarov ko'shesi",
@@ -68927,10 +72732,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Сайдова"
       ],
       [
-        "Semashko ko'chasi"
+        "Semashko ko'chasi",
+        "ул. Семашко",
+        "Semashko St."
       ],
       [
-        "Sevinch ko'chasi"
+        "Sevinch ko'chasi",
+        "ул. Севинч",
+        "Sevinch St."
       ],
       [
         "Sh. Muratov ko'shesi",
@@ -68941,109 +72750,171 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Ш. Рашидова"
       ],
       [
-        "Sharof Rashidov ko'chasi"
+        "Sharof Rashidov ko'chasi",
+        "ул. Шароф Рашидов",
+        "Sharof Rashidov St."
       ],
       [
-        "Sheryurak ko'chasi"
+        "Sheryurak ko'chasi",
+        "ул. Шерюрак",
+        "Sheryurak St."
       ],
       [
-        "Shirin ko'chasi powered by DTezkor"
+        "Shirin ko'chasi powered by DTezkor",
+        "Ширин ул. поверед бй Дтезкор",
+        "Shirin St. powered by DTezkor"
       ],
       [
-        "Shiroq ko’chasi"
+        "Shiroq ko’chasi",
+        "ул. Широк",
+        "Shiroq St."
       ],
       [
-        "Shodiyona ko'chasi"
+        "Shodiyona ko'chasi",
+        "ул. Шодиёна",
+        "Shodiyona St."
       ],
       [
-        "Shoh Abbos ko'chasi powered by DTezkor"
+        "Shoh Abbos ko'chasi powered by DTezkor",
+        "Шох Аббос ул. поверед бй Дтезкор",
+        "Shoh Abbos St. powered by DTezkor"
       ],
       [
-        "Shoirlar ko'chasi"
+        "Shoirlar ko'chasi",
+        "ул. Шоирлар",
+        "Shoirlar St."
       ],
       [
-        "Shunqorlar ko'chasi powered by DTezkor"
+        "Shunqorlar ko'chasi powered by DTezkor",
+        "Шункорлар ул. поверед бй Дтезкор",
+        "Shunqorlar St. powered by DTezkor"
       ],
       [
-        "Shuraxon ko'chasi"
+        "Shuraxon ko'chasi",
+        "ул. Шурахон",
+        "Shuraxon St."
       ],
       [
-        "Sohibkor berk ko'chasi"
+        "Sohibkor berk ko'chasi",
+        "туп. Сохибкор",
+        "Sohibkor Dead End"
       ],
       [
-        "Sohibkor ko'chasi"
+        "Sohibkor ko'chasi",
+        "ул. Сохибкор",
+        "Sohibkor St."
       ],
       [
         "Sumbul ko'shesi",
         "улица Сумбул"
       ],
       [
-        "Tiklanish ko'cahsi"
+        "Tiklanish ko'cahsi",
+        "ул. Тикланиш",
+        "Tiklanish St."
       ],
       [
-        "Tiklanish ko'chasi"
+        "Tiklanish ko'chasi",
+        "ул. Тикланиш",
+        "Tiklanish St."
       ],
       [
         "Tinchlik ko'shesi",
         "улица Тинчлик"
       ],
       [
-        "Tinchmakon 2-berk ko'chasi"
+        "Tinchmakon 2-berk ko'chasi",
+        "2-й туп. Тинчмакон",
+        "Tinchmakon 2nd Dead End"
       ],
       [
-        "Tinchmakon ko'chasi"
+        "Tinchmakon ko'chasi",
+        "ул. Тинчмакон",
+        "Tinchmakon St."
       ],
       [
-        "To'qimachi ko'chasi"
+        "To'qimachi ko'chasi",
+        "ул. Тукимачи",
+        "To'qimachi St."
       ],
       [
-        "To'rtko'l ko'chasi"
+        "To'rtko'l ko'chasi",
+        "ул. Турткул",
+        "To'rtko'l St."
       ],
       [
-        "Toshkent ko'chasi"
+        "Toshkent ko'chasi",
+        "ул. Ташкент",
+        "Toshkent St."
       ],
       [
-        "Toshkent ko'chasi powered by DTezkor"
+        "Toshkent ko'chasi powered by DTezkor",
+        "Ташкент ул. поверед бй Дтезкор",
+        "Toshkent St. powered by DTezkor"
       ],
       [
-        "Tozabog' ko'chasi (Jiydalik)"
+        "Tozabog' ko'chasi (Jiydalik)",
+        "Тозабог' ул. (Джийдалик)",
+        "Tozabog' St. (Jiydalik)"
       ],
       [
-        "Tupik Beruniy"
+        "Tupik Beruniy",
+        "туп. Беруни",
+        "Beruniy Dead End"
       ],
       [
-        "Turkistan ko'chasi"
+        "Turkistan ko'chasi",
+        "ул. Туркистан",
+        "Turkistan St."
       ],
       [
         "Turtkul ko'shesi",
         "улица Турткуль (Семашко)"
       ],
       [
-        "Tutzor ko'chasi"
+        "Tutzor ko'chasi",
+        "ул. Тутзор",
+        "Tutzor St."
       ],
       [
-        "Ulomalar ko'chasi"
+        "Ulomalar ko'chasi",
+        "ул. Уломалар",
+        "Ulomalar St."
       ],
       [
-        "Umar Xayyom ko'chasi"
+        "Umar Xayyom ko'chasi",
+        "ул. Умар Хайём",
+        "Umar Xayyom St."
       ],
       [
-        "Umid ko'chasi"
+        "Umid ko'chasi",
+        "ул. Умид",
+        "Umid St."
       ],
       [
-        "Umid Niholi ko'chasi"
+        "Umid Niholi ko'chasi",
+        "ул. Умид Нихоли",
+        "Umid Niholi St."
       ],
       [
-        "Ummon ko'chasi"
+        "Ummon ko'chasi",
+        "ул. Уммон",
+        "Ummon St."
       ],
       [
-        "Usmoniylar ko'chasi"
+        "Usmoniylar ko'chasi",
+        "ул. Усмонийлар",
+        "Usmoniylar St."
       ],
       [
-        "Uyg'ur ko'chasi"
+        "Uyg'ur ko'chasi",
+        "ул. Уйгур",
+        "Uyg'ur St."
       ],
       [
-        "Vatanparvar ko'chasi"
+        "Vatanparvar ko'chasi",
+        "ул. Ватанпарвар",
+        "Vatanparvar St."
       ],
       [
         "Xalqlar doslig'i ko'shesi",
@@ -69058,30 +72929,42 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "проезд Хамза"
       ],
       [
-        "Xavo uyli ko'chasi"
+        "Xavo uyli ko'chasi",
+        "ул. Хаво уйли",
+        "Xavo uyli St."
       ],
       [
         "Xiva ko'shesi",
         "улица Хива"
       ],
       [
-        "Xojaniyazov ko'chasi"
+        "Xojaniyazov ko'chasi",
+        "ул. Ходжаниязов",
+        "Xojaniyazov St."
       ],
       [
         "Xojaniyazov ko'shesi",
         "улица Ходжаниязова"
       ],
       [
-        "Yangi Avlod ko'chasi"
+        "Yangi Avlod ko'chasi",
+        "ул. Янги Авлод",
+        "Yangi Avlod St."
       ],
       [
-        "Yangibozor ko'chasi"
+        "Yangibozor ko'chasi",
+        "ул. Янгибозор",
+        "Yangibozor St."
       ],
       [
-        "Yo'lchi ko'chasi"
+        "Yo'lchi ko'chasi",
+        "ул. Ёлчи",
+        "Yo'lchi St."
       ],
       [
-        "Yog'du ko'chasi powered by DTezkor"
+        "Yog'du ko'chasi powered by DTezkor",
+        "Ёгду ул. поверед бй Дтезкор",
+        "Yog'du St. powered by DTezkor"
       ],
       [
         "Yu. Axunbabaev ko'shesi",
@@ -69096,16 +72979,24 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Ю. Джуманиязова"
       ],
       [
-        "Yulduzlar ko'chasi"
+        "Yulduzlar ko'chasi",
+        "ул. Юлдузлар",
+        "Yulduzlar St."
       ],
       [
-        "Zamon ko'chasi"
+        "Zamon ko'chasi",
+        "ул. Замон",
+        "Zamon St."
       ],
       [
-        "Zamondosh ko'chasi"
+        "Zamondosh ko'chasi",
+        "ул. Замондош",
+        "Zamondosh St."
       ],
       [
-        "Zaytun ko'chasi"
+        "Zaytun ko'chasi",
+        "ул. Зайтун",
+        "Zaytun St."
       ]
     ]
   },
@@ -69227,32 +73118,42 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "\"ZIYOKARLAR\" area №34"
       ],
       [
-        "3 микрорайон"
+        "3 микрорайон",
+        "3 Microdist.",
+        "мкр. 3"
       ],
       [
-        "4 микрорайон"
+        "4 микрорайон",
+        "4 Microdist.",
+        "мкр. 4"
       ],
       [
         "6 daha",
         "6 микрорайон"
       ],
       [
-        "МАГАЗИН"
+        "МАГАЗИН",
+        "MAGAZIN"
       ],
       [
-        "Навруз"
+        "Навруз",
+        "Navruz"
       ],
       [
-        "Обод"
+        "Обод",
+        "Obod"
       ],
       [
-        "Туркманлар"
+        "Туркманлар",
+        "Turkmanlar"
       ],
       [
-        "Ургенч махсус санитар транс"
+        "Ургенч махсус санитар транс",
+        "Urgench makhsus sanitar trans"
       ],
       [
-        "Юкориовул"
+        "Юкориовул",
+        "Yukoriovul"
       ],
       [
         "G'aybu",
@@ -69267,13 +73168,16 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Киллавут"
       ],
       [
-        "Mahalla № \"SHODLIK\""
+        "Mahalla № \"SHODLIK\"",
+        "мах. № \"ШОДЛИК\""
       ],
       [
-        "Mahalla № 1 \"MUSTAQILLIK'"
+        "Mahalla № 1 \"MUSTAQILLIK'",
+        "мах. № 1 \"МУСТАКИЛЛИК'"
       ],
       [
-        "Mahalla № 3 \"MARIFATCHILAR\""
+        "Mahalla № 3 \"MARIFATCHILAR\"",
+        "мах. № 3 \"МАРИФАТЧИЛАР\""
       ],
       [
         "mahalla № 6 \"Beshmergan\"",
@@ -69325,7 +73229,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Махалля №8 Гулшан"
       ],
       [
-        "MY HOUSE sotuv ofis"
+        "MY HOUSE sotuv ofis",
+        "МЙ ХОУСЕ сотув офис"
       ],
       [
         "Navruz dahasi",
@@ -69356,108 +73261,160 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
     ],
     "residentialComplexes": [
       [
-        "Sohil Plaza turar joy majmuasi"
+        "Sohil Plaza turar joy majmuasi",
+        "Сохил Плаза турар джой комплекс",
+        "Sohil Plaza turar joy Complex"
       ]
     ],
     "streets": [
       [
         "Байналминалчилар улица",
-        "улица Байналминалчилар"
+        "ул. Байналминалчилар",
+        "улица Байналминалчилар",
+        "Baynalminalchilar St."
       ],
       [
-        "Баркамоллик"
+        "Баркамоллик",
+        "Barkamollik"
       ],
       [
-        "Камолот 1 проезд"
+        "Камолот 1 проезд",
+        "1-й пр-д Камолот",
+        "Kamolot 1st Passage"
       ],
       [
-        "Камолот улица"
+        "Камолот улица",
+        "ул. Камолот",
+        "Kamolot St."
       ],
       [
         "Н.Кубро 1 проезд",
-        "улица Н.Кубро 1 проезд"
+        "1-й пр-д Н.Кубро",
+        "улица Н.Кубро 1 проезд",
+        "N.Kubro 1st Passage"
       ],
       [
         "Н.Кубро 10 проезд",
-        "улица Н.Кубро 10 проезд"
+        "10-й пр-д Н.Кубро",
+        "улица Н.Кубро 10 проезд",
+        "N.Kubro 10th Passage"
       ],
       [
         "Н.Кубро 11 проезд",
-        "улица Н.Кубро 11 проезд"
+        "11-й пр-д Н.Кубро",
+        "улица Н.Кубро 11 проезд",
+        "N.Kubro 11th Passage"
       ],
       [
         "Н.Кубро 12 проезд",
-        "улица Н.Кубро 12 проезд"
+        "12-й пр-д Н.Кубро",
+        "улица Н.Кубро 12 проезд",
+        "N.Kubro 12th Passage"
       ],
       [
         "Н.Кубро 13 проезд",
-        "улица Н.Кубро 13 проезд"
+        "13-й пр-д Н.Кубро",
+        "улица Н.Кубро 13 проезд",
+        "N.Kubro 13th Passage"
       ],
       [
         "Н.Кубро 14 проезд",
-        "улица Н.Кубро 14 проезд"
+        "14-й пр-д Н.Кубро",
+        "улица Н.Кубро 14 проезд",
+        "N.Kubro 14th Passage"
       ],
       [
         "Н.Кубро 15 проезд",
-        "улица Н.Кубро 15 проезд"
+        "15-й пр-д Н.Кубро",
+        "улица Н.Кубро 15 проезд",
+        "N.Kubro 15th Passage"
       ],
       [
         "Н.Кубро 2 проезд",
-        "улица Н.Кубро 2 проезд"
+        "2-й пр-д Н.Кубро",
+        "улица Н.Кубро 2 проезд",
+        "N.Kubro 2nd Passage"
       ],
       [
         "Н.Кубро 3 проезд",
-        "улица Н.Кубро 3 проезд"
+        "3-й пр-д Н.Кубро",
+        "улица Н.Кубро 3 проезд",
+        "N.Kubro 3rd Passage"
       ],
       [
         "Н.Кубро 4 проезд",
-        "улица Н.Кубро 4 проезд"
+        "4-й пр-д Н.Кубро",
+        "улица Н.Кубро 4 проезд",
+        "N.Kubro 4th Passage"
       ],
       [
         "Н.Кубро 5 проезд",
-        "улица Н.Кубро 5 проезд"
+        "5-й пр-д Н.Кубро",
+        "улица Н.Кубро 5 проезд",
+        "N.Kubro 5th Passage"
       ],
       [
         "Н.Кубро 6 проезд",
-        "улица Н.Кубро 6 проезд"
+        "6-й пр-д Н.Кубро",
+        "улица Н.Кубро 6 проезд",
+        "N.Kubro 6th Passage"
       ],
       [
         "Н.Кубро 7 проезд",
-        "улица Н.Кубро 7 проезд"
+        "7-й пр-д Н.Кубро",
+        "улица Н.Кубро 7 проезд",
+        "N.Kubro 7th Passage"
       ],
       [
         "Н.Кубро 8 проезд",
-        "улица Н.Кубро 8 проезд"
+        "8-й пр-д Н.Кубро",
+        "улица Н.Кубро 8 проезд",
+        "N.Kubro 8th Passage"
       ],
       [
         "Н.Кубро 9 проезд",
-        "улица Н.Кубро 9 проезд"
+        "9-й пр-д Н.Кубро",
+        "улица Н.Кубро 9 проезд",
+        "N.Kubro 9th Passage"
       ],
       [
-        "Проектная улица"
+        "Проектная улица",
+        "ул. Проектная",
+        "Proektnaya St."
       ],
       [
-        "сквер вечерняя ярмарка"
+        "сквер вечерняя ярмарка",
+        "skver vechernyaya yarmarka"
       ],
       [
         "Тулпор 1 проезд",
-        "улица Тулпор 1 проезд"
+        "1-й пр-д Тулпор",
+        "улица Тулпор 1 проезд",
+        "Tulpor 1st Passage"
       ],
       [
         "Тулпор 2 проезд",
-        "улица Тулпор 2 проезд"
+        "2-й пр-д Тулпор",
+        "улица Тулпор 2 проезд",
+        "Tulpor 2nd Passage"
       ],
       [
         "Тулпор 3 проезд",
-        "улица Тулпор 4 проезд"
+        "3-й пр-д Тулпор | 4-й пр-д Тулпор",
+        "улица Тулпор 4 проезд",
+        "Tulpor 3rd Passage | Tulpor 4th Passage"
       ],
       [
         "Тулпор 4 проезд",
-        "улица Тулпор 4 проезд"
+        "4-й пр-д Тулпор",
+        "улица Тулпор 4 проезд",
+        "Tulpor 4th Passage"
       ],
       [
         "Тулпор 5 проезд",
-        "улица Тулпор 5 проезд"
+        "5-й пр-д Тулпор",
+        "улица Тулпор 5 проезд",
+        "Tulpor 5th Passage"
       ],
       [
         "улица Алпомыш",
@@ -69468,32 +73425,50 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Shodlik ko'chasi"
       ],
       [
-        "улица Гурленская"
+        "улица Гурленская",
+        "ул. Гурленская",
+        "Gurlenskaya St."
       ],
       [
-        "улица Мехр Нури"
+        "улица Мехр Нури",
+        "ул. Мехр Нури",
+        "Mekhr Nuri St."
       ],
       [
-        "улица Ничёпуренка"
+        "улица Ничёпуренка",
+        "ул. Ничёпуренка",
+        "Nichyopurenka St."
       ],
       [
-        "улица Огахий"
+        "улица Огахий",
+        "ул. Огахий",
+        "Ogakhiy St."
       ],
       [
-        "улица Темирязьева"
+        "улица Темирязьева",
+        "ул. Темирязьева",
+        "Temiryazeva St."
       ],
       [
-        "улица Туркманлар"
+        "улица Туркманлар",
+        "ул. Туркманлар",
+        "Turkmanlar St."
       ],
       [
-        "улица Фирдавсий"
+        "улица Фирдавсий",
+        "ул. Фирдавсий",
+        "Firdavsiy St."
       ],
       [
         "Фирдавсий 4 проезд",
-        "улица Фирдавсий 4 проезд"
+        "4-й пр-д Фирдавсий",
+        "улица Фирдавсий 4 проезд",
+        "Firdavsiy 4th Passage"
       ],
       [
-        "Фирдавсий 5 проезд"
+        "Фирдавсий 5 проезд",
+        "5-й пр-д Фирдавсий",
+        "Firdavsiy 5th Passage"
       ],
       [
         "Эhgu Umid ko’chasi",
@@ -69906,7 +73881,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Dustlik street 1 dead end"
       ],
       [
-        "Faravonlik Ko'chasi"
+        "Faravonlik Ko'chasi",
+        "ул. Фаравонлик",
+        "Faravonlik St."
       ],
       [
         "Farovanlik ko'chasi",
@@ -70044,14 +74021,18 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Хамид Алимджан"
       ],
       [
-        "Haqiqat ko'chasi"
+        "Haqiqat ko'chasi",
+        "ул. Хакикат",
+        "Haqiqat St."
       ],
       [
         "Hokim Obidov ko'chasi",
         "улица Хаким Обидова"
       ],
       [
-        "I.Dosof ko'chasi"
+        "I.Dosof ko'chasi",
+        "ул. И.Дософ",
+        "I.Dosof St."
       ],
       [
         "Ibn Sino",
@@ -70428,7 +74409,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Mashal Xorazm street"
       ],
       [
-        "Mehrigon ko'chasi"
+        "Mehrigon ko'chasi",
+        "ул. Мехригон",
+        "Mehrigon St."
       ],
       [
         "Mevazor ko'chasi",
@@ -71476,31 +75459,49 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Yoshlik street"
       ],
       [
-        "Yoshllik ko'chasi 2 yulak"
+        "Yoshllik ko'chasi 2 yulak",
+        "Ёшллик ул. 2 юлак",
+        "Yoshllik St. 2 yulak"
       ],
       [
-        "Yoshllik ko'chasi 3 yulak"
+        "Yoshllik ko'chasi 3 yulak",
+        "Ёшллик ул. 3 юлак",
+        "Yoshllik St. 3 yulak"
       ],
       [
-        "Yoshllik ko'chasi 4 yulak"
+        "Yoshllik ko'chasi 4 yulak",
+        "Ёшллик ул. 4 юлак",
+        "Yoshllik St. 4 yulak"
       ],
       [
-        "Yoshllik ko'chasi 9 yulak"
+        "Yoshllik ko'chasi 9 yulak",
+        "Ёшллик ул. 9 юлак",
+        "Yoshllik St. 9 yulak"
       ],
       [
-        "Yoshllik massivi ko'chasi 2 yulak"
+        "Yoshllik massivi ko'chasi 2 yulak",
+        "Ёшллик массив ул. 2 юлак",
+        "Yoshllik Res. Area St. 2 yulak"
       ],
       [
-        "Yoshllik massivi ko'chasi 5 yulak"
+        "Yoshllik massivi ko'chasi 5 yulak",
+        "Ёшллик массив ул. 5 юлак",
+        "Yoshllik Res. Area St. 5 yulak"
       ],
       [
-        "Yoshllik massivi ko'chasi 6 yulak"
+        "Yoshllik massivi ko'chasi 6 yulak",
+        "Ёшллик массив ул. 6 юлак",
+        "Yoshllik Res. Area St. 6 yulak"
       ],
       [
-        "Yoshllik massivi ko'chasi 7 yulak"
+        "Yoshllik massivi ko'chasi 7 yulak",
+        "Ёшллик массив ул. 7 юлак",
+        "Yoshllik Res. Area St. 7 yulak"
       ],
       [
-        "Yoshllik massivi ko'chasi 8 yulak"
+        "Yoshllik massivi ko'chasi 8 yulak",
+        "Ёшллик массив ул. 8 юлак",
+        "Yoshllik Res. Area St. 8 yulak"
       ],
       [
         "Yubeleynaya kochasi",
@@ -71601,14 +75602,16 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
   "Urgut": {
     "localAreas": [
       [
-        "Абдукишлак"
+        "Абдукишлак",
+        "Abdukishlak"
       ],
       [
         "Ачамайли",
         "Achamayli"
       ],
       [
-        "Байбул"
+        "Байбул",
+        "Baybul"
       ],
       [
         "Байгузар",
@@ -71619,10 +75622,12 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Balandkishlak"
       ],
       [
-        "Баят"
+        "Баят",
+        "Bayat"
       ],
       [
-        "Бешагач"
+        "Бешагач",
+        "Beshagach"
       ],
       [
         "Бешкапа",
@@ -71633,32 +75638,40 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Butbay"
       ],
       [
-        "Ваткан"
+        "Ваткан",
+        "Vatkan"
       ],
       [
-        "Гулабад"
+        "Гулабад",
+        "Gulabad"
       ],
       [
         "Джагалбайли",
         "Jagalbayli"
       ],
       [
-        "Джунгишлак"
+        "Джунгишлак",
+        "Dzhungishlak"
       ],
       [
-        "Кайракли"
+        "Кайракли",
+        "Kayrakli"
       ],
       [
-        "Калдиваджар"
+        "Калдиваджар",
+        "Kaldivadzhar"
       ],
       [
-        "Карабагла"
+        "Карабагла",
+        "Karabagla"
       ],
       [
-        "Кушчи"
+        "Кушчи",
+        "Kushchi"
       ],
       [
-        "Лавзахона"
+        "Лавзахона",
+        "Lavzakhona"
       ],
       [
         "Мангытабад",
@@ -71669,22 +75682,28 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Mergancha"
       ],
       [
-        "Мирзабоглон"
+        "Мирзабоглон",
+        "Mirzaboglon"
       ],
       [
-        "Мурат"
+        "Мурат",
+        "Murat"
       ],
       [
-        "Навзандак"
+        "Навзандак",
+        "Navzandak"
       ],
       [
-        "Палван"
+        "Палван",
+        "Palvan"
       ],
       [
-        "Пачван"
+        "Пачван",
+        "Pachvan"
       ],
       [
-        "Рават"
+        "Рават",
+        "Ravat"
       ],
       [
         "Раватча",
@@ -71695,45 +75714,56 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Savgan"
       ],
       [
-        "Санчикул"
+        "Санчикул",
+        "Sanchikul"
       ],
       [
         "Таракли",
         "Taraqli"
       ],
       [
-        "Турткул"
+        "Турткул",
+        "Turtkul"
       ],
       [
-        "Уракбайджар"
+        "Уракбайджар",
+        "Urakbaydzhar"
       ],
       [
-        "Урамас"
+        "Урамас",
+        "Uramas"
       ],
       [
-        "Халкабад"
+        "Халкабад",
+        "Khalkabad"
       ],
       [
         "Ходжабдал",
         "Hojabdal"
       ],
       [
-        "Чаштепа"
+        "Чаштепа",
+        "Chashtepa"
       ],
       [
-        "Чеп"
+        "Чеп",
+        "Chep"
       ],
       [
-        "Чумчукли"
+        "Чумчукли",
+        "Chumchukli"
       ],
       [
-        "Юкары-Алгар"
+        "Юкары-Алгар",
+        "Yukary-Algar"
       ],
       [
-        "Юкары-Тегана"
+        "Юкары-Тегана",
+        "Yukary-Tegana"
       ],
       [
-        "Ястепа"
+        "Ястепа",
+        "Yastepa"
       ],
       [
         "Besh buloq",
@@ -71823,245 +75853,403 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
     ],
     "streets": [
       [
-        "А.Кодири кучаси"
+        "А.Кодири кучаси",
+        "ул. А.Кодири",
+        "A.Kodiri St."
       ],
       [
-        "А.Кодирий кучаси"
+        "А.Кодирий кучаси",
+        "ул. А.Кодирий",
+        "A.Kodiriy St."
       ],
       [
-        "Ал.Хоразмий кучаси"
+        "Ал.Хоразмий кучаси",
+        "ул. Ал.Хоразмий",
+        "Al.Khorazmiy St."
       ],
       [
-        "Алпомиш кучаси"
+        "Алпомиш кучаси",
+        "ул. Алпомиш",
+        "Alpomish St."
       ],
       [
-        "Амир Темур кучаси"
+        "Амир Темур кучаси",
+        "ул. Амир Темур",
+        "Amir Temur St."
       ],
       [
-        "Баркамол кучаси"
+        "Баркамол кучаси",
+        "ул. Баркамол",
+        "Barkamol St."
       ],
       [
-        "Бекчинор кучаси"
+        "Бекчинор кучаси",
+        "ул. Бекчинор",
+        "Bekchinor St."
       ],
       [
-        "Беруний  кучаси"
+        "Беруний  кучаси",
+        "ул. Беруний",
+        "Beruniy St."
       ],
       [
-        "Бехбудий кучаси"
+        "Бехбудий кучаси",
+        "ул. Бехбудий",
+        "Bekhbudiy St."
       ],
       [
-        "Бешчинор кучаси"
+        "Бешчинор кучаси",
+        "ул. Бешчинор",
+        "Beshchinor St."
       ],
       [
-        "Бибихоним кучаси"
+        "Бибихоним кучаси",
+        "ул. Бибихоним",
+        "Bibikhonim St."
       ],
       [
-        "Бинокор кучаси"
+        "Бинокор кучаси",
+        "ул. Бинокор",
+        "Binokor St."
       ],
       [
-        "Бирлик кучаси"
+        "Бирлик кучаси",
+        "ул. Бирлик",
+        "Birlik St."
       ],
       [
-        "Боборахим Машраб кучаси"
+        "Боборахим Машраб кучаси",
+        "ул. Боборахим Машраб",
+        "Boborakhim Mashrab St."
       ],
       [
-        "Ватан кучаси"
+        "Ватан кучаси",
+        "ул. Ватан",
+        "Vatan St."
       ],
       [
-        "Галаба кучаси"
+        "Галаба кучаси",
+        "ул. Галаба",
+        "Galaba St."
       ],
       [
-        "Госул Аъзам кучаси"
+        "Госул Аъзам кучаси",
+        "ул. Госул Аъзам",
+        "Gosul Azam St."
       ],
       [
-        "Гофур Гулом кучаси"
+        "Гофур Гулом кучаси",
+        "ул. Гофур Гулом",
+        "Gofur Gulom St."
       ],
       [
-        "Гулзор кучаси"
+        "Гулзор кучаси",
+        "ул. Гулзор",
+        "Gulzor St."
       ],
       [
-        "Гулистон кучаси"
+        "Гулистон кучаси",
+        "ул. Гулистон",
+        "Guliston St."
       ],
       [
-        "Дехконобод кучаси"
+        "Дехконобод кучаси",
+        "ул. Дехконобод",
+        "Dekhkonobod St."
       ],
       [
-        "Дустлик кучаси"
+        "Дустлик кучаси",
+        "ул. Дустлик",
+        "Dustlik St."
       ],
       [
-        "Исломобод кучаси"
+        "Исломобод кучаси",
+        "ул. Исломобод",
+        "Islomobod St."
       ],
       [
-        "Истиклол кучаси"
+        "Истиклол кучаси",
+        "ул. Истиклол",
+        "Istiklol St."
       ],
       [
-        "Камон кучаси"
+        "Камон кучаси",
+        "ул. Камон",
+        "Kamon St."
       ],
       [
-        "Камон Ситорак кучаси"
+        "Камон Ситорак кучаси",
+        "ул. Камон Ситорак",
+        "Kamon Sitorak St."
       ],
       [
-        "Куксарой кучаси"
+        "Куксарой кучаси",
+        "ул. Куксарой",
+        "Kuksaroy St."
       ],
       [
-        "Кулобод кучаси"
+        "Кулобод кучаси",
+        "ул. Кулобод",
+        "Kulobod St."
       ],
       [
-        "Кулоллик кучаси"
+        "Кулоллик кучаси",
+        "ул. Кулоллик",
+        "Kulollik St."
       ],
       [
-        "Кургон кучаси"
+        "Кургон кучаси",
+        "ул. Кургон",
+        "Kurgon St."
       ],
       [
-        "Кушчинор кучалари"
+        "Кушчинор кучалари",
+        "Kushchinor kuchalari"
       ],
       [
-        "Кушчинор кучаси"
+        "Кушчинор кучаси",
+        "ул. Кушчинор",
+        "Kushchinor St."
       ],
       [
-        "Лолазор кучаси"
+        "Лолазор кучаси",
+        "ул. Лолазор",
+        "Lolazor St."
       ],
       [
-        "Маданият кучаси"
+        "Маданият кучаси",
+        "ул. Маданият",
+        "Madaniyat St."
       ],
       [
-        "Марварид кучаси"
+        "Марварид кучаси",
+        "ул. Марварид",
+        "Marvarid St."
       ],
       [
-        "Машраб кучаси"
+        "Машраб кучаси",
+        "ул. Машраб",
+        "Mashrab St."
       ],
       [
-        "Мевазор кучаси"
+        "Мевазор кучаси",
+        "ул. Мевазор",
+        "Mevazor St."
       ],
       [
-        "Мир Шаробов кучаси"
+        "Мир Шаробов кучаси",
+        "ул. Мир Шаробов",
+        "Mir Sharobov St."
       ],
       [
-        "Мирзаобод кучаси"
+        "Мирзаобод кучаси",
+        "ул. Мирзаобод",
+        "Mirzaobod St."
       ],
       [
-        "Мумина Маматова кучаси"
+        "Мумина Маматова кучаси",
+        "ул. Мумина Маматова",
+        "Mumina Mamatova St."
       ],
       [
-        "Навбахор кучаси"
+        "Навбахор кучаси",
+        "ул. Навбахор",
+        "Navbakhor St."
       ],
       [
-        "Навоий кучаси"
+        "Навоий кучаси",
+        "ул. Навоий",
+        "Navoiy St."
       ],
       [
-        "Навоий Шох кучаси"
+        "Навоий Шох кучаси",
+        "ул. Навоий Шох",
+        "Navoiy Shokh St."
       ],
       [
-        "Навруз кучаси"
+        "Навруз кучаси",
+        "ул. Навруз",
+        "Navruz St."
       ],
       [
-        "Нуравшон кучаси"
+        "Нуравшон кучаси",
+        "ул. Нуравшон",
+        "Nuravshon St."
       ],
       [
-        "Обод кучаси"
+        "Обод кучаси",
+        "ул. Обод",
+        "Obod St."
       ],
       [
-        "Огахий кучаси"
+        "Огахий кучаси",
+        "ул. Огахий",
+        "Ogakhiy St."
       ],
       [
-        "Огахим кучаси"
+        "Огахим кучаси",
+        "ул. Огахим",
+        "Ogakhim St."
       ],
       [
-        "Озод кучаси"
+        "Озод кучаси",
+        "ул. Озод",
+        "Ozod St."
       ],
       [
-        "Озодлик кучаси"
+        "Озодлик кучаси",
+        "ул. Озодлик",
+        "Ozodlik St."
       ],
       [
-        "Ойбек кучаси"
+        "Ойбек кучаси",
+        "ул. Ойбек",
+        "Oybek St."
       ],
       [
-        "Октош кучаси"
+        "Октош кучаси",
+        "ул. Октош",
+        "Oktosh St."
       ],
       [
-        "Охрак кучаси"
+        "Охрак кучаси",
+        "ул. Охрак",
+        "Okhrak St."
       ],
       [
-        "Почвон кучаси"
+        "Почвон кучаси",
+        "ул. Почвон",
+        "Pochvon St."
       ],
       [
-        "Почвон трасса"
+        "Почвон трасса",
+        "Pochvon trassa"
       ],
       [
-        "Рахматобод кучаси"
+        "Рахматобод кучаси",
+        "ул. Рахматобод",
+        "Rakhmatobod St."
       ],
       [
-        "Регистон кучаси"
+        "Регистон кучаси",
+        "ул. Регистон",
+        "Registon St."
       ],
       [
-        "Садаф кучаси"
+        "Садаф кучаси",
+        "ул. Садаф",
+        "Sadaf St."
       ],
       [
-        "Садриддин Айний кучаси"
+        "Садриддин Айний кучаси",
+        "ул. Садриддин Айний",
+        "Sadriddin Ayniy St."
       ],
       [
-        "Саиди кучаси"
+        "Саиди кучаси",
+        "ул. Саиди",
+        "Saidi St."
       ],
       [
-        "Самарканд кучаси"
+        "Самарканд кучаси",
+        "ул. Самарканд",
+        "Samarkand St."
       ],
       [
-        "Темур Малик кучаси"
+        "Темур Малик кучаси",
+        "ул. Темур Малик",
+        "Temur Malik St."
       ],
       [
         "У. Носир кучаси",
-        "У.Носир кучаси"
+        "У.Носир кучаси",
+        "ул. У. Носир | ул. У.Носир",
+        "U. Nosir St. | U.Nosir St."
       ],
       [
-        "Узбекистон кучаси"
+        "Узбекистон кучаси",
+        "ул. Узбекистон",
+        "Uzbekiston St."
       ],
       [
-        "улица Каратепа"
+        "улица Каратепа",
+        "ул. Каратепа",
+        "Karatepa St."
       ],
       [
-        "Улугбек кучаси"
+        "Улугбек кучаси",
+        "ул. Улугбек",
+        "Ulugbek St."
       ],
       [
-        "Умар Хайём кучаси"
+        "Умар Хайём кучаси",
+        "ул. Умар Хайём",
+        "Umar Khayyom St."
       ],
       [
-        "Усмон Юсупов кучаси"
+        "Усмон Юсупов кучаси",
+        "ул. Усмон Юсупов",
+        "Usmon Yusupov St."
       ],
       [
-        "Фарход кучаси"
+        "Фарход кучаси",
+        "ул. Фарход",
+        "Farkhod St."
       ],
       [
-        "Фитрат кучаси"
+        "Фитрат кучаси",
+        "ул. Фитрат",
+        "Fitrat St."
       ],
       [
-        "Фуркат кучаси"
+        "Фуркат кучаси",
+        "ул. Фуркат",
+        "Furkat St."
       ],
       [
-        "Халкобод кучаси"
+        "Халкобод кучаси",
+        "ул. Халкобод",
+        "Khalkobod St."
       ],
       [
-        "Хамза кучаси"
+        "Хамза кучаси",
+        "ул. Хамза",
+        "Khamza St."
       ],
       [
-        "Хидрикул кучаси"
+        "Хидрикул кучаси",
+        "ул. Хидрикул",
+        "Khidrikul St."
       ],
       [
-        "Хурият кучаси"
+        "Хурият кучаси",
+        "ул. Хурият",
+        "Khuriyat St."
       ],
       [
-        "Чашмайи Баржуш кучаси"
+        "Чашмайи Баржуш кучаси",
+        "ул. Чашмайи Баржуш",
+        "Chashmayi Barzhush St."
       ],
       [
-        "Чинор кучаси"
+        "Чинор кучаси",
+        "ул. Чинор",
+        "Chinor St."
       ],
       [
-        "Чорбог кучаси"
+        "Чорбог кучаси",
+        "ул. Чорбог",
+        "Chorbog St."
       ],
       [
-        "Чулпон кучаси"
+        "Чулпон кучаси",
+        "ул. Чулпон",
+        "Chulpon St."
       ],
       [
-        "Шароб Усмонов кучаси"
+        "Шароб Усмонов кучаси",
+        "ул. Шароб Усмонов",
+        "Sharob Usmonov St."
       ],
       [
         "Шоҳроҳи Самарқанд-Панҷакент",
@@ -72072,45 +76260,65 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "شاهراه سمرقند-پنجه‌کند"
       ],
       [
-        "Янги Йул кучаси"
+        "Янги Йул кучаси",
+        "ул. Янги Йул",
+        "Yangi Yul St."
       ],
       [
-        "Янгиарик кучалари"
+        "Янгиарик кучалари",
+        "Yangiarik kuchalari"
       ],
       [
-        "Abulqosim Lohutiy ko`chasi"
+        "Abulqosim Lohutiy ko`chasi",
+        "ул. Абулкосим Лохутий",
+        "Abulqosim Lohutiy St."
       ],
       [
         "Alisher Navoiy shoh ko'chasi",
         "проспект Алишера Навои"
       ],
       [
-        "Alpomish Ko’chasi"
+        "Alpomish Ko’chasi",
+        "ул. Алпомиш",
+        "Alpomish St."
       ],
       [
-        "Ariq ko'chasi"
+        "Ariq ko'chasi",
+        "ул. Арик",
+        "Ariq St."
       ],
       [
-        "Birinchi ko'chasi"
+        "Birinchi ko'chasi",
+        "ул. Биринчи",
+        "Birinchi St."
       ],
       [
-        "Labi Hovuz ko'chasi"
+        "Labi Hovuz ko'chasi",
+        "ул. Лаби Ховуз",
+        "Labi Hovuz St."
       ],
       [
-        "Minglar ko'chasi"
+        "Minglar ko'chasi",
+        "ул. Минглар",
+        "Minglar St."
       ],
       [
         "Navoiy shox ko’chasi",
         "проспект Алишера Навои"
       ],
       [
-        "Navruz"
+        "Navruz",
+        "Навруз"
       ],
       [
-        "O'rta Soy ko'chasi"
+        "O'rta Soy ko'chasi",
+        "ул. Урта Сой",
+        "O'rta Soy St."
       ],
       [
-        "Pochvon ko'chasi"
+        "Pochvon ko'chasi",
+        "ул. Почвон",
+        "Pochvon St."
       ],
       [
         "Samarqand-Panjakent avtomobil yoʻli",
@@ -72121,63 +76329,51 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "شاهراه سمرقند-پنجه‌کند"
       ],
       [
-        "Sheroziy ko'chasi"
+        "Sheroziy ko'chasi",
+        "ул. Шерозий",
+        "Sheroziy St."
       ],
       [
-        "Xalqparvar"
+        "Xalqparvar",
+        "Халкпарвар"
       ],
       [
-        "Zulfiyaxonim"
+        "Zulfiyaxonim",
+        "Зулфияхоним"
       ]
     ]
   },
   "Xonobod": {
     "localAreas": [
       [
-        "Ак-Таш",
-        "アク・タシ"
-      ],
-      [
         "Асылбек Каримов айылы",
-        "Село им. Асылбека Каримова"
+        "Асылбек Каримов айылы | Село им. Асылбека Каримова",
+        "Село им. Асылбека Каримова",
+        "Asylbek Karimov ayyly | Selo im. Asylbeka Karimova"
       ],
       [
         "Жаңы-Чек",
-        "Жаны-Чек"
+        "Жаны-Чек",
+        "Жаны-Чек | Жаңы-Чек",
+        "Zhany-Chek | Zhangy-Chek"
       ],
       [
         "Жогорку Түрк-Абад",
-        "Верхний Тюрк-Абад"
-      ],
-      [
-        "Кара-Суу",
-        "Kara-Suu",
-        "Karasuu"
-      ],
-      [
-        "Киров"
-      ],
-      [
-        "Кызыл-Шарк"
-      ],
-      [
-        "Савай"
+        "Верхний Тюрк-Абад",
+        "Верхний Тюрк-Абад | Жогорку Түрк-Абад",
+        "Verkhniy Tyurk-Abad | Zhogorku Turk-Abad"
       ],
       [
         "Таш-Акыр",
-        "Таш-Акур"
-      ],
-      [
-        "Тельмана",
-        "Telimana",
-        "テリマナ"
+        "Таш-Акур",
+        "Таш-Акур | Таш-Акыр",
+        "Tash-Akur | Tash-Akyr"
       ],
       [
         "Төмөнкү Түрк-Абад",
-        "Нижний Тюрк-Абад"
-      ],
-      [
-        "Ынтымак"
+        "Нижний Тюрк-Абад",
+        "Нижний Тюрк-Абад | Төмөнкү Түрк-Абад",
+        "Nizhniy Tyurk-Abad | Tomonku Turk-Abad"
       ],
       [
         "Beshtol",
@@ -72198,7 +76394,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Эшанабад"
       ],
       [
-        "Haqiqat"
+        "Haqiqat",
+        "Хакикат"
       ],
       [
         "Kampirravot",
@@ -72234,21 +76431,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Kushtepa"
       ],
       [
-        "Qorasuv",
-        "Карасу",
-        "Қарасу",
-        "Karasu",
-        "قرصو",
-        "قره‌سو",
-        "قرہ سوو",
-        "カラスウ"
-      ],
-      [
-        "So'qaloq"
-      ],
-      [
-        "Sultonobod",
-        "Султанабад"
+        "So'qaloq",
+        "Сукалок"
       ],
       [
         "To'rachek",
@@ -72256,7 +76440,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Turachek"
       ],
       [
-        "To'raobod"
+        "To'raobod",
+        "Тураобод"
       ],
       [
         "Yorqishloq",
@@ -72268,451 +76453,162 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
     ],
     "streets": [
       [
-        "1-мая улица",
-        "1 May Street",
-        "5月1日通り"
+        "Анхор улица",
+        "ул. Анхор",
+        "Ankhor St."
       ],
       [
-        "60-лет Киргизии улица"
+        "Аэропортская 1 улица",
+        "1-я ул. Аэропортская",
+        "Aeroportskaya 1 St."
       ],
       [
-        "Абдырахманов А"
+        "Аэропортская 2 улица",
+        "2-я ул. Аэропортская",
+        "Aeroportskaya 2 St."
       ],
       [
-        "Айтиева улица"
-      ],
-      [
-        "Акшоола улица"
-      ],
-      [
-        "Алайская улица"
-      ],
-      [
-        "Анхор улица"
-      ],
-      [
-        "Асанова улица"
-      ],
-      [
-        "Аэропортская 1 улица"
-      ],
-      [
-        "Аэропортская 2 улица"
-      ],
-      [
-        "Баетова улица"
-      ],
-      [
-        "Бакыт улица"
-      ],
-      [
-        "Батиров М. улица"
-      ],
-      [
-        "Батыш улица"
-      ],
-      [
-        "Бейшеналиевой улица"
-      ],
-      [
-        "Боронбаев улица"
-      ],
-      [
-        "Боронов улица"
+        "Батиров М. улица",
+        "ул. Батиров М.",
+        "Batirov M. St."
       ],
       [
         "Буюк Tурон"
       ],
       [
-        "Вторая улица"
+        "Вторая улица",
+        "ул. Вторая",
+        "Vtoraya St."
       ],
       [
-        "Гавсудинова улица"
+        "Гапурова улица",
+        "ул. Гапурова",
+        "Gapurova St."
       ],
       [
-        "Гагарина улица"
+        "Детсадовская улица",
+        "ул. Детсадовская",
+        "Detsadovskaya St."
       ],
       [
-        "Гапурова улица"
+        "Дойбеков Данияр улица",
+        "ул. Дойбеков Данияр",
+        "Doybekov Daniyar St."
       ],
       [
-        "Демократическая улица"
+        "Исомидинова улица",
+        "ул. Исомидинова",
+        "Isomidinova St."
       ],
       [
-        "Детсадовская улица"
+        "Кадирова М. улица",
+        "ул. Кадирова М.",
+        "Kadirova M. St."
       ],
       [
-        "Дойбеков Данияр улица"
+        "Мамадалиева улица",
+        "ул. Мамадалиева",
+        "Mamadalieva St."
       ],
       [
-        "Дооронов улица"
+        "Мамачаева улица",
+        "ул. Мамачаева",
+        "Mamachaeva St."
       ],
       [
-        "Жаны-Турмуш улица"
+        "Первая улица",
+        "ул. Первая",
+        "Pervaya St."
       ],
       [
-        "Жапиев Наби улица"
+        "Тешебаева Ж. улица",
+        "ул. Тешебаева Ж.",
+        "Teshebaeva Zh. St."
       ],
       [
-        "жаштык"
+        "Тешебай-ата улица",
+        "ул. Тешебай-ата",
+        "Teshebay-ata St."
       ],
       [
-        "Жаштык улица"
+        "Токтасинова улица",
+        "ул. Токтасинова",
+        "Toktasinova St."
       ],
       [
-        "Жданова улица"
+        "улица Бехбудий",
+        "ул. Бехбудий",
+        "Bekhbudiy St."
       ],
       [
-        "Западная улица"
+        "улица Курманджан Датки",
+        "ул. Курманджан Датки",
+        "Kurmandzhan Datki St."
       ],
       [
-        "Зулуев М. улица"
+        "Улица чаманзор",
+        "ул. чаманзор",
+        "chamanzor St."
       ],
       [
-        "Интернациональная улица"
+        "Усонов Жоро улица",
+        "ул. Усонов Жоро",
+        "Usonov Zhoro St."
       ],
       [
-        "Исакулов Н. улица"
-      ],
-      [
-        "Исмаиловой Инохан улица"
-      ],
-      [
-        "Исомидинова улица"
-      ],
-      [
-        "Кадирова М. улица"
-      ],
-      [
-        "Кадырова улица"
-      ],
-      [
-        "Казыбекова К. улица"
-      ],
-      [
-        "Кайырма улица"
-      ],
-      [
-        "Каленов С. улица"
-      ],
-      [
-        "Калинина улица"
-      ],
-      [
-        "Карла Маркса улица"
-      ],
-      [
-        "Келечек улица"
-      ],
-      [
-        "Киргизская улица"
-      ],
-      [
-        "Кирова улица"
-      ],
-      [
-        "Клары Цеткин улица"
-      ],
-      [
-        "Козубаева улица"
-      ],
-      [
-        "Комсодемьянской улица"
-      ],
-      [
-        "Комсомольская улица"
-      ],
-      [
-        "Королева улица"
-      ],
-      [
-        "Крупской улица"
-      ],
-      [
-        "Крылова улица"
-      ],
-      [
-        "Кызыл-Шарк улица"
-      ],
-      [
-        "Кыргызстан улица"
-      ],
-      [
-        "Ленина улица",
-        "Ленин атындагы кёчё,",
-        "Ленин көчө"
-      ],
-      [
-        "Линейная улица"
-      ],
-      [
-        "Мамадалиева улица"
-      ],
-      [
-        "Мамачаева улица"
-      ],
-      [
-        "Манас 1000 улица"
-      ],
-      [
-        "Манбетов. Ш."
-      ],
-      [
-        "Мелькомбинат улица"
-      ],
-      [
-        "Мирзалиев Бердали улица"
-      ],
-      [
-        "Мундузбаева улица"
-      ],
-      [
-        "Мусаев Тешебай улица"
-      ],
-      [
-        "Набережная улица"
-      ],
-      [
-        "Наримана улица"
-      ],
-      [
-        "Новаи улица"
-      ],
-      [
-        "Нооруз улица"
-      ],
-      [
-        "Нурахунова улица"
-      ],
-      [
-        "Орозбекова улица"
-      ],
-      [
-        "Осмонова улица"
-      ],
-      [
-        "Ош 3000 улица"
-      ],
-      [
-        "Ошская улица",
-        "Ошская Улица"
-      ],
-      [
-        "Панфилова улица"
-      ],
-      [
-        "Патриса Лумумбы улица"
-      ],
-      [
-        "Первая улица"
-      ],
-      [
-        "Пионерская улица"
-      ],
-      [
-        "Полевая улица"
-      ],
-      [
-        "Пушкина А.С Улица",
-        "Pushkin Street"
-      ],
-      [
-        "Рабоче-Декханская улица"
-      ],
-      [
-        "Рахимова улица"
-      ],
-      [
-        "РТС улица"
-      ],
-      [
-        "Савай 10 улица"
-      ],
-      [
-        "Савай 11 улица"
-      ],
-      [
-        "Савай 12 улица"
-      ],
-      [
-        "Савай 13 улица"
-      ],
-      [
-        "Савай 14 улица"
-      ],
-      [
-        "Савай 15 улица"
-      ],
-      [
-        "Савай 17 улица"
-      ],
-      [
-        "Савай 18 улица"
-      ],
-      [
-        "Савай 19 улица"
-      ],
-      [
-        "Савай 20 улица"
-      ],
-      [
-        "Савай 3 улица"
-      ],
-      [
-        "Савай 4 улица"
-      ],
-      [
-        "Савай 5 улица"
-      ],
-      [
-        "Савай 6 улица"
-      ],
-      [
-        "Савай 7 улица"
-      ],
-      [
-        "Савай 9 улица"
-      ],
-      [
-        "Савай улица"
-      ],
-      [
-        "Саипов О. улица"
-      ],
-      [
-        "Саламат Аажы"
-      ],
-      [
-        "Совайская улица"
-      ],
-      [
-        "Советская улица"
-      ],
-      [
-        "Спортивная Улица"
-      ],
-      [
-        "Стадионная улица"
-      ],
-      [
-        "Таиров Юсупжан улица"
-      ],
-      [
-        "Таширов Хайтахун улица"
-      ],
-      [
-        "Тельмана улица"
-      ],
-      [
-        "Терешковой улица"
-      ],
-      [
-        "Тешебаева Ж. улица"
-      ],
-      [
-        "Тешебай-ата улица"
-      ],
-      [
-        "Токтасинова улица"
-      ],
-      [
-        "Токтогула улица"
-      ],
-      [
-        "Тургунбаев Ю. улица"
-      ],
-      [
-        "Тынчтык улица"
-      ],
-      [
-        "Узгенская улица"
-      ],
-      [
-        "улица Алайская"
-      ],
-      [
-        "улица Бехбудий"
-      ],
-      [
-        "улица Карасуу"
-      ],
-      [
-        "улица Курманджан Датки"
-      ],
-      [
-        "Улица чаманзор"
-      ],
-      [
-        "Умарова улица"
-      ],
-      [
-        "Усонов Жоро улица"
-      ],
-      [
-        "Фрунзе улица"
-      ],
-      [
-        "Халмурзаева улица"
+        "Халмурзаева улица",
+        "ул. Халмурзаева",
+        "Khalmurzaeva St."
       ],
       [
         "Ҳидоят улица",
-        "улица Хидаят"
+        "ул. Хидаят | ул. Ҳидоят",
+        "улица Хидаят",
+        "Khidayat St. | Hidoyat St."
       ],
       [
-        "Чехова улица"
+        "шифокор",
+        "shifokor"
       ],
       [
-        "Шадиева улица"
+        "Ынтымак 1 улица",
+        "1-я ул. Ынтымак",
+        "Yntymak 1 St."
       ],
       [
-        "шифокор"
+        "Ынтымак 11 улица",
+        "11-я ул. Ынтымак",
+        "Yntymak 11 St."
       ],
       [
-        "Школьная улица"
+        "Ынтымак 13 улица",
+        "13-я ул. Ынтымак",
+        "Yntymak 13 St."
       ],
       [
-        "Шопокова улица"
+        "Ынтымак 14 улица",
+        "14-я ул. Ынтымак",
+        "Yntymak 14 St."
       ],
       [
-        "Ынтымак 1 улица"
+        "Ынтымак 15 улица",
+        "15-я ул. Ынтымак",
+        "Yntymak 15 St."
       ],
       [
-        "Ынтымак 11 улица"
+        "Ынтымак 2 улица",
+        "2-я ул. Ынтымак",
+        "Yntymak 2 St."
       ],
       [
-        "Ынтымак 13 улица"
+        "Andijon ko'chasi",
+        "ул. Андижан",
+        "Andijon St."
       ],
       [
-        "Ынтымак 14 улица"
-      ],
-      [
-        "Ынтымак 15 улица"
-      ],
-      [
-        "Ынтымак 2 улица"
-      ],
-      [
-        "Ынтымак улица"
-      ],
-      [
-        "Энгельса улица"
-      ],
-      [
-        "Юлдашева улица",
-        "Yuldasheva Street"
-      ],
-      [
-        "Якубова улица"
-      ],
-      [
-        "Andijon ko'chasi"
-      ],
-      [
-        "Bishkek-Osh",
-        "Бишкек-Ош"
-      ],
-      [
-        "Bo'ston ko'chasi"
+        "Bo'ston ko'chasi",
+        "ул. Бустон",
+        "Bo'ston St."
       ],
       [
         "Boburshox ko'chasi",
@@ -72724,30 +76620,38 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Chimyon street"
       ],
       [
-        "Do'rmon ko'chasi"
+        "Do'rmon ko'chasi",
+        "ул. Дурмон",
+        "Do'rmon St."
       ],
       [
-        "Do‘stlik ko‘chasi",
-        "улица Дустлик"
+        "Farog'at ko'chasi",
+        "ул. Фарогат",
+        "Farog'at St."
       ],
       [
-        "Farog'at ko'chasi"
+        "Favvora ko'chasi",
+        "ул. Фаввора",
+        "Favvora St."
       ],
       [
-        "Favvora ko'chasi"
-      ],
-      [
-        "Fidoyi ko'chasi"
+        "Fidoyi ko'chasi",
+        "ул. Фидойи",
+        "Fidoyi St."
       ],
       [
         "Guliston ko'chasi",
         "Гулистан улица"
       ],
       [
-        "Haqiqat ko'chasi"
+        "Haqiqat ko'chasi",
+        "ул. Хакикат",
+        "Haqiqat St."
       ],
       [
-        "Ilg'or ko'chasi"
+        "Ilg'or ko'chasi",
+        "ул. Илгор",
+        "Ilg'or St."
       ],
       [
         "Islom Karimov koʻchasi",
@@ -72755,56 +76659,76 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Islam Karimov street"
       ],
       [
-        "Jannat bog'i ko'chasi"
+        "Jannat bog'i ko'chasi",
+        "ул. Джаннат боги",
+        "Jannat bog'i St."
       ],
       [
         "Koinot ko'chasi",
         "Коинот улица"
       ],
       [
-        "Korxona ko'chasi"
+        "Korxona ko'chasi",
+        "ул. Корхона",
+        "Korxona St."
       ],
       [
-        "Maktab ko'chasi"
+        "Maktab ko'chasi",
+        "ул. Мактаб",
+        "Maktab St."
       ],
       [
-        "Mangulik ko'chasi"
+        "Mangulik ko'chasi",
+        "ул. Мангулик",
+        "Mangulik St."
       ],
       [
-        "Mirzo Ulug'bek ko'chasi"
+        "Mirzo Ulug'bek ko'chasi",
+        "ул. Мирзо Улугбек",
+        "Mirzo Ulug'bek St."
       ],
       [
-        "Munavvar ko'chasi"
+        "Munavvar ko'chasi",
+        "ул. Мунаввар",
+        "Munavvar St."
       ],
       [
-        "Mustaqillik ko'chasi",
-        "улица Мустакиллик"
-      ],
-      [
-        "Navo ko'chasi"
+        "Navo ko'chasi",
+        "ул. Наво",
+        "Navo St."
       ],
       [
         "Navoiy ko'chasi",
         "Навои улица"
       ],
       [
-        "Nodirabegim ko'chasi"
+        "Nodirabegim ko'chasi",
+        "ул. Нодирабегим",
+        "Nodirabegim St."
       ],
       [
-        "O'zbekiston 5 yilligi ko'chasi"
+        "O'zbekiston 5 yilligi ko'chasi",
+        "ул. Узбекистон 5 йиллиги",
+        "O'zbekiston 5 yilligi St."
       ],
       [
-        "Obod diyor ko'chasi"
+        "Obod diyor ko'chasi",
+        "ул. Обод диёр",
+        "Obod diyor St."
       ],
       [
         "Oqibat ko'chasi",
         "Окибат улица"
       ],
       [
-        "Qomus ko'chasi"
+        "Qomus ko'chasi",
+        "ул. Комус",
+        "Qomus St."
       ],
       [
-        "Qoradaryo ko'chasi"
+        "Qoradaryo ko'chasi",
+        "ул. Корадарё",
+        "Qoradaryo St."
       ],
       [
         "Qorasuv ko'chasi",
@@ -72813,24 +76737,34 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Karasu"
       ],
       [
-        "Sadoqat Ko’chasi"
+        "Sadoqat Ko’chasi",
+        "ул. Садокат",
+        "Sadoqat St."
       ],
       [
-        "Soy bo’yi ko’chasi"
+        "Soy bo’yi ko’chasi",
+        "ул. Сой буйи",
+        "Soy bo'yi St."
       ],
       [
-        "Tanga Topdi ko'chasi"
+        "Tanga Topdi ko'chasi",
+        "ул. Танга Топди",
+        "Tanga Topdi St."
       ],
       [
         "Uch Tegirmon ko‘chasi",
         "Уч Тегирман улица"
       ],
       [
-        "Umidbaxsh ko'chasi"
+        "Umidbaxsh ko'chasi",
+        "ул. Умидбахш",
+        "Umidbaxsh St."
       ],
       [
         "Xavaskor ko'chasi",
-        "Xavaskor ko’chasi"
+        "ул. Хаваскор",
+        "Xavaskor ko’chasi",
+        "Xavaskor St."
       ],
       [
         "Xonobod ko'chasi",
@@ -72838,7 +76772,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Xanabad street"
       ],
       [
-        "Ziyonur ko'chasi"
+        "Ziyonur ko'chasi",
+        "ул. Зиёнур",
+        "Ziyonur St."
       ]
     ]
   },
@@ -72947,14 +76883,17 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
     ],
     "streets": [
       [
-        "Б.Гафуров"
+        "Б.Гафуров",
+        "B.Gafurov"
       ],
       [
         "РҶ068",
         "RJ068"
       ],
       [
-        "Улица Нурфайз"
+        "Улица Нурфайз",
+        "ул. Нурфайз",
+        "Nurfayz St."
       ],
       [
         "хиёбони Исмоили Сомонӣ",
@@ -72975,10 +76914,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Абдурахман Джами улица"
       ],
       [
-        "Abu Abdulla Rudakiy ko'chasi"
+        "Abu Abdulla Rudakiy ko'chasi",
+        "ул. Абу Абдулла Рудакий",
+        "Abu Abdulla Rudakiy St."
       ],
       [
-        "Adolat ko'chasi"
+        "Adolat ko'chasi",
+        "ул. Адолат",
+        "Adolat St."
       ],
       [
         "Akmal Ikromov ko'chasi",
@@ -72986,13 +76929,19 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Akmal Ikromov street"
       ],
       [
-        "Al-Buxoriy 1 berk ko'chasi"
+        "Al-Buxoriy 1 berk ko'chasi",
+        "1-й туп. Ал-Бухорий",
+        "Al-Buxoriy 1st Dead End"
       ],
       [
-        "Al-Buxoriy 2 berk ko'chasi"
+        "Al-Buxoriy 2 berk ko'chasi",
+        "2-й туп. Ал-Бухорий",
+        "Al-Buxoriy 2nd Dead End"
       ],
       [
-        "Al-Buxoriy ko'chasi"
+        "Al-Buxoriy ko'chasi",
+        "ул. Ал-Бухорий",
+        "Al-Buxoriy St."
       ],
       [
         "Al-Xorazmiy ko'chasi",
@@ -73013,7 +76962,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Андижан"
       ],
       [
-        "Atirgul ko'chasi"
+        "Atirgul ko'chasi",
+        "ул. Атиргул",
+        "Atirgul St."
       ],
       [
         "Ayniy ko'chasi",
@@ -73026,13 +76977,19 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Bahoriston street"
       ],
       [
-        "Bastakorlar ko'chasi"
+        "Bastakorlar ko'chasi",
+        "ул. Бастакорлар",
+        "Bastakorlar St."
       ],
       [
-        "Baxor ko'chasi"
+        "Baxor ko'chasi",
+        "ул. Бахор",
+        "Baxor St."
       ],
       [
-        "Baxt ko'chasi"
+        "Baxt ko'chasi",
+        "ул. Бахт",
+        "Baxt St."
       ],
       [
         "Beshbuloq ko'chasi",
@@ -73043,7 +77000,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Бирдамлик"
       ],
       [
-        "Birlashgan ko'chasi"
+        "Birlashgan ko'chasi",
+        "ул. Бирлашган",
+        "Birlashgan St."
       ],
       [
         "Boborahim Mashrab ko'chasi",
@@ -73054,7 +77013,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Богишамол"
       ],
       [
-        "Bog‘iston ko'chasi"
+        "Bog‘iston ko'chasi",
+        "ул. Богистон",
+        "Bog'iston St."
       ],
       [
         "Bogʼzor ko‘chasi",
@@ -73065,7 +77026,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Бустан улица"
       ],
       [
-        "Boychechak ko'chasi"
+        "Boychechak ko'chasi",
+        "ул. Бойчечак",
+        "Boychechak St."
       ],
       [
         "Bunyodkor ko'chasi",
@@ -73079,28 +77042,44 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Buxoriy street"
       ],
       [
-        "Buxoro ko'chasi"
+        "Buxoro ko'chasi",
+        "ул. Бухара",
+        "Buxoro St."
       ],
       [
-        "Chamanzor berk ko'chasi"
+        "Chamanzor berk ko'chasi",
+        "туп. Чаманзор",
+        "Chamanzor Dead End"
       ],
       [
-        "Chamanzor ko'chasi"
+        "Chamanzor ko'chasi",
+        "ул. Чаманзор",
+        "Chamanzor St."
       ],
       [
-        "Chinobod ko'chasi"
+        "Chinobod ko'chasi",
+        "ул. Чинобод",
+        "Chinobod St."
       ],
       [
-        "Chinor ko'chasi"
+        "Chinor ko'chasi",
+        "ул. Чинор",
+        "Chinor St."
       ],
       [
-        "Chirchiq ko'chasi"
+        "Chirchiq ko'chasi",
+        "ул. Чирчик",
+        "Chirchiq St."
       ],
       [
-        "Cho‘lquvar ko'chasi"
+        "Cho‘lquvar ko'chasi",
+        "ул. Чулкувар",
+        "Cho'lquvar St."
       ],
       [
-        "Darvozaqir ko'chasi"
+        "Darvozaqir ko'chasi",
+        "ул. Дарвозакир",
+        "Darvozaqir St."
       ],
       [
         "Dilsaroy ko'chasi",
@@ -73112,7 +77091,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Diyor street"
       ],
       [
-        "Farg'ona ko'chasi"
+        "Farg'ona ko'chasi",
+        "ул. Фергана",
+        "Farg'ona St."
       ],
       [
         "Farhod ko'chasi",
@@ -73134,17 +77115,23 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Faizulla Khujaev street"
       ],
       [
-        "Fazilat ko'chasi"
+        "Fazilat ko'chasi",
+        "ул. Фазилат",
+        "Fazilat St."
       ],
       [
         "Fazogirlar ko'chasi",
         "улица Фазогёрллар"
       ],
       [
-        "Feruza ko'chasi"
+        "Feruza ko'chasi",
+        "ул. Феруза",
+        "Feruza St."
       ],
       [
-        "Fidoyilar ko'chasi"
+        "Fidoyilar ko'chasi",
+        "ул. Фидойилар",
+        "Fidoyilar St."
       ],
       [
         "Firdavsiy ko'chasi",
@@ -73156,14 +77143,18 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Фуркат улица"
       ],
       [
-        "Fuzuliy ko'chasi"
+        "Fuzuliy ko'chasi",
+        "ул. Фузулий",
+        "Fuzuliy St."
       ],
       [
         "Gulchilar ko'chasi",
         "Гульчилар улица"
       ],
       [
-        "Guldasta ko'chasi"
+        "Guldasta ko'chasi",
+        "ул. Гулдаста",
+        "Guldasta St."
       ],
       [
         "Guliston ko'chasi",
@@ -73179,7 +77170,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Гульшан"
       ],
       [
-        "Ijodkor ko'chasi"
+        "Ijodkor ko'chasi",
+        "ул. Иджодкор",
+        "Ijodkor St."
       ],
       [
         "Islomobod ko'chasi",
@@ -73196,7 +77189,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Ittifoq street"
       ],
       [
-        "Jayxun ko'chasi"
+        "Jayxun ko'chasi",
+        "ул. Джайхун",
+        "Jayxun St."
       ],
       [
         "Jizzax-Guliston road",
@@ -73207,13 +77202,19 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Камолот"
       ],
       [
-        "Ko‘kaldosh ko'chasi"
+        "Ko‘kaldosh ko'chasi",
+        "ул. Кукалдош",
+        "Ko'kaldosh St."
       ],
       [
-        "Ko‘kterak ko'chasi"
+        "Ko‘kterak ko'chasi",
+        "ул. Куктерак",
+        "Ko'kterak St."
       ],
       [
-        "Koinot ko'chasi"
+        "Koinot ko'chasi",
+        "ул. Коинот",
+        "Koinot St."
       ],
       [
         "Kooperativ ko'chasi",
@@ -73226,7 +77227,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Lahuti street"
       ],
       [
-        "Loyixachilar ko'chasi"
+        "Loyixachilar ko'chasi",
+        "ул. Лойихачилар",
+        "Loyixachilar St."
       ],
       [
         "Lutfiy ko'chasi",
@@ -73238,7 +77241,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Мактаб"
       ],
       [
-        "Matonat ko'chasi"
+        "Matonat ko'chasi",
+        "ул. Матонат",
+        "Matonat St."
       ],
       [
         "Me'morlar ko'chasi",
@@ -73262,7 +77267,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Мерос улица"
       ],
       [
-        "Muruvvat ko'chasi"
+        "Muruvvat ko'chasi",
+        "ул. Мурувват",
+        "Muruvvat St."
       ],
       [
         "Mustaqillik ko'chasi",
@@ -73274,21 +77281,27 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Мухандис"
       ],
       [
-        "Nafosat ko'chasi"
+        "Nafosat ko'chasi",
+        "ул. Нафосат",
+        "Nafosat St."
       ],
       [
         "Namangan ko'chasi",
         "улица Наманган"
       ],
       [
-        "Namuna ko'chasi"
+        "Namuna ko'chasi",
+        "ул. Намуна",
+        "Namuna St."
       ],
       [
         "Narvon ko'chasi",
         "Наврон улица"
       ],
       [
-        "Navbahor ko'chasi"
+        "Navbahor ko'chasi",
+        "ул. Навбахор",
+        "Navbahor St."
       ],
       [
         "Navoiy ko'chasi",
@@ -73305,10 +77318,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Низами улица"
       ],
       [
-        "Obod ko'chasi"
+        "Obod ko'chasi",
+        "ул. Обод",
+        "Obod St."
       ],
       [
-        "Oʻzbekiston koʻchasi"
+        "Oʻzbekiston koʻchasi",
+        "ул. Узбекистон",
+        "O'zbekiston St."
       ],
       [
         "Oqoltin ko'chasi",
@@ -73319,17 +77336,23 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Орзу улица"
       ],
       [
-        "Oybek ko'chasi"
+        "Oybek ko'chasi",
+        "ул. Ойбек",
+        "Oybek St."
       ],
       [
-        "Ozodlik ko'chasi"
+        "Ozodlik ko'chasi",
+        "ул. Озодлик",
+        "Ozodlik St."
       ],
       [
         "Paxtakor ko'chasi",
         "улица Пахтакор"
       ],
       [
-        "Qo'ng'irot ko‘chasi"
+        "Qo'ng'irot ko‘chasi",
+        "ул. Кунгирот",
+        "Qo'ng'irot St."
       ],
       [
         "Quyoshli ko'chasi",
@@ -73337,7 +77360,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Quyoshli street"
       ],
       [
-        "Rayxon ko'chasi"
+        "Rayxon ko'chasi",
+        "ул. Райхон",
+        "Rayxon St."
       ],
       [
         "Salimov ko'chasi",
@@ -73348,14 +77373,18 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Самарканд"
       ],
       [
-        "Serquyosh ko'chasi"
+        "Serquyosh ko'chasi",
+        "ул. Серкуёш",
+        "Serquyosh St."
       ],
       [
         "Shabnam koʻchasi",
         "Шабнам улица"
       ],
       [
-        "Sharq ko‘chasi"
+        "Sharq ko‘chasi",
+        "ул. Шарк",
+        "Sharq St."
       ],
       [
         "Sherbuloqsoy ko‘chasi",
@@ -73375,7 +77404,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Сырдарья"
       ],
       [
-        "Sportchilar ko'chasi"
+        "Sportchilar ko'chasi",
+        "ул. Спортчилар",
+        "Sportchilar St."
       ],
       [
         "Tadbirkorlar ko'chasi",
@@ -73390,14 +77421,18 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Талабалар"
       ],
       [
-        "Taraqqiyot ko'chasi"
+        "Taraqqiyot ko'chasi",
+        "ул. Тараккиёт",
+        "Taraqqiyot St."
       ],
       [
         "Temiryo'lchi ko‘chasi",
         "Железнодорожная улица"
       ],
       [
-        "Temur Malik ko'chasi"
+        "Temur Malik ko'chasi",
+        "ул. Темур Малик",
+        "Temur Malik St."
       ],
       [
         "Termiziy ko'chasi",
@@ -73419,14 +77454,18 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Тонг Шуласи"
       ],
       [
-        "Toqimachi ko'chasi"
+        "Toqimachi ko'chasi",
+        "ул. Токимачи",
+        "Toqimachi St."
       ],
       [
         "Toshkent ko'chasi",
         "улица Ташкент"
       ],
       [
-        "Toxir Malik ko'chasi"
+        "Toxir Malik ko'chasi",
+        "ул. Тохир Малик",
+        "Toxir Malik St."
       ],
       [
         "Tumakshina ko'chasi",
@@ -73455,13 +77494,19 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Умид"
       ],
       [
-        "Xamkorlik ko'chasi"
+        "Xamkorlik ko'chasi",
+        "ул. Хамкорлик",
+        "Xamkorlik St."
       ],
       [
-        "Xaqiqat ko'chasi"
+        "Xaqiqat ko'chasi",
+        "ул. Хакикат",
+        "Xaqiqat St."
       ],
       [
-        "Xilola ko'chasi"
+        "Xilola ko'chasi",
+        "ул. Хилола",
+        "Xilola St."
       ],
       [
         "Xo‘jamushkent ko'chasi",
@@ -73498,7 +77543,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Yangibog‘ ko'chasi"
       ],
       [
-        "Yangiobod ko'chasi"
+        "Yangiobod ko'chasi",
+        "ул. Янгиобод",
+        "Yangiobod St."
       ],
       [
         "Yangiyer ko'chasi",
@@ -73506,7 +77553,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Янгийер улица"
       ],
       [
-        "Yashnar ko'chasi"
+        "Yashnar ko'chasi",
+        "ул. Яшнар",
+        "Yashnar St."
       ],
       [
         "Yoʻlchi koʻchasi",
@@ -73517,7 +77566,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "улица Юнусобод"
       ],
       [
-        "Zahiridin Muhammad Bobur ko'chasi"
+        "Zahiridin Muhammad Bobur ko'chasi",
+        "ул. Захиридин Мухаммад Бобур",
+        "Zahiridin Muhammad Bobur St."
       ],
       [
         "Zakovat ko'chasi",
@@ -73533,7 +77584,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Ziyokor street"
       ],
       [
-        "Zomin ko'chasi"
+        "Zomin ko'chasi",
+        "ул. Зомин",
+        "Zomin St."
       ],
       [
         "Zulfiya ko'chasi",
@@ -73618,7 +77671,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Чантепа"
       ],
       [
-        "Dang'ir"
+        "Dang'ir",
+        "Дангир"
       ],
       [
         "Darhan",
@@ -73638,7 +77692,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Eshankishlak"
       ],
       [
-        "Epkendi"
+        "Epkendi",
+        "Епкенди"
       ],
       [
         "Eski Qovunchi",
@@ -73689,7 +77744,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Иязбагиш"
       ],
       [
-        "Jambul"
+        "Jambul",
+        "Джамбул"
       ],
       [
         "Jarikbash",
@@ -73717,7 +77773,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Kаrakhusan"
       ],
       [
-        "Maʻrifat"
+        "Maʻrifat",
+        "Марифат",
+        "Ma'rifat"
       ],
       [
         "Markaz",
@@ -73777,7 +77835,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Uzbekistan"
       ],
       [
-        "Oqtom"
+        "Oqtom",
+        "Октом"
       ],
       [
         "Oromgoh",
@@ -73794,7 +77853,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Петров"
       ],
       [
-        "Pistalik"
+        "Pistalik",
+        "Писталик"
       ],
       [
         "Qaxramon",
@@ -73818,7 +77878,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Kyzylshark"
       ],
       [
-        "Qoratepa"
+        "Qoratepa",
+        "Коратепа"
       ],
       [
         "Qushyog'och",
@@ -73850,7 +77911,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Саимэ"
       ],
       [
-        "Tillaobod"
+        "Tillaobod",
+        "Тиллаобод"
       ],
       [
         "To'qimachilik fabrikasini yordamchi ho'jaligi",
@@ -73940,37 +78002,57 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Akmalya Ikramova Street"
       ],
       [
-        "Зарбулок улица"
+        "Зарбулок улица",
+        "ул. Зарбулок",
+        "Zarbulok St."
       ],
       [
-        "Мустахкам оила Улица"
+        "Мустахкам оила Улица",
+        "ул. Мустахкам оила",
+        "Mustakhkam oila St."
       ],
       [
-        "Нугманова улица"
+        "Нугманова улица",
+        "ул. Нугманова",
+        "Nugmanova St."
       ],
       [
-        "Плац"
+        "Плац",
+        "Plats"
       ],
       [
-        "Сохибкор"
+        "Сохибкор",
+        "Sokhibkor"
       ],
       [
-        "Улица Адолат"
+        "Улица Адолат",
+        "ул. Адолат",
+        "Adolat St."
       ],
       [
-        "Улица Ижодкор"
+        "Улица Ижодкор",
+        "ул. Ижодкор",
+        "Izhodkor St."
       ],
       [
-        "улица Самарканд"
+        "улица Самарканд",
+        "ул. Самарканд",
+        "Samarkand St."
       ],
       [
-        "улица У. Юсупова"
+        "улица У. Юсупова",
+        "ул. У. Юсупова",
+        "U. Yusupova St."
       ],
       [
-        "Фуркат улица"
+        "Фуркат улица",
+        "ул. Фуркат",
+        "Furkat St."
       ],
       [
-        "Эркин улица"
+        "Эркин улица",
+        "ул. Эркин",
+        "Erkin St."
       ],
       [
         "Abay ko'chasi",
@@ -74017,7 +78099,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Nodirabegim ko'chasi"
       ],
       [
-        "Bo'ston 1 o'tish ko'chasi"
+        "Bo'ston 1 o'tish ko'chasi",
+        "ул. Бустон 1 утиш",
+        "Bo'ston 1 o'tish St."
       ],
       [
         "Bo'ston 2 o'tish ko'chasi",
@@ -74032,7 +78116,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Бунёткор улица"
       ],
       [
-        "Buyuk Ipak yo'li ko'chasi"
+        "Buyuk Ipak yo'li ko'chasi",
+        "дор. Буюк Ипак",
+        "Buyuk Ipak Rd."
       ],
       [
         "Chirchiq ko'chasi",
@@ -74047,10 +78133,8 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Дехканская улица"
       ],
       [
-        "Doʻstlik koʻchasi"
-      ],
-      [
-        "Ëшлик"
+        "Ëшлик",
+        "Ëshlik"
       ],
       [
         "Farovon ko'chasi",
@@ -74102,13 +78186,19 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Ибн Сино улица"
       ],
       [
-        "Istiqlol ko'chasi"
+        "Istiqlol ko'chasi",
+        "ул. Истиклол",
+        "Istiqlol St."
       ],
       [
-        "Jambul ko'chasi"
+        "Jambul ko'chasi",
+        "ул. Джамбул",
+        "Jambul St."
       ],
       [
-        "Kamolot ko'chasi"
+        "Kamolot ko'chasi",
+        "ул. Камолот",
+        "Kamolot St."
       ],
       [
         "Kerimqulov ko'chasi",
@@ -74132,10 +78222,13 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Кукаламзор улица"
       ],
       [
-        "Lazzat ko'chasi"
+        "Lazzat ko'chasi",
+        "ул. Лаззат",
+        "Lazzat St."
       ],
       [
-        "M39"
+        "M39",
+        "М39"
       ],
       [
         "Ma'rifat ko'chasi",
@@ -74146,17 +78239,23 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Маданият улица"
       ],
       [
-        "Maftunkor Street"
+        "Maftunkor Street",
+        "ул. Мафтункор",
+        "Maftunkor St."
       ],
       [
-        "Majnuntol ko‘chasi"
+        "Majnuntol ko‘chasi",
+        "ул. Маджнунтол",
+        "Majnuntol St."
       ],
       [
         "Marifat o'tish ko'chasi",
         "Марифат утиш улица"
       ],
       [
-        "Markaziy ko'chasi"
+        "Markaziy ko'chasi",
+        "ул. Марказий",
+        "Markaziy St."
       ],
       [
         "Mevazor ko'chasi",
@@ -74181,20 +78280,19 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Навои переулок"
       ],
       [
-        "Nurziyo ko'chasi"
+        "Nurziyo ko'chasi",
+        "ул. Нурзиё",
+        "Nurziyo St."
       ],
       [
         "O'zbekiston ko'chasi",
-        "O‘zbekiston ko'chasi"
+        "ул. Узбекистон",
+        "O‘zbekiston ko'chasi",
+        "O'zbekiston St."
       ],
       [
         "Ohunboboyev ko'chasi",
         "Охунбабаева улица"
-      ],
-      [
-        "Olchazor ko'chasi",
-        "Вишнёвая",
-        "Олчазар улица"
       ],
       [
         "Oltin olov ko'chasi",
@@ -74276,10 +78374,14 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Т. Журабекова улица"
       ],
       [
-        "Tillaobod ko'chasi"
+        "Tillaobod ko'chasi",
+        "ул. Тиллаобод",
+        "Tillaobod St."
       ],
       [
-        "Tomaris Street"
+        "Tomaris Street",
+        "ул. Томарис",
+        "Tomaris St."
       ],
       [
         "Toshkent — Chinoz avtomobil yoʻli",
@@ -74311,7 +78413,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Туркистон улица"
       ],
       [
-        "Tutzor ko‘chasi"
+        "Tutzor ko‘chasi",
+        "ул. Тутзор",
+        "Tutzor St."
       ],
       [
         "Ulug'bek ko'chasi",
@@ -74350,7 +78454,9 @@ export const UZ_MAP_DATA_LOCATION_EXTENSIONS = Object.freeze(
         "Привокзальная улица"
       ],
       [
-        "Xoʻjapiskent koʻchasi"
+        "Xoʻjapiskent koʻchasi",
+        "ул. Худжапискент",
+        "Xo'japiskent St."
       ],
       [
         "Xon Rodion ko'chasi",

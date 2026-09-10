@@ -13,3 +13,11 @@ test('approved UZ map data is available to the lexicon without spatial fields', 
   const source = await readFile(new URL('../src/uz-map-data-location-extensions.js', import.meta.url), 'utf8');
   assert.doesNotMatch(source, /"(?:center|accuracyM|lat|lng)"\s*:/u);
 });
+
+test('approved map-label translations become lexical aliases', () => {
+  const akchasay = LOCATION_DICTIONARIES.UZ.Almalyk.localAreas.find(({ name }) => name === 'Акчасай');
+  const zapravka = LOCATION_DICTIONARIES.KG.Osh.localAreas.find(({ name }) => name === 'Заправка');
+
+  assert.ok(akchasay?.aliases.includes('Akchasay'));
+  assert.ok(zapravka?.aliases.includes('Zapravka'));
+});

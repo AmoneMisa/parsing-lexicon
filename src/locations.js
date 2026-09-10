@@ -9,14 +9,19 @@ import {
 import { mergeLocationCountries } from './location-merge.js';
 import { aliasesToRegex } from './normalization.js';
 import { KZ_LOCATION_EXTENSIONS } from './kz-location-extensions.js';
+import { KZ_MAP_DATA_LOCATION_EXTENSIONS } from './kz-map-data-location-extensions.js';
 import { UZ_LOCATION_EXTENSIONS } from './uz-location-extensions.js';
 import { UZ_MAP_DATA_LOCATION_EXTENSIONS } from './uz-map-data-location-extensions.js';
+import { KG_LOCATION_EXTENSIONS } from './kg-location-extensions.js';
+import { KG_MAP_DATA_LOCATION_EXTENSIONS } from './kg-map-data-location-extensions.js';
+import { RO_MAP_DATA_LOCATION_EXTENSIONS } from './ro-map-data-location-extensions.js';
 import { UA_MAJOR_LOCATION_EXTENSIONS } from './ua-location-extensions-major.js';
 import { UA_REGIONAL_LOCATION_EXTENSIONS } from './ua-location-extensions-regional.js';
 import { UA_SECONDARY_LOCATION_EXTENSIONS } from './ua-secondary-cities.js';
 import { UA_METRO_LOCATION_EXTENSIONS } from './ua-location-extensions-metro.js';
 import { UA_KHARKIV_LOCATION_TRANSLATIONS } from './ua-kharkiv-location-translations.js';
 import { UA_CITY_LOCATION_EXPANSIONS } from './ua-city-location-expansions.js';
+import { UA_MAP_DATA_LOCATION_EXTENSIONS } from './ua-map-data-location-extensions.js';
 
 const UA_EXTRA_LOCATION_DICTIONARIES = Object.freeze({
   ...RAW_UA_EXTRA_LOCATION_DICTIONARIES,
@@ -669,11 +674,36 @@ function withoutKnownMapDataDuplicates(extensions) {
 
 const UZ_MAP_DATA_LOCATION_EXTENSIONS_CURATED = withoutKnownMapDataDuplicates(UZ_MAP_DATA_LOCATION_EXTENSIONS);
 
+// The OSM local-area polygon named "Священная гора Сулайман-Тоо" represents
+// the reviewed Sulayman-Too landmark, rather than a second city-local area.
+// Keep the semantic landmark as the sole parser entity so a bare
+// "Сулайман-Тоо" cannot resolve to a bulk-imported duplicate.
+const KG_MAP_DATA_KNOWN_DUPLICATES = Object.freeze({
+  Osh: new Set(['Священная гора Сулайман-Тоо']),
+});
+
+function withoutKnownKgMapDataDuplicates(extensions) {
+  return Object.freeze(Object.fromEntries(Object.entries(extensions).map(([city, data]) => {
+    const excluded = KG_MAP_DATA_KNOWN_DUPLICATES[city];
+    return [city, Object.freeze(Object.fromEntries(Object.entries(data).map(([key, entries]) => [
+      key,
+      Array.isArray(entries) ? Object.freeze(entries.filter((entry) => !(excluded && excluded.has(entry?.name)))) : entries,
+    ])))];
+  })));
+}
+
+const KG_MAP_DATA_LOCATION_EXTENSIONS_CURATED = withoutKnownKgMapDataDuplicates(KG_MAP_DATA_LOCATION_EXTENSIONS);
+
 const UZ_LOCATION_DICTIONARIES = normalizeUzSemanticLocations(mergeLocationCountries(
   UZ_BASE_LOCATION_DICTIONARIES,
   UZ_LOCATION_EXTENSIONS,
   UZ_MAP_DATA_LOCATION_EXTENSIONS_CURATED,
 ));
+
+const RO_LOCATION_DICTIONARIES = mergeLocationCountries(
+  BASE_LOCATION_DICTIONARIES.RO || {},
+  RO_MAP_DATA_LOCATION_EXTENSIONS,
+);
 
 const UA_SEMANTIC_LOCATION_EXTENSIONS = normalizeUaSemanticLocations(UA_MAJOR_LOCATION_EXTENSIONS);
 const UA_KHARKIV_TRANSLATION_EXTENSIONS = Object.freeze({
@@ -682,9 +712,12 @@ const UA_KHARKIV_TRANSLATION_EXTENSIONS = Object.freeze({
 
 const COUNTRY_LOCATION_DICTIONARIES = Object.freeze({
   ...BASE_LOCATION_DICTIONARIES,
+  KG: mergeLocationCountries(KG_LOCATION_EXTENSIONS, KG_MAP_DATA_LOCATION_EXTENSIONS_CURATED),
+  RO: RO_LOCATION_DICTIONARIES,
   KZ: mergeLocationCountries(
     BASE_LOCATION_DICTIONARIES.KZ || {},
     KZ_LOCATION_EXTENSIONS,
+    KZ_MAP_DATA_LOCATION_EXTENSIONS,
   ),
   UZ: UZ_LOCATION_DICTIONARIES,
   UA: mergeLocationCountries(
@@ -695,6 +728,7 @@ const COUNTRY_LOCATION_DICTIONARIES = Object.freeze({
     UA_METRO_LOCATION_EXTENSIONS,
     UA_KHARKIV_TRANSLATION_EXTENSIONS,
     UA_CITY_LOCATION_EXPANSIONS,
+    UA_MAP_DATA_LOCATION_EXTENSIONS,
   ),
 });
 
