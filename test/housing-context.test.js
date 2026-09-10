@@ -14,6 +14,21 @@ test('housing action stays orthogonal to rent duration', () => {
   });
 });
 
+test('search verb and housing noun separated by a room count still resolve to wanted', () => {
+  assert.deepEqual(resolveHousingIntent('Ищу 2-комнатную квартиру в аренду на длительный срок.'), {
+    action: 'rentIn', listingKind: 'propertyWanted', dealType: 'longRent',
+  });
+  assert.deepEqual(resolveHousingIntent('Ищу 1-комнатную квартиру, срочно'), {
+    action: 'rentIn', listingKind: 'propertyWanted', dealType: 'longRent',
+  });
+  assert.deepEqual(resolveHousingIntent('Шукаю 2-кімнатну квартиру в центрі'), {
+    action: 'rentIn', listingKind: 'propertyWanted', dealType: 'longRent',
+  });
+  assert.deepEqual(resolveHousingIntent('Ищу купить 2-комнатную квартиру'), {
+    action: 'buy', listingKind: 'propertyWanted', dealType: 'sale',
+  });
+});
+
 test('Uzbek per-day operating costs do not turn a sale into short rent', () => {
   const text = `Тошкент шахар, Шайхонтохур тумани, Самарканд Дарваза МФЙ,
   биринчи каватда, 2 хонали квартира, 56 м.кв. Мебель ва техникаси колади.

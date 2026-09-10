@@ -9,6 +9,29 @@ const UZ_CONTEXTUAL_RENT_OUT_RE = /(?:^|[^\p{L}\p{N}_])(?:ijaraga|ижарага
 const UZ_PER_DAY_RE = /(?:^|[^\p{L}\p{N}_])(?:kuniga|кунига)(?=$|[^\p{L}\p{N}_])/iu;
 const UZ_DAILY_RENT_PRICE_RE = /(?:narx|нарх|ijara|ижара|to['’`]?lov|т[ўу]лов|оплата)[^.!?\r\n]{0,48}(?:kuniga|кунига)|(?:kuniga|кунига)[^.!?\r\n]{0,48}(?:narx|нарх|ijara|ижара|to['’`]?lov|т[ўу]лов|оплата)/iu;
 
+// "ищу квартиру" / "шукаю квартиру" style aliases only match a literal,
+// adjacent phrase. Real posts routinely insert a room count or adjective
+// between the search verb and the housing noun ("Ищу 2-комнатную квартиру"),
+// which left those posts unclassified -- neither offer nor wanted -- so they
+// slipped past the propertyWanted filter and were shown as if someone were
+// offering the flat. These contextual patterns allow a short bounded gap
+// between the verb and the noun, and the gap is inspected for a "buy" marker
+// so "ищу купить 2-комнатную квартиру" still resolves to buy, not rentIn.
+const WANTED_GAP = '([^.!?\\r\\n]{0,40}?)';
+const WANTED_CONTEXT_RE = Object.freeze([
+  new RegExp(`(?:^|[^\\p{L}\\p{N}_])(?:ищу|сниму|хочу\\s+снять|хочу\\s+купить|нужна|нужно|нужен)(?=$|[^\\p{L}\\p{N}_])${WANTED_GAP}(?:квартир\\p{L}*|жиль[ёе]\\p{L}*|комнат\\p{L}*)(?=$|[^\\p{L}\\p{N}_])`, 'iu'),
+  new RegExp(`(?:^|[^\\p{L}\\p{N}_])(?:шукаю|зніму|хочу\\s+зняти|хочу\\s+купити|потрібна|потрібно|потрібен)(?=$|[^\\p{L}\\p{N}_])${WANTED_GAP}(?:квартир\\p{L}*|житл\\p{L}*|кімнат\\p{L}*|будин\\p{L}*)(?=$|[^\\p{L}\\p{N}_])`, 'iu'),
+]);
+const WANTED_BUY_MARKER_RE = /(?:купить|покупки|покупку|купити|купівлі)/iu;
+
+function detectContextualWantedAction(text) {
+  for (const re of WANTED_CONTEXT_RE) {
+    const match = text.match(re);
+    if (match) return WANTED_BUY_MARKER_RE.test(match[1] || '') ? 'buy' : 'rentIn';
+  }
+  return null;
+}
+
 export const HOUSING_ACTIONS = Object.freeze([
   group('sell', {
     ru: ['продам', 'продаю', 'продаётся', 'продается', 'выставил на продажу', 'выставила на продажу'],
@@ -112,7 +135,9 @@ export function resolveHousingIntent(value) {
   if (!text.trim()) return null;
 
   const actionMatch = findCanonical(text, HOUSING_ACTIONS, { partial: true });
-  const action = actionMatch?.canonical || (UZ_CONTEXTUAL_RENT_OUT_RE.test(text) ? 'rentOut' : null);
+  const action = actionMatch?.canonical
+    || (UZ_CONTEXTUAL_RENT_OUT_RE.test(text) ? 'rentOut' : null)
+    || detectContextualWantedAction(text);
   const durationDeal = findCanonical(text, HOUSING_DEAL_TYPES, { partial: true });
   const hasContextualUzPerDay = UZ_PER_DAY_RE.test(text)
     && ((action === 'rentOut' || action === 'rentIn') || UZ_DAILY_RENT_PRICE_RE.test(text));
