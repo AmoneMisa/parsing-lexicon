@@ -127,7 +127,6 @@ async function reviewRows(countryCode, geoSource) {
 }
 
 options.cacheDir ||= resolve(root, '../../geo-catalog/.cache/geo-enrichment');
-options.approvedTranslations ||= resolve(root, '../src/map-data-approved-label-translations.csv');
 options.approvedTranslationsByOsm = options.approvedTranslations
   ? approvedTranslations(parseCsv(await readFile(options.approvedTranslations, 'utf8')))
   : new Map();

@@ -87,7 +87,6 @@ const options = parseArgs(process.argv.slice(2));
 if (!/^[A-Z]{2}$/.test(options.country)) fail('--country must be an ISO-2 code');
 options.geoSource ||= resolve(dirname(fileURLToPath(import.meta.url)), `../../geo-catalog/data-source/${options.country.toLowerCase()}/map-data.js`);
 options.output ||= resolve(dirname(fileURLToPath(import.meta.url)), `../src/${options.country.toLowerCase()}-map-data-location-extensions.js`);
-options.translations ||= resolve(dirname(fileURLToPath(import.meta.url)), '../src/map-data-approved-label-translations.csv');
 const geoModule = await import(pathToFileURL(options.geoSource));
 const entities = geoModule[entityExport(options.country)];
 if (!Array.isArray(entities)) fail(`geo source must export ${entityExport(options.country)}`);
@@ -129,7 +128,7 @@ const output = Object.fromEntries([...grouped.entries()]
       .sort((left, right) => left.name.localeCompare(right.name))
       .map(({ name, aliases }) => [name, ...aliases])]))]));
 
-const source = `// Generated from approved geo-catalog ${options.country} map-data entities. Names only; coordinates remain in geo-catalog.\nimport { locationEntries } from './location-merge.js';\n\nexport const ${lexicalExport(options.country)} = Object.freeze(\n  Object.fromEntries(Object.entries(${JSON.stringify(output, null, 2)}).map(([city, collections]) => [city, Object.freeze(\n    Object.fromEntries(Object.entries(collections).map(([collection, rows]) => [collection, locationEntries(rows)])),\n  )])),\n);\n`;
+const source = `// Generated from approved geo-catalog ${options.country} map-data entities. Names only; coordinates remain in geo-catalog.\nimport { locationEntries } from './location-merge.js';\nexport const ${lexicalExport(options.country)}=Object.freeze(Object.fromEntries(Object.entries(${JSON.stringify(output)}).map(([city,collections])=>[city,Object.freeze(Object.fromEntries(Object.entries(collections).map(([collection,rows])=>[collection,locationEntries(rows)])))])));\n`;
 await mkdir(dirname(options.output), { recursive: true });
 await writeFile(options.output, source);
 const count = entities.filter((entity) => TYPE_TO_COLLECTION[entity.type]).length;
