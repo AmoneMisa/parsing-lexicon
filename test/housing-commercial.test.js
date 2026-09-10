@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import { looksCommercialHousing } from '../src/housing-commercial.js';
+import { looksCommercialHousing, looksLikeGroupWelcomeMessage } from '../src/housing-commercial.js';
 
 test('commercial housing semantics reject non-residential listings across supported languages', () => {
   for (const value of [
@@ -33,4 +33,26 @@ test('the bare "склад" (warehouse) marker does not match inside unrelated w
   assert.equal(looksCommercialHousing('Сдам квартиру, есть расклад по датам заезда, звоните'), false);
   assert.equal(looksCommercialHousing('Сдам склад 200 м2 под бизнес'), true);
   assert.equal(looksCommercialHousing('Ищу помещение под склад'), true);
+});
+
+test('detects a group welcome/intro post even when it names a rental group', () => {
+  // The group's own welcome message names the group, and a real-estate
+  // group is typically named after what it rents out -- "Оренда квартир
+  // Одеса" -- which otherwise looks like ordinary listing content.
+  assert.equal(
+    looksLikeGroupWelcomeMessage(
+      '., Добро пожаловать в группу Оренда квартир Одеса | Аренда Одесса | OK Realty.\n\n'
+        + '🐧 Стать сисадмином теперь стало проще! @sysadmin_library – новый канал с лучшими материалами по DevOps и Linux для начинающих.',
+    ),
+    true,
+  );
+  assert.equal(looksLikeGroupWelcomeMessage('Ласкаво просимо до групи Оренда квартир Києва!'), true);
+  assert.equal(looksLikeGroupWelcomeMessage('Welcome to the group! Post your rentals here.'), true);
+});
+
+test('does not flag an ordinary listing as a group welcome message', () => {
+  assert.equal(
+    looksLikeGroupWelcomeMessage('Сдам 1 комн.кв ЖК Сити Парк, 4/10 эт, 50кв.м, 11тыс. Риелтор 0965890931'),
+    false,
+  );
 });

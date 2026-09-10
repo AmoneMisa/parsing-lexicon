@@ -63,3 +63,22 @@ export function isDirectOwner(value) {
 export function hasZeroCommissionSignal(value) {
   return isDirectOwner(value) || (Boolean(value) && EXPLICIT_ZERO_COMMISSION_RE.test(String(value)));
 }
+
+// A Telegram group's own "welcome"/intro post routinely names the group
+// itself, and a real-estate group is typically named after what it rents
+// out ("Оренда квартир Одеса"). That alone can satisfy HOUSING_RE-style
+// content gates even though the message describes no property at all -- it
+// is a greeting, not a listing. No genuine single-property ad opens with
+// "welcome to the group", so this is safe to treat as a strong, low-noise
+// signal on its own.
+const GROUP_WELCOME_RE = /(?:добро\s+пожаловать\s+в\s+групп\p{L}*|ласкаво\s+просимо\s+(?:до|в)\s+груп\p{L}*|welcome\s+to\s+(?:the\s+|our\s+)?group|bine\s+a[țt]i\s+venit\s+[îi]n\s+grup|guruhga\s+xush\s+kelibsiz|топқа\s+қош\s+келдіңіз)/iu;
+
+/**
+ * A group's channel welcome/intro post, or an off-topic channel
+ * cross-promotion riding on the group's housing-flavored name -- neither
+ * describes a specific property and both should be excluded from listing
+ * feeds even when they incidentally contain housing keywords.
+ */
+export function looksLikeGroupWelcomeMessage(value) {
+  return Boolean(value) && GROUP_WELCOME_RE.test(String(value));
+}
