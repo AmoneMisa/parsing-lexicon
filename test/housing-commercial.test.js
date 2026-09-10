@@ -25,3 +25,12 @@ test('commercial housing semantics do not reject residential listings just becau
     'Пәтер жалға беріледі, дүкен жанында',
   ]) assert.equal(looksCommercialHousing(value), false, value);
 });
+
+test('the bare "склад" (warehouse) marker does not match inside unrelated words', () => {
+  // "расклад" (schedule/breakdown) contains "склад" as a plain substring;
+  // an unbounded match wrongly excluded ordinary rentals that just happened
+  // to mention a check-in schedule from the residential feed.
+  assert.equal(looksCommercialHousing('Сдам квартиру, есть расклад по датам заезда, звоните'), false);
+  assert.equal(looksCommercialHousing('Сдам склад 200 м2 под бизнес'), true);
+  assert.equal(looksCommercialHousing('Ищу помещение под склад'), true);
+});
