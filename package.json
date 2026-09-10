@@ -242,8 +242,7 @@
     "access": "public"
   },
   "dependencies": {
-    "libphonenumber-js": "^1.11.20",
-    "pako": "2.1.0"
+    "libphonenumber-js": "^1.11.20"
   },
   "keywords": [
     "parsing",

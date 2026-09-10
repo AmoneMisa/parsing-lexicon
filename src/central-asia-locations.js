@@ -1,5 +1,5 @@
 import { LOCATION_DICTIONARIES } from './locations-runtime.js';
-import { LOCATION_LIST_KEYS } from './location-merge.js';
+import { isMapDataEntry, LOCATION_LIST_KEYS } from './location-merge.js';
 import { CITIES_BY_COUNTRY, canonicalCity } from './geography.js';
 import { aliasesOf, aliasesToRegex, normalizeForMatch } from './normalization.js';
 import { KZ_AMBIGUOUS_LOCAL_NAMES, KZ_SEARCH_CLUSTERS } from './kz-location-extensions.js';
@@ -227,12 +227,24 @@ function publicMatch(candidate) {
   return Object.freeze(result);
 }
 
-function findEntryMatches(text, cityName, data) {
+function mapDataMatch(value, normalizedValue, item) {
+  const paddedValue = ` ${normalizedValue} `;
+  for (const alias of item.aliases || []) {
+    const normalizedAlias = normalizeForMatch(alias);
+    const index = paddedValue.indexOf(` ${normalizedAlias} `);
+    if (normalizedAlias && index >= 0) return { 0: normalizedAlias, index };
+  }
+  return null;
+}
+
+function findEntryMatches(text, cityName, data, { includeMapData = false } = {}) {
   const value = String(text || '');
+  const normalizedValue = normalizeForMatch(value);
   const raw = [];
   for (const key of LOCATION_LIST_KEYS) {
     for (const item of data?.[key] || []) {
-      const match = value.match(item?.re)
+      if (isMapDataEntry(item) && !includeMapData) continue;
+      const match = (isMapDataEntry(item) ? mapDataMatch(value, normalizedValue, item) : value.match(item?.re))
         || (key === 'residentialComplexes' ? markedResidentialMatch(value, item) : null);
       if (!match) continue;
       const { start, end } = semanticBounds(value, match);
@@ -319,7 +331,7 @@ export function matchCentralAsiaLocationEntities(text, countryCode, preferredCit
   const scopedCity = preferred && country[preferred] ? preferred : explicit && country[explicit] ? explicit : null;
 
   if (scopedCity) {
-    const matches = findEntryMatches(text, scopedCity, country[scopedCity]);
+    const matches = findEntryMatches(text, scopedCity, country[scopedCity], { includeMapData: true });
     const clusters = clusterMatches(matches, countryCode);
     return Object.freeze({ city: scopedCity, matches: Object.freeze(matches), searchClusters: Object.freeze(clusters), candidates: Object.freeze([]) });
   }

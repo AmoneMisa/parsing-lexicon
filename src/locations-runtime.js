@@ -5,8 +5,9 @@ import {
   matchUkraineRegion,
   matchUkraineSecondaryCity,
 } from './locations.js';
-import { LOCATION_LIST_KEYS, mergeLocationCountries } from './location-merge.js';
+import { isMapDataEntry, LOCATION_LIST_KEYS, mergeLocationCountries } from './location-merge.js';
 import { canonicalCity } from './geography.js';
+import { normalizeForMatch } from './normalization.js';
 import { KG_LOCATION_EXTENSIONS } from './kg-location-extensions.js';
 import { KG_BISHKEK_AREA_EXTENSIONS } from './kg-bishkek-area-extensions.js';
 import { KG_BISHKEK_STREET_EXTENSIONS } from './kg-bishkek-street-extensions.js';
@@ -162,28 +163,47 @@ export function locationCities(countryCode) {
   return LOCATION_DICTIONARIES[countryCode] || Object.freeze({});
 }
 
+function mapDataMatch(entry, normalizedValue) {
+  const paddedValue = ` ${normalizedValue} `;
+  for (const alias of entry.aliases || []) {
+    const normalizedAlias = normalizeForMatch(alias);
+    if (!normalizedAlias) continue;
+    const index = paddedValue.indexOf(` ${normalizedAlias} `);
+    if (index >= 0) return { index, 0: normalizedAlias };
+  }
+  return null;
+}
+
 export function matchDictionaryLocation(text, countryCode, city = null) {
   const country = locationCities(countryCode);
   const canonical = canonicalDictionaryCity(countryCode, city);
   const cities = canonical && country[canonical] ? [[canonical, country[canonical]]] : Object.entries(country);
   const value = String(text || '');
+  const normalizedValue = normalizeForMatch(value);
   let best = null;
 
   for (const [cityName, data] of cities) {
     for (const type of LOCATION_LIST_KEYS) {
       for (const entry of data[type] || []) {
-        const match = entry?.re?.exec(value);
+        const mapData = isMapDataEntry(entry);
+        const match = mapData ? mapDataMatch(entry, normalizedValue) : entry?.re?.exec(value);
         if (!match) continue;
         const start = match.index;
         const end = start + match[0].length;
+        const priority = mapData ? 0 : 1;
+        if (best && priority < best.priority) continue;
+        if (best && priority > best.priority) {
+          best = { city: cityName, type, name: entry.name, aliases: entry.aliases, start, end, priority };
+          continue;
+        }
         const containsBest = best && start <= best.start && end >= best.end && end - start > best.end - best.start;
         if (best && !containsBest) continue;
-        best = { city: cityName, type, name: entry.name, aliases: entry.aliases, start, end };
+        best = { city: cityName, type, name: entry.name, aliases: entry.aliases, start, end, priority };
       }
     }
   }
 
   if (!best) return null;
-  const { start: _start, end: _end, ...result } = best;
+  const { start: _start, end: _end, priority: _priority, ...result } = best;
   return result;
 }

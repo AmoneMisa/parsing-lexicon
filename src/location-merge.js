@@ -1,5 +1,20 @@
 import { aliasesToRegex, normalizeForMatch } from './normalization.js';
 
+const MAP_DATA_ENTRIES = new WeakSet();
+
+export function markMapDataEntries(country) {
+  for (const city of Object.values(country || {})) {
+    for (const entries of Object.values(city || {})) {
+      for (const entry of entries || []) MAP_DATA_ENTRIES.add(entry);
+    }
+  }
+  return country;
+}
+
+export function isMapDataEntry(entry) {
+  return Boolean(entry?.mapData) || MAP_DATA_ENTRIES.has(entry);
+}
+
 export const LOCATION_LIST_KEYS = Object.freeze([
   'districts',
   'microdistricts',
@@ -18,7 +33,16 @@ export const LOCATION_LIST_KEYS = Object.freeze([
 
 export function locationEntry(name, ...aliases) {
   const all = [...new Set([name, ...aliases].flat().filter(Boolean))];
-  return Object.freeze({ canonical: name, name, aliases: Object.freeze(all), re: aliasesToRegex(all) });
+  let re = null;
+  return Object.freeze({
+    canonical: name,
+    name,
+    aliases: Object.freeze(all),
+    get re() {
+      re ||= aliasesToRegex(all);
+      return re;
+    },
+  });
 }
 
 export function locationEntries(rows = []) {
@@ -33,7 +57,23 @@ function mergeEntry(existing, incoming) {
     incoming?.name,
   ].filter(Boolean))];
   const base = { ...(existing || {}), ...(incoming || {}) };
-  return Object.freeze({ ...base, canonical: base.canonical || base.name, type: base.type || base.entityType, aliases: Object.freeze(aliases), re: aliasesToRegex(aliases) });
+  // A map-data entry may enrich an existing reviewed owner with additional
+  // aliases. It remains fallback-only only when every merged source is map
+  // data; otherwise the reviewed owner must retain its matching precedence.
+  const mapData = existing ? isMapDataEntry(existing) && isMapDataEntry(incoming) : isMapDataEntry(incoming);
+  let re = null;
+  const result = {
+    ...base,
+    canonical: base.canonical || base.name,
+    type: base.type || base.entityType,
+    aliases: Object.freeze(aliases),
+    get re() {
+      re ||= aliasesToRegex(aliases);
+      return re;
+    },
+  };
+  if (mapData) MAP_DATA_ENTRIES.add(result);
+  return Object.freeze(result);
 }
 
 function parentKey(entry) {

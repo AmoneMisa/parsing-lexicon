@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 import { LOCATION_DICTIONARIES } from '../src/locations.js';
+import { matchDictionaryLocation } from '../src/locations-runtime.js';
 
 test('approved UZ map data is available to the lexicon without spatial fields', async () => {
   const uz = LOCATION_DICTIONARIES.UZ;
@@ -24,4 +25,5 @@ test('approved map-label translations become lexical aliases', () => {
   assert.ok(zapravka?.aliases.includes('Zapravka'));
   assert.ok(microdistrict?.aliases.includes('2nd Microdist.'));
   assert.ok(veteranLine?.aliases.includes('Veteran 1st Line'));
+  assert.equal(matchDictionaryLocation('Akchasay', 'UZ', 'Almalyk')?.name, 'Акчасай');
 });

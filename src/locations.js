@@ -6,7 +6,7 @@ import {
   matchUkraineRegion,
   matchUkraineSecondaryCity,
 } from './location-data.js';
-import { mergeLocationCountries } from './location-merge.js';
+import { markMapDataEntries, mergeLocationCountries } from './location-merge.js';
 import { aliasesToRegex } from './normalization.js';
 import { KZ_LOCATION_EXTENSIONS } from './kz-location-extensions.js';
 import { KZ_MAP_DATA_LOCATION_EXTENSIONS } from './kz-map-data-location-extensions.js';
@@ -672,13 +672,22 @@ function withoutKnownMapDataDuplicates(extensions) {
   })));
 }
 
-const UZ_MAP_DATA_LOCATION_EXTENSIONS_CURATED = withoutKnownMapDataDuplicates(UZ_MAP_DATA_LOCATION_EXTENSIONS);
+const UZ_MAP_DATA_LOCATION_EXTENSIONS_CURATED = withoutKnownMapDataDuplicates(markMapDataEntries(UZ_MAP_DATA_LOCATION_EXTENSIONS));
 
 // The OSM local-area polygon named "Священная гора Сулайман-Тоо" represents
 // the reviewed Sulayman-Too landmark, rather than a second city-local area.
 // Keep the semantic landmark as the sole parser entity so a bare
 // "Сулайман-Тоо" cannot resolve to a bulk-imported duplicate.
 const KG_MAP_DATA_KNOWN_DUPLICATES = Object.freeze({
+  Bishkek: new Set([
+    '1-я улица',
+    'Улица 11-я',
+    'Улица 12-я',
+    '22-я улица',
+    'Улица 8-я',
+    'Береговая улица',
+    'Улица СЭЗ Бишкек',
+  ]),
   Osh: new Set(['Священная гора Сулайман-Тоо']),
 });
 
@@ -692,7 +701,28 @@ function withoutKnownKgMapDataDuplicates(extensions) {
   })));
 }
 
-const KG_MAP_DATA_LOCATION_EXTENSIONS_CURATED = withoutKnownKgMapDataDuplicates(KG_MAP_DATA_LOCATION_EXTENSIONS);
+const KG_MAP_DATA_LOCATION_EXTENSIONS_CURATED = withoutKnownKgMapDataDuplicates(markMapDataEntries(KG_MAP_DATA_LOCATION_EXTENSIONS));
+
+// These two lane-level OSM records lie outside the administrative city areas
+// assigned by the source review. Keeping them would make the city-scoped
+// parser claim rural addresses as city streets.
+const UA_MAP_DATA_KNOWN_OUT_OF_CITY = Object.freeze({
+  Chernihiv: new Set(['Вокзальний провулок']),
+  Kyiv: new Set(['ЖК Флагман', 'ЖК Квант', 'ЖК Кристалл']),
+  Zaporizhzhia: new Set(['Квітковий провулок']),
+});
+
+function withoutKnownUaMapDataOutOfCityEntries(extensions) {
+  return Object.freeze(Object.fromEntries(Object.entries(extensions).map(([city, data]) => {
+    const excluded = UA_MAP_DATA_KNOWN_OUT_OF_CITY[city];
+    return [city, Object.freeze(Object.fromEntries(Object.entries(data).map(([key, entries]) => [
+      key,
+      Array.isArray(entries) ? Object.freeze(entries.filter((entry) => !(excluded && excluded.has(entry?.name)))) : entries,
+    ])))];
+  })));
+}
+
+const UA_MAP_DATA_LOCATION_EXTENSIONS_CURATED = withoutKnownUaMapDataOutOfCityEntries(markMapDataEntries(UA_MAP_DATA_LOCATION_EXTENSIONS));
 
 const UZ_LOCATION_DICTIONARIES = normalizeUzSemanticLocations(mergeLocationCountries(
   UZ_BASE_LOCATION_DICTIONARIES,
@@ -702,7 +732,7 @@ const UZ_LOCATION_DICTIONARIES = normalizeUzSemanticLocations(mergeLocationCount
 
 const RO_LOCATION_DICTIONARIES = mergeLocationCountries(
   BASE_LOCATION_DICTIONARIES.RO || {},
-  RO_MAP_DATA_LOCATION_EXTENSIONS,
+  markMapDataEntries(RO_MAP_DATA_LOCATION_EXTENSIONS),
 );
 
 const UA_SEMANTIC_LOCATION_EXTENSIONS = normalizeUaSemanticLocations(UA_MAJOR_LOCATION_EXTENSIONS);
@@ -710,14 +740,20 @@ const UA_KHARKIV_TRANSLATION_EXTENSIONS = Object.freeze({
   Kharkiv: UA_KHARKIV_LOCATION_TRANSLATIONS,
 });
 
+// location-data.js is the legacy KZ seed. Its useful coverage remains
+// available, but reviewed extension canonicals take precedence whenever the
+// same address wording has since been curated under a current name.
+const KZ_LEGACY_LOCATION_DATA = markMapDataEntries(BASE_LOCATION_DICTIONARIES.KZ);
+const KZ_MAP_DATA_LOCATION_EXTENSIONS_FALLBACK = markMapDataEntries(KZ_MAP_DATA_LOCATION_EXTENSIONS);
+
 const COUNTRY_LOCATION_DICTIONARIES = Object.freeze({
   ...BASE_LOCATION_DICTIONARIES,
   KG: mergeLocationCountries(KG_LOCATION_EXTENSIONS, KG_MAP_DATA_LOCATION_EXTENSIONS_CURATED),
   RO: RO_LOCATION_DICTIONARIES,
   KZ: mergeLocationCountries(
-    BASE_LOCATION_DICTIONARIES.KZ || {},
+    KZ_LEGACY_LOCATION_DATA,
     KZ_LOCATION_EXTENSIONS,
-    KZ_MAP_DATA_LOCATION_EXTENSIONS,
+    KZ_MAP_DATA_LOCATION_EXTENSIONS_FALLBACK,
   ),
   UZ: UZ_LOCATION_DICTIONARIES,
   UA: mergeLocationCountries(
@@ -728,7 +764,7 @@ const COUNTRY_LOCATION_DICTIONARIES = Object.freeze({
     UA_METRO_LOCATION_EXTENSIONS,
     UA_KHARKIV_TRANSLATION_EXTENSIONS,
     UA_CITY_LOCATION_EXPANSIONS,
-    UA_MAP_DATA_LOCATION_EXTENSIONS,
+    UA_MAP_DATA_LOCATION_EXTENSIONS_CURATED,
   ),
 });
 
