@@ -17,7 +17,11 @@ test('approved UZ map data is available to the lexicon without spatial fields', 
 test('approved map-label translations become lexical aliases', () => {
   const akchasay = LOCATION_DICTIONARIES.UZ.Almalyk.localAreas.find(({ name }) => name === 'Акчасай');
   const zapravka = LOCATION_DICTIONARIES.KG.Osh.localAreas.find(({ name }) => name === 'Заправка');
+  const microdistrict = LOCATION_DICTIONARIES.KZ.Abai.localAreas.find(({ name }) => name === '2-й микрорайон');
+  const veteranLine = LOCATION_DICTIONARIES.UA.Chernihiv.streets.find(({ name }) => name === 'Садівниче товариство "Ветеран"  вулиця 1-ша лінія');
 
   assert.ok(akchasay?.aliases.includes('Akchasay'));
   assert.ok(zapravka?.aliases.includes('Zapravka'));
+  assert.ok(microdistrict?.aliases.includes('2nd Microdist.'));
+  assert.ok(veteranLine?.aliases.includes('Veteran 1st Line'));
 });

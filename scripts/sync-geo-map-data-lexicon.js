@@ -48,7 +48,10 @@ function translationAliases(rows, country) {
   const aliasesByOsm = new Map();
   for (const row of rows) {
     if (row.country.toUpperCase() !== country) continue;
-    const aliases = [row.translation_russian, row.translation_english].map((value) => value.trim()).filter(Boolean);
+    const aliases = [
+      ...row.translation_russian.split('|').map((value) => value.trim()).filter((value) => /[А-Яа-яЁё]/u.test(value)),
+      ...row.translation_english.split('|').map((value) => value.trim()).filter((value) => /[A-Za-z]/u.test(value)),
+    ];
     if (!aliases.length) continue;
     if (aliases.some((value) => /[\r\n<>]/u.test(value))) fail(`translation for ${row.osm} has unsafe characters`);
     for (const osm of row.osm.split(';').map((value) => value.trim()).filter(Boolean)) {
