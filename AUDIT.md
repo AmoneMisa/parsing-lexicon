@@ -107,3 +107,16 @@ Nothing regex-relevant remains unaudited in `src/`. `normalization.js` and
 `lexicon-core.js` (the shared alias-matching machinery every section above
 routes through) were read as part of verifying each section's fixes, but
 not independently re-audited end-to-end as their own section.
+
+## Location merge / import startup (`src/location-merge.js`) — 2026-09-12
+
+- **`location-merge.js`** — `mergeEntry` built its result with
+  `{ ...existing, ...incoming }`. Object spread invokes getters, so every merged
+  location entry's lazy `re` getter ran at merge time, compiling the full alias
+  regex set during module load rather than on first match. Importing
+  `src/index.js` took 43.6s; it now takes 4.8s. Fixed with an `entryData()`
+  helper that copies every field except `re`. Regression test asserts a merge
+  compiles zero regexes and that the merged entry still matches aliases from
+  every source.
+- This also explains the test-suite runtime: each test file paid the same
+  43s import cost, and `geo-catalog` paid it too through its pinned dependency.

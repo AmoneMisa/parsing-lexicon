@@ -49,6 +49,18 @@ export function locationEntries(rows = []) {
   return Object.freeze(rows.map(([name, ...aliases]) => locationEntry(name, ...aliases)));
 }
 
+// Copy an entry's data fields without touching its lazy `re` getter. Object
+// spread invokes getters, which would compile every alias regex eagerly at
+// merge time (tens of seconds at import) instead of on first match.
+function entryData(entry) {
+  const data = {};
+  if (!entry) return data;
+  for (const key of Object.keys(entry)) {
+    if (key !== 're') data[key] = entry[key];
+  }
+  return data;
+}
+
 function mergeEntry(existing, incoming) {
   const aliases = [...new Set([
     ...(existing?.aliases || []),
@@ -56,7 +68,7 @@ function mergeEntry(existing, incoming) {
     existing?.name,
     incoming?.name,
   ].filter(Boolean))];
-  const base = { ...(existing || {}), ...(incoming || {}) };
+  const base = { ...entryData(existing), ...entryData(incoming) };
   // A map-data entry may enrich an existing reviewed owner with additional
   // aliases. It remains fallback-only only when every merged source is map
   // data; otherwise the reviewed owner must retain its matching precedence.
