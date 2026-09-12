@@ -9,6 +9,15 @@ const UZ_CONTEXTUAL_RENT_OUT_RE = /(?:^|[^\p{L}\p{N}_])(?:ijaraga|ижарага
 const UZ_PER_DAY_RE = /(?:^|[^\p{L}\p{N}_])(?:kuniga|кунига)(?=$|[^\p{L}\p{N}_])/iu;
 const UZ_DAILY_RENT_PRICE_RE = /(?:narx|нарх|ijara|ижара|to['’`]?lov|т[ўу]лов|оплата)[^.!?\r\n]{0,48}(?:kuniga|кунига)|(?:kuniga|кунига)[^.!?\r\n]{0,48}(?:narx|нарх|ijara|ижара|to['’`]?lov|т[ўу]лов|оплата)/iu;
 
+// Short-stay wording is heavily inflected in RU/UK ("подобова оренда",
+// "посуточной аренды") and routinely abbreviated on catalogue cards
+// ("посут/почас", "подобово-погодинно"). HOUSING_DEAL_TYPES keeps the canonical
+// dictionary forms; enumerating every inflection there would be brittle, so
+// stems and established abbreviations are matched by pattern instead. A bare
+// day-rate mention ("сутки/суток") counts too: it outranks a source's generic
+// long-rent default even when nothing else resolves to shortRent.
+const EXPLICIT_SHORT_STAY_RE = /(?:^|[^\p{L}\p{N}_])(?:сут(?:ки|ок)|посуточн\p{L}*|почасов\p{L}*|подобов\p{L}*|погодинн\p{L}*|подобу|посут|почас)(?=$|[^\p{L}\p{N}_])/iu;
+
 // "ищу квартиру" / "шукаю квартиру" style aliases only match a literal,
 // adjacent phrase. Real posts routinely insert a room count or adjective
 // between the search verb and the housing noun ("Ищу 2-комнатную квартиру"),
@@ -115,7 +124,7 @@ export const HOUSING_DEAL_TYPES = Object.freeze([
   group('shortRent', {
     ru: ['посуточно', 'посуточная аренда', 'на сутки', 'на час', 'почасово', 'краткосрочно'],
     en: ['daily rent', 'short term', 'short-term rent', 'per day', 'hourly'],
-    uk: ['подобово', 'погодинно', 'на добу', 'на годину', 'короткострокова оренда'],
+    uk: ['подобово', 'подобова оренда', 'погодинно', 'на добу', 'на годину', 'короткострокова оренда'],
     ro: ['regim hotelier', 'pe zi', 'zilnic', 'pe noapte', 'închiriere pe termen scurt', 'inchiriere pe termen scurt'],
     uzLatn: ['kunlik', 'sutkaga', 'sutkalik', 'soatlik'],
     uzCyrl: ['кунлик', 'суткага', 'суткалик', 'соатлик'],
@@ -141,11 +150,19 @@ export function resolveHousingIntent(value) {
   const durationDeal = findCanonical(text, HOUSING_DEAL_TYPES, { partial: true });
   const hasContextualUzPerDay = UZ_PER_DAY_RE.test(text)
     && ((action === 'rentOut' || action === 'rentIn') || UZ_DAILY_RENT_PRICE_RE.test(text));
+  // An inflected/abbreviated short-stay stem is as authoritative as a
+  // dictionary alias, and outranks a longRent alias in the same text: a card
+  // reading "подобова оренда" is a day rental that happens to use the generic
+  // word for renting, not a long-term lease.
+  const hasShortStayStem = EXPLICIT_SHORT_STAY_RE.test(text);
+  const shortStay = durationDeal?.canonical === 'shortRent'
+    || hasContextualUzPerDay
+    || hasShortStayStem;
 
   if (action) {
     const base = HOUSING_ACTION_MAP[action];
     let dealType = base.dealType;
-    if ((durationDeal?.canonical === 'shortRent' || hasContextualUzPerDay) && (action === 'rentOut' || action === 'rentIn')) {
+    if (shortStay && (action === 'rentOut' || action === 'rentIn')) {
       dealType = 'shortRent';
     }
     return Object.freeze({
@@ -155,11 +172,11 @@ export function resolveHousingIntent(value) {
     });
   }
 
-  if (!durationDeal && !hasContextualUzPerDay) return null;
+  if (!durationDeal && !shortStay) return null;
   return Object.freeze({
     action: null,
     listingKind: null,
-    dealType: durationDeal?.canonical || 'shortRent',
+    dealType: shortStay ? 'shortRent' : durationDeal.canonical,
   });
 }
 
@@ -177,11 +194,6 @@ export function classifyHousingDealType(value) {
   }
   return null;
 }
-
-// A bare "сутки/суток" (day-rate) mention outranks a source's generic
-// long-rent default, even when the rest of the text does not otherwise
-// resolve to shortRent.
-const EXPLICIT_SHORT_STAY_RE = /(?:^|[^\p{L}\p{N}_])сут(?:ки|ок)(?=$|[^\p{L}\p{N}_])/iu;
 
 export function looksExplicitDailyRentalMention(value) {
   return EXPLICIT_SHORT_STAY_RE.test(String(value || ''));
