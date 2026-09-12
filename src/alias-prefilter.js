@@ -113,8 +113,13 @@ function indexFor(entries) {
  * Equivalent to `entries.find((entry) => entry.re.test(text))`, including the
  * "first in list order wins" tie-break, but only compiles and runs the regexes
  * of entries the text could plausibly contain.
+ *
+ * `accept(entry, matchedText)` optionally vets each hit before it wins. It
+ * receives the substring the alias regex actually matched, which is what a
+ * caller needs to tell a genuine name from an alias that merely repeats some
+ * other place's name; rejecting a hit continues the scan rather than ending it.
  */
-export function matchFirstEntry(entries, text) {
+export function matchFirstEntry(entries, text, accept) {
   if (!Array.isArray(entries) || !entries.length) return undefined;
   const value = String(text || '');
   if (!value) return undefined;
@@ -130,7 +135,11 @@ export function matchFirstEntry(entries, text) {
 
   for (const i of [...candidates].sort((a, b) => a - b)) {
     const entry = entries[i];
-    if (entry?.re?.test(value)) return entry;
+    // `re` carries no /g flag, so exec() is stateless and safe to reuse here.
+    const match = entry?.re?.exec(value);
+    if (!match) continue;
+    if (accept && !accept(entry, match[0])) continue;
+    return entry;
   }
   return undefined;
 }
