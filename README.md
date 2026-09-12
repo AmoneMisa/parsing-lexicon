@@ -52,6 +52,8 @@ Lexical aliases belong here. Consumers keep source adapters, persistence, rankin
 
 The package must remain dependency-light and must never require a runtime lexicon HTTP service, Redis or a message broker.
 
+Location entries expose their alias-matching regex through a lazy `re` getter, compiled on first match rather than at merge/import time. Merge helpers must copy entry fields without using object spread on a full entry (`{ ...entry }`), since spread invokes getters and would compile every alias regex eagerly during module load. See `AUDIT.md` for the history of this constraint.
+
 ## Usage
 
 ```js
