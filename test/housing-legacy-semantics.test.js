@@ -27,6 +27,17 @@ test('room-only and property semantics stay shared', () => {
   assert.equal(resolveHousingPropertyType('uy sotiladi, seldom used'), null);
 });
 
+test('room-in-apartment marker requires the bare "в"/"у" preposition, not any в-word', () => {
+  // Real listing text: "світлу кімнату вільного призначення" ("a room of free
+  // purpose") was falsely read as "кімнату в..." ("a room in...") because the
+  // marker had no boundary after the single-letter preposition, so any word
+  // starting with "в" (вільного) satisfied it.
+  assert.equal(looksHousingRoomOnly('світлу кімнату вільного призначення'), false);
+  assert.equal(looksHousingRoomOnly('великий санвузол, кімнату вільного планування'), false);
+  assert.equal(looksHousingRoomOnly('Здам кімнату в квартирі, все є'), true);
+  assert.equal(looksHousingRoomOnly('Сдам комнату в квартире, есть все'), true);
+});
+
 test('audience, amenities and contacts preserve consumer behavior', () => {
   assert.equal(parseHousingAudience('Квартира только для семьи'), 'family');
   assert.equal(parseHousingAudience('Только для девушек'), 'women');

@@ -43,6 +43,16 @@ test('parses written room counts across Russian and Uzbek scripts', () => {
   assert.equal(parseHousingRoomCount("o'n xonali uy"), 10);
 });
 
+test('parses written room counts in Ukrainian adjective form', () => {
+  // Ukrainian uses "трикімнатна" (from "три", three), not the Russian
+  // "трёхкомнатная" stem -- these were previously entirely unmatched.
+  assert.equal(parseHousingRoomCount('однокімнатна квартира'), 1);
+  assert.equal(parseHousingRoomCount('двокімнатна квартира'), 2);
+  assert.equal(parseHousingRoomCount('трикімнатна квартира'), 3);
+  assert.equal(parseHousingRoomCount('чотирикімнатна квартира'), 4);
+  assert.equal(parseHousingRoomCount("п'ятикімнатна квартира"), 5);
+});
+
 test('parses the supplied Uzbek family rental description without dropping structured details', () => {
   const text = 'Assalomu Alaykoʻm kvartira juda yaxshi xolatda 2 ta katta xona 1 ta kichkina xona kuxnisi aloxida dush tualet aloxida bitta oila bemalol yashasa boʻladi yashashga tayyor zaks qogʻozi yuqlar bezota qilmasin. Yilning oxiri dekabrgacha yashasa buladi. Uyning depaziti xam bor 500.$ &#x20;';
   const result = parseHousingStructured(text, { country: 'UZ', fallbackCurrency: 'USD' });
