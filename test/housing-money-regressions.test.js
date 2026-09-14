@@ -266,3 +266,21 @@ test('a number already read as a duration is not also reported as a bare price',
     approximate: false,
   });
 });
+
+test('bare "сом" resolves via fallback currency instead of always defaulting to UZS', () => {
+  // "сом" (Cyrillic) is used colloquially for both Uzbekistan's and
+  // Kyrgyzstan's currencies. Kyrgyzstan housing sources (house.kg, lalafo.kg,
+  // myhouse.kg, sutochno.kg) that print "<amount> сом" with no further
+  // disambiguator must resolve against the caller's KGS context, not be
+  // silently mistagged as UZS.
+  assert.deepEqual(parseHousingPrice('7 000 сом', 'KGS'), {
+    amount: 7000,
+    currency: 'KGS',
+    approximate: false,
+  });
+  assert.deepEqual(parseHousingPrice('7 000 сом', 'UZS'), {
+    amount: 7000,
+    currency: 'UZS',
+    approximate: false,
+  });
+});

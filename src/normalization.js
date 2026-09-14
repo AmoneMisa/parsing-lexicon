@@ -183,26 +183,40 @@ export function getAliasOwnersIndex(entries, { transliteration = true } = {}) {
   return index;
 }
 
-export function findCanonical(value, entries, { partial = false, transliteration = true } = {}) {
-  if (!value) return null;
+/**
+ * Every entry tied for the longest partial alias match, in the order they
+ * first reach that length. Exact matches always resolve unambiguously to a
+ * single entry. Callers that need to disambiguate a partial tie against
+ * caller-supplied context (e.g. a fallback currency) should use this instead
+ * of findCanonical(), which silently keeps only the first-registered entry.
+ */
+export function findCanonicalCandidates(value, entries, { partial = false, transliteration = true } = {}) {
+  if (!value) return [];
   const index = getAliasIndex(entries, { transliteration });
   for (const key of normalizedAliasKeys(value, { transliteration })) {
     const exact = index.get(key);
-    if (exact) return exact;
+    if (exact) return [exact];
   }
-  if (!partial) return null;
+  if (!partial) return [];
 
   const textKeys = normalizedAliasKeys(value, { transliteration });
-  let best = null;
+  let tied = [];
   let bestLength = 0;
   for (const [alias, entry] of index) {
-    if (alias.length <= bestLength) continue;
-    if (textKeys.some((text) => ` ${text} `.includes(` ${alias} `))) {
-      best = entry;
+    if (alias.length < bestLength) continue;
+    if (!textKeys.some((text) => ` ${text} `.includes(` ${alias} `))) continue;
+    if (alias.length > bestLength) {
       bestLength = alias.length;
+      tied = [entry];
+    } else if (!tied.includes(entry)) {
+      tied.push(entry);
     }
   }
-  return best;
+  return tied;
+}
+
+export function findCanonical(value, entries, options = {}) {
+  return findCanonicalCandidates(value, entries, options)[0] || null;
 }
 
 export function escapeRegex(value) {

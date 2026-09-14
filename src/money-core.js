@@ -1,4 +1,4 @@
-import { aliasesOf, escapeRegex, findCanonical } from './normalization.js';
+import { aliasesOf, escapeRegex, findCanonical, findCanonicalCandidates } from './normalization.js';
 import {
   CURRENCY_SYMBOL_CANDIDATES,
   CURRENCY_TERMS,
@@ -67,11 +67,25 @@ export function parseScaledAmount(raw, scale) {
   return value == null ? null : value * moneyScaleMultiplier(scale);
 }
 
-function explicitCurrencyFromText(value) {
+// A term like "сом" can be a partial-match tie between multiple currencies
+// (e.g. Kyrgyzstani "сом"/KGS and Uzbek "so'm"/UZS both fold to the search
+// key "som"). Returns every tied currency, in registration order, so callers
+// can break the tie using their own context instead of always keeping
+// whichever currency happens to be registered first in the lexicon.
+function explicitCurrencyCandidates(value) {
   const text = String(value || '');
   // Ambiguous glyphs are removed so they cannot hide an explicit ISO/name token.
   const lexicalText = text.replace(/[$¥￥]/g, ' ');
-  return findCanonical(lexicalText, CURRENCY_TERMS, { partial: true })?.canonical || null;
+  return findCanonicalCandidates(lexicalText, CURRENCY_TERMS, { partial: true })
+    .map((entry) => entry?.canonical)
+    .filter(Boolean);
+}
+
+function explicitCurrencyFromText(value, fallbackCurrency = null) {
+  const candidates = explicitCurrencyCandidates(value);
+  if (!candidates.length) return null;
+  const fallback = String(fallbackCurrency || '').trim().toUpperCase();
+  return fallback && candidates.includes(fallback) ? fallback : candidates[0];
 }
 
 export function moneyCurrencyCandidatesFromText(value) {
@@ -81,7 +95,7 @@ export function moneyCurrencyCandidatesFromText(value) {
     if (currency && !candidates.includes(currency)) candidates.push(currency);
   };
 
-  add(explicitCurrencyFromText(text));
+  explicitCurrencyCandidates(text).forEach(add);
 
   for (const [symbol, currencies] of Object.entries(CURRENCY_SYMBOL_CANDIDATES)) {
     if (!text.includes(symbol)) continue;
@@ -96,7 +110,7 @@ export function moneyCurrencyCandidatesFromText(value) {
 }
 
 export function moneyCurrencyFromText(value, fallbackCurrency = null) {
-  const explicit = explicitCurrencyFromText(value);
+  const explicit = explicitCurrencyFromText(value, fallbackCurrency);
   if (explicit) return explicit;
 
   const candidates = moneyCurrencyCandidatesFromText(value);

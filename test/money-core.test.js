@@ -43,3 +43,13 @@ test('moneyMentionPattern matches a currency term and a bare magnitude word', ()
 test('KZT is recognized by its ₸ symbol, not only the spelled-out word', () => {
   assert.equal(moneyCurrencyFromText('300 000 ₸ в месяц'), 'KZT');
 });
+
+test('bare "сом" respects fallbackCurrency instead of always resolving to UZS', () => {
+  // Both Uzbekistan's and Kyrgyzstan's currencies are colloquially called
+  // "som" (сом in Cyrillic); the term alone is genuinely ambiguous. The
+  // Kyrgyz spelling "сом" and the Uzbek "so'm" both fold to the same search
+  // key ("som") once apostrophes and Cyrillic transliteration are applied,
+  // so a caller-supplied fallback/context currency must break the tie.
+  assert.equal(moneyCurrencyFromText('7 000 сом', 'KGS'), 'KGS');
+  assert.equal(moneyCurrencyFromText('7 000 сом', 'UZS'), 'UZS');
+});
