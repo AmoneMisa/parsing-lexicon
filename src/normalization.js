@@ -236,7 +236,14 @@ export function escapeRegex(value) {
 // alone can hold thousands of entries. See the apps/flats housing-source-
 // crawler OOM this was diagnosed against (norieltor.com.ua and others).
 const ALIAS_BOUNDARY_CLASS = 'A-Za-z0-9_\\u00C0-\\u02AF\\u0370-\\u03FF\\u0400-\\u052F';
+// For literal alternation (aliasesToRegex: "either start-of-string or a
+// non-word char"), the class itself must be negated.
 const ALIAS_NON_BOUNDARY_RE_SOURCE = `[^${ALIAS_BOUNDARY_CLASS}]`;
+// For lookaround (matcherFor: "not preceded/followed by a word char"), the
+// negation belongs on the lookaround itself, not inside the class too --
+// `(?<![^X])` double-negates into "must be adjacent to X", the opposite of
+// the intended boundary check.
+const ALIAS_WORD_RE_SOURCE = `[${ALIAS_BOUNDARY_CLASS}]`;
 
 function aliasPattern(value) {
   const source = normalizeUnicode(value).trim();
@@ -268,7 +275,7 @@ function matcherFor(entries, { transliteration = true } = {}) {
   const result = searchAliases.length
     ? Object.freeze({
         owners,
-        re: new RegExp(`(?<!${ALIAS_NON_BOUNDARY_RE_SOURCE})(?:${searchAliases.map(aliasPattern).join('|')})(?!${ALIAS_NON_BOUNDARY_RE_SOURCE})`, 'gi'),
+        re: new RegExp(`(?<!${ALIAS_WORD_RE_SOURCE})(?:${searchAliases.map(aliasPattern).join('|')})(?!${ALIAS_WORD_RE_SOURCE})`, 'gi'),
       })
     : Object.freeze({ owners, re: null });
 
