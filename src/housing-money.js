@@ -62,6 +62,34 @@ const COMMON_HOUSING_STRUCTURE_PATTERNS = Object.freeze([
   /(?:^|[^\p{L}\p{N}_])\d{1,5}(?:[.,]\d{1,2})?\s*(?:м(?:2|²)|m(?:2|²)|sqm|sq\.?\s*m|м\s*кв\.?)\s*(?=$|[^\p{L}\p{N}_])/giu,
 ]);
 
+// These five patterns are built once here rather than inside
+// extractHousingMoneyCandidates(): they depend only on the module-level
+// constants above (PRICE_KEYWORD/MONEY_NUMBER_PATTERN/SCALE_PATTERN/
+// PRICE_CURRENCY_*), never on the text being parsed, yet that function runs
+// once per listing card. Constructing them with `new RegExp(...)` per call
+// forces V8 to recompile a pattern that embeds moneyCurrencyPattern()'s
+// ~250-branch currency alternation under the unicode ('u') flag from
+// scratch every time; on a catalogue page with dozens of cards this
+// repeated compilation of a large unicode-mode regex is expensive enough to
+// exhaust the heap (observed as an OOM inside V8's regex code generation).
+// Reusing the same compiled RegExp objects removes that per-call cost —
+// they carry the /g flag but are only ever driven through matchAll(), which
+// takes its own internal copy and never mutates lastIndex on the original.
+const EXPANDED_UZBEK_THOUSANDS_RE = new RegExp(
+  `${PRICE_KEYWORD}[^\\d\\r\\n]{0,16}(\\d{4})(?:[.]|[\\s\\u00a0])000\\s*(?:с[ўу]м|so['‘’ʻʼ]?m|som|sum|uzs)(?=$|[^\\p{L}\\p{N}_])`,
+  'igu',
+);
+const LABELLED_PRICE_RANGE_RE = new RegExp(
+  `${PRICE_KEYWORD}\\s*[:=\\-–—]?\\s*(${MONEY_NUMBER_PATTERN})\\s*(?:(${SCALE_PATTERN})(?=$|[^\\p{L}\\p{N}_]))?\\s*(?:-{1,3}|–|—|to|до|dan\\s+gacha)\\s*(${MONEY_NUMBER_PATTERN})\\s*(?:(${SCALE_PATTERN})(?=$|[^\\p{L}\\p{N}_]))?(?=$|[^\\p{L}\\p{N}_])`,
+  'igu',
+);
+const LABELLED_SCALE_RE = new RegExp(
+  `${PRICE_KEYWORD}\\s*[:=\\-–—]?\\s*(${MONEY_NUMBER_PATTERN})\\s*(${SCALE_PATTERN})(?=$|[^\\p{L}\\p{N}_])`,
+  'igu',
+);
+const PRICE_AMOUNT_AFTER_CURRENCY_RE = new RegExp(`(${MONEY_NUMBER_PATTERN})\\s*[.]?\\s*${PRICE_CURRENCY_AFTER_NUMBER}`, 'igu');
+const PRICE_AMOUNT_BEFORE_CURRENCY_RE = new RegExp(`${PRICE_CURRENCY_BEFORE_NUMBER}\\s*(${MONEY_NUMBER_PATTERN})`, 'igu');
+
 function moneyParsingContext(value = '') {
   if (value && typeof value === 'object' && !Array.isArray(value)) {
     const country = canonicalCountryCode(value.country) || '';
@@ -239,11 +267,7 @@ export function extractHousingMoneyCandidates(value, context = '') {
   // amount, while `2 million 500` is a single split-million amount rather
   // than two competing prices.  These must be extracted before the shorter
   // generic currency/scale candidates below.
-  const expandedUzbekThousandsRe = new RegExp(
-    `${PRICE_KEYWORD}[^\\d\\r\\n]{0,16}(\\d{4})(?:[.]|[\\s\\u00a0])000\\s*(?:с[ўу]м|so['‘’ʻʼ]?m|som|sum|uzs)(?=$|[^\\p{L}\\p{N}_])`,
-    'igu',
-  );
-  for (const match of text.matchAll(expandedUzbekThousandsRe)) {
+  for (const match of text.matchAll(EXPANDED_UZBEK_THOUSANDS_RE)) {
     const start = match.index ?? 0;
     addCandidate({
       amount: Number(match[1]) * 1000,
@@ -262,11 +286,7 @@ export function extractHousingMoneyCandidates(value, context = '') {
   // lower bound through the legacy single-price result.  It must be collected
   // before generic amounts so the second endpoint cannot be selected merely
   // because it is larger.
-  const labelledPriceRangeRe = new RegExp(
-    `${PRICE_KEYWORD}\\s*[:=\\-–—]?\\s*(${MONEY_NUMBER_PATTERN})\\s*(?:(${SCALE_PATTERN})(?=$|[^\\p{L}\\p{N}_]))?\\s*(?:-{1,3}|–|—|to|до|dan\\s+gacha)\\s*(${MONEY_NUMBER_PATTERN})\\s*(?:(${SCALE_PATTERN})(?=$|[^\\p{L}\\p{N}_]))?(?=$|[^\\p{L}\\p{N}_])`,
-    'igu',
-  );
-  for (const match of text.matchAll(labelledPriceRangeRe)) {
+  for (const match of text.matchAll(LABELLED_PRICE_RANGE_RE)) {
     // A scale stated on only one endpoint applies to both: "50-60 тыс сум"
     // means 50,000-60,000, not 50-60,000. Mirrors money.js's range parsing.
     const firstScale = match[2] || match[4] || null;
@@ -310,11 +330,7 @@ export function extractHousingMoneyCandidates(value, context = '') {
   // glyph. In Uzbek listing prose, "narxi 850 ming" conventionally means
   // 850,000 UZS; retaining `scale` prevents a later generic fallback from
   // mistaking the base number for USD.
-  const labelledScaleRe = new RegExp(
-    `${PRICE_KEYWORD}\\s*[:=\\-–—]?\\s*(${MONEY_NUMBER_PATTERN})\\s*(${SCALE_PATTERN})(?=$|[^\\p{L}\\p{N}_])`,
-    'igu',
-  );
-  for (const match of text.matchAll(labelledScaleRe)) {
+  for (const match of text.matchAll(LABELLED_SCALE_RE)) {
     const start = match.index ?? 0;
     const end = start + match[0].length;
     const scale = match[2];
@@ -339,10 +355,7 @@ export function extractHousingMoneyCandidates(value, context = '') {
     });
   }
 
-  for (const regex of [
-    new RegExp(`(${MONEY_NUMBER_PATTERN})\\s*[.]?\\s*${PRICE_CURRENCY_AFTER_NUMBER}`, 'igu'),
-    new RegExp(`${PRICE_CURRENCY_BEFORE_NUMBER}\\s*(${MONEY_NUMBER_PATTERN})`, 'igu'),
-  ]) {
+  for (const regex of [PRICE_AMOUNT_AFTER_CURRENCY_RE, PRICE_AMOUNT_BEFORE_CURRENCY_RE]) {
     for (const match of text.matchAll(regex)) {
       const amount = parseNumericAmount(match[1]);
       const start = match.index ?? 0; const end = start + match[0].length;
