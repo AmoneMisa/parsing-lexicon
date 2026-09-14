@@ -223,6 +223,21 @@ export function escapeRegex(value) {
   return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
+// A word-boundary class scoped to the scripts this lexicon actually targets
+// (Latin incl. Romanian/Karakalpak diacritics, Cyrillic incl. supplement,
+// digits, underscore) instead of the full-Unicode \p{L}\p{N} property
+// escapes. Under V8's unicode ('u') regex mode, \p{L}/\p{N} character
+// classes compile to disproportionately large native code — benchmarked at
+// roughly 20x slower and 4x more memory per compiled entry than this
+// explicit range, which matters a lot here: aliasesToRegex()/matcherFor()
+// compile one such regex per lexicon entry or per matcher (`entry.re`
+// getters across the location/housing/hiring dictionaries, and
+// findAllCanonical()'s combined matcher), and a single city's street list
+// alone can hold thousands of entries. See the apps/flats housing-source-
+// crawler OOM this was diagnosed against (norieltor.com.ua and others).
+const ALIAS_BOUNDARY_CLASS = 'A-Za-z0-9_\\u00C0-\\u02AF\\u0370-\\u03FF\\u0400-\\u052F';
+const ALIAS_NON_BOUNDARY_RE_SOURCE = `[^${ALIAS_BOUNDARY_CLASS}]`;
+
 function aliasPattern(value) {
   const source = normalizeUnicode(value).trim();
   let pattern = '';
@@ -253,7 +268,7 @@ function matcherFor(entries, { transliteration = true } = {}) {
   const result = searchAliases.length
     ? Object.freeze({
         owners,
-        re: new RegExp(`(?<![\\p{L}\\p{N}_])(?:${searchAliases.map(aliasPattern).join('|')})(?![\\p{L}\\p{N}_])`, 'giu'),
+        re: new RegExp(`(?<!${ALIAS_NON_BOUNDARY_RE_SOURCE})(?:${searchAliases.map(aliasPattern).join('|')})(?!${ALIAS_NON_BOUNDARY_RE_SOURCE})`, 'gi'),
       })
     : Object.freeze({ owners, re: null });
 
@@ -422,12 +437,15 @@ export function assertValidLexicon(entries, options = {}) {
   return true;
 }
 
-export function aliasesToRegex(values, flags = 'iu') {
+export function aliasesToRegex(values, flags = 'i') {
   const alternatives = [...new Set(values || [])]
     .filter((value) => typeof value === 'string' && value.trim())
     .map((value) => normalizeUnicode(value).trim())
     .sort((a, b) => b.length - a.length)
     .map(aliasPattern);
   if (!alternatives.length) throw new TypeError('aliasesToRegex() requires at least one non-empty alias');
-  return new RegExp(`(?:^|[^\\p{L}\\p{N}_])(?:${alternatives.join('|')})(?:$|[^\\p{L}\\p{N}_])`, flags);
+  return new RegExp(
+    `(?:^|${ALIAS_NON_BOUNDARY_RE_SOURCE})(?:${alternatives.join('|')})(?:$|${ALIAS_NON_BOUNDARY_RE_SOURCE})`,
+    flags.replace('u', ''),
+  );
 }
