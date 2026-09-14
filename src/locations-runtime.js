@@ -8,6 +8,7 @@ import {
 import { isMapDataEntry, LOCATION_LIST_KEYS, mergeLocationCountries } from './location-merge.js';
 import { canonicalCity } from './geography.js';
 import { normalizeForMatch } from './normalization.js';
+import { candidateEntries, computeTextGrams } from './alias-prefilter.js';
 import { KG_LOCATION_EXTENSIONS } from './kg-location-extensions.js';
 import { KG_BISHKEK_AREA_EXTENSIONS } from './kg-bishkek-area-extensions.js';
 import { KG_BISHKEK_STREET_EXTENSIONS } from './kg-bishkek-street-extensions.js';
@@ -180,11 +181,12 @@ export function matchDictionaryLocation(text, countryCode, city = null) {
   const cities = canonical && country[canonical] ? [[canonical, country[canonical]]] : Object.entries(country);
   const value = String(text || '');
   const normalizedValue = normalizeForMatch(value);
+  const grams = computeTextGrams(value);
   let best = null;
 
   for (const [cityName, data] of cities) {
     for (const type of LOCATION_LIST_KEYS) {
-      for (const entry of data[type] || []) {
+      for (const entry of candidateEntries(data[type] || [], value, grams)) {
         const mapData = isMapDataEntry(entry);
         const match = mapData ? mapDataMatch(entry, normalizedValue) : entry?.re?.exec(value);
         if (!match) continue;

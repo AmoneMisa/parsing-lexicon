@@ -2,6 +2,7 @@ import { LOCATION_DICTIONARIES } from './locations-runtime.js';
 import { isMapDataEntry, LOCATION_LIST_KEYS } from './location-merge.js';
 import { CITIES_BY_COUNTRY, canonicalCity } from './geography.js';
 import { aliasesOf, aliasesToRegex, normalizeForMatch } from './normalization.js';
+import { candidateEntries, computeTextGrams } from './alias-prefilter.js';
 import { KZ_AMBIGUOUS_LOCAL_NAMES, KZ_SEARCH_CLUSTERS } from './kz-location-extensions.js';
 import { UZ_AMBIGUOUS_LOCAL_NAMES } from './uz-location-extensions.js';
 
@@ -237,12 +238,13 @@ function mapDataMatch(value, normalizedValue, item) {
   return null;
 }
 
-function findEntryMatches(text, cityName, data, { includeMapData = false } = {}) {
+function findEntryMatches(text, cityName, data, { includeMapData = false, grams = null } = {}) {
   const value = String(text || '');
   const normalizedValue = normalizeForMatch(value);
+  const textGrams = grams || computeTextGrams(value);
   const raw = [];
   for (const key of LOCATION_LIST_KEYS) {
-    for (const item of data?.[key] || []) {
+    for (const item of candidateEntries(data?.[key] || [], value, textGrams)) {
       if (isMapDataEntry(item) && !includeMapData) continue;
       const match = (isMapDataEntry(item) ? mapDataMatch(value, normalizedValue, item) : value.match(item?.re))
         || (key === 'residentialComplexes' ? markedResidentialMatch(value, item) : null);
@@ -329,16 +331,17 @@ export function matchCentralAsiaLocationEntities(text, countryCode, preferredCit
   const preferred = canonicalCity(preferredCity, countryCode) || preferredCity;
   const explicit = explicitCityFromText(text, countryCode);
   const scopedCity = preferred && country[preferred] ? preferred : explicit && country[explicit] ? explicit : null;
+  const grams = computeTextGrams(text);
 
   if (scopedCity) {
-    const matches = findEntryMatches(text, scopedCity, country[scopedCity], { includeMapData: true });
+    const matches = findEntryMatches(text, scopedCity, country[scopedCity], { includeMapData: true, grams });
     const clusters = clusterMatches(matches, countryCode);
     return Object.freeze({ city: scopedCity, matches: Object.freeze(matches), searchClusters: Object.freeze(clusters), candidates: Object.freeze([]) });
   }
 
   const byCity = [];
   for (const [cityName, data] of Object.entries(country)) {
-    const matches = findEntryMatches(text, cityName, data);
+    const matches = findEntryMatches(text, cityName, data, { grams });
     if (matches.length) byCity.push({ city: cityName, matches });
   }
 

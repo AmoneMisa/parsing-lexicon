@@ -107,6 +107,41 @@ function indexFor(entries) {
   return index;
 }
 
+/** Every GRAM-length window of `text`, precomputed once for reuse across lists. */
+export function computeTextGrams(text) {
+  return textGrams(String(text || ''));
+}
+
+function candidateIndices(entries, value, grams) {
+  const { byGram, always } = indexFor(entries);
+  const candidates = new Set(always);
+  for (const gram of grams) {
+    const bucket = byGram.get(gram);
+    if (!bucket) continue;
+    for (const i of bucket) candidates.add(i);
+  }
+  return [...candidates].sort((a, b) => a - b);
+}
+
+/**
+ * Every entry in `entries` (original list order) the text could plausibly
+ * contain, per the gram index — a filter, not a verdict. Callers still run
+ * their own verification (regex, exact-token match, ...) on what comes back;
+ * see the module doc for why this is safe even for non-regex verifiers.
+ *
+ * `grams`, from `computeTextGrams()`, lets a caller scanning the same text
+ * against many lists compute the O(text length) gram pass once instead of
+ * once per list.
+ */
+export function candidateEntries(entries, text, grams) {
+  if (!Array.isArray(entries) || !entries.length) return [];
+  const value = String(text || '');
+  if (!value) return [];
+
+  const indices = candidateIndices(entries, value, grams || textGrams(value));
+  return indices.map((i) => entries[i]);
+}
+
 /**
  * First entry in `entries` whose alias regex matches `text`.
  *
@@ -124,16 +159,8 @@ export function matchFirstEntry(entries, text, accept) {
   const value = String(text || '');
   if (!value) return undefined;
 
-  const { byGram, always } = indexFor(entries);
-  const candidates = new Set(always);
-  for (const gram of textGrams(value)) {
-    const bucket = byGram.get(gram);
-    if (!bucket) continue;
-    for (const i of bucket) candidates.add(i);
-  }
-  if (!candidates.size) return undefined;
-
-  for (const i of [...candidates].sort((a, b) => a - b)) {
+  const indices = candidateIndices(entries, value, textGrams(value));
+  for (const i of indices) {
     const entry = entries[i];
     // `re` carries no /g flag, so exec() is stateless and safe to reuse here.
     const match = entry?.re?.exec(value);

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { matchFirstEntry } from '../src/alias-prefilter.js';
+import { candidateEntries, computeTextGrams, matchFirstEntry } from '../src/alias-prefilter.js';
 import { centralAsiaLocationCities, locationCities } from '../src/index.js';
 
 const LIST_KEYS = ['districts', 'microdistricts', 'metro', 'residentialComplexes', 'streets', 'landmarks'];
@@ -103,4 +103,30 @@ test('empty and missing inputs are handled', () => {
   assert.equal(matchFirstEntry([], 'text'), undefined);
   assert.equal(matchFirstEntry(null, 'text'), undefined);
   assert.equal(matchFirstEntry([{ name: 'x', aliases: ['xxxx'], re: /xxxx/iu }], ''), undefined);
+});
+
+test('candidateEntries returns every plausible entry in list order, not just the first', () => {
+  const entries = [
+    Object.freeze({ name: 'first', aliases: ['Sunrise City'], re: /(?:^|[^\p{L}\p{N}_])sunrise city(?:$|[^\p{L}\p{N}_])/iu }),
+    Object.freeze({ name: 'unrelated', aliases: ['Some Other Place'], re: /(?:^|[^\p{L}\p{N}_])some other place(?:$|[^\p{L}\p{N}_])/iu }),
+    Object.freeze({ name: 'second', aliases: ['Sunrise City'], re: /(?:^|[^\p{L}\p{N}_])sunrise city(?:$|[^\p{L}\p{N}_])/iu }),
+  ];
+  const candidates = candidateEntries(entries, 'ЖК Sunrise City rooms');
+  assert.deepEqual(candidates.map((entry) => entry.name), ['first', 'second']);
+});
+
+test('candidateEntries accepts a precomputed grams set equivalent to computing it internally', () => {
+  const entries = [Object.freeze({ name: 'x', aliases: ['Longname'], re: /longname/iu })];
+  const grams = computeTextGrams('a Longname here');
+  assert.deepEqual(
+    candidateEntries(entries, 'a Longname here', grams).map((e) => e.name),
+    candidateEntries(entries, 'a Longname here').map((e) => e.name),
+  );
+  assert.deepEqual(candidateEntries(entries, 'nothing relevant', computeTextGrams('nothing relevant')), []);
+});
+
+test('candidateEntries handles empty and missing inputs', () => {
+  assert.deepEqual(candidateEntries([], 'text'), []);
+  assert.deepEqual(candidateEntries(null, 'text'), []);
+  assert.deepEqual(candidateEntries([{ name: 'x', aliases: ['xxxx'], re: /xxxx/iu }], ''), []);
 });
