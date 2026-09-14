@@ -9,6 +9,7 @@ export const CURRENCY_SYMBOL_CANDIDATES: Readonly<Record<string, readonly string
 export function moneyCurrencyCandidatesFromText(value: unknown): readonly string[];
 export function moneyCurrencyFromText(value: unknown, fallbackCurrency?: string | null): string | null;
 export function moneyCurrencyPattern(): string;
+export function moneyMentionPattern(): string;
 export function currencyDisplay(code: unknown, locale?: string): CurrencyDisplay | null;
 export function currencySymbol(code: unknown, locale?: string): string | null;
 export function currencyName(code: unknown, locale?: string): string | null;

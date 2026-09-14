@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import { MONEY_RANGE_RE } from '../src/money-core.js';
+import { MONEY_RANGE_RE, moneyMentionPattern } from '../src/money-core.js';
+import { moneyCurrencyFromText } from '../src/currency.js';
 
 test('MONEY_RANGE_RE does not read a scale abbreviation off an unrelated following word', () => {
   // "2 до 3 месяцев" is a probation-period phrase, not a millions-scaled
@@ -28,4 +29,17 @@ test('MONEY_RANGE_RE still reads a genuine scale abbreviation at a real word bou
 
 test('MONEY_RANGE_RE still matches a word separator with no surrounding space', () => {
   assert.equal('5до10'.match(MONEY_RANGE_RE)?.[0], '5до10');
+});
+
+test('moneyMentionPattern matches a currency term and a bare magnitude word', () => {
+  const re = new RegExp(moneyMentionPattern(), 'iu');
+  assert.match('700 USD/mo', re);
+  assert.match('300 000 у.е.', re);
+  assert.match('15 млн', re);
+  assert.match('300 000 ₸', re);
+  assert.doesNotMatch('2 до 3 месяцев', re);
+});
+
+test('KZT is recognized by its ₸ symbol, not only the spelled-out word', () => {
+  assert.equal(moneyCurrencyFromText('300 000 ₸ в месяц'), 'KZT');
 });

@@ -9,6 +9,7 @@ export {
   moneyCurrencyCandidatesFromText,
   moneyCurrencyFromText,
   moneyCurrencyPattern,
+  moneyMentionPattern,
 } from './money-core.js';
 
 const LOCALE_ALIASES = Object.freeze({

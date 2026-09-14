@@ -112,3 +112,19 @@ export function moneyCurrencyPattern() {
     .map(escapeRegex)
     .join('|');
 }
+
+// A cheap "does this text mention money at all" pre-filter — a currency term
+// or a bare magnitude word (e.g. "15 млн", no currency spelled out) both
+// count. Consumers that need to reject non-money text fast before running a
+// full parseSalary/parseHousingPrice pass (e.g. scanning many HTML card
+// candidates) can test against this instead of hand-copying a currency list,
+// which drifts from the lexicon's own (see MONEY_SCALE_PATTERN for the
+// magnitude half already used by MONEY_RANGE_RE/MONEY_SINGLE_RE).
+//
+// Word-boundary guarded for the same reason MONEY_RANGE_RE/MONEY_SINGLE_RE
+// are: MONEY_SCALE_PATTERN includes bare single-letter abbreviations like "м"
+// (million) that would otherwise match inside an unrelated word — e.g. "2 до
+// 3 месяцев" ("months") must never register as a money mention.
+export function moneyMentionPattern() {
+  return `(?<![\\p{L}\\p{N}_])(?:${moneyCurrencyPattern()}|${MONEY_SCALE_PATTERN})(?![\\p{L}\\p{N}_])`;
+}

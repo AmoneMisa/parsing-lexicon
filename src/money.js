@@ -22,6 +22,7 @@ export {
   MONEY_SINGLE_RE,
   moneyCurrencyFromText,
   moneyCurrencyPattern,
+  moneyMentionPattern,
   moneyScaleMultiplier,
   parseNumericAmount,
   parseScaledAmount,

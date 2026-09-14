@@ -85,7 +85,44 @@ parseHiringContext(
 );
 ```
 
-Subpath exports are available for consumers that need narrower modules, including `./geo`, `./locations`, `./housing-context`, `./housing-structured`, `./hiring-context`, `./hiring-professions` and `./money`.
+Subpath exports are available for consumers that need narrower modules, including `./geo`, `./locations`, `./housing-context`, `./housing-structured`, `./hiring-context`, `./hiring-professions`, `./housing-money`, `./money` and `./currency`.
+
+### Money & currency
+
+Currency and magnitude vocabulary (symbols, ISO codes, spelled-out names, and
+regional stand-ins like "у.е.") lives here once, in `money-lexicon.js`. A
+consumer that needs to know whether some text mentions money at all — a fast
+pre-filter before running the heavier parsers below, e.g. when scanning many
+HTML card candidates scraped from a page — should use `moneyMentionPattern()`
+rather than hand-copying a currency symbol list. A hand-copied list silently
+drifts from this one; that exact bug (a missing "₸"/KZT symbol, and a missing
+"у.е." token) is why this section exists.
+
+```js
+import {
+  moneyCurrencyPattern,   // just the currency alternation, e.g. for building a custom matcher
+  moneyMentionPattern,    // currency OR a bare magnitude word ("15 млн") — boundary-guarded
+  moneyCurrencyFromText,  // -> 'KZT' | 'USD' | ... | null
+} from '@whiteslove/parsing-lexicon/currency';
+import { parseHousingPrice } from '@whiteslove/parsing-lexicon/housing-money';
+import { parseSalary } from '@whiteslove/parsing-lexicon/money';
+
+const looksLikeMoney = new RegExp(moneyMentionPattern(), 'iu');
+looksLikeMoney.test('300 000 ₸ в месяц'); // true
+looksLikeMoney.test('2 до 3 месяцев');    // false — "м" inside "месяцев" does not count
+
+moneyCurrencyFromText('300 000 ₸ в месяц'); // 'KZT'
+
+parseHousingPrice('12 500 000 сум', 'UZS');
+// -> { amount: 12500000, currency: 'UZS' }
+```
+
+Do not write a source-local regex for "does this text contain a price" or
+"what currency is this" — both already exist here and are kept in sync with
+the full currency/magnitude vocabulary used by `parseHousingPrice`/
+`parseSalary`. If a currency form you need is missing, add it to
+`CURRENCY_TERMS` in `money-lexicon.js` (and `CURRENCY_SYMBOL_CANDIDATES` if
+it's a standalone symbol) rather than working around the gap in the consumer.
 
 ## Data-quality rules
 

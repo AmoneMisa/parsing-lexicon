@@ -8,3 +8,4 @@ export function parseScaledAmount(raw: unknown, scale?: unknown): number | null;
 export function moneyCurrencyCandidatesFromText(value: unknown): readonly string[];
 export function moneyCurrencyFromText(value: unknown, fallbackCurrency?: string | null): string | null;
 export function moneyCurrencyPattern(): string;
+export function moneyMentionPattern(): string;
