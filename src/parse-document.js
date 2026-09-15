@@ -69,7 +69,7 @@ export function createParseDocument(value, { context = {}, classifySection } = {
       return ngrams.get(size);
     },
     getTokenSpans(maxTokens = 4) {
-      const limit = Math.max(1, Math.min(8, Number(maxTokens) || 4));
+      const limit = Math.max(1, Math.min(8, Math.floor(Number(maxTokens) || 4)));
       if (!spans.has(limit)) spans.set(limit, generateParserSpans(document.tokens, { maxTokens: limit }));
       return spans.get(limit);
     },

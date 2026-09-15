@@ -57,3 +57,8 @@ test('legacy pipeline properties and debug tokens remain compatible', () => {
   assert.equal(output.debug.tokens.length, 3);
   assert.ok(output.debug.spans.length);
 });
+
+test('fractional span requests share bounded integer cache keys', () => {
+  const doc = createParseDocument('one two three four');
+  for (let i = 0; i < 100; i++) assert.strictEqual(doc.getTokenSpans(3 + i / 100), doc.getTokenSpans(3));
+});
