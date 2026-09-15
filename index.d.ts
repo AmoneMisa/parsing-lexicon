@@ -372,6 +372,8 @@ export function parseExperience(value: unknown): ExperienceParseResult | null;
 
 export * from './src/housing-context.js';
 export * from './src/housing-address.js';
+// Keep the address grammar as the root owner; the V2 extractor remains on its subpath.
+export { extractHousingAddressCandidates } from './src/housing-address.js';
 export * from './src/parser-core.js';
 export * from './src/temporal.js';
 export * from './src/hiring-context.js';

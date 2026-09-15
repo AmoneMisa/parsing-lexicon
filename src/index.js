@@ -44,6 +44,8 @@ export * from './housing-intent.js';
 export * from './housing-commercial.js';
 export * from './housing-context.js';
 export * from './housing-address.js';
+// Keep the address grammar as the root owner; the V2 extractor remains on its subpath.
+export { extractHousingAddressCandidates } from './housing-address.js';
 export * from './housing-features.js';
 export * from './housing-listing-fields.js';
 export * from './housing-safety.js';
