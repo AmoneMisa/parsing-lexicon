@@ -237,7 +237,8 @@
   "scripts": {
     "test": "node --test",
     "sync:geo-map-data": "node ./scripts/sync-geo-map-data-lexicon.js",
-    "audit:geo-map-data": "node ./scripts/audit-geo-map-data-lexicon.js"
+    "audit:geo-map-data": "node ./scripts/audit-geo-map-data-lexicon.js",
+    "benchmark:parser": "node benchmarks/parser-baseline.js"
   },
   "publishConfig": {
     "access": "public"

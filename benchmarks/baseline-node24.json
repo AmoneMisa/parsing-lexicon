@@ -1,0 +1,259 @@
+{
+  "schemaVersion": 1,
+  "node": "v24.19.0",
+  "commit": "e528e2c87917074f0b01b1dc9c87373eda1db77e",
+  "iterations": 30,
+  "metricScope": "Set-valued labels in this synthetic regression corpus only; not production precision/recall. First calls share process caches. Memory is process-wide, including imports; not allocation per case.",
+  "metrics": {
+    "truePositives": 35,
+    "falsePositives": 1,
+    "falseNegatives": 1,
+    "precision": 0.9722222222222222,
+    "recall": 0.9722222222222222
+  },
+  "memoryBefore": {
+    "rss": 605052928,
+    "heapTotal": 515911680,
+    "heapUsed": 384397088,
+    "external": 18387251,
+    "arrayBuffers": 212095
+  },
+  "memoryAfter": {
+    "rss": 657350656,
+    "heapTotal": 562647040,
+    "heapUsed": 479080208,
+    "external": 18387332,
+    "arrayBuffers": 212136
+  },
+  "maxRssKiB": 641944,
+  "cases": [
+    {
+      "id": "housing-uz-compact",
+      "domain": "housing",
+      "firstCallMs": 155.300526,
+      "p50Ms": 1.414940999999999,
+      "p95Ms": 1.6959430000001703,
+      "candidateCount": 5,
+      "truePositives": 6,
+      "falsePositives": [],
+      "falseNegatives": []
+    },
+    {
+      "id": "housing-ua-compact",
+      "domain": "housing",
+      "firstCallMs": 1.107347000000118,
+      "p50Ms": 0.710269000000153,
+      "p95Ms": 0.8439410000000862,
+      "candidateCount": 5,
+      "truePositives": 6,
+      "falsePositives": [],
+      "falseNegatives": []
+    },
+    {
+      "id": "housing-phone-not-numbers",
+      "domain": "housing",
+      "firstCallMs": 3.682524999999714,
+      "p50Ms": 0.39788899999985006,
+      "p95Ms": 0.5165680000000066,
+      "candidateCount": 0,
+      "truePositives": 0,
+      "falsePositives": [],
+      "falseNegatives": []
+    },
+    {
+      "id": "housing-minimum-not-fixed",
+      "domain": "housing",
+      "firstCallMs": 1.5170239999997648,
+      "p50Ms": 0.320491999999831,
+      "p95Ms": 0.38741399999980786,
+      "candidateCount": 2,
+      "truePositives": 1,
+      "falsePositives": [
+        "fixedRentalDuration=1:month:exact"
+      ],
+      "falseNegatives": []
+    },
+    {
+      "id": "geo-parent-collision",
+      "domain": "geo",
+      "firstCallMs": 63.09036100000003,
+      "p50Ms": 0.5071429999998145,
+      "p95Ms": 0.6435989999999947,
+      "candidateCount": null,
+      "truePositives": 2,
+      "falsePositives": [],
+      "falseNegatives": []
+    },
+    {
+      "id": "geo-cross-district",
+      "domain": "geo",
+      "firstCallMs": 0.9512620000000425,
+      "p50Ms": 0.49533599999995204,
+      "p95Ms": 0.7243010000001959,
+      "candidateCount": null,
+      "truePositives": 2,
+      "falsePositives": [],
+      "falseNegatives": []
+    },
+    {
+      "id": "geo-unrelated",
+      "domain": "geo",
+      "firstCallMs": 5.773241999999755,
+      "p50Ms": 0.3227660000002288,
+      "p95Ms": 0.5163880000000063,
+      "candidateCount": null,
+      "truePositives": 0,
+      "falsePositives": [],
+      "falseNegatives": []
+    },
+    {
+      "id": "vacancy-required",
+      "domain": "vacancies",
+      "firstCallMs": 608.9940289999995,
+      "p50Ms": 0.4537929999996777,
+      "p95Ms": 0.5789819999999963,
+      "candidateCount": null,
+      "truePositives": 2,
+      "falsePositives": [],
+      "falseNegatives": []
+    },
+    {
+      "id": "vacancy-optional",
+      "domain": "vacancies",
+      "firstCallMs": 0.48071299999992334,
+      "p50Ms": 0.41669699999965815,
+      "p95Ms": 0.5772090000000389,
+      "candidateCount": null,
+      "truePositives": 2,
+      "falsePositives": [],
+      "falseNegatives": []
+    },
+    {
+      "id": "vacancy-noise",
+      "domain": "vacancies",
+      "firstCallMs": 0.3855810000004567,
+      "p50Ms": 0.32700300000033167,
+      "p95Ms": 0.40589100000033795,
+      "candidateCount": null,
+      "truePositives": 0,
+      "falsePositives": [],
+      "falseNegatives": []
+    },
+    {
+      "id": "cv-commercial",
+      "domain": "CV",
+      "firstCallMs": 20.809110999999575,
+      "p50Ms": 6.015696999999818,
+      "p95Ms": 9.337880000000041,
+      "candidateCount": null,
+      "truePositives": 3,
+      "falsePositives": [],
+      "falseNegatives": []
+    },
+    {
+      "id": "cv-ambiguous-prose",
+      "domain": "CV",
+      "firstCallMs": 6.359775999999329,
+      "p50Ms": 6.3458440000003975,
+      "p95Ms": 8.483182999999372,
+      "candidateCount": null,
+      "truePositives": 0,
+      "falsePositives": [],
+      "falseNegatives": []
+    },
+    {
+      "id": "cv-ambiguous-skills",
+      "domain": "CV",
+      "firstCallMs": 0.30040199999984907,
+      "p50Ms": 0.09915899999941757,
+      "p95Ms": 0.12677100000018982,
+      "candidateCount": null,
+      "truePositives": 1,
+      "falsePositives": [],
+      "falseNegatives": []
+    },
+    {
+      "id": "cv-russian-heading",
+      "domain": "CV",
+      "firstCallMs": 540.9322979999997,
+      "p50Ms": 0.4413349999995262,
+      "p95Ms": 0.7052920000005543,
+      "candidateCount": null,
+      "truePositives": 0,
+      "falsePositives": [],
+      "falseNegatives": [
+        "Spring"
+      ]
+    },
+    {
+      "id": "ats-exact",
+      "domain": "ATS",
+      "firstCallMs": 116.09545799999978,
+      "p50Ms": 1.0278879999996207,
+      "p95Ms": 1.4921059999996942,
+      "candidateCount": null,
+      "truePositives": 3,
+      "falsePositives": [],
+      "falseNegatives": []
+    },
+    {
+      "id": "ats-missing",
+      "domain": "ATS",
+      "firstCallMs": 4.137329000000136,
+      "p50Ms": 4.909120999999686,
+      "p95Ms": 6.459816000000501,
+      "candidateCount": null,
+      "truePositives": 3,
+      "falsePositives": [],
+      "falseNegatives": []
+    },
+    {
+      "id": "primitives-offsets",
+      "domain": "primitives",
+      "firstCallMs": 2.1426549999996496,
+      "p50Ms": 0.00945400000000518,
+      "p95Ms": 0.021402999999736494,
+      "candidateCount": null,
+      "truePositives": 4,
+      "falsePositives": [],
+      "falseNegatives": []
+    },
+    {
+      "id": "primitives-empty",
+      "domain": "primitives",
+      "firstCallMs": 0.167421999999533,
+      "p50Ms": 0.0020329999997557024,
+      "p95Ms": 0.0023930000006657792,
+      "candidateCount": null,
+      "truePositives": 0,
+      "falsePositives": [],
+      "falseNegatives": []
+    }
+  ],
+  "retrieval": [
+    {
+      "text": "улица Шифокорлар",
+      "catalogCount": 4002,
+      "candidateCount": 145,
+      "firstCallMs": 44.43992900000012,
+      "p50Ms": 0.021462000000610715,
+      "p95Ms": 0.04890400000022055
+    },
+    {
+      "text": "no location words here",
+      "catalogCount": 4002,
+      "candidateCount": 7,
+      "firstCallMs": 0.013050000000475848,
+      "p50Ms": 0.0022630000003118766,
+      "p95Ms": 0.0028140000003986643
+    },
+    {
+      "text": "Чиланзар 7 квартал",
+      "catalogCount": 4002,
+      "candidateCount": 35,
+      "firstCallMs": 0.014943000000130269,
+      "p50Ms": 0.004997000000003027,
+      "p95Ms": 0.006990999999288761
+    }
+  ]
+}

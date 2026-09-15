@@ -1,0 +1,20 @@
+[
+  {"id":"housing-uz-compact","domain":"housing","kind":"positive","text":"2 xona, 5/9, 55 м2, narxi 850 ming","context":{"country":"UZ"},"expected":["rooms=2","floor=5","totalFloors=9","area.total=55","money.amount=850000","money.currency=UZS"]},
+  {"id":"housing-ua-compact","domain":"housing","kind":"positive","text":"Сдам 3-к кв, 11/12, общ.пл.80 м², 22000 грн","context":{"country":"UA"},"expected":["rooms=3","floor=11","totalFloors=12","area.total=80","money.amount=22000","money.currency=UAH"]},
+  {"id":"housing-phone-not-numbers","domain":"housing","kind":"negative","text":"Телефон +998 90 123 45 67","context":{"country":"UZ"},"expected":[]},
+  {"id":"housing-minimum-not-fixed","domain":"housing","kind":"ambiguous","text":"Квартира сдаётся от 1 месяца","expected":["minimumRentalDuration=1:month:min","fixedRentalDuration=1:month:exact"],"gold":["minimumRentalDuration=1:month:min"],"knownIssue":"A minimum duration also emits an incompatible fixed duration."},
+  {"id":"geo-parent-collision","domain":"geo","kind":"ambiguous","text":"Сайран, Алматы","country":"KZ","city":"Almaty","expected":["microdistrict:Sairan:Almaly:mentioned","microdistrict:Sairan:Auezov:mentioned"]},
+  {"id":"geo-cross-district","domain":"geo","kind":"ambiguous","text":"Нижняя Пятилетка, Алматы","country":"KZ","city":"Almaty","expected":["microdistrict:Nizhnyaya Pyatiletka:Zhetysu:mentioned","microdistrict:Nizhnyaya Pyatiletka:Turksib:mentioned"]},
+  {"id":"geo-unrelated","domain":"geo","kind":"negative","text":"no location words here","country":"KZ","city":"Almaty","expected":[]},
+  {"id":"vacancy-required","domain":"vacancies","kind":"positive","text":"Requirements: Docker.","expected":["required:Docker","context:Docker"]},
+  {"id":"vacancy-optional","domain":"vacancies","kind":"positive","text":"Nice to have: Docker.","expected":["optional:Docker","context:Docker"]},
+  {"id":"vacancy-noise","domain":"vacancies","kind":"negative","text":"Equal opportunity employer.","expected":[]},
+  {"id":"cv-commercial","domain":"CV","kind":"positive","text":"Experience\nBuilt services with TypeScript and PostgreSQL.\nSkills\nDocker","expected":["TypeScript","PostgreSQL","Docker"]},
+  {"id":"cv-ambiguous-prose","domain":"CV","kind":"negative","text":"I enjoy spring season and good weather.","expected":[]},
+  {"id":"cv-ambiguous-skills","domain":"CV","kind":"ambiguous","text":"Skills\nSpring","expected":["Spring"]},
+  {"id":"cv-russian-heading","domain":"CV","kind":"ambiguous","text":"Навыки\nSpring","expected":[],"gold":["Spring"],"knownIssue":"Russian skills heading is not recognized, so the ambiguous exact skill stays unresolved."},
+  {"id":"ats-exact","domain":"ATS","kind":"positive","text":"Skills\nDocker","job":{"title":"Engineer","description":"Requirements: Docker."},"expected":["matched:Docker","skills:40","eligible:true"]},
+  {"id":"ats-missing","domain":"ATS","kind":"negative","text":"I enjoy spring season.","job":{"title":"Engineer","description":"Requirements: Docker."},"expected":["missing:Docker","skills:0","eligible:true"]},
+  {"id":"primitives-offsets","domain":"primitives","kind":"positive","text":"  3-к   80 м²  ","expected":["3@2:3","-@3:4","к@4:5","80 м2@8:13"]},
+  {"id":"primitives-empty","domain":"primitives","kind":"negative","text":"  \n\t","expected":[]}
+]
