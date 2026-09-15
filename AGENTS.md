@@ -185,3 +185,13 @@ If the answer reveals a conflict with this file, preserve the architecture first
 ## Updating this document
 
 When the repository architecture is intentionally changed, update `AGENTS.md` in the same PR so future AI agents and contributors follow the new canonical structure.
+
+## Shared parse documents
+
+`createParseDocument` (`src/parse-document.js`, also exported through parser-core)
+owns lazy normalization, original UTF-16 offsets, tokens, lines, sections,
+semantic spans and bounded token-span/ngram caches for one document. Consumers
+should pass that document through a parsing operation rather than repeat these
+computations. Semantic extraction delegates to `semantic-spans`; domain section
+classification is supplied by the consumer. `runCandidatePipeline` retains its
+legacy properties as lazy getters and also exposes `input.document`.

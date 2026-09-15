@@ -22,3 +22,9 @@ cold starts. Process memory is not per-parser allocation. Compare runs on the
 same runtime and otherwise idle machine; timing values are observations, not
 portable CI thresholds. Existing domain regression suites remain authoritative
 and are much broader than this initial corpus.
+
+`node benchmarks/parse-document.js` compares previous eager preparation, lazy
+creation, first requested token spans, and cached spans on the same text.
+`parse-document-node24.json` records Stage 2. Full first-use span generation is
+slightly slower in this run; the benefit is avoiding unused work and reusing
+computed features, not accelerating the first request for every feature.

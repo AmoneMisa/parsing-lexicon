@@ -1,0 +1,29 @@
+{
+  "node": "v24.19.0",
+  "characters": 5400,
+  "rounds": 100,
+  "legacyEager": {
+    "p50Ms": 3.5761649999999463,
+    "p95Ms": 12.64308699999998
+  },
+  "lazyCreation": {
+    "p50Ms": 0.0015820000000985601,
+    "p95Ms": 0.006399999999985084
+  },
+  "allFeaturesDemanded": {
+    "p50Ms": 4.054184999999961,
+    "p95Ms": 7.43445399999996
+  },
+  "cachedSpans": {
+    "p50Ms": 0.00018099999988407944,
+    "p95Ms": 0.00046999999995023245
+  },
+  "memory": {
+    "rss": 199942144,
+    "heapTotal": 167243776,
+    "heapUsed": 93627360,
+    "external": 3825662,
+    "arrayBuffers": 212095
+  },
+  "note": "Same-process timing; memory is shared, not per-variant allocation. Legacy emulates the previous pipeline preparation."
+}

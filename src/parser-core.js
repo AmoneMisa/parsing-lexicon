@@ -1,3 +1,6 @@
+import { createParseDocument } from './parse-document.js';
+export { createParseDocument };
+
 /** Domain-neutral parser primitives. They preserve source offsets and do not
  * interpret tokens; domain parsers emit candidates which are resolved later. */
 const NORMALIZED_CHARS = Object.freeze({ '\u00a0': ' ', '\u202f': ' ', '\u2018': "'", '\u2019': "'", '\u02bc': "'", '\u2013': '-', '\u2014': '-', '\u2212': '-' });
@@ -60,10 +63,11 @@ export function resolveParseCandidates(candidates, options = {}) {
 }
 
 export function runCandidatePipeline(value, { parsers = [], refiners = [], resolver = resolveParseCandidates, context = {}, debug = false } = {}) {
-  const normalized = normalizeParserText(value); const tokens = tokenizeParserText(normalized); const spans = generateParserSpans(tokens);
-  let candidates = parsers.flatMap((parser) => parser({ originalText: normalized.originalText, normalizedText: normalized.normalizedText, tokens, spans, context }) || []);
+  const document = createParseDocument(value, { context });
+  const input = { document, originalText: document.original, get normalizedText() { return document.normalized; }, get tokens() { return document.tokens; }, get spans() { return document.getTokenSpans(); }, context };
+  let candidates = parsers.flatMap((parser) => parser(input) || []);
   const refinersApplied = [];
-  for (const refiner of refiners) { candidates = refiner(candidates, { originalText: normalized.originalText, normalizedText: normalized.normalizedText, tokens, spans, context }) || candidates; refinersApplied.push(refiner.name || 'anonymous'); }
+  for (const refiner of refiners) { candidates = refiner(candidates, input) || candidates; refinersApplied.push(refiner.name || 'anonymous'); }
   const resolved = resolver(candidates, context);
-  return Object.freeze({ data: resolved.selected, ...(debug ? { debug: Object.freeze({ candidates: Object.freeze(candidates), discardedCandidates: resolved.discarded, refinersApplied: Object.freeze(refinersApplied), tokens, spans }) } : {}) });
+  return Object.freeze({ data: resolved.selected, ...(debug ? { debug: Object.freeze({ candidates: Object.freeze(candidates), discardedCandidates: resolved.discarded, refinersApplied: Object.freeze(refinersApplied), tokens: document.tokens, spans: document.getTokenSpans() }) } : {}) });
 }

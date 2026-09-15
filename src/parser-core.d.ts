@@ -1,3 +1,4 @@
+export * from './parse-document.js';
 export type TextRange = Readonly<{ start: number; end: number }>;
 export type ParserToken = Readonly<{ index: number; raw: string; normalized: string; start: number; end: number; kind: 'word' | 'number' | 'currency' | 'punctuation' | 'symbol' }>;
 export type ParserSpan = Readonly<{ tokenStart: number; tokenEnd: number; start: number; end: number; raw: string; normalized: string }>;
