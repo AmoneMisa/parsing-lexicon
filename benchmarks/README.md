@@ -28,3 +28,26 @@ creation, first requested token spans, and cached spans on the same text.
 `parse-document-node24.json` records Stage 2. Full first-use span generation is
 slightly slower in this run; the benefit is avoiding unused work and reusing
 computed features, not accelerating the first request for every feature.
+
+## Alias prefilter v2
+
+The Tashkent street retrieval probes are the measurement for the prefilter.
+Against the same 4002-entry list on Node 18, before and after alias-level
+indexing:
+
+| probe | candidates before | after | p50 before | after |
+| --- | --- | --- | --- | --- |
+| `улица Шифокорлар` | 145 | 6 | 0.0226 ms | 0.0111 ms |
+| `no location words here` | 7 | 0 | 0.0019 ms | 0.0038 ms |
+| `Чиланзар 7 квартал` | 35 | 0 | 0.0047 ms | 0.0046 ms |
+
+The two zero-candidate probes are correct, not over-filtering: no *street*
+entry matches either text on a full scan, and `test/alias-prefilter-v2.test.js`
+asserts full-scan agreement plus an exhaustive per-alias round trip over the
+whole list. The seven candidates previously returned for text with no location
+vocabulary were the global fallback: entries carrying one short alias used to
+be tested against every input.
+
+The unrelated-text probe is slightly slower because a query now also builds the
+short-substring sets a short alias needs. That cost is flat in text length and
+is repaid many times over by the candidates it removes.

@@ -9,20 +9,31 @@
 // Almost all of that work is provably wasted. aliasPattern() only relaxes
 // *separators* between alias words; the letters and digits of an alias are
 // matched literally (modulo the Karakalpak Latin equivalence classes and
-// case). So the longest run of letters/digits inside an alias must appear as a
-// contiguous substring of the text for that alias to match at all. Indexing
-// entries by the first few characters of that run lets a text's own character
-// n-grams select the handful of entries worth testing.
+// case). So every maximal run of letters/digits inside an alias must appear as
+// a contiguous substring of the text for that alias to match at all. That is
+// the invariant the whole index rests on.
 //
 // The index is a filter, never a verdict: every surviving candidate is still
 // matched with its real `re`, in the list's original order, so results are
 // identical to a full scan. Folding is deliberately more aggressive than the
 // pattern's own equivalences (Cyrillic ё/ў/қ/ғ… are collapsed): over-merging
 // can only admit extra candidates, never discard a real match.
+//
+// Indexing is per alias, not per entry. An entry whose aliases include one
+// short string used to fall out of the index entirely and be tested against
+// every text; now each alias is indexed on its own terms, so a single short
+// alias costs only that alias, never the whole entry. Bucket keys are chosen
+// by rarity: of the grams an alias could be filed under, the one appearing in
+// the fewest aliases wins, which keeps buckets small where the vocabulary is
+// dense. Surviving candidates are then verified by exact substring containment
+// of every run, which is cheap and admits almost nothing spurious.
 
 import { normalizeUnicode } from './normalization.js';
 
 const GRAM = 4;
+/** Runs shorter than GRAM are looked up against every text substring of the
+ * same length, so this bounds how many such sets a query builds. */
+const MAX_SHORT = GRAM - 1;
 
 const PREFILTER_FOLD = Object.freeze({
   // Karakalpak Latin equivalences aliasPattern() encodes as character classes.
@@ -42,58 +53,59 @@ function fold(value) {
   return out;
 }
 
-/** The first GRAM characters of an alias's longest literal run, or null. */
-function aliasGram(alias) {
-  let longest = '';
-  for (const run of fold(alias).split(NON_ALNUM_RE)) {
-    if (run.length > longest.length) longest = run;
-  }
-  return longest.length >= GRAM ? longest.slice(0, GRAM) : null;
+/** Maximal literal runs of an alias, folded. Each must appear verbatim in the
+ * text for the alias to match, which is what makes them safe filter keys. */
+function aliasRuns(alias) {
+  return fold(alias).split(NON_ALNUM_RE).filter(Boolean);
 }
 
-/** Every GRAM-length window of the folded text. */
-function textGrams(text) {
+function* windows(run) {
+  for (let i = 0; i + GRAM <= run.length; i += 1) yield run.slice(i, i + GRAM);
+}
+
+/** Every GRAM-length window of the folded text, plus the shorter substrings a
+ * short alias needs. Both are needed because an alias run of two characters
+ * cannot be found in a set of four-character windows. */
+function textIndex(text) {
   const folded = fold(text);
   const grams = new Set();
-  for (let i = 0; i + GRAM <= folded.length; i += 1) {
-    grams.add(folded.slice(i, i + GRAM));
+  for (let i = 0; i + GRAM <= folded.length; i += 1) grams.add(folded.slice(i, i + GRAM));
+  const shorts = new Set();
+  for (let size = 1; size <= MAX_SHORT; size += 1) {
+    for (let i = 0; i + size <= folded.length; i += 1) shorts.add(folded.slice(i, i + size));
   }
-  return grams;
+  return { folded, grams, shorts };
 }
 
 function buildIndex(entries) {
-  const byGram = new Map();
-  // Entries whose every alias is shorter than GRAM cannot be indexed, so they
-  // are always tested. In practice this is a tiny tail.
-  const always = [];
-
+  // Pass one counts how many aliases could be filed under each gram, so pass
+  // two can file every alias under its rarest option.
+  const frequency = new Map();
+  const prepared = [];
   for (let i = 0; i < entries.length; i += 1) {
     const entry = entries[i];
     const aliases = entry?.aliases?.length ? entry.aliases : [entry?.name].filter(Boolean);
-    const grams = [];
-    let indexable = aliases.length > 0;
-
     for (const alias of aliases) {
-      const gram = aliasGram(alias);
-      if (!gram) {
-        indexable = false;
-        break;
-      }
-      grams.push(gram);
-    }
-
-    if (!indexable) {
-      always.push(i);
-      continue;
-    }
-    for (const gram of new Set(grams)) {
-      const bucket = byGram.get(gram);
-      if (bucket) bucket.push(i);
-      else byGram.set(gram, [i]);
+      const runs = aliasRuns(alias);
+      if (!runs.length) { prepared.push({ index: i, runs: null }); continue; }
+      const longest = runs.reduce((best, run) => (run.length > best.length ? run : best), '');
+      const options = longest.length >= GRAM ? [...windows(longest)] : [longest];
+      for (const option of options) frequency.set(option, (frequency.get(option) ?? 0) + 1);
+      prepared.push({ index: i, runs, options, short: longest.length < GRAM });
     }
   }
 
-  return { byGram, always };
+  const byGram = new Map(); const byShort = new Map(); const always = new Set();
+  for (const alias of prepared) {
+    if (!alias.runs) { always.add(alias.index); continue; }
+    let key = alias.options[0];
+    for (const option of alias.options) if (frequency.get(option) < frequency.get(key)) key = option;
+    const target = alias.short ? byShort : byGram;
+    const bucket = target.get(key);
+    const ref = { index: alias.index, runs: alias.runs };
+    if (bucket) bucket.push(ref); else target.set(key, [ref]);
+  }
+  return { byGram, byShort, always: [...always].sort((a, b) => a - b) };
 }
 
 const INDEX_CACHE = new WeakMap();
@@ -107,30 +119,49 @@ function indexFor(entries) {
   return index;
 }
 
-/** Every GRAM-length window of `text`, precomputed once for reuse across lists. */
+/**
+ * Text-side index for `text`, precomputed once for reuse across lists. The
+ * returned value is opaque: pass it straight back to `candidateEntries`.
+ */
 export function computeTextGrams(text) {
-  return textGrams(String(text || ''));
+  return textIndex(String(text || ''));
 }
 
-function candidateIndices(entries, value, grams) {
-  const { byGram, always } = indexFor(entries);
+/** Accepts an opaque index or, for older callers, a bare Set of grams. */
+function resolveTextIndex(value, text) {
+  if (value && value.grams instanceof Set) return value;
+  if (value instanceof Set) return { ...textIndex(text), grams: value };
+  return textIndex(text);
+}
+
+function candidateIndices(entries, value, provided) {
+  const { byGram, byShort, always } = indexFor(entries);
+  const { folded, grams, shorts } = resolveTextIndex(provided, value);
   const candidates = new Set(always);
-  for (const gram of grams) {
-    const bucket = byGram.get(gram);
-    if (!bucket) continue;
-    for (const i of bucket) candidates.add(i);
-  }
+  const consider = (refs) => {
+    if (!refs) return;
+    for (const ref of refs) {
+      if (candidates.has(ref.index)) continue;
+      // Exact containment of every run. The bucket only proposed this alias;
+      // this is what makes the proposal almost always correct.
+      let ok = true;
+      for (const run of ref.runs) if (!folded.includes(run)) { ok = false; break; }
+      if (ok) candidates.add(ref.index);
+    }
+  };
+  for (const gram of grams) consider(byGram.get(gram));
+  if (byShort.size) for (const short of shorts) consider(byShort.get(short));
   return [...candidates].sort((a, b) => a - b);
 }
 
 /**
  * Every entry in `entries` (original list order) the text could plausibly
- * contain, per the gram index — a filter, not a verdict. Callers still run
- * their own verification (regex, exact-token match, ...) on what comes back;
- * see the module doc for why this is safe even for non-regex verifiers.
+ * contain, per the index — a filter, not a verdict. Callers still run their
+ * own verification (regex, exact-token match, ...) on what comes back; see the
+ * module doc for why this is safe even for non-regex verifiers.
  *
  * `grams`, from `computeTextGrams()`, lets a caller scanning the same text
- * against many lists compute the O(text length) gram pass once instead of
+ * against many lists compute the O(text length) text pass once instead of
  * once per list.
  */
 export function candidateEntries(entries, text, grams) {
@@ -138,8 +169,7 @@ export function candidateEntries(entries, text, grams) {
   const value = String(text || '');
   if (!value) return [];
 
-  const indices = candidateIndices(entries, value, grams || textGrams(value));
-  return indices.map((i) => entries[i]);
+  return candidateIndices(entries, value, grams).map((i) => entries[i]);
 }
 
 /**
@@ -159,8 +189,7 @@ export function matchFirstEntry(entries, text, accept) {
   const value = String(text || '');
   if (!value) return undefined;
 
-  const indices = candidateIndices(entries, value, textGrams(value));
-  for (const i of indices) {
+  for (const i of candidateIndices(entries, value)) {
     const entry = entries[i];
     // `re` carries no /g flag, so exec() is stateless and safe to reuse here.
     const match = entry?.re?.exec(value);
