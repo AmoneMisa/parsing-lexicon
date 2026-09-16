@@ -6,7 +6,7 @@ import { centralAsiaLocationCities } from '../src/central-asia-locations.js';
 
 const iterations = Number(process.env.BENCH_ITERATIONS || 30);
 if (!Number.isInteger(iterations) || iterations < 1 || iterations > 10000) throw new RangeError('BENCH_ITERATIONS must be 1..10000');
-const percentile = (values, fraction) => [...values].sort((a, b) => a - b)[Math.ceil(values.length * fraction) - 1];
+const percentile = (values, fraction) => values.toSorted((a, b) => a - b)[Math.ceil(values.length * fraction) - 1];
 const memoryBefore = process.memoryUsage();
 const cases = [];
 for (const fixture of corpus) {
