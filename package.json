@@ -17,6 +17,10 @@
     "./lexicon-core": "./src/lexicon-core.js",
     "./normalization": "./src/normalization.js",
     "./alias-prefilter": "./src/alias-prefilter.js",
+    "./resolver-v2": {
+      "types": "./src/resolver-v2.d.ts",
+      "import": "./src/resolver-v2.js"
+    },
     "./evidence-ledger": {
       "types": "./src/evidence-ledger.d.ts",
       "import": "./src/evidence-ledger.js"

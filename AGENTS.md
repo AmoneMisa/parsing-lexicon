@@ -225,3 +225,27 @@ only subtract.
 evidence entries that declare a dimension. Legacy untyped `{ type, ... }`
 evidence still travels in `candidate.evidence` and contributes nothing to the
 ledger until a parser types it, so existing domain parsers are unaffected.
+
+## Resolver v2
+
+`resolveParseCandidates` (parser-core) is unchanged and stays the compatible
+greedy path for every parser that already uses it. `resolveEvidenceCandidates`
+(`src/resolver-v2.js`) is the evidence-aware alternative; pick it deliberately,
+do not swap it in under an existing caller.
+
+It scores each candidate from its ledger, falling back to the legacy scalar
+`confidence` when a candidate carries no typed evidence, then adjusts by
+`sourcePriority` and `sectionRelevance`. Cardinality is `single`, `many` or
+`roleBased`, either globally or per entity type. Contradictions and disagreeing
+`parentId`s veto a pair across entity types; range and cardinality conflicts
+apply within one type.
+
+Single-valued types pass acceptance gates before selection: minimum score,
+minimum margin over the runner-up, minimum `independentEvidenceCount`, and no
+critical contradiction. A type that fails any gate is reported in `unresolved`
+with its reasons and contributes nothing, rather than letting a weak winner
+through by default. Its ranked `hypotheses` stay available so a caller can see
+why nothing was chosen.
+
+Selection uses a bounded beam search (default width 3) and only when candidates
+actually conflict; it is deliberately not exhaustive.
