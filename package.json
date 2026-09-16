@@ -262,6 +262,9 @@
     },
     "./city-hypotheses": {
       "import": "./src/city-hypotheses.js"
+    },
+    "./micro-grammars": {
+      "import": "./src/micro-grammars.js"
     }
   },
   "files": [
