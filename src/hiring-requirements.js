@@ -1,5 +1,6 @@
 import { parseExperience } from './hiring-advanced.js';
 import { parseCvEmploymentPeriods, totalEmploymentMonths } from './cv-employment.js';
+import { parseVacancyBlocks } from './vacancy-blocks.js';
 
 export const SENIORITY_RANK = Object.freeze({
   intern: 0,
@@ -110,19 +111,29 @@ const HARD_REQUIREMENT_RE = /\b(must|need to|required|proficien(?:t|cy)|expertis
 const NOISE_RE = /\b(equal opportunity|eeo|diversity and inclusion|reasonable accommodation|candidate privacy|privacy notice|background check|recruit(?:ment|ing) process|talent acquisition team|compensation range|pay transparency)\b|процесс найма|процес найму|политик[аи] конфиденциальности|політик[аи] конфіденційності/i;
 const SECTION_BREAK_RE = /\b(what we offer|benefits|perks|about us|about the company|our company|compensation|salary|responsibilities|what you(?:'|’)ll do|your role)\b|что мы предлагаем|условия работы|о компании|про компанію|обязанности|обов['’]?язки/i;
 
+/** Prose under a heading is still bounded, because a requirements heading
+ * followed by paragraphs rarely governs the rest of the posting. List-shaped
+ * blocks are not: a bullet list under "Requirements" belongs to it however
+ * long it runs, which is exactly what the old fixed count truncated. */
+const PROSE_SCOPE_LIMIT = 6;
+const LIST_TYPES = new Set(['bullet', 'key-value', 'table-row']);
+
 export function bucketVacancyText(value) {
-  const segments = String(value || '').replace(/[•●▪◦·]/g, '. ').split(/\n+|(?<=[.!?;])\s+/).map((part) => part.trim()).filter(Boolean);
   const buckets = { required: [], optional: [], context: [], noise: [] };
   let active = null;
-  let ttl = 0;
-  for (const segment of segments) {
-    if (NOISE_RE.test(segment)) { buckets.noise.push(segment); active = null; ttl = 0; continue; }
+  let prose = 0;
+  for (const block of parseVacancyBlocks(value)) {
+    const segment = block.text;
+    const section = block.section;
+    if (section === 'noise' || NOISE_RE.test(segment)) { buckets.noise.push(segment); active = null; prose = 0; continue; }
     buckets.context.push(segment);
-    if (OPTIONAL_MARKER_RE.test(segment)) { active = 'optional'; ttl = 6; buckets.optional.push(segment); continue; }
-    if (REQUIRED_MARKER_RE.test(segment)) { active = 'required'; ttl = 8; buckets.required.push(segment); continue; }
-    if (SECTION_BREAK_RE.test(segment)) { active = null; ttl = 0; }
+    if (section === 'optional' || OPTIONAL_MARKER_RE.test(segment)) { active = 'optional'; prose = PROSE_SCOPE_LIMIT; buckets.optional.push(segment); continue; }
+    if (section === 'requirements' || REQUIRED_MARKER_RE.test(segment)) { active = 'required'; prose = PROSE_SCOPE_LIMIT; buckets.required.push(segment); continue; }
+    if (section || SECTION_BREAK_RE.test(segment)) { active = null; prose = 0; }
     if (HARD_REQUIREMENT_RE.test(segment)) { buckets.required.push(segment); continue; }
-    if (active && ttl > 0) { buckets[active].push(segment); ttl -= 1; }
+    if (!active) continue;
+    if (LIST_TYPES.has(block.type)) { buckets[active].push(segment); continue; }
+    if (prose > 0) { buckets[active].push(segment); prose -= 1; }
   }
   return Object.freeze({ required: buckets.required.join(' '), optional: buckets.optional.join(' '), context: buckets.context.join(' '), noise: buckets.noise.join(' ') });
 }

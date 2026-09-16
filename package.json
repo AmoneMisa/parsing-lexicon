@@ -17,6 +17,10 @@
     "./lexicon-core": "./src/lexicon-core.js",
     "./normalization": "./src/normalization.js",
     "./alias-prefilter": "./src/alias-prefilter.js",
+    "./vacancy-blocks": {
+      "types": "./src/vacancy-blocks.d.ts",
+      "import": "./src/vacancy-blocks.js"
+    },
     "./cv-skill-experience": {
       "types": "./src/cv-skill-experience.d.ts",
       "import": "./src/cv-skill-experience.js"

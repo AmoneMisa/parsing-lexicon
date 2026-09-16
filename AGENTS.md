@@ -319,3 +319,25 @@ Durations run through `mergeEmploymentPeriods` first, so two overlapping jobs
 that both used a skill give one stretch of experience rather than two. A skill
 that only appears in the skills list has no `durationMonths` and no `lastUsed`
 at all — a claim is not a demonstration.
+
+## Vacancy structural blocks
+
+`src/vacancy-blocks.js` gives vacancy text its real shape: `heading`,
+`paragraph`, `bullet`, `key-value` and `table-row` blocks, each with offsets
+into the original text. Headings are recognised in the same seven languages as
+CV sections and map to `requirements`, `optional`, `responsibilities`,
+`benefits`, `about` or `noise`.
+
+`bucketVacancyText` keeps its exact contract — `required` / `optional` /
+`context` / `noise` strings — but now walks blocks instead of counting
+segments. A heading's scope ends at the next heading rather than after a fixed
+number of segments, so a long bullet list under "Requirements" is no longer
+truncated. Prose is still bounded (`PROSE_SCOPE_LIMIT`), because a heading
+followed by paragraphs rarely governs the rest of a posting; list-shaped
+blocks are not bounded.
+
+A list item is atomic and is never sentence-split, or "1. Docker" would tear
+into a marker and a separate paragraph. The marker regexes
+(`REQUIRED_MARKER_RE` and friends) remain as the in-segment fallback for
+phrasings the heading lexicon does not name, which is what preserves the
+previous behaviour.
