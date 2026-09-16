@@ -3,6 +3,7 @@ import { isMapDataEntry, LOCATION_LIST_KEYS } from './location-merge.js';
 import { CITIES_BY_COUNTRY, canonicalCity } from './geography.js';
 import { aliasesOf, aliasesToRegex, normalizeForMatch } from './normalization.js';
 import { candidateEntries, computeTextGrams } from './alias-prefilter.js';
+import { scoreCityHypotheses } from './city-hypotheses.js';
 import { KZ_AMBIGUOUS_LOCAL_NAMES, KZ_SEARCH_CLUSTERS } from './kz-location-extensions.js';
 import { UZ_AMBIGUOUS_LOCAL_NAMES } from './uz-location-extensions.js';
 
@@ -336,7 +337,13 @@ export function matchCentralAsiaLocationEntities(text, countryCode, preferredCit
   if (scopedCity) {
     const matches = findEntryMatches(text, scopedCity, country[scopedCity], { includeMapData: true, grams });
     const clusters = clusterMatches(matches, countryCode);
-    return Object.freeze({ city: scopedCity, matches: Object.freeze(matches), searchClusters: Object.freeze(clusters), candidates: Object.freeze([]) });
+    // The city is already decided here; the hypothesis is reported so callers
+    // get one shape either way, and can see the evidence behind the scope.
+    const scoped = scoreCityHypotheses([{ city: scopedCity, matches }], {
+      explicitCity: explicit, preferredCity: preferred, cityNames: Object.keys(country),
+      isAmbiguous: (match) => isAmbiguousMatch(match, countryCode),
+    });
+    return Object.freeze({ city: scopedCity, matches: Object.freeze(matches), searchClusters: Object.freeze(clusters), candidates: Object.freeze([]), hypotheses: scoped.hypotheses });
   }
 
   const byCity = [];
@@ -346,8 +353,15 @@ export function matchCentralAsiaLocationEntities(text, countryCode, preferredCit
   }
 
   if (!byCity.length) {
-    return Object.freeze({ city: null, matches: Object.freeze([]), searchClusters: Object.freeze([]), candidates: Object.freeze([]) });
+    return Object.freeze({ city: null, matches: Object.freeze([]), searchClusters: Object.freeze([]), candidates: Object.freeze([]), hypotheses: Object.freeze([]) });
   }
+
+  // Scored view of the same per-city matches. Additive: the selection rules
+  // below are unchanged, so every existing caller sees what it always saw.
+  const scored = scoreCityHypotheses(byCity, {
+    explicitCity: explicit, preferredCity: preferred, cityNames: Object.keys(country),
+    isAmbiguous: (match) => isAmbiguousMatch(match, countryCode),
+  });
 
   // Numeric microdistricts and common names such as Samal/Center occur in many
   // cities. Without an explicit/structured city we must not silently assign a
@@ -366,11 +380,13 @@ export function matchCentralAsiaLocationEntities(text, countryCode, preferredCit
       matches: Object.freeze([]),
       searchClusters: Object.freeze([]),
       candidates: Object.freeze(byCity.map((candidate) => Object.freeze({ city: candidate.city, matches: Object.freeze(candidate.matches) }))),
+      hypotheses: scored.hypotheses,
+      unresolvedReasons: scored.unresolvedReasons,
     });
   }
 
   const clusters = clusterMatches(selected.matches, countryCode);
-  return Object.freeze({ city: selected.city, matches: Object.freeze(selected.matches), searchClusters: Object.freeze(clusters), candidates: Object.freeze([]) });
+  return Object.freeze({ city: selected.city, matches: Object.freeze(selected.matches), searchClusters: Object.freeze(clusters), candidates: Object.freeze([]), hypotheses: scored.hypotheses });
 }
 
 export function matchCentralAsiaLocationEntity(text, countryCode, preferredCity = null, type = null) {

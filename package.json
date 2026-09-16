@@ -259,6 +259,9 @@
     "./parse-document": {
       "types": "./src/parse-document.d.ts",
       "import": "./src/parse-document.js"
+    },
+    "./city-hypotheses": {
+      "import": "./src/city-hypotheses.js"
     }
   },
   "files": [
