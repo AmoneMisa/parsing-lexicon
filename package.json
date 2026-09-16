@@ -17,6 +17,10 @@
     "./lexicon-core": "./src/lexicon-core.js",
     "./normalization": "./src/normalization.js",
     "./alias-prefilter": "./src/alias-prefilter.js",
+    "./cv-employment": {
+      "types": "./src/cv-employment.d.ts",
+      "import": "./src/cv-employment.js"
+    },
     "./cv-sections": {
       "types": "./src/cv-sections.d.ts",
       "import": "./src/cv-sections.js"

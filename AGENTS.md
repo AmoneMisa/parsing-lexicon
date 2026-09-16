@@ -277,3 +277,27 @@ them from.
 Add an alias only through `CV_SECTION_HEADINGS`; the test suite asserts every
 listed alias classifies back to its own section, which is what catches a phrase
 accidentally claimed by two sections.
+
+## CV employment chronology
+
+`src/cv-employment.js` builds structured `EmploymentPeriod`s. It is **not**
+another date parser: month vocabulary comes from `HIRING_MONTHS`
+(`hiring-temporal.js`), section spans from `cv-sections.js`, skills from
+`hiring-skills.js` and roles from `hiring-professions.js`. Add a month name to
+`HIRING_MONTHS`, never to a private list here.
+
+A `ParsedDate` carries `precision`: a bare "2019" is year precision and has no
+`month`, because inventing one fabricates detail the CV never gave. Durations
+treat a missing start month as January and a missing end month as December.
+Ongoing periods resolve against the caller's `referenceDate`, so results are
+reproducible rather than dependent on when the parser ran.
+
+`mergeEmploymentPeriods` collapses overlapping and adjacent intervals across
+employers, so concurrent jobs are never counted twice, and keeps every
+contributing company name. `extractCvExperienceYears` is now a thin wrapper
+over this chronology; the two can no longer disagree about what a CV says.
+
+When editing `DATE_SRC`, keep the longest numeric-month alternative first and
+keep the trailing `(?!\d)` guard. Without both, "2021-12" matches as "2021-1"
+and silently drops 11 months — that bug was live in the old inline regex and is
+now pinned by a regression test.

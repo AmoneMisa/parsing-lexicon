@@ -58,7 +58,10 @@ test('classifies CV sections and extracts employment evidence centrally', () => 
   assert.equal(classifyCvSectionHeading('Work Experience'), 'experience');
   assert.match(extractCvSection(cv, 'experience'), /Company A/);
   assert.doesNotMatch(extractCvSection(cv, 'experience'), /Vue/);
-  assert.equal(extractCvExperienceYears(cv, new Date('2026-08-25T00:00:00Z')), 5.8);
+  // 2020-01..2022-12 is 36 months and 2023-01..2026-08 is 44, so 80 months =
+  // 6.7 years. This asserted 5.8 while the range regex truncated "2022-12" to
+  // "2022-01"; see test/cv-employment.test.js for the regression covering it.
+  assert.equal(extractCvExperienceYears(cv, new Date('2026-08-25T00:00:00Z')), 6.7);
 });
 
 test('explicit experience can supply CV experience without dated employment rows', () => {

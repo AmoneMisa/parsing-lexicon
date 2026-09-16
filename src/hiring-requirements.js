@@ -1,5 +1,5 @@
 import { parseExperience } from './hiring-advanced.js';
-import { extractCvSectionText } from './cv-sections.js';
+import { parseCvEmploymentPeriods, totalEmploymentMonths } from './cv-employment.js';
 
 export const SENIORITY_RANK = Object.freeze({
   intern: 0,
@@ -133,34 +133,11 @@ export function bucketVacancyText(value) {
 export { classifyCvSectionHeading, detectCvSections, CV_SECTIONS } from './cv-sections.js';
 export { extractCvSectionText as extractCvSection } from './cv-sections.js';
 
-function monthIndex(year, month = 1) {
-  return year * 12 + Math.max(1, Math.min(12, month)) - 1;
-}
-
 export function extractCvExperienceYears(value, referenceDate = new Date()) {
   const raw = String(value || '');
-  const experienceSection = extractCvSectionText(raw, 'experience');
-  const datedSource = experienceSection || raw;
-  const intervals = [];
-  const ranges = /\b(19\d{2}|20\d{2})(?:[-/.](0?[1-9]|1[0-2]))?\s*(?:-|–|—|to)\s*(?:(present|current|now)|((?:19|20)\d{2})(?:[-/.](0?[1-9]|1[0-2]))?)/gi;
-  for (const match of datedSource.matchAll(ranges)) {
-    const startYear = Number(match[1]);
-    const startMonth = Number(match[2] || 1);
-    const endYear = match[3] ? referenceDate.getFullYear() : Number(match[4]);
-    const endMonth = match[3] ? referenceDate.getMonth() + 1 : Number(match[5] || 12);
-    if (!startYear || !endYear) continue;
-    const start = monthIndex(startYear, startMonth);
-    const end = monthIndex(endYear, endMonth);
-    if (end >= start && end - start <= 12 * 50) intervals.push([start, end]);
-  }
-  intervals.sort((a, b) => a[0] - b[0]);
-  const merged = [];
-  for (const interval of intervals) {
-    const last = merged[merged.length - 1];
-    if (!last || interval[0] > last[1] + 1) merged.push([...interval]);
-    else last[1] = Math.max(last[1], interval[1]);
-  }
-  const datedMonths = merged.reduce((sum, [start, end]) => sum + end - start + 1, 0);
+  // Dated employment comes from the shared chronology so this helper and
+  // parseCvEmploymentPeriods can never disagree about what the CV says.
+  const datedMonths = totalEmploymentMonths(parseCvEmploymentPeriods(raw, { referenceDate, sections: ['experience'] }));
   const datedYears = datedMonths ? datedMonths / 12 : 0;
   let explicitYears = 0;
   const explicit = /\b(?:over|more than|at least|about|approximately|approx\.?|around)?\s*(\d{1,2}(?:[.,]\d)?)\+?\s*(?:years?|yrs?)\s+(?:of\s+)?(?:hands[- ]on\s+|professional\s+|commercial\s+)?experience\b/gi;
