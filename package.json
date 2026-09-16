@@ -17,6 +17,10 @@
     "./lexicon-core": "./src/lexicon-core.js",
     "./normalization": "./src/normalization.js",
     "./alias-prefilter": "./src/alias-prefilter.js",
+    "./vacancy-requirements": {
+      "types": "./src/vacancy-requirements.d.ts",
+      "import": "./src/vacancy-requirements.js"
+    },
     "./vacancy-blocks": {
       "types": "./src/vacancy-blocks.d.ts",
       "import": "./src/vacancy-blocks.js"

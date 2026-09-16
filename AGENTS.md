@@ -341,3 +341,24 @@ into a marker and a separate paragraph. The marker regexes
 (`REQUIRED_MARKER_RE` and friends) remain as the in-segment fallback for
 phrasings the heading lexicon does not name, which is what preserves the
 previous behaviour.
+
+## Requirement modality
+
+`src/vacancy-requirements.js` records how hard a vacancy is asking for
+something: `required`, `preferred`, `bonus`, `context` or `negated`. Flattening
+these into two buckets loses the difference between a hard requirement, a
+preference, a bonus, passing exposure and an explicit "you do not need this".
+
+Negation is tested first and always wins, so "no Kubernetes experience
+required" is never read as a Kubernetes requirement, and a stack the posting is
+migrating away from is not a requirement either. In-text wording then beats the
+surrounding section: a "would be a plus" line under a Requirements heading is a
+bonus.
+
+Every requirement keeps its source range and a `provenance` recording which
+signal decided the modality — wording, section, negation or the default.
+
+`vacancyRequirementBuckets` reproduces the historical two-list view: preferred
+and bonus both become `niceToHave`, while `context` and `negated` deliberately
+reach neither list. A negated skill is removed even when named as required
+elsewhere in the same posting.
