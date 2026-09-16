@@ -301,3 +301,21 @@ When editing `DATE_SRC`, keep the longest numeric-month alternative first and
 keep the trailing `(?!\d)` guard. Without both, "2021-12" matches as "2021-1"
 and silently drops 11 months — that bug was live in the old inline regex and is
 now pinned by a regression test.
+
+## CV skill attribution
+
+`src/cv-skill-experience.js` answers where a CV demonstrates a skill, not just
+whether the skill appears. It extends the existing skill parser rather than
+replacing it: `extractSkillNames` still does the matching, applied per region
+instead of once over the whole document.
+
+Each `SkillExperience` separates commercial evidence (an experience-section
+job), project evidence and a bare skills-list claim, and carries a Stage 3
+evidence ledger whose occurrences point back at the source range.
+
+Two rules stop double-counting. A skill named repeatedly inside one job is one
+piece of evidence, because each region contributes exactly one occurrence.
+Durations run through `mergeEmploymentPeriods` first, so two overlapping jobs
+that both used a skill give one stretch of experience rather than two. A skill
+that only appears in the skills list has no `durationMonths` and no `lastUsed`
+at all — a claim is not a demonstration.

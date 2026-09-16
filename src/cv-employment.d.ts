@@ -18,6 +18,9 @@ export type EmploymentRange = Readonly<{
 export type EmploymentPeriod = Readonly<{
   company?: string;
   role?: string;
+  /** The CV section this entry was read from; undefined when the document had
+   * no headings and the whole text was scanned. */
+  section?: CvSection;
   start: ParsedDate;
   end: ParsedDate;
   ongoing: boolean;

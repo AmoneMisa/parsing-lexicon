@@ -98,7 +98,7 @@ export function parseCvEmploymentPeriods(value, options = {}) {
   const text = String(value ?? '');
   const wanted = options.sections ?? ['experience', 'projects'];
   const spans = detectCvSections(text).filter(span => wanted.includes(span.section));
-  const scopes = spans.length ? spans.map(span => ({ start: span.contentStart, end: span.end })) : [{ start: 0, end: text.length }];
+  const scopes = spans.length ? spans.map(span => ({ start: span.contentStart, end: span.end, section: span.section })) : [{ start: 0, end: text.length, section: undefined }];
   const periods = [];
   for (const scope of scopes) {
     const body = text.slice(scope.start, scope.end);
@@ -113,7 +113,7 @@ export function parseCvEmploymentPeriods(value, options = {}) {
       const entryEnd = next ? next.line.start : scope.end - scope.start;
       const { role, company } = labelsFrom(header.line.text, header.range.raw);
       periods.push(Object.freeze({
-        company, role,
+        company, role, section: scope.section,
         start: header.range.start, end: header.range.end, ongoing: header.range.ongoing,
         durationMonths: header.range.durationMonths,
         sectionRange: Object.freeze({ start: scope.start + header.line.start, end: scope.start + entryEnd }),
