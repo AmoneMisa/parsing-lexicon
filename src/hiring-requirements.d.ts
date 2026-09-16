@@ -1,7 +1,9 @@
 export type HiringSeniority = 'intern' | 'junior' | 'middle' | 'senior' | 'staff' | 'lead' | 'principal' | 'manager' | 'director';
 export type DegreeLevel = 'secondary' | 'bachelor' | 'master' | 'doctorate';
 export type DegreeField = 'computer_science' | 'engineering' | 'law' | 'forensics' | 'business';
-export type CvSection = 'experience' | 'projects' | 'profile' | 'skills' | 'education' | 'other';
+export type { CvSection, CvSectionSpan } from './cv-sections.js';
+export { classifyCvSectionHeading, detectCvSections, CV_SECTIONS } from './cv-sections.js';
+export { extractCvSectionText as extractCvSection } from './cv-sections.js';
 export const SENIORITY_RANK: Readonly<Record<HiringSeniority, number>>;
 export function detectHiringSeniority(value: unknown): HiringSeniority | null;
 export function detectDegreeLevel(value: unknown): DegreeLevel | null;
@@ -14,6 +16,4 @@ export const SPONSORSHIP_NOT_OFFERED_RE: RegExp;
 export const SPONSORSHIP_OFFERED_RE: RegExp;
 export function isNoSponsorshipRequirement(value: unknown): boolean;
 export function bucketVacancyText(value: unknown): Readonly<{ required: string; optional: string; context: string; noise: string }>;
-export function classifyCvSectionHeading(value: unknown): CvSection | null;
-export function extractCvSection(value: unknown, wanted: CvSection): string;
 export function extractCvExperienceYears(value: unknown, referenceDate?: Date): number | null;

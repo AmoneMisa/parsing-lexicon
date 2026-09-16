@@ -1,4 +1,5 @@
 import { parseExperience } from './hiring-advanced.js';
+import { extractCvSectionText } from './cv-sections.js';
 
 export const SENIORITY_RANK = Object.freeze({
   intern: 0,
@@ -126,37 +127,11 @@ export function bucketVacancyText(value) {
   return Object.freeze({ required: buckets.required.join(' '), optional: buckets.optional.join(' '), context: buckets.context.join(' '), noise: buckets.noise.join(' ') });
 }
 
-const CV_SECTION_HEADING_RE = /^\s*(profile|professional profile|summary|professional summary|about me|work experience|professional experience|experience|employment|employment history|projects?|pet projects?|hobbies|skills|technical skills|tech stack|education|languages?|contact|additional information)\s*:?[\s]*$/i;
-
-export function classifyCvSectionHeading(value) {
-  const heading = CV_SECTION_HEADING_RE.exec(String(value || '').trim())?.[1];
-  if (!heading) return null;
-  const normalized = heading.toLowerCase();
-  if (/work experience|professional experience|^experience$|employment/.test(normalized)) return 'experience';
-  if (/project|hobbies/.test(normalized)) return 'projects';
-  if (/profile|summary|about me/.test(normalized)) return 'profile';
-  if (/skills|tech stack/.test(normalized)) return 'skills';
-  if (/education/.test(normalized)) return 'education';
-  return 'other';
-}
-
-export function extractCvSection(value, wanted) {
-  const lines = String(value || '').replace(/\r/g, '').split('\n');
-  const collected = [];
-  let section = 'other';
-  let sawHeading = false;
-  for (const line of lines) {
-    const trimmed = line.trim();
-    const nextSection = classifyCvSectionHeading(trimmed);
-    if (nextSection) {
-      section = nextSection;
-      sawHeading = true;
-      continue;
-    }
-    if (section === wanted && trimmed) collected.push(trimmed);
-  }
-  return sawHeading ? collected.join('\n') : '';
-}
+/** Heading classification and section spans live in `cv-sections.js`, which
+ * carries the multilingual lexicon. These re-exports keep the historical
+ * import path working for every existing consumer. */
+export { classifyCvSectionHeading, detectCvSections, CV_SECTIONS } from './cv-sections.js';
+export { extractCvSectionText as extractCvSection } from './cv-sections.js';
 
 function monthIndex(year, month = 1) {
   return year * 12 + Math.max(1, Math.min(12, month)) - 1;
@@ -164,7 +139,7 @@ function monthIndex(year, month = 1) {
 
 export function extractCvExperienceYears(value, referenceDate = new Date()) {
   const raw = String(value || '');
-  const experienceSection = extractCvSection(raw, 'experience');
+  const experienceSection = extractCvSectionText(raw, 'experience');
   const datedSource = experienceSection || raw;
   const intervals = [];
   const ranges = /\b(19\d{2}|20\d{2})(?:[-/.](0?[1-9]|1[0-2]))?\s*(?:-|–|—|to)\s*(?:(present|current|now)|((?:19|20)\d{2})(?:[-/.](0?[1-9]|1[0-2]))?)/gi;

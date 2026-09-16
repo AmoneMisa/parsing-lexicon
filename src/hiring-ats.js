@@ -11,7 +11,12 @@ import { canonicalSkillName, extractSkillNames, matchSkillCandidates } from './h
 // It must rank below every genuine section — otherwise keyword-stuffing
 // outside any real heading would outscore the same term listed under an
 // explicit Skills section, rewarding exactly the wrong signal.
-const SECTION_WEIGHT = Object.freeze({ experience: 1, projects: 0.7, profile: 0.55, skills: 0.4, education: 0.35, other: 0.3 });
+// Sections the multilingual classifier can now name must all carry a weight;
+// an unweighted section would score every skill under it as NaN. "languages",
+// "contact" and "additional" rank low because a tech term appearing there is
+// incidental, not claimed experience.
+const SECTION_WEIGHT = Object.freeze({ experience: 1, projects: 0.7, profile: 0.55, certifications: 0.45, skills: 0.4, education: 0.35, other: 0.3, additional: 0.3, languages: 0.25, contact: 0.2 });
+const sectionWeight = (section) => SECTION_WEIGHT[section] ?? SECTION_WEIGHT.other;
 const DEGREE_RANK = Object.freeze({ secondary: 0, bachelor: 1, master: 2, doctorate: 3 });
 const SCOPE_LABELS = Object.freeze({ architecture: 'Architecture / system design', leadership: 'Technical leadership', mentoring: 'Mentoring engineers', scale: 'Large-scale systems', ownership: 'Product / feature ownership' });
 const TERM_STOP_WORDS = new Set(['the', 'and', 'for', 'with', 'that', 'this', 'from', 'into', 'your', 'you', 'our', 'are', 'will', 'have', 'has', 'who', 'what', 'when', 'where', 'which', 'their', 'they', 'them', 'about', 'within', 'across', 'using', 'including', 'work', 'working', 'team', 'teams', 'role', 'company', 'years', 'year', 'experience', 'skills', 'skill', 'strong', 'good', 'excellent', 'ability', 'knowledge', 'looking', 'required', 'requirements', 'preferred', 'responsibilities', 'opportunity', 'candidate', 'position', 'professional', 'develop', 'development', 'build', 'building', 'software', 'engineer', 'engineering', 'help', 'support', 'ensure', 'provide', 'plus', 'nice', 'must', 'need', 'needs', 'для', 'что', 'как', 'или', 'это', 'мы', 'вы', 'ваш', 'ваша', 'ваши', 'наш', 'наша', 'наши', 'работа', 'работы', 'работать', 'опыт', 'лет', 'года', 'год', 'команда', 'команды', 'знание', 'знания', 'навыки', 'требования', 'обязанности', 'будет', 'нужно', 'необходимо', 'умение', 'разработка', 'разработки', 'позиция', 'кандидат']);
@@ -48,7 +53,7 @@ function evidenceFromCv(raw, { fuzzySkills = false } = {}) {
   for (const line of String(raw || '').replace(/\r/g, '').split('\n')) {
     const heading = classifyCvSectionHeading(line.trim());
     if (heading) { section = heading; continue; }
-    if (line.trim()) add(line, SECTION_WEIGHT[section]);
+    if (line.trim()) add(line, sectionWeight(section));
   }
   return evidence;
 }

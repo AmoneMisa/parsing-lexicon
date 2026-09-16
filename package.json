@@ -17,6 +17,10 @@
     "./lexicon-core": "./src/lexicon-core.js",
     "./normalization": "./src/normalization.js",
     "./alias-prefilter": "./src/alias-prefilter.js",
+    "./cv-sections": {
+      "types": "./src/cv-sections.d.ts",
+      "import": "./src/cv-sections.js"
+    },
     "./resolver-v2": {
       "types": "./src/resolver-v2.d.ts",
       "import": "./src/resolver-v2.js"

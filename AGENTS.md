@@ -249,3 +249,31 @@ why nothing was chosen.
 
 Selection uses a bounded beam search (default width 3) and only when candidates
 actually conflict; it is deliberately not exhaustive.
+
+## CV sections
+
+`src/cv-sections.js` owns CV heading classification. The canonical sections are
+`profile`, `experience`, `projects`, `skills`, `education`, `languages`,
+`certifications`, `contact` and `additional`. `languages`, `certifications`,
+`contact` and `additional` used to collapse into `other`; they are now named,
+so any table keyed by section must cover them — see `SECTION_WEIGHT` in
+`hiring-ats.js`, which falls back to the `other` weight rather than scoring
+`NaN`.
+
+Headings are recognised in English, Russian, Ukrainian, Uzbek (Latin and
+Cyrillic), Kazakh and Romanian. Aliases and input are compared after
+`normalizeForMatch` plus a combining-mark fold, so "Educație" and "Educatie"
+both resolve without listing every spelling twice. A heading-shaped line that
+matches no alias returns `null` and leaves the active section alone, rather
+than resetting it.
+
+`detectCvSections` returns contiguous spans covering the whole document, each
+carrying its `heading` text and `headingRange` provenance; text before the
+first heading is a `preamble` span. `classifyCvSectionHeading` and
+`extractCvSection` keep their original signatures and are still re-exported
+from `hiring-requirements.js`, which is where every existing consumer imports
+them from.
+
+Add an alias only through `CV_SECTION_HEADINGS`; the test suite asserts every
+listed alias classifies back to its own section, which is what catches a phrase
+accidentally claimed by two sections.
