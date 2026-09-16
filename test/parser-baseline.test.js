@@ -4,7 +4,7 @@ import { corpus, runCase } from '../benchmarks/parser-corpus.js';
 
 for (const fixture of corpus) {
   test(`baseline ${fixture.domain}/${fixture.id} (${fixture.kind})`, () => {
-    assert.deepEqual(runCase(fixture).values.toSorted(), fixture.expected.toSorted());
+    assert.deepEqual([...runCase(fixture).values].sort(), [...fixture.expected].sort());
   });
 }
 
