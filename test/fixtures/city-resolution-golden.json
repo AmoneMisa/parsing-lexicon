@@ -1,0 +1,104 @@
+[
+  {
+    "id": "street-pins-city",
+    "expectedCity": "Tashkent",
+    "byCity": [
+      { "city": "Tashkent", "matches": [{ "name": "Shifokorlar", "key": "streets", "type": "streets", "start": 0, "end": 11, "matchedText": "Shifokorlar", "role": "mentioned", "explicitContext": true, "parent": null }] },
+      { "city": "Almaty", "matches": [{ "name": "Center", "key": "districts", "type": "districts", "start": 20, "end": 26, "matchedText": "Center", "role": "mentioned", "explicitContext": false, "parent": null }] }
+    ]
+  },
+  {
+    "id": "numbered-quarter-pins-city",
+    "expectedCity": "Tashkent",
+    "byCity": [
+      { "city": "Tashkent", "matches": [{ "name": "Chilonzor 7", "key": "microdistricts", "type": "microdistricts", "start": 0, "end": 11, "matchedText": "Chilonzor 7", "role": "mentioned", "explicitContext": true, "parent": null }] },
+      { "city": "Samarkand", "matches": [{ "name": "Center", "key": "districts", "type": "districts", "start": 30, "end": 36, "matchedText": "Center", "role": "mentioned", "explicitContext": false, "parent": null }] }
+    ]
+  },
+  {
+    "id": "explicit-city-wins",
+    "expectedCity": "Almaty",
+    "options": { "explicitCity": "Almaty" },
+    "byCity": [
+      { "city": "Almaty", "matches": [{ "name": "Samal", "key": "microdistricts", "type": "microdistricts", "start": 0, "end": 5, "matchedText": "Samal", "role": "mentioned", "explicitContext": false, "parent": null }] },
+      { "city": "Astana", "matches": [{ "name": "Samal", "key": "microdistricts", "type": "microdistricts", "start": 0, "end": 5, "matchedText": "Samal", "role": "mentioned", "explicitContext": false, "parent": null }] }
+    ]
+  },
+  {
+    "id": "structured-city-wins",
+    "expectedCity": "Bishkek",
+    "options": { "preferredCity": "Bishkek" },
+    "byCity": [
+      { "city": "Bishkek", "matches": [{ "name": "Vostok 5", "key": "microdistricts", "type": "microdistricts", "start": 0, "end": 8, "matchedText": "Vostok 5", "role": "mentioned", "explicitContext": false, "parent": null }] },
+      { "city": "Osh", "matches": [{ "name": "Center", "key": "districts", "type": "districts", "start": 20, "end": 26, "matchedText": "Center", "role": "mentioned", "explicitContext": false, "parent": null }] }
+    ]
+  },
+  {
+    "id": "residential-complex-beats-district",
+    "expectedCity": "Tashkent",
+    "byCity": [
+      { "city": "Tashkent", "matches": [{ "name": "Nest One", "key": "residentialComplexes", "type": "residentialComplexes", "start": 0, "end": 8, "matchedText": "Nest One", "role": "mentioned", "explicitContext": true, "parent": null }] },
+      { "city": "Nukus", "matches": [{ "name": "Center", "key": "districts", "type": "districts", "start": 20, "end": 26, "matchedText": "Center", "role": "mentioned", "explicitContext": false, "parent": null }] }
+    ]
+  },
+  {
+    "id": "metro-beats-generic-district",
+    "expectedCity": "Tashkent",
+    "byCity": [
+      { "city": "Tashkent", "matches": [{ "name": "Novza", "key": "metro", "type": "metro", "start": 0, "end": 5, "matchedText": "Novza", "role": "mentioned", "explicitContext": true, "parent": null }] },
+      { "city": "Fergana", "matches": [{ "name": "Old City", "key": "districts", "type": "districts", "start": 20, "end": 28, "matchedText": "Old City", "role": "mentioned", "explicitContext": false, "parent": null }] }
+    ]
+  },
+  {
+    "id": "two-independent-places-beat-one",
+    "expectedCity": "Tashkent",
+    "byCity": [
+      { "city": "Tashkent", "matches": [
+        { "name": "Shifokorlar", "key": "streets", "type": "streets", "start": 0, "end": 11, "matchedText": "Shifokorlar", "role": "mentioned", "explicitContext": false, "parent": null },
+        { "name": "Novza", "key": "metro", "type": "metro", "start": 20, "end": 25, "matchedText": "Novza", "role": "mentioned", "explicitContext": false, "parent": null }
+      ] },
+      { "city": "Andijan", "matches": [{ "name": "Bazaar", "key": "landmarks", "type": "landmarks", "start": 40, "end": 46, "matchedText": "Bazaar", "role": "mentioned", "explicitContext": false, "parent": null }] }
+    ]
+  },
+  {
+    "id": "ambiguous-name-loses-to-specific",
+    "expectedCity": "Tashkent",
+    "options": { "ambiguousNames": ["Center"] },
+    "byCity": [
+      { "city": "Tashkent", "matches": [{ "name": "Yunusobod 19", "key": "microdistricts", "type": "microdistricts", "start": 0, "end": 12, "matchedText": "Yunusobod 19", "role": "mentioned", "explicitContext": true, "parent": null }] },
+      { "city": "Karshi", "matches": [{ "name": "Center", "key": "districts", "type": "districts", "start": 20, "end": 26, "matchedText": "Center", "role": "mentioned", "explicitContext": false, "parent": null }] }
+    ]
+  },
+  {
+    "id": "nearby-role-argues-less",
+    "expectedCity": "Tashkent",
+    "byCity": [
+      { "city": "Tashkent", "matches": [{ "name": "Chilonzor 7", "key": "microdistricts", "type": "microdistricts", "start": 0, "end": 11, "matchedText": "Chilonzor 7", "role": "mentioned", "explicitContext": true, "parent": null }] },
+      { "city": "Samarkand", "matches": [{ "name": "Registan", "key": "landmarks", "type": "landmarks", "start": 30, "end": 38, "matchedText": "Registan", "role": "nearby", "explicitContext": false, "parent": null }] }
+    ]
+  },
+  {
+    "id": "street-with-context-beats-bare-settlement",
+    "expectedCity": "Bukhara",
+    "byCity": [
+      { "city": "Bukhara", "matches": [{ "name": "Bahouddin Naqshband", "key": "streets", "type": "streets", "start": 0, "end": 19, "matchedText": "Bahouddin Naqshband", "role": "mentioned", "explicitContext": true, "parent": null }] },
+      { "city": "Navoiy", "matches": [{ "name": "Yangi", "key": "settlements", "type": "settlements", "start": 30, "end": 35, "matchedText": "Yangi", "role": "mentioned", "explicitContext": false, "parent": null }] }
+    ]
+  },
+  {
+    "id": "poi-beats-suburb",
+    "expectedCity": "Almaty",
+    "byCity": [
+      { "city": "Almaty", "matches": [{ "name": "Green Bazaar", "key": "pois", "type": "pois", "start": 0, "end": 12, "matchedText": "Green Bazaar", "role": "mentioned", "explicitContext": true, "parent": null }] },
+      { "city": "Taraz", "matches": [{ "name": "Yug", "key": "suburbs", "type": "suburbs", "start": 20, "end": 23, "matchedText": "Yug", "role": "mentioned", "explicitContext": false, "parent": null }] }
+    ]
+  },
+  {
+    "id": "mahalla-beats-district",
+    "expectedCity": "Tashkent",
+    "byCity": [
+      { "city": "Tashkent", "matches": [{ "name": "Sugdiyona", "key": "mahallas", "type": "mahallas", "start": 0, "end": 9, "matchedText": "Sugdiyona", "role": "mentioned", "explicitContext": true, "parent": null }] },
+      { "city": "Qarshi", "matches": [{ "name": "Markaz", "key": "districts", "type": "districts", "start": 20, "end": 26, "matchedText": "Markaz", "role": "mentioned", "explicitContext": false, "parent": null }] }
+    ]
+  }
+]

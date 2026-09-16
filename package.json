@@ -265,6 +265,9 @@
     },
     "./micro-grammars": {
       "import": "./src/micro-grammars.js"
+    },
+    "./resolver-weights": {
+      "import": "./src/resolver-weights.js"
     }
   },
   "files": [
@@ -280,7 +283,8 @@
     "test": "node --test",
     "sync:geo-map-data": "node ./scripts/sync-geo-map-data-lexicon.js",
     "audit:geo-map-data": "node ./scripts/audit-geo-map-data-lexicon.js",
-    "benchmark:parser": "node benchmarks/parser-baseline.js"
+    "benchmark:parser": "node benchmarks/parser-baseline.js",
+    "calibrate:resolver": "node ./scripts/calibrate-resolver-weights.js"
   },
   "publishConfig": {
     "access": "public"
