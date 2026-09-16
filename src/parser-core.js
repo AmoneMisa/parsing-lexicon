@@ -1,5 +1,7 @@
 import { createParseDocument } from './parse-document.js';
+import { createEvidenceLedger, EVIDENCE_DIMENSIONS } from './evidence-ledger.js';
 export { createParseDocument };
+export * from './evidence-ledger.js';
 
 /** Domain-neutral parser primitives. They preserve source offsets and do not
  * interpret tokens; domain parsers emit candidates which are resolved later. */
@@ -49,7 +51,13 @@ export function generateParserSpans(tokens, options = {}) {
 export function createParseCandidate(input) {
   const candidate = { confidence: 0, evidence: [], metadata: {}, ...input };
   if (!candidate.id || !candidate.entityType || !Number.isFinite(candidate.start) || !Number.isFinite(candidate.end)) throw new TypeError('A parse candidate requires id, entityType, start and end');
-  return Object.freeze({ ...candidate, evidence: Object.freeze([...candidate.evidence]), metadata: Object.freeze({ ...candidate.metadata }) });
+  const evidence = Object.freeze([...candidate.evidence]);
+  let ledger;
+  return Object.freeze({ ...candidate, evidence, metadata: Object.freeze({ ...candidate.metadata }),
+    /** Lazy so untouched candidates cost nothing. Built from the evidence
+     * entries that declare a dimension; legacy untyped evidence still travels
+     * in `evidence` but argues for nothing until a parser types it. */
+    get ledger() { return ledger ??= candidate.ledger ?? createEvidenceLedger(evidence.filter((item) => Object.hasOwn(EVIDENCE_DIMENSIONS, item?.dimension))); } });
 }
 
 export function resolveParseCandidates(candidates, options = {}) {

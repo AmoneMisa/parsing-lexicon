@@ -195,3 +195,33 @@ should pass that document through a parsing operation rather than repeat these
 computations. Semantic extraction delegates to `semantic-spans`; domain section
 classification is supplied by the consumer. `runCandidatePipeline` retains its
 legacy properties as lazy getters and also exposes `input.document`.
+
+## Evidence ledgers
+
+`createEvidenceLedger` (`src/evidence-ledger.js`, also exported through
+parser-core) keeps every observation that argued for a candidate instead of
+collapsing them into one number too early. An `EvidenceOccurrence` records the
+`source`, optional `section`, original-text range, `entityId` and
+`evidenceGroup` behind one argument, plus a non-negative `weight`; the
+`dimension` supplies the sign. Positive dimensions are `lexical`, `structural`,
+`section`, `source`, `hierarchy` and `specificity`; the penalties are
+`ambiguity`, `fuzzy`, `contradiction` and `role`.
+
+Ledger scores are heuristic weights, **not probabilities**. They are unbounded,
+only comparable between candidates built from the same dimensions, and must
+never be read as a likelihood or multiplied together as one.
+
+Repeated equivalent evidence earns less each time (`weight * decay ** rank`,
+default decay 0.5) so one chatty source cannot outvote several independent
+ones. Occurrences are equivalent when they share an explicit `evidenceGroup`,
+or otherwise the same dimension, source and entity; the same argument at the
+same range is deduplicated outright rather than decayed. Use
+`mergeEvidenceLedgers` instead of adding scores, so diminishing returns apply
+across the union. `independentEvidenceCount` counts distinct supporting groups
+and `penalty` reports penalty mass alone, so a resolver can veto rather than
+only subtract.
+
+`createParseCandidate` exposes `candidate.ledger`, built lazily from the
+evidence entries that declare a dimension. Legacy untyped `{ type, ... }`
+evidence still travels in `candidate.evidence` and contributes nothing to the
+ledger until a parser types it, so existing domain parsers are unaffected.
