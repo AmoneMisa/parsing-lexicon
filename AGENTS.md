@@ -362,3 +362,29 @@ signal decided the modality — wording, section, negation or the default.
 and bonus both become `niceToHave`, while `context` and `negated` deliberately
 reach neither list. A negated skill is removed even when named as required
 elsewhere in the same posting.
+
+## Field provenance
+
+`src/provenance.js` records where a parsed value came from. The ordering is the
+point and must not be reshuffled casually:
+
+    structured_api > source_adapter > labelled_field > description > ai_enrichment
+
+That is: a structured source beats a deterministic parser, which beats a
+semantic fallback read out of free text, which beats AI enrichment. **AI
+enrichment may fill a field nothing else established, but must never overwrite
+a deterministic value, however confident it claims to be.** `isDeterministic`
+is the guard.
+
+Ties on source are broken by `confidence`, then by `observedAt` recency. An
+exact tie keeps the value already stored, so re-running a parse never churns
+data.
+
+`mergeProvenancedValue` also refuses to let a missing incoming value erase a
+known one. Absence is not evidence: a scrape that simply failed to see a field
+must not delete what a better source already established. That rule is what
+Stage 19/20 sticky enrichment depends on.
+
+Domain parsers may add their own keys to a provenance alongside the canonical
+fields — `vacancy-requirements.js` carries `signal`, `section` and `blockType`
+on top of `source`, `parser`, `start` and `end`.

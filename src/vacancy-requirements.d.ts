@@ -5,7 +5,10 @@ export type RequirementModality = 'required' | 'preferred' | 'bonus' | 'context'
 export const REQUIREMENT_MODALITIES: readonly RequirementModality[];
 
 export type RequirementProvenance = Readonly<{
+  source: 'description';
   parser: string;
+  start: number;
+  end: number;
   /** Which signal decided the modality: in-text wording, the surrounding
    * section, an explicit negation, or the fallback default. */
   signal: 'wording' | 'section' | 'negation' | 'default';
