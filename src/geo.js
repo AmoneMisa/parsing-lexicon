@@ -28,17 +28,21 @@ export function canonicalTashkentDistrict(value) {
 }
 
 function station(name, ru, en, line, aliases = []) {
-  const allAliases = [...new Set([name, ru, en, ...aliases])];
-  return deepFreeze({
+  const allAliases = Object.freeze([...new Set([name, ru, en, ...aliases])]);
+  let re = null;
+  return Object.freeze({
     canonical: name,
     name,
     type: 'metro',
     country: 'UZ',
     city: 'Tashkent',
     line,
-    labels: { ru, en },
+    labels: Object.freeze({ ru, en }),
     aliases: allAliases,
-    re: aliasesToRegex(allAliases),
+    get re() {
+      re ||= aliasesToRegex(allAliases);
+      return re;
+    },
   });
 }
 

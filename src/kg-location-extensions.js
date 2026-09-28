@@ -2,6 +2,7 @@ import { aliasesToRegex } from './normalization.js';
 
 function entry(name, aliases = [], meta = {}) {
   const all = Object.freeze([...new Set([name, ...aliases].filter(Boolean))]);
+  let re = null;
   return Object.freeze({
     ...meta,
     canonical: name,
@@ -10,7 +11,10 @@ function entry(name, aliases = [], meta = {}) {
     entityType: meta.entityType || meta.type,
     country: 'KG',
     aliases: all,
-    re: aliasesToRegex(all),
+    get re() {
+      re ||= aliasesToRegex(all);
+      return re;
+    },
   });
 }
 

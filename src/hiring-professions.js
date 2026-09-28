@@ -331,6 +331,8 @@ function profession(canonical, group, strongAliases, weakAliases = []) {
   const meta = GROUP_META.get(group) || { family: 'other', aliases: [] };
   const strong = [...new Set([...strongAliases, ...(ROMANIAN_PROFESSION_ALIASES[canonical] || [])].filter(Boolean))];
   const weak = [...new Set(weakAliases.filter(Boolean))];
+  let strongRe = null;
+  let weakRe;
   return Object.freeze({
     id: canonical,
     taxonomyId: `profession.${group}.${canonical}`,
@@ -340,8 +342,14 @@ function profession(canonical, group, strongAliases, weakAliases = []) {
     aliases: Object.freeze(strong),
     strongAliases: Object.freeze(strong),
     weakAliases: Object.freeze(weak),
-    strongRe: aliasesToRegex(strong),
-    weakRe: weak.length ? aliasesToRegex(weak) : null,
+    get strongRe() {
+      strongRe ||= aliasesToRegex(strong);
+      return strongRe;
+    },
+    get weakRe() {
+      if (weakRe === undefined) weakRe = weak.length ? aliasesToRegex(weak) : null;
+      return weakRe;
+    },
   });
 }
 
@@ -369,7 +377,15 @@ export const SENIORITY_LEVELS = Object.freeze([
   { canonical: 'chief', aliases: ['chief officer','chief executive','chief technology','chief product','chief financial','chief marketing','chief operating'], score: 1 },
 ].map((entry) => {
   const aliases = [...new Set([...entry.aliases, ...(ROMANIAN_SENIORITY_ALIASES[entry.canonical] || [])])];
-  return Object.freeze({ ...entry, aliases: Object.freeze(aliases), re: aliasesToRegex(aliases) });
+  let re = null;
+  return Object.freeze({
+    ...entry,
+    aliases: Object.freeze(aliases),
+    get re() {
+      re ||= aliasesToRegex(aliases);
+      return re;
+    },
+  });
 }));
 
 export function matchProfessions(value, { limit = 5, allowWeak = true } = {}) {

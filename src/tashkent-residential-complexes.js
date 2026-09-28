@@ -12,12 +12,16 @@ const AMBIGUOUS_TASHKENT_COMPLEXES = new Set([
 
 function complex(name, aliases = []) {
   const all = [...new Set([name, ...aliases].filter(Boolean))];
+  let re = null;
   return Object.freeze({
     canonical: name,
     name,
     aliases: Object.freeze(all),
     ambiguous: AMBIGUOUS_TASHKENT_COMPLEXES.has(name),
-    re: aliasesToRegex(all),
+    get re() {
+      re ||= aliasesToRegex(all);
+      return re;
+    },
   });
 }
 

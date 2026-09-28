@@ -3,6 +3,7 @@ import { TASHKENT_DISTRICTS, TASHKENT_METRO } from './geo.js';
 
 function locationEntry(name, category, aliases = [], options = {}) {
   const all = [...new Set([name, ...aliases].filter(Boolean))];
+  let re = null;
   return Object.freeze({
     canonical: name,
     name,
@@ -10,7 +11,10 @@ function locationEntry(name, category, aliases = [], options = {}) {
     country: 'UZ',
     city: 'Tashkent',
     aliases: Object.freeze(all),
-    re: aliasesToRegex(all),
+    get re() {
+      re ||= aliasesToRegex(all);
+      return re;
+    },
     contextRequired: Boolean(options.contextRequired),
     contextRe: options.context ? new RegExp(options.context, 'iu') : null,
   });
@@ -18,6 +22,7 @@ function locationEntry(name, category, aliases = [], options = {}) {
 
 const TASHKENT_HOUSING_DISTRICTS = Object.freeze(TASHKENT_DISTRICTS.map((district) => {
   const aliases = [...new Set([district.canonical, ...aliasesOf(district)].filter(Boolean))];
+  let re = null;
   return Object.freeze({
     canonical: district.canonical,
     name: district.canonical,
@@ -25,7 +30,10 @@ const TASHKENT_HOUSING_DISTRICTS = Object.freeze(TASHKENT_DISTRICTS.map((distric
     country: 'UZ',
     city: 'Tashkent',
     aliases: Object.freeze(aliases),
-    re: aliasesToRegex(aliases),
+    get re() {
+      re ||= aliasesToRegex(aliases);
+      return re;
+    },
   });
 }));
 

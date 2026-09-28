@@ -2,6 +2,7 @@ import { aliasesToRegex } from './normalization.js';
 
 function residential(name, aliases = []) {
   const all = Object.freeze([...new Set([name, ...aliases].filter(Boolean))]);
+  let re = null;
   return Object.freeze({
     canonical: name,
     name,
@@ -9,7 +10,10 @@ function residential(name, aliases = []) {
     entityType: 'residential_complex',
     country: 'KZ',
     aliases: all,
-    re: aliasesToRegex(all),
+    get re() {
+      re ||= aliasesToRegex(all);
+      return re;
+    },
   });
 }
 

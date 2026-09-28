@@ -2,13 +2,17 @@ import { aliasesToRegex } from './normalization.js';
 
 function poi(name, category, aliases = [], options = {}) {
   const all = [...new Set([name, ...aliases].filter(Boolean))];
+  let re = null;
   return Object.freeze({
     canonical: name,
     name,
     category,
     categories: Object.freeze([...new Set([category, ...(options.categories || [])])]),
     aliases: Object.freeze(all),
-    re: aliasesToRegex(all),
+    get re() {
+      re ||= aliasesToRegex(all);
+      return re;
+    },
     contextRequired: Boolean(options.contextRequired),
     contextRe: options.context ? new RegExp(options.context, 'iu') : null,
     ...(options.parent ? { parent: options.parent } : {}),

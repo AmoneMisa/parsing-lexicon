@@ -14,10 +14,18 @@ function cityInflectionRegex(aliases) {
 
 const CITY_MATCHERS = CITIES.map((item) => {
   const aliases = [item.canonical, ...aliasesOf(item)];
+  let exact = null;
+  let inflected;
   return Object.freeze({
     item,
-    exact: aliasesToRegex(aliases),
-    inflected: cityInflectionRegex(aliases),
+    get exact() {
+      exact ||= aliasesToRegex(aliases);
+      return exact;
+    },
+    get inflected() {
+      if (inflected === undefined) inflected = cityInflectionRegex(aliases);
+      return inflected;
+    },
   });
 });
 
@@ -27,7 +35,14 @@ const COUNTRY_MATCHERS = COUNTRIES.map((item) => {
   // are still handled by canonicalCountryCode().
   const aliases = [item.canonical, ...aliasesOf(item)]
     .filter((alias) => normalizeForMatch(alias).replace(/\s/g, '').length > 2);
-  return Object.freeze({ item, re: aliasesToRegex(aliases) });
+  let re = null;
+  return Object.freeze({
+    item,
+    get re() {
+      re ||= aliasesToRegex(aliases);
+      return re;
+    },
+  });
 });
 
 const US_STATE_RE = /\b[A-Z][A-Za-z.'-]+(?:\s+[A-Z][A-Za-z.'-]+){0,3}\s*,?\s+(?:AL|AK|AZ|AR|CA|CO|CT|DE|FL|GA|HI|ID|IL|IN|IA|KS|KY|LA|ME|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VT|VA|WA|WV|WI|WY|DC)\b/;

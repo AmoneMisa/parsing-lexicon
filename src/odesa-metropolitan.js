@@ -2,12 +2,16 @@ import { aliasesToRegex } from './normalization.js';
 
 function entity(name, type, aliases = [], options = {}) {
   const all = [...new Set([name, ...aliases].filter(Boolean))];
+  let re = null;
   return Object.freeze({
     canonical: name,
     name,
     type,
     aliases: Object.freeze(all),
-    re: aliasesToRegex(all),
+    get re() {
+      re ||= aliasesToRegex(all);
+      return re;
+    },
     parent: options.parent || null,
     cluster: options.cluster || null,
     contextRequired: Boolean(options.contextRequired),

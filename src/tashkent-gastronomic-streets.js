@@ -2,6 +2,7 @@ import { aliasesToRegex } from './normalization.js';
 
 function gastronomicStreet(canonical, aliases = [], district = null) {
   const all = Object.freeze([...new Set([canonical, ...aliases].filter(Boolean))]);
+  let re = null;
   return Object.freeze({
     canonical,
     name: canonical,
@@ -11,7 +12,10 @@ function gastronomicStreet(canonical, aliases = [], district = null) {
     city: 'Tashkent',
     district,
     aliases: all,
-    re: aliasesToRegex(all),
+    get re() {
+      re ||= aliasesToRegex(all);
+      return re;
+    },
   });
 }
 

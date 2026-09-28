@@ -1,13 +1,20 @@
 import { aliasesToRegex } from './normalization.js';
 import { matchProfessions } from './hiring-professions.js';
 
-const sourceRole = (canonical, label, aliases, group = 'other') => Object.freeze({
-  canonical,
-  label,
-  group,
-  aliases: Object.freeze([...new Set(aliases)]),
-  re: aliasesToRegex([...new Set(aliases)]),
-});
+function sourceRole(canonical, label, aliases, group = 'other') {
+  const all = Object.freeze([...new Set(aliases)]);
+  let re = null;
+  return Object.freeze({
+    canonical,
+    label,
+    group,
+    aliases: all,
+    get re() {
+      re ||= aliasesToRegex(all);
+      return re;
+    },
+  });
+}
 
 /**
  * Source spellings seen in real CV feeds which are too source-specific or

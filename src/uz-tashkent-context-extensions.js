@@ -11,6 +11,7 @@ function legacyAreaEntry(district, canonical) {
     ...(source.aliases || []),
   ].filter(Boolean))]);
 
+  let re = null;
   return Object.freeze({
     canonical: source.name,
     name: source.name,
@@ -21,12 +22,16 @@ function legacyAreaEntry(district, canonical) {
     district,
     parent: district,
     aliases,
-    re: aliasesToRegex(aliases),
+    get re() {
+      re ||= aliasesToRegex(aliases);
+      return re;
+    },
   });
 }
 
 function residentialEntry(canonical, aliases = []) {
   const all = Object.freeze([...new Set([canonical, ...aliases].filter(Boolean))]);
+  let re = null;
   return Object.freeze({
     canonical,
     name: canonical,
@@ -35,7 +40,10 @@ function residentialEntry(canonical, aliases = []) {
     country: 'UZ',
     city: 'Tashkent',
     aliases: all,
-    re: aliasesToRegex(all),
+    get re() {
+      re ||= aliasesToRegex(all);
+      return re;
+    },
   });
 }
 

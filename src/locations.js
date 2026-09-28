@@ -115,6 +115,7 @@ const UZ_BASE_LOCATION_DICTIONARIES = Object.freeze({
 
 function semanticEntry(entry, name, aliases, entityType) {
   const all = Object.freeze([...new Set([name, ...aliases].filter(Boolean))]);
+  let re = null;
   return Object.freeze({
     ...entry,
     canonical: name,
@@ -122,7 +123,10 @@ function semanticEntry(entry, name, aliases, entityType) {
     type: entityType,
     entityType,
     aliases: all,
-    re: aliasesToRegex(all),
+    get re() {
+      re ||= aliasesToRegex(all);
+      return re;
+    },
   });
 }
 
@@ -179,13 +183,17 @@ function normalizeUzSemanticLocations(country) {
       'Корасув дахаси',
       'Карасу даха',
     ])]);
+    let qorasuvRe = null;
     const qorasuvArea = Object.freeze({
       ...qorasuv,
       type: 'local_area',
       entityType: 'local_area',
       parent: 'Mirzo Ulugbek',
       aliases: qorasuvAliases,
-      re: aliasesToRegex(qorasuvAliases),
+      get re() {
+        qorasuvRe ||= aliasesToRegex(qorasuvAliases);
+        return qorasuvRe;
+      },
     });
 
     normalized = Object.freeze({

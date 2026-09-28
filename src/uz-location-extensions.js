@@ -2,7 +2,18 @@ import { aliasesToRegex } from './normalization.js';
 
 function entry(name, aliases = [], meta = {}) {
   const all = [...new Set([name, ...aliases].filter(Boolean))];
-  return Object.freeze({ ...meta, canonical: name, name, type: meta.type || meta.entityType, aliases: Object.freeze(all), re: aliasesToRegex(all) });
+  let re = null;
+  return Object.freeze({
+    ...meta,
+    canonical: name,
+    name,
+    type: meta.type || meta.entityType,
+    aliases: Object.freeze(all),
+    get re() {
+      re ||= aliasesToRegex(all);
+      return re;
+    },
+  });
 }
 
 function entries(rows = [], defaults = {}) {
