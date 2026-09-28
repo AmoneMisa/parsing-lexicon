@@ -357,3 +357,36 @@ test('OLX Fargona listing: Uzbek trailing yo‘q negates every appliance in its 
 // #8388527, #8390008, #8386865, #8386867, and a Mercor job-posting example
 // once the raw source text for each is supplied — see the plan's "Known
 // follow-up" section.
+
+// #9365624 — OLX sale post with Russian ordinal endings and an explicit
+// district ahead of a numbered Sergeli quarter.
+const LISTING_9365624 = 'СРОЧНО ПРОДАМ КВАРТИРУ!\n\n Янгихаетский район Сергели-1\n\nОриентир: Школа, садик, остановка.\n\nПлощадь: 115-m²\n\n5-х комн.кв  3-й этаж 5-ти этажный дом\n\n Состояние:\n\nУлучшенная планировка средний ремонт балкон 2х9';
+
+test('#9365624: ordinal endings and hyphenated area parse, and the named district beats the quarter name', () => {
+  const enrichment = parseHousingListingEnrichment(LISTING_9365624, { country: 'UZ', city: 'Tashkent' });
+  assert.equal(enrichment.rooms, 5);
+  assert.equal(enrichment.areaSqm, 115);
+  assert.equal(enrichment.floor, 3);
+  assert.equal(enrichment.totalFloors, 5);
+  assert.equal(enrichment.district, 'Yangihayot');
+  assert.deepEqual(enrichment.quarter, { number: 1, suffix: '' });
+});
+
+// #9436102 — Telegram shared flat for student girls priced per person.
+const LISTING_9436102 = '🌸 SERGELIDA QIZLARGA IJARA 🌸\n\n#QIZLARGA #SERGELI #CHINOR #BEZMAKLER\n\n📍 Sergeli 1, Chinor va Qipchoq metrosi oldida\n🚇 Metro — 200 metr\n\n🏠 3 xonali kvartira\n👭 3 ta qiz kerak\n🎓 Student qizlarga\n\n💰 800 000 so‘mdan\n❗️ Kommunal alohida\n\n👩 Xo‘jayin yashamaydi';
+
+test('#9436102: "so‘mdan" is UZS per person, and student girls stay a women-only audience', () => {
+  const enrichment = parseHousingListingEnrichment(LISTING_9436102, { country: 'UZ', city: 'Tashkent' });
+  assert.deepEqual(parseHousingPrice(LISTING_9436102, { country: 'UZ', dealType: 'longRent' }), { amount: 800000, currency: 'UZS', approximate: false });
+  assert.equal(parseHousingPrice('800 000 сўмдан', 'UZS').currency, 'UZS');
+  assert.deepEqual(enrichment.perPersonPrice, { amount: 800000, currency: 'UZS', approximate: false, scope: 'person' });
+  assert.equal(enrichment.studentTarget, true);
+  assert.equal(enrichment.audience, 'women');
+  assert.equal(enrichment.landlordPresent, false);
+  assert.equal(enrichment.commission, false);
+});
+
+test('an unlabelled six-figure UZ long-term rent is so‘m, not USD', () => {
+  assert.equal(parseHousingPrice('Ijaraga 3 xonali kvartira 800 000', { country: 'UZ', dealType: 'longRent' }).currency, 'UZS');
+  assert.equal(parseHousingPrice('Sotiladi 3 xonali kvartira 80 000', { country: 'UZ', dealType: 'sale' }).currency, 'USD');
+});

@@ -19,7 +19,7 @@ export const TASHKENT_DISTRICTS = Object.freeze([
   entity('Shaykhantahur', { uzLatn: ['Shayxontohur', 'Shayxontohur tumani', 'Shaykhantahur'], uzCyrl: ['Шайхонтоҳур', 'Шайхонтоҳур тумани', 'Шайхонтохур'], ru: ['Шайхантахур', 'Шайхантахурский район'], en: ['Shaykhantahur', 'Shayxontohur'] }),
   entity('Yunusabad', { uzLatn: ['Yunusobod', 'Yunusobod tumani', 'Yunusabad'], uzCyrl: ['Юнусобод', 'Юнусобод тумани'], ru: ['Юнусабад', 'Юнусабадский район'], en: ['Yunusabad', 'Yunusobod'] }),
   entity('Yakkasaray', { uzLatn: ['Yakkasaroy', 'Yakkasaroy tumani', 'Yakkasaray'], uzCyrl: ['Яккасарой', 'Яккасарой тумани'], ru: ['Яккасарай', 'Яккасарайский район'], en: ['Yakkasaray', 'Yakkasaroy'] }),
-  entity('Yangihayot', { uzLatn: ['Yangihayot', 'Yangihayot tumani'], uzCyrl: ['Янгиҳаёт', 'Янгиҳаёт тумани', 'Янгихаёт'], ru: ['Янгихаётский район', 'Янгихаёт'], en: ['Yangihayot'] }),
+  entity('Yangihayot', { uzLatn: ['Yangihayot', 'Yangihayot tumani'], uzCyrl: ['Янгиҳаёт', 'Янгиҳаёт тумани', 'Янгихаёт'], ru: ['Янгихаётский район', 'Янгихаёт', 'Янгихаетский район', 'Янгихаетский', 'Янгихает'], en: ['Yangihayot'] }),
   entity('Yashnobod', { uzLatn: ['Yashnobod', 'Yashnobod tumani', 'Yashnabod', 'Yashnabod tumani', 'Yashnobot', 'Yashnobot tumani'], uzCyrl: ['Яшнобод', 'Яшнобод тумани'], ru: ['Яшнабад', 'Яшнабадский район'], en: ['Yashnobod', 'Yashnabad'] }),
 ]);
 

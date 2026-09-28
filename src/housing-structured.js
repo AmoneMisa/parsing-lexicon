@@ -87,7 +87,9 @@ export function parseHousingRoomCount(value) {
     if (total >= 1 && total <= 20) return total;
   }
   for (const [re, rooms] of NUMBER_WORDS) if (re.test(text)) return rooms;
-  const numeric = text.match(/(?:^|[^\p{L}\p{N}])(\d{1,2})\s*(?:ta\s*)?(?:(?:-\s*)?комнат\p{L}*|(?:-\s*)?к(?:\.|\b)|(?:-\s*)?xona(?:li|si|lari)?|(?:-\s*)?хона(?:лик|ли|си|лари)?|бөлмелі|rooms?)(?=$|[^\p{L}\p{N}])/iu);
+  // "5-х комн.кв" / "3-ех комнатная": a Russian case ending may sit between
+  // the number and the room word, which may itself be abbreviated.
+  const numeric = text.match(/(?:^|[^\p{L}\p{N}])(\d{1,2})\s*(?:-\s*(?:х|ти|и|ух|[её]х)\s*)?(?:ta\s*)?(?:(?:-\s*)?комн(?:ат)?\p{L}*|(?:-\s*)?к(?:\.|\b)|(?:-\s*)?xona(?:li|si|lari)?|(?:-\s*)?хона(?:лик|ли|си|лари)?|бөлмелі|rooms?)(?=$|[^\p{L}\p{N}])/iu);
   if (numeric) {
     const rooms = toNumber(numeric[1]);
     if (rooms != null && rooms >= 1 && rooms <= 20) return rooms;
@@ -127,7 +129,8 @@ export function parseHousingFloor(value) {
     }
   }
 
-  const beforeMarker = text.match(/(?:^|[^\d])(\d{1,3})\s*-?\s*(?:(?:chi|чи)\s*)?(?:этаж(?:да)?|поверх|floor|etaj|qavat(?:i(?:da(?:gi)?)?|da)?|қабат(?:ы(?:нда(?:ғы)?)?|та)?|кават(?:и(?:да(?:ги)?)?|да)?|қават(?:и(?:да(?:ги)?)?|да)?)(?=$|[^\p{L}\p{N}_])/iu);
+  // "3-й этаж" / "5-м этаже" carry a Russian ordinal ending like Uzbek "-chi".
+  const beforeMarker = text.match(/(?:^|[^\d])(\d{1,3})\s*-?\s*(?:(?:chi|чи|й|ий|ый|ой|м|ом|ем)\s*)?(?:этаж(?:да)?|поверх|floor|etaj|qavat(?:i(?:da(?:gi)?)?|da)?|қабат(?:ы(?:нда(?:ғы)?)?|та)?|кават(?:и(?:да(?:ги)?)?|да)?|қават(?:и(?:да(?:ги)?)?|да)?)(?=$|[^\p{L}\p{N}_])/iu);
   let floor = toNumber(beforeMarker?.[1]);
   let totalFloors = null;
 
@@ -140,7 +143,7 @@ export function parseHousingFloor(value) {
   if (floor == null && FIRST_FLOOR_WORD_RE.test(text)) floor = 1;
 
   if (totalFloors == null) {
-    const total = text.match(/(?:дом\s*)?(\d{1,3})\s*(?:[- ]?этаж(?:н\p{L}*|лик)|поверхов\p{L}*|storey|story|floors?\s+total|qavatli|қабатты|каватли|қаватли)/iu);
+    const total = text.match(/(?:дом\s*)?(\d{1,3})\s*(?:-\s*(?:ти|х|и|ми)\s*)?(?:[- ]?этаж(?:н\p{L}*|лик)|поверхов\p{L}*|storey|story|floors?\s+total|qavatli|қабатты|каватли|қаватли)/iu);
     totalFloors = toNumber(total?.[1]);
   }
 
@@ -167,7 +170,7 @@ const AREA_UNIT_RE = String.raw`(?:м²|м2|m²|m2|sqm|sq\.?\s*m|mp|кв\.?\s*м
 const AREA_UNIT_AFTER_LABEL_RE = String.raw`(?:${AREA_UNIT_RE}|[mм])`;
 
 function areaAfterLabel(text, labelRe) {
-  const re = new RegExp(`${labelRe.source}\\s*[:=-]?\\s*(\\d{1,4}(?:[.,]\\d{1,2})?)\\s*${AREA_UNIT_AFTER_LABEL_RE}(?=$|[^\\p{L}\\p{N}_])`, 'iu');
+  const re = new RegExp(`${labelRe.source}\\s*[:=-]?\\s*(\\d{1,4}(?:[.,]\\d{1,2})?)\\s*-?\\s*${AREA_UNIT_AFTER_LABEL_RE}(?=$|[^\\p{L}\\p{N}_])`, 'iu');
   return toNumber(text.match(re)?.[1]);
 }
 

@@ -167,7 +167,7 @@ export const TASHKENT_NUMBERED_AREA_ALIASES = Object.freeze({
   Kuylyuk: Object.freeze(['куйлюк', 'куйлик', 'kuylyuk', 'kuyliq', 'qoyliq', 'qo yliq']),
   Sergeli: Object.freeze(['сергели', 'sergeli', 'sergile', 'sergele']),
   Yunusabad: Object.freeze(['юнусабад', 'yunusabad', 'yunusobod']),
-  Yangihayot: Object.freeze(['янгихаёт', 'янгихаят', 'yangihayot']),
+  Yangihayot: Object.freeze(['янгихаёт', 'янгихает', 'янгихаят', 'yangihayot']),
 });
 
 const REVERSE_NUMBERED_ALIASES = Object.freeze({
@@ -241,15 +241,24 @@ export function hasExplicitTashkentDistrict(value, canonical) {
 export function matchTashkentHousingDistrict(value) {
   const text = String(value ?? '');
   if (!text) return null;
+  let explicit = null;
+  let implicit = null;
   for (const district of TASHKENT_HOUSING_DISTRICTS) {
     const match = text.match(district.re);
     if (!match) continue;
-    if (hasExplicitDistrictContext(text, match)) return district;
+    // The earliest explicitly marked district wins. In "Янгихаетский район
+    // Сергели-1" the "район" also precedes Сергели, but it belongs to the
+    // adjective before it; Sergeli-1 is only the quarter name.
+    if (hasExplicitDistrictContext(text, match)) {
+      if (!explicit || match.index < explicit.index) explicit = { district, index: match.index };
+      continue;
+    }
+    if (implicit) continue;
     if (hasExplicitMetroContext(text, match) || hasExplicitAreaContext(text, match) || hasExplicitMahallaContext(text, match)) continue;
     if (matchTashkentNumberedArea(text, district.name)) continue;
-    return district;
+    implicit = district;
   }
-  return null;
+  return explicit?.district || implicit;
 }
 
 /**

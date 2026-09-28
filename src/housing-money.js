@@ -602,7 +602,10 @@ export function parseHousingPrice(value, context = '') {
   const hasExplicitUzbekThousandScale = country === 'UZ' && /\b(?:ming|минг)\b/iu.test(priceText);
   if (!explicit && !hasExplicitUzbekThousandScale && fallbackCurrency === 'UZS' && price != null) {
     const dailyUzbek = /(?:kunlik|sutkaga|kecha[- ]?kunduz|посуточн|суточн)/i.test(priceText);
-    currency = price >= 1_000_000 || (dailyUzbek && price >= 10_000) ? 'UZS' : 'USD';
+    // A monthly rent of 100,000+ is only plausible in so'm; the USD reading
+    // turned "800 000" per person into an 800,000 USD rent.
+    const monthlyRent = dealType === 'longRent' && price >= 100_000;
+    currency = price >= 1_000_000 || monthlyRent || (dailyUzbek && price >= 10_000) ? 'UZS' : 'USD';
   }
 
   return Object.freeze({ amount: price, currency, approximate: price != null && APPROXIMATE_RE.test(priceText) });

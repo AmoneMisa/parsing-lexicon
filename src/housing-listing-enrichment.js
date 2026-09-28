@@ -32,7 +32,7 @@ const APPLIANCE_PATTERNS = Object.freeze([
 
 const FIRST_RENT_UZ_RE = /(?:hali\s+hech\s+kim\s+(?:yashamagan|turmagan)|ҳали\s+ҳеч\s+ким\s+(?:яшамаган|турмаган))/iu;
 const LANDLORD_PRESENT_RE = /(?:xozaykali|hojaykali|xo['’]?jaykali|с\s+хозяйк(?:ой|ой\s+в\s+квартире)|хозяйк\p{L}*\s+(?:жив[её]т|прожива\p{L}*)|with\s+(?:the\s+)?(?:landlord|owner)\s+(?:present|living\s+in)|cu\s+proprietar(?:ul)?\s+în\s+cas(?:ă|a)|үй\s*иесі\s+(?:тұрады|бірге\s+тұрады))/iu;
-const STUDENT_RE = /(?:studentlar\s+uchun|talabalar\s+uchun|студент(?:ам|ы|ок|ов)?\s+(?:можно|для)|для\s+студент|students?\s+(?:only|welcome)|for\s+students|pentru\s+studen[țt]i|studen[țt]i(?:lor)?|студенттерге|студенттер\s+үшін|(?:oila|oyla)(?:ga|lar|li)?\s+yoki\s+\d{1,2}\s+ta\s+bola(?:lar)?(?:ga)?\s+(?:ijara(?:ga)?\s+)?(?:beril|topshiril))/iu;
+const STUDENT_RE = /(?:studentlar\s+uchun|talabalar\s+uchun|(?<![\p{L}\p{N}_])(?:student(?:ka)?|talaba)(?:lar)?(?:ga)?\s+(?:qiz|yigit|o['’ʻʼ‘`]?g['’ʻʼ‘`]?il\s+bola|bola)(?:lar)?(?:ga)?(?![\p{L}\p{N}_])|(?<![\p{L}\p{N}_])(?:studentlar|talabalar)ga(?![\p{L}\p{N}_])|студент(?:ам|ы|ок|ов)?\s+(?:можно|для)|для\s+студент|students?\s+(?:only|welcome)|for\s+students|pentru\s+studen[țt]i|studen[țt]i(?:lor)?|студенттерге|студенттер\s+үшін|(?:oila|oyla)(?:ga|lar|li)?\s+yoki\s+\d{1,2}\s+ta\s+bola(?:lar)?(?:ga)?\s+(?:ijara(?:ga)?\s+)?(?:beril|topshiril))/iu;
 const NO_BROKER_RE = /(?:bez\s*makler|maklersiz|vositachisiz|без\s+(?:маклер|посредник|риелтор|риэлтор|комисси)|no\s+(?:broker|agent|commission|agency\s+fee)|f[ăa]r[ăa]\s+(?:comision|agen[țt]ie|intermediari)|делдалсыз|комиссиясыз)/iu;
 const BROKER_RE = /(?:makler|vositachi|макл(?:ер[а-яё]*)?|ри[еэ]лтор[а-яё]*|агентств[а-яё]*|комисси[а-яё]*|broker|realtor|commission|comision(?:ul)?|agen[țt]ie|delda[lл]\p{L}*|делдал\p{L}*)/iu;
 const MEN_RE = /(?:o['’ʻʼ‘`]?g['’ʻʼ‘`]?il\s+bola(?:lar)?(?:ga)?|ogil\s+bola(?:lar)?(?:ga)?|sherik\s+bola|эркак(?:лар)?|erkak(?:lar)?(?:ga)?|только\s+(?:мужчин|парн)|\bmen\s+only\b|b[ăa]rba[țt]i(?:lor)?|b[ăa]ie[țt]i(?:lor)?|жігіттерге|жігіттер(?:ге)?|хлопц(?:ям|і|ів)?|чоловік(?:ам|и)?)/iu;
@@ -45,6 +45,10 @@ const FAMILY_EXCLUSION_RE = /(?:oila|oyla|семь\p{L}*|family|famil(?:ie|ia)|c
 const ROOM_SHARE_RE = /(?:sherik(?:ka|lik|likga)?|шерик(?:ка|лик)?|roommate|flatmate|подселени|койко[-\s]?мест|место\s+в\s+(?:комнат|квартир)|birga\s+yashash(?:ga)?|kvartira(?:ga|da)?[^\r\n.!?]{0,36}(?:\d+|bitta|1)\s*(?:ta\s*)?(?:qiz|ayol)[^\r\n.!?]{0,20}(?:ijarachi\s*)?(?:kerak|kere)|coleg\s+de\s+(?:apartament|camer[ăa])|bed\s+space|бөлмелес(?:\s+керек)?|көрші\s+керек)/iu;
 const AIR_CONDITIONER_RE = /(?:кондицион|air\s*con|konditsioner|kandit(?:s|c)?aner|kanditsaner|кандитсанер)/iu;
 const PER_PERSON_PRICE_RE = /(?:kishi\s+boshiga|киши\s+бошига)\s*(\d{1,3}(?:[\s.,]\d{3})*|\d+(?:[.,]\d+)?)\s*(ming|минг|million|mln|млн)?(?:dan|дан)?/iu;
+// Shared-flat posts price each tenant with the ablative "-dan" ("800 000
+// so'mdan" = "800 000 so'm from each") once they ask for several people.
+const PER_PERSON_SUFFIX_PRICE_RE = /(\d{1,3}(?:[  ]\d{3})+|\d+)\s*(ming|минг|million|mln|млн)?\s*(?:so['’ʻʼ‘`]?m|сўм|сум)(?:dan|дан)(?![\p{L}\p{N}_])/iu;
+const SEVERAL_OCCUPANTS_RE = /(?<![\p{L}\p{N}_])([2-9])\s*ta\s+(?:qiz|yigit|bola|kishi|odam|talaba|student)\p{L}*\s+(?:kerak|kere|olinadi)/iu;
 const WALK_MINUTES_RE = /(?:yayov|piyoda|пешком)\s*(\d{1,2})\s*(?:daqiqa|min(?:ute)?s?|минут)/iu;
 const TRANSIT_ROUTES_RE = /(?:aftobuslar|avtobuslar|автобуслар|автобусы)[^\r\n\d]{0,24}((?:\d{1,4}[\s,;/]*){1,10})/iu;
 const NEARBY_RELATION_TAIL_RE = /(?<!\p{L})(?:рядом\s+(?:с|со)|недалеко\s+от|возле|около|напротив|навпроти|ориентир\s*[:—–-]?|ор[-–—]?р\.?\s*[:—–-]?|near(?:by)?|close\s+to|next\s+to|opposite|behind|in\s+front\s+of|yaqin(?:ida)?|lângă|aproape\s+de|în\s+apropiere\s+de|vizavi\s+de|în\s+spatele|în\s+fața)(?!\p{L})[^.!?\r\n;]*/giu;
@@ -194,7 +198,9 @@ export function parseHousingAudience(value) {
   const students = STUDENT_RE.test(text);
   if (family && students) return deepFreeze({ primary: 'family', alternatives: ['family', 'students'] });
   if (family && women) return deepFreeze({ primary: 'family', alternatives: ['family', 'women'] });
-  if (students) return deepFreeze({ primary: 'students', alternatives: ['students'] });
+  // "Student qizlarga" narrows students to girls: the gender is the binding
+  // restriction, and studentTarget still reports the student part.
+  if (students && !women && !men) return deepFreeze({ primary: 'students', alternatives: ['students'] });
   if (family) return deepFreeze({ primary: 'family', alternatives: ['family'] });
   if (women) return deepFreeze({ primary: 'women', alternatives: ['women'] });
   if (men) return deepFreeze({ primary: 'men', alternatives: ['men'] });
@@ -222,14 +228,15 @@ export function parseHousingCommission(value) {
 
 export function parseHousingPerPersonPrice(value, { country = '' } = {}) {
   const text = normalizeUnicode(value ?? '');
-  const match = text.match(PER_PERSON_PRICE_RE);
+  const match = text.match(PER_PERSON_PRICE_RE)
+    || (SEVERAL_OCCUPANTS_RE.test(text) ? text.match(PER_PERSON_SUFFIX_PRICE_RE) : null);
   if (!match) return null;
   let amount = Number(String(match[1]).replace(/\s+/g, '').replace(',', '.'));
   if (!Number.isFinite(amount) || amount <= 0) return null;
   const scale = String(match[2] || '').toLowerCase();
   if (scale === 'ming' || scale === 'минг') amount *= 1000;
   else if (scale === 'million' || scale === 'mln' || scale === 'млн') amount *= 1_000_000;
-  const currency = String(country || '').toUpperCase() === 'UZ' || /(?:ming|минг)/iu.test(match[0]) ? 'UZS' : null;
+  const currency = String(country || '').toUpperCase() === 'UZ' || /(?:ming|минг|so['’ʻʼ‘`]?m|сўм|сум)/iu.test(match[0]) ? 'UZS' : null;
   const approximate = /около|примерно|~|≈/iu.test(text);
   return deepFreeze({ amount, currency, approximate, scope: 'person' });
 }
