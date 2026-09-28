@@ -3,16 +3,39 @@ import { LEXICON_LANGUAGES } from './lexicon-core.js';
 const APOSTROPHES_RE = /[’‘ʻʼ`´]/g;
 const DASHES_RE = /[‐‑‒–—―]/g;
 
+// Parsing one vacancy or listing runs dozens of matchers over the same text,
+// and each normalizes it again from scratch: profiling the workforce
+// enrichment showed normalization among the top costs at ~170-490 ms per
+// vacancy. These functions are pure, so each keeps a small cache of its
+// recent long inputs. Short strings (dictionary aliases, single words) are
+// cheaper to normalize than to cache and are left alone; the cap bounds
+// memory to a few recent texts per function.
+const MEMO_MIN_LENGTH = 200;
+const MEMO_MAX_ENTRIES = 32;
+
+function memoizeLongText(fn) {
+  const cache = new Map();
+  return (value) => {
+    if (typeof value !== 'string' || value.length < MEMO_MIN_LENGTH) return fn(value);
+    const hit = cache.get(value);
+    if (hit !== undefined) return hit;
+    const result = fn(value);
+    if (cache.size >= MEMO_MAX_ENTRIES) cache.delete(cache.keys().next().value);
+    cache.set(value, result);
+    return result;
+  };
+}
+
 /** Normalize Unicode and punctuation variants without destroying letters. */
-export function normalizeUnicode(value) {
+export const normalizeUnicode = memoizeLongText(function normalizeUnicode(value) {
   return String(value ?? '')
     .normalize('NFKC')
     .replace(APOSTROPHES_RE, "'")
     .replace(DASHES_RE, '-');
-}
+});
 
 /** Stable comparison form for parser dictionaries. */
-export function normalizeForMatch(value) {
+export const normalizeForMatch = memoizeLongText(function normalizeForMatch(value) {
   return normalizeUnicode(value)
     .toLocaleLowerCase()
     .replace(/ё/g, 'е')
@@ -20,10 +43,10 @@ export function normalizeForMatch(value) {
     .replace(/[^\p{L}\p{N}]+/gu, ' ')
     .replace(/\s+/g, ' ')
     .trim();
-}
+});
 
 /** Search-only apostrophe compaction for Uzbek/Karakalpak variants. */
-function normalizeCompactApostropheForMatch(value) {
+const normalizeCompactApostropheForMatch = memoizeLongText(function normalizeCompactApostropheForMatch(value) {
   return normalizeUnicode(value)
     .toLocaleLowerCase()
     .replace(/ё/g, 'е')
@@ -32,7 +55,7 @@ function normalizeCompactApostropheForMatch(value) {
     .replace(/[^\p{L}\p{N}]+/gu, ' ')
     .replace(/\s+/g, ' ')
     .trim();
-}
+});
 
 export const CYRILLIC_SEARCH_MAP = Object.freeze({
   а: 'a', б: 'b', в: 'v', г: 'g', д: 'd', е: 'e', ё: 'e', ж: 'zh', з: 'z',
@@ -65,21 +88,21 @@ const KARAKALPAK_LATIN_PATTERN_EQUIVALENCE = Object.freeze({
 });
 
 /** Search-oriented Cyrillic folding; canonical identity still comes from explicit aliases. */
-export function foldCyrillicForSearch(value) {
+export const foldCyrillicForSearch = memoizeLongText(function foldCyrillicForSearch(value) {
   return normalizeUnicode(value)
     .toLocaleLowerCase()
     .split('')
     .map((char) => CYRILLIC_SEARCH_MAP[char] ?? char)
     .join('');
-}
+});
 
-function foldKazakhForSearch(value) {
+const foldKazakhForSearch = memoizeLongText(function foldKazakhForSearch(value) {
   return normalizeUnicode(value)
     .toLocaleLowerCase()
     .split('')
     .map((char) => KAZAKH_SEARCH_EQUIVALENCE[char] ?? char)
     .join('');
-}
+});
 
 function foldKarakalpakLatinForSearch(value) {
   return normalizeUnicode(value)
