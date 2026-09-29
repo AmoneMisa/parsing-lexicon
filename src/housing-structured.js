@@ -6,7 +6,7 @@ import { DEPOSIT_TERMS, SELLER_TERMS, UTILITY_TERMS } from './housing.js';
 import { GENERIC_LANDMARK_TERMS } from './landmarks.js';
 import { LOCATION_RELATIONS, parseHousingContext } from './housing-context.js';
 import { isHousingCommercialAd, resolveHousingIntent } from './housing-intent.js';
-import { countryCurrency, countryPhoneHint } from './country-context.js';
+import { countryCodeForCity, countryCurrency, countryPhoneHint } from './country-context.js';
 import { findTelegramContacts, maskPhoneLikeSpans, parsePhoneNumbers } from './contact.js';
 import { parseHousingAddress } from './housing-address.js';
 import { parseHousingListingFields } from './housing-listing-fields.js';
@@ -78,6 +78,14 @@ export function parseHousingRoomCount(value) {
   const converted = text.match(/(\d{1,2})\s*(?:ta\s*)?xona(?:ga)?\s+(?:qilingan|aylantirilgan|bo['’ʻʼ‘`]?lingan)(?=$|[^\p{L}\p{N}_])/iu);
   if (converted) {
     const rooms = toNumber(converted[1]);
+    if (rooms != null && rooms >= 1 && rooms <= 20) return rooms;
+  }
+
+  // "1в2 комнатная" / "2 в 3-х комн.": a flat replanned from one room count
+  // into another is listed as the resulting layout.
+  const replanned = text.match(/(?:^|[^\p{L}\p{N}])\d{1,2}\s*(?:-\s*х\s*)?(?:к\.?\s*)?в\s*(\d{1,2})\s*(?:-\s*(?:х|ти|и|ух|[её]х)\s*)?(?:комн\p{L}*|к(?:\.|\b)|xona)/iu);
+  if (replanned) {
+    const rooms = toNumber(replanned[1]);
     if (rooms != null && rooms >= 1 && rooms <= 20) return rooms;
   }
 
@@ -414,7 +422,7 @@ export function parseHousingStructured(value, options = {}) {
   const original = String(value ?? '');
   const sourcePost = parseHousingSourcePost(original, { source: options.source });
   const text = sourcePost.text;
-  const country = String(options.country || '').trim();
+  const country = String(options.country || '').trim() || countryCodeForCity(options.city);
   const fallbackCurrency = options.fallbackCurrency || countryCurrency(country) || '';
   const phoneCountry = options.phoneCountry || countryPhoneHint(country) || null;
   const intent = resolveHousingIntent(text);

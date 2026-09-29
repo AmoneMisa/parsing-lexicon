@@ -213,7 +213,7 @@ export function matchTashkentNumberedArea(value, canonical) {
   if (!text) return null;
   const alternatives = normalizedAlternatives(aliases);
   let match = text.match(new RegExp(
-    `(?:^|\\s)(?:${alternatives})(?:\\s+${NUMBERED_CONTEXT})?\\s+(\\d{1,2})(?:\\s*([adад]))?(?:\\s+${NUMBERED_SUFFIX_CONTEXT})*(?:\\s|$)`,
+    `(?:^|\\s)(?:${alternatives})(?:\\s+${NUMBERED_CONTEXT})?\\s+(\\d{1,2})(?:\\s*([adад]))?(?:\\s*(?:кв|kv)(?=\\s|$))?(?:\\s+${NUMBERED_SUFFIX_CONTEXT})*(?:\\s|$)`,
     'iu',
   ));
 

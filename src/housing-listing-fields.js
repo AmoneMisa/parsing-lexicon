@@ -10,7 +10,7 @@ const bool = (text, positive, negative = null) => {
 };
 
 const REFRIGERATOR_RE = /(?:холодильник\p{L}*|haladelnik|xolodilnik|muzlatgich|refrigerator|fridge)/iu;
-const WASHING_MACHINE_RE = /(?:кир\s*машин\p{L}*|кирмошин\p{L}*|стиральн\p{L}*\s+машин\p{L}*|washing\s+machine|kir\s*moshina|kirmoshina|kir\s*yuvish\s+mashin\p{L}*)/iu;
+const WASHING_MACHINE_RE = /(?:кир\s*машин\p{L}*|кирмошин\p{L}*|стиральн\p{L}*\s+машин\p{L}*|washing\s+machine|kir\s*m[ao]shin\p{L}*|kirmoshina|kir\s*yuvish\s+mashin\p{L}*)/iu;
 
 function listedUzbekAbsence(text, appliance) {
   // Marketplace Uzbek frequently puts a single "yo'q" after a short,
@@ -173,7 +173,7 @@ export function parseHousingListingFields(value, { country = '', dealType = null
   const washingMachine = applianceState(
     text,
     WASHING_MACHINE_RE,
-    /(?:без|нет)\s+(?:кир\s*машин\p{L}*|кирмошин\p{L}*|стиральн\p{L}*\s+машин\p{L}*|kir\s*moshina|kirmoshina)|(?:кир\s*машин\p{L}*|кирмошин\p{L}*|стиральн\p{L}*\s+машин\p{L}*|kir\s*moshina|kirmoshina)\s+(?:нет|yo['’ʻʼ`]?q|йўқ)|no\s+washing\s+machine/iu,
+    /(?:без|нет)\s+(?:кир\s*машин\p{L}*|кирмошин\p{L}*|стиральн\p{L}*\s+машин\p{L}*|kir\s*m[ao]shin\p{L}*|kirmoshina)|(?:кир\s*машин\p{L}*|кирмошин\p{L}*|стиральн\p{L}*\s+машин\p{L}*|kir\s*m[ao]shin\p{L}*|kirmoshina)\s+(?:нет|yo['’ʻʼ`]?q|йўқ)|no\s+washing\s+machine/iu,
   );
 
   return deepFreeze({
