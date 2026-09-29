@@ -298,40 +298,73 @@ const METRO_NUMBERED_AREA = Object.freeze({
   Yangihayot: 'Yangihayot',
 });
 
+// Position of the first mention of `station` that really names the station,
+// or -1. An explicit marker must win even if an earlier bare occurrence shares
+// a name with a district: "Sergeli tumani, metro Sergeli" still refers to the
+// station at the second occurrence.
+function stationMentionIndex(text, station) {
+  const flags = [...new Set(`${station.re.flags.replace(/g/gu, '')}g`)].join('');
+  const matches = [...text.matchAll(new RegExp(station.re.source, flags))];
+  if (!matches.length) return -1;
+  const explicit = matches.find((match) => hasExplicitMetroContext(text, match));
+  if (explicit) return explicit.index ?? 0;
+  if (hasExplicitTashkentDistrict(text, station.name)) return -1;
+  // "Toshkent" is both a metro station and the city's own name, so a bare
+  // mention ("Toshkent shahri") is not evidence of the station the way a bare
+  // mention of any other station name would be. Require an explicit metro
+  // context for this one station specifically.
+  if (station.name === 'Toshkent') return -1;
+  if (station.name === 'Qoyliq' && QOYLIQ_MASSIF_RE.test(text)) return -1;
+  const areaCanonical = METRO_NUMBERED_AREA[station.name];
+  if (areaCanonical && matchTashkentNumberedArea(text, areaCanonical)) return -1;
+  for (const match of matches) {
+    if (hasExplicitDistrictContext(text, match) || hasExplicitAreaContext(text, match) || hasExplicitMahallaContext(text, match) || hasExplicitLandmarkContext(text, match)) continue;
+    return match.index ?? 0;
+  }
+  return -1;
+}
+
+function extraAliasMentionIndex(text, aliases) {
+  const match = text.match(aliasesToRegex(aliases));
+  if (!match) return -1;
+  if (hasExplicitDistrictContext(text, match) || hasExplicitAreaContext(text, match) || hasExplicitMahallaContext(text, match)) return -1;
+  return match.index ?? 0;
+}
+
 /** Resolve listing typos/transliterations while respecting explicit non-metro geography. */
 export function matchTashkentHousingMetro(value) {
   const text = String(value ?? '');
   if (!text) return null;
   for (const station of TASHKENT_METRO) {
-    const flags = [...new Set(`${station.re.flags.replace(/g/gu, '')}g`)].join('');
-    const matches = [...text.matchAll(new RegExp(station.re.source, flags))];
-    if (!matches.length) continue;
-    // An explicit marker must win even if an earlier bare occurrence shares a
-    // name with a district. For example, "Sergeli tumani, metro Sergeli"
-    // still refers to the station at the second occurrence.
-    if (matches.some((match) => hasExplicitMetroContext(text, match))) return station;
-    const sameNamedDistrict = hasExplicitTashkentDistrict(text, station.name);
-    for (const match of matches) {
-      if (sameNamedDistrict) continue;
-    // "Toshkent" is both a metro station and the city's own name, so a bare
-    // mention ("Toshkent shahri") is not evidence of the station the way a
-    // bare mention of any other station name would be. Require an explicit
-    // metro context for this one station specifically.
-      if (station.name === 'Toshkent') continue;
-      if (station.name === 'Qoyliq' && QOYLIQ_MASSIF_RE.test(text)) continue;
-      const areaCanonical = METRO_NUMBERED_AREA[station.name];
-      if (areaCanonical && matchTashkentNumberedArea(text, areaCanonical)) continue;
-      if (hasExplicitDistrictContext(text, match) || hasExplicitAreaContext(text, match) || hasExplicitMahallaContext(text, match) || hasExplicitLandmarkContext(text, match)) continue;
-      return station;
-    }
+    if (stationMentionIndex(text, station) !== -1) return station;
   }
   for (const [canonical, aliases] of Object.entries(EXTRA_METRO_ALIASES)) {
-    const match = text.match(aliasesToRegex(aliases));
-    if (!match) continue;
-    if (hasExplicitDistrictContext(text, match) || hasExplicitAreaContext(text, match) || hasExplicitMahallaContext(text, match)) continue;
+    if (extraAliasMentionIndex(text, aliases) === -1) continue;
     return TASHKENT_METRO.find((station) => station.name === canonical) || null;
   }
   return null;
+}
+
+/**
+ * Every Tashkent metro station a listing names, in text order. Listings often
+ * sit between stations ("Nizomiy & Chilonzor metrosiga yaqin"); the singular
+ * matcher above keeps its historical first-station contract.
+ */
+export function matchTashkentHousingMetros(value) {
+  const text = String(value ?? '');
+  if (!text) return Object.freeze([]);
+  const found = new Map();
+  for (const station of TASHKENT_METRO) {
+    const index = stationMentionIndex(text, station);
+    if (index !== -1) found.set(station.name, { station, index });
+  }
+  for (const [canonical, aliases] of Object.entries(EXTRA_METRO_ALIASES)) {
+    if (found.has(canonical)) continue;
+    const index = extraAliasMentionIndex(text, aliases);
+    const station = TASHKENT_METRO.find((entry) => entry.name === canonical);
+    if (index !== -1 && station) found.set(canonical, { station, index });
+  }
+  return Object.freeze([...found.values()].sort((a, b) => a.index - b.index).map((item) => item.station));
 }
 
 const TASHKENT_HOUSING_TRANSIT = Object.freeze([

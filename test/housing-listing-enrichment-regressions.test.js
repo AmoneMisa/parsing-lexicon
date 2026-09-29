@@ -465,3 +465,16 @@ test('an unlabelled amount too low for the local currency is USD', () => {
   assert.equal(parseHousingPrice('Цена 60000', { country: 'UA' }).currency, 'UAH');
   assert.equal(parseHousingPrice('Цена 25 000 000', { country: 'KZ', dealType: 'sale' }).currency, 'KZT');
 });
+
+test('every named Tashkent metro station is kept, primary first', () => {
+  const between = parseHousingListingEnrichment('Novza va Chilonzor metrolari orasida 2 xonali', { country: 'UZ', city: 'Tashkent' });
+  assert.deepEqual([...between.metros].sort(), ['Chilonzor', 'Novza']);
+  assert.equal(between.metros[0], between.metro);
+  assert.deepEqual([...parseHousingAddress('Рядом м. Чиланзар и м. Новза, 3 комн').metros].sort(), ['Chilonzor', 'Novza']);
+  // Context rules still apply per station: a same-named district is not a station...
+  assert.deepEqual(parseHousingListingEnrichment('Sergeli tumani, metro Sergeli', { country: 'UZ', city: 'Tashkent' }).metros, ['Sergeli']);
+  // ...and a numbered quarter is not a metro mention.
+  assert.deepEqual(parseHousingListingEnrichment(LISTING_9453542, { country: 'UZ', city: 'Tashkent' }).metros, []);
+  // "Nizomiy" is a street/university, not a station.
+  assert.deepEqual(parseHousingListingEnrichment(LISTING_9381797, { country: 'UZ', city: 'Tashkent' }).metros, ['Chilonzor']);
+});

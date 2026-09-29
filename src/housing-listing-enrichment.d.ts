@@ -58,6 +58,8 @@ export interface HousingListingEnrichment {
   district?: string | null;
   quarter?: { number: number; suffix: string } | null;
   metro?: string | null;
+  /** Every metro station named, primary (`metro`) first. */
+  metros?: readonly string[];
   developmentArea?: string | null;
   residenceComplex?: string | null;
   address?: string | null;

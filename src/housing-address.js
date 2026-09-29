@@ -2,6 +2,7 @@ import {
   TASHKENT_NUMBERED_AREA_ALIASES,
   matchTashkentHousingDistrict,
   matchTashkentHousingMetro,
+  matchTashkentHousingMetros,
   matchTashkentNumberedArea,
 } from './tashkent-housing-geography.js';
 import { detectNonAddressSpans } from './semantic-spans.js';
@@ -246,10 +247,14 @@ function tashkentGeoComponents(value) {
   const text = String(value ?? '');
   const district = matchTashkentHousingDistrict(text)?.name || null;
   const metro = matchTashkentHousingMetro(text)?.name || null;
+  const metros = metro
+    ? [...new Set([metro, ...matchTashkentHousingMetros(text).map((station) => station.name)])]
+    : [];
   const mahalla = text.match(/(?:^|[^\p{L}])(\p{L}[\p{L}'’ʼ-]{1,48})\s+(?:mahalla(?:si)?|маҳалла(?:си)?|махалл[ая]|mfy)(?=$|[^\p{L}])/iu)?.[1] || null;
   return Object.freeze({
     district,
     metro,
+    metros: metros.length ? Object.freeze(metros) : null,
     mahalla: DESCRIPTIVE_MAHALLA_WORD_RE.test(mahalla || '') ? null : compactStreet(mahalla),
   });
 }

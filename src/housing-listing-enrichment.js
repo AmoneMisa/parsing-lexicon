@@ -1,7 +1,7 @@
 import { deepFreeze } from './lexicon-core.js';
 import { findAllCanonical, normalizeUnicode } from './normalization.js';
 import { GENERIC_LANDMARK_TERMS } from './landmarks.js';
-import { matchTashkentHousingDistrict, matchTashkentHousingMetro, matchTashkentHousingQuarter } from './tashkent-housing-geography.js';
+import { matchTashkentHousingDistrict, matchTashkentHousingMetro, matchTashkentHousingMetros, matchTashkentHousingQuarter } from './tashkent-housing-geography.js';
 import { TASHKENT_LANDMARKS } from './tashkent-pois.js';
 import { TASHKENT_RESIDENTIAL_COMPLEXES, matchTashkentResidentialComplex } from './tashkent-residential-complexes.js';
 import { parseHousingRoomCount, parseHousingFloor, parseHousingAreas } from './housing-structured.js';
@@ -161,6 +161,16 @@ function cityMetro(text, country, city) {
   return contextualCityMatches(text, country, city, 'metro', METRO_PREFIX_RE)[0]?.canonical || null;
 }
 
+// Every station the listing names, primary first. A flat "between Nizomiy and
+// Chilonzor" must keep both rather than silently dropping the second.
+function listingMetros(text, country, city, primary) {
+  const names = [
+    ...matchTashkentHousingMetros(text).map((station) => station.name),
+    ...contextualCityMatches(text, country, city, 'metro', METRO_PREFIX_RE).map((match) => match.canonical),
+  ];
+  return Object.freeze(unique(primary ? [primary, ...names] : names));
+}
+
 function cityDevelopmentArea(text, country, city) {
   const normalizedCountry = String(country || '').toUpperCase();
   if (!['KZ', 'UZ'].includes(normalizedCountry) || !city) return null;
@@ -310,6 +320,7 @@ export function parseHousingListingEnrichment(value, { country = '', city = '', 
   const quarter = matchTashkentHousingQuarter(text);
   const district = matchTashkentHousingDistrict(text)?.name || quarter?.district || null;
   const metro = matchTashkentHousingMetro(text)?.name || cityMetro(text, country, city) || null;
+  const metros = listingMetros(text, country, city, metro);
   const developmentArea = cityDevelopmentArea(text, country, city);
   const primaryResidentialText = withoutNearbyLocationReferences(text);
   const parsedRc = specificResidentialComplex(primaryResidentialText)
@@ -386,6 +397,7 @@ export function parseHousingListingEnrichment(value, { country = '', city = '', 
     district: district || null,
     quarter: quarter ? { number: quarter.number, suffix: quarter.suffix } : null,
     metro: metro || null,
+    metros,
     developmentArea,
     residenceComplex: parsedRc || null,
     address: address.address,

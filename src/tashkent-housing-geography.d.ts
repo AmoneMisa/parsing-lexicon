@@ -46,4 +46,5 @@ export function hasExplicitTashkentDistrict(value: unknown, canonical: string): 
 export function matchTashkentHousingDistrict(value: unknown): TashkentDistrictEntry | null;
 export function matchTashkentHousingQuarter(value: unknown): Readonly<{ district: string; number: number; suffix: string }> | null;
 export function matchTashkentHousingMetro(value: unknown): TashkentMetroEntry | null;
+export function matchTashkentHousingMetros(value: unknown): ReadonlyArray<TashkentMetroEntry>;
 export function matchTashkentHousingTransit(value: unknown): TashkentHousingLocationEntry | null;

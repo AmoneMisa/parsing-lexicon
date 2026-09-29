@@ -10,6 +10,8 @@ export type HousingAddressParts = Readonly<{
   staircase?: string;
   district?: string;
   metro?: string;
+  /** Every metro station named, primary (`metro`) first. */
+  metros?: readonly string[];
   mahalla?: string;
   geoEntities?: Readonly<Partial<Record<'street' | 'district' | 'metro' | 'mahalla' | 'residentialComplex', Readonly<{
     id: string;
