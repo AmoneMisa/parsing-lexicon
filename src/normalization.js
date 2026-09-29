@@ -310,6 +310,8 @@ function matcherFor(entries, { transliteration = true } = {}) {
  * Return every canonical match with original-text offsets. Colliding aliases are
  * deliberately returned as multiple matches instead of silently choosing one.
  */
+const UZBEK_APOSTROPHE_CONTINUATION_RE = /^[og]['’ʻʼ‘`]\p{L}/iu;
+
 export function findAllCanonical(value, entries, { transliteration = true } = {}) {
   const text = normalizeUnicode(value ?? '');
   if (!text || !entries?.length) return [];
@@ -323,6 +325,10 @@ export function findAllCanonical(value, entries, { transliteration = true } = {}
     const alias = match[0];
     const start = match.index ?? 0;
     const end = start + alias.length;
+    // Uzbek Latin writes oʻ/gʻ with an apostrophe inside the word, so an alias
+    // that stops on o/g right before one ("bog" in "bog'laning", "contact us")
+    // has matched only the front of a longer word.
+    if (UZBEK_APOSTROPHE_CONTINUATION_RE.test(text.slice(end - 1, end + 2))) continue;
     const keys = normalizedAliasKeys(alias, { transliteration });
     const candidates = [];
     for (const key of keys) {

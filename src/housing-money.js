@@ -10,6 +10,7 @@ import {
 import { maskPhoneLikeSpans } from './contact.js';
 import { DEPOSIT_TERMS, SELLER_TERMS } from './housing.js';
 import { COUNTRIES, canonicalCountryCode, countryByCode } from './countries.js';
+import { countryCodeForCity } from './country-context.js';
 import { extractTemporalCandidates } from './temporal.js';
 import {
   classifyHousingSingleMSpans,
@@ -92,7 +93,7 @@ const PRICE_AMOUNT_BEFORE_CURRENCY_RE = new RegExp(`${PRICE_CURRENCY_BEFORE_NUMB
 
 function moneyParsingContext(value = '') {
   if (value && typeof value === 'object' && !Array.isArray(value)) {
-    const country = canonicalCountryCode(value.country) || '';
+    const country = canonicalCountryCode(value.country) || countryCodeForCity(value.city);
     const currency = String(value.currency || value.fallbackCurrency || countryByCode(country)?.currency || '')
       .trim()
       .toUpperCase();
@@ -102,6 +103,14 @@ function moneyParsingContext(value = '') {
   }
 
   const currency = String(value || '').trim().toUpperCase();
+  // A bare country code ("UZ") is not a currency. Treat it as the country so
+  // the fallback becomes its currency rather than the literal string "UZ".
+  const namedCountry = currency && !COUNTRIES.some((item) => item.currency === currency)
+    ? canonicalCountryCode(value)
+    : null;
+  if (namedCountry) {
+    return { country: namedCountry, currency: countryByCode(namedCountry)?.currency || '', dealType: null };
+  }
   const countryMatches = currency
     ? COUNTRIES.filter((item) => item.currency === currency)
     : [];

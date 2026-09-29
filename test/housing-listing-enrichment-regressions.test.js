@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import { parseHousingListingEnrichment, parseHousingCommissionAmount } from '../src/housing-listing-enrichment.js';
 import { parseHousingAddress } from '../src/housing-address.js';
 import { parseHousingPrice } from '../src/housing-money.js';
+import { parseHousingSeller, parseHousingStructured } from '../src/housing-structured.js';
+import { isDirectOwner } from '../src/housing-commercial.js';
 
 // #3419 — real Telegram-repost of an OLX ad, using the channel's structured
 // "Label - Value" bullet format (label before number) rather than natural
@@ -389,4 +391,63 @@ test('#9436102: "so‘mdan" is UZS per person, and student girls stay a women-on
 test('an unlabelled six-figure UZ long-term rent is so‘m, not USD', () => {
   assert.equal(parseHousingPrice('Ijaraga 3 xonali kvartira 800 000', { country: 'UZ', dealType: 'longRent' }).currency, 'UZS');
   assert.equal(parseHousingPrice('Sotiladi 3 xonali kvartira 80 000', { country: 'UZ', dealType: 'sale' }).currency, 'USD');
+});
+
+// #9381797 — Telegram shared flat priced in so'm with the modifier-letter
+// apostrophe (U+02BB), and a "Kir mashinasi" appliance list.
+const LISTING_9381797 = '🌸 FARHOD BOZORI YONIDA QIZLARGA IJARA 🌸\n#QIZLARGA #CHILONZOR #BEZMAKLER #LUX\n\n📍 Farhod bozori yonida\n🚇 Nizomiy & Chilonzor metrosiga yaqin\n\n🏠 5 xonali LUX kvartira\n👭 2 ta qiz kerak‼️\n\n✨ Konditsioner | 📶 Wi-Fi | 🧺 Kir mashinasi | 🧊 Muzlatgich\n\n💰 1 100 000 soʻmdan\n💡 Kommunal ichida!\n\nBezMakler Kvartiralar 👇👇';
+
+test('#9381797: soʻmdan is UZS, "Kir mashinasi" is a washing machine and BezMakler is an owner', () => {
+  const enrichment = parseHousingListingEnrichment(LISTING_9381797, { country: 'UZ', city: 'Tashkent' });
+  assert.equal(parseHousingPrice(LISTING_9381797, { city: 'Tashkent' }).currency, 'UZS');
+  assert.equal(enrichment.washingMachine, true);
+  assert.equal(enrichment.commission, false);
+  assert.equal(parseHousingSeller(LISTING_9381797).type, 'owner');
+});
+
+test('a Tashkent listing never falls back to another country currency', () => {
+  // A bare country code is a country, not a currency called "UZ".
+  assert.equal(parseHousingPrice('narxi 4 000 000', 'UZ').currency, 'UZS');
+  // A city-only context still fixes the country and its currency.
+  assert.equal(parseHousingPrice('narxi 4 000 000', { city: 'Tashkent' }).currency, 'UZS');
+  assert.equal(parseHousingPrice('narxi 4 000 000', { city: 'Ташкент' }).currency, 'UZS');
+  assert.equal(parseHousingStructured('narxi 4 000 000', { city: 'Tashkent' }).price.currency, 'UZS');
+  // Currency codes keep working as before.
+  assert.equal(parseHousingPrice('narxi 4 000 000', 'KZT').currency, 'KZT');
+  assert.equal(parseHousingPrice('narxi 4 000 000', 'USD').currency, 'USD');
+});
+
+// #9453542 — OLX: a glued quarter number and a replanned room count.
+const LISTING_9453542 = 'Аренда Чиланзар 8кв Ориентир РУВД\n\n1в2 комнатная 2этаж 4 дома Балкон 1,5 *3 мебель техника\n\nЦена 500.';
+
+test('#9453542: "Чиланзар 8кв" is quarter 8 (not metro Chilonzor) and "1в2 комнатная" is two rooms', () => {
+  const enrichment = parseHousingListingEnrichment(LISTING_9453542, { country: 'UZ', city: 'Tashkent' });
+  assert.equal(enrichment.district, 'Chilanzar');
+  assert.deepEqual(enrichment.quarter, { number: 8, suffix: '' });
+  assert.equal(enrichment.metro, null);
+  assert.equal(enrichment.rooms, 2);
+  assert.equal(enrichment.floor, 2);
+});
+
+// #9366249 — "we do not work with brokers" is an owner, not a commission.
+const LISTING_9366249 = "Oqtepa krugi yaqinidan yangi tamirdan chiqgan kvartira ijaraga beriladi. Faqat oilaga va qizlarga yoki yakka turadiganlarga! Barcha qulayliklar mavjud.\n\nMaklerlar bilan ishlanmaydi bezota qilmang!\n\nBatafsil bilish uchun qo'ng'iroq qilib bog'laning yoki telgram orqali yuzing!";
+
+test('#9366249: a broker refusal means owner and no commission, and "bog\'laning" is not a park', () => {
+  const enrichment = parseHousingListingEnrichment(LISTING_9366249, { country: 'UZ', city: 'Tashkent' });
+  assert.equal(enrichment.commission, false);
+  assert.equal(parseHousingSeller(LISTING_9366249).type, 'owner');
+  assert.equal(isDirectOwner(LISTING_9366249), true);
+  assert.equal(isDirectOwner('С риелторами не работаю'), true);
+  assert.equal(parseHousingSeller('Риелторам не беспокоить').type, 'owner');
+  assert.equal((enrichment.nearby || []).includes('Park'), false);
+  assert.equal(parseHousingStructured(LISTING_9366249).infrastructure.some((item) => item.poi === 'Park'), false);
+  // A real garden mention still matches.
+  assert.equal(parseHousingStructured("Bog' yonida kvartira").infrastructure.some((item) => item.poi === 'Park'), true);
+});
+
+// OLX Chilonzor — "bezmakler" in running text is an owner.
+test('OLX Chilonzor: "bezmakler" marks the seller as owner', () => {
+  const text = 'Chilonzor metro oldida 2 xonali uy ijaraga beriladi bezmakler. Bollarga narx uzgarad 93_968_13_98 tel qiling';
+  assert.equal(parseHousingSeller(text).type, 'owner');
+  assert.equal(parseHousingListingEnrichment(text, { country: 'UZ', city: 'Tashkent' }).metro, 'Chilonzor');
 });

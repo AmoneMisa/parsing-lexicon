@@ -120,8 +120,8 @@ export const CURRENCIES = Object.freeze([
 
 export const SELLER_TERMS = Object.freeze({
   owner: group('owner', {
-    ru: ['собственник', 'хозяин', 'от хозяина', 'без посредников', 'без посредника', 'без риелтора', 'без риэлтора', 'без маклера', 'без маклер', 'без агента'], en: ['owner', 'direct owner', 'no agent', 'no broker', 'no realtor'], uk: ['власник', 'власниця', 'від власника', 'без посередників'], ro: ['proprietar', 'direct proprietar', 'fără agenție', 'fara agentie', 'fără intermediari'],
-    uzLatn: ['egasi', 'uy egasi', 'mulkdor', 'maklersiz', 'vositachisiz'], uzCyrl: ['эгаси', 'уй эгаси', 'мулкдор', 'маклерсиз', 'воситачисиз', 'без маклер'], kk: ['иесі', 'үй иесі', 'меншік иесі', 'делдалсыз'],
+    ru: ['собственник', 'хозяин', 'от хозяина', 'без посредников', 'без посредника', 'без риелтора', 'без риэлтора', 'без маклера', 'без маклер', 'без агента', 'с риелторами не работаю', 'с риэлторами не работаю', 'с маклерами не работаю', 'с агентствами не работаю', 'риелторам не беспокоить', 'риэлторам не беспокоить', 'агентствам не беспокоить'], en: ['owner', 'direct owner', 'no agent', 'no broker', 'no realtor'], uk: ['власник', 'власниця', 'від власника', 'без посередників'], ro: ['proprietar', 'direct proprietar', 'fără agenție', 'fara agentie', 'fără intermediari'],
+    uzLatn: ['egasi', 'uy egasi', 'mulkdor', 'maklersiz', 'vositachisiz', 'bezmakler', 'bez makler', 'maklerlar bilan ishlanmaydi', 'maklerlar bilan ishlamaymiz', 'makler bilan ishlanmaydi', 'maklerlar bezovta qilmasin'], uzCyrl: ['эгаси', 'уй эгаси', 'мулкдор', 'маклерсиз', 'воситачисиз', 'без маклер', 'маклерлар билан ишланмайди', 'маклерлар безовта қилмасин'], kk: ['иесі', 'үй иесі', 'меншік иесі', 'делдалсыз'],
   }),
   agency: group('agency', {
     ru: ['агентство', 'агент', 'риелтор', 'риэлтор', 'маклер', 'посредник'], en: ['agency', 'agent', 'realtor', 'broker'], uk: ['агентство', 'агент', 'рієлтор', 'риелтор', 'посередник'], ro: ['agenție', 'agentie', 'agent imobiliar', 'agenție imobiliară', 'agentie imobiliara', 'broker'],
