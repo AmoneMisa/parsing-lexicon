@@ -415,6 +415,25 @@ export function parseHousingPricePerSqm(value, context = '') {
   });
 }
 
+// An unlabelled amount far below any real local price is a USD price written
+// without its sign: "Цена 500" is 500 USD, never 500 KZT or 500 UAH. The floors
+// sit well under the cheapest genuine local rent/sale so a real tenge or
+// hryvnia price is never reclassified. UZS has its own rule below.
+const LOCAL_PRICE_FLOORS = Object.freeze({
+  KZT: Object.freeze({ sale: 1_000_000, daily: 1_000, rent: 10_000 }),
+  UAH: Object.freeze({ sale: 100_000, daily: null, rent: 1_000 }),
+});
+const DAILY_RENT_RE = /(?:посуточн|суточн|сутк|за\s+ночь|подобов|доба|tunlik|kunlik|sutkaga|тәулік|per\s+night|daily)/iu;
+
+function lowLocalAmountCurrency(amount, currency, dealType, text) {
+  const floors = LOCAL_PRICE_FLOORS[currency];
+  if (!floors || amount == null) return currency;
+  const floor = dealType === 'sale' ? floors.sale
+    : dealType === 'shortRent' || DAILY_RENT_RE.test(text) ? floors.daily
+      : floors.rent;
+  return floor != null && amount > 0 && amount < floor ? 'USD' : currency;
+}
+
 export function parseHousingPrice(value, context = '') {
   const { country, currency: fallbackCurrency, dealType } = moneyParsingContext(context);
   const original = String(value || '');
@@ -436,9 +455,12 @@ export function parseHousingPrice(value, context = '') {
   // regional formats below remain as deterministic fallbacks until each is
   // represented by a richer candidate extractor.
   if (preferredCandidate && preferredCandidate.confidence >= 0.65) {
+    const candidateCurrency = preferredCandidate.currency || fallbackCurrency || '';
     const result = {
       amount: preferredCandidate.amount,
-      currency: preferredCandidate.currency || fallbackCurrency || '',
+      currency: preferredCandidate.explicitCurrency
+        ? candidateCurrency
+        : lowLocalAmountCurrency(preferredCandidate.amount, candidateCurrency, dealType, priceText),
       approximate: preferredCandidate.approximate,
     };
     if (preferredCandidate.range) result.range = preferredCandidate.range;
@@ -615,6 +637,8 @@ export function parseHousingPrice(value, context = '') {
     // turned "800 000" per person into an 800,000 USD rent.
     const monthlyRent = dealType === 'longRent' && price >= 100_000;
     currency = price >= 1_000_000 || monthlyRent || (dailyUzbek && price >= 10_000) ? 'UZS' : 'USD';
+  } else if (!explicit && currency === fallbackCurrency) {
+    currency = lowLocalAmountCurrency(price, currency, dealType, priceText);
   }
 
   return Object.freeze({ amount: price, currency, approximate: price != null && APPROXIMATE_RE.test(priceText) });

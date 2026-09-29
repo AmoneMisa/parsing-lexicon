@@ -451,3 +451,17 @@ test('OLX Chilonzor: "bezmakler" marks the seller as owner', () => {
   assert.equal(parseHousingSeller(text).type, 'owner');
   assert.equal(parseHousingListingEnrichment(text, { country: 'UZ', city: 'Tashkent' }).metro, 'Chilonzor');
 });
+
+test('an unlabelled amount too low for the local currency is USD', () => {
+  assert.equal(parseHousingPrice('Цена 500.', { country: 'UZ' }).currency, 'USD');
+  assert.equal(parseHousingPrice('Цена 500.', { city: 'Tashkent' }).currency, 'USD');
+  assert.equal(parseHousingPrice('Цена 500.', { country: 'KZ' }).currency, 'USD');
+  assert.equal(parseHousingPrice('Цена 500.', { country: 'UA' }).currency, 'USD');
+  assert.equal(parseHousingPrice('Цена 60000', { country: 'KZ', dealType: 'sale' }).currency, 'USD');
+  // Plausible local amounts and explicit currencies are left alone.
+  assert.equal(parseHousingPrice('Цена 500 тг', { country: 'KZ' }).currency, 'KZT');
+  assert.equal(parseHousingPrice('180 000', { country: 'KZ' }).currency, 'KZT');
+  assert.equal(parseHousingPrice('посуточно 8000', { country: 'KZ' }).currency, 'KZT');
+  assert.equal(parseHousingPrice('Цена 60000', { country: 'UA' }).currency, 'UAH');
+  assert.equal(parseHousingPrice('Цена 25 000 000', { country: 'KZ', dealType: 'sale' }).currency, 'KZT');
+});
