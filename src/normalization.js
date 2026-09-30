@@ -10,8 +10,8 @@ const DASHES_RE = /[‐‑‒–—―]/g;
 // recent long inputs. Short strings (dictionary aliases, single words) are
 // cheaper to normalize than to cache and are left alone; the cap bounds
 // memory to a few recent texts per function.
-const MEMO_MIN_LENGTH = 200;
-const MEMO_MAX_ENTRIES = 32;
+const MEMO_MIN_LENGTH = 24;
+const MEMO_MAX_ENTRIES = 512;
 
 function memoizeLongText(fn) {
   const cache = new Map();
@@ -34,8 +34,15 @@ export const normalizeUnicode = memoizeLongText(function normalizeUnicode(value)
     .replace(DASHES_RE, '-');
 });
 
-/** Stable comparison form for parser dictionaries. */
-export const normalizeForMatch = memoizeLongText(function normalizeForMatch(value) {
+// Dictionary construction normalizes the same names and aliases hundreds of
+// thousands of times (about 5x more calls than distinct strings at import), so
+// short strings get a bounded cache of their own. Once it is full new strings
+// are simply computed, never evicted: the entries that fill it first are the
+// dictionary strings that every later match compares against.
+const SHORT_CACHE_MAX_ENTRIES = 131072;
+const shortMatchCache = new Map();
+
+function normalizeForMatchUncached(value) {
   return normalizeUnicode(value)
     .toLocaleLowerCase()
     .replace(/ё/g, 'е')
@@ -43,7 +50,19 @@ export const normalizeForMatch = memoizeLongText(function normalizeForMatch(valu
     .replace(/[^\p{L}\p{N}]+/gu, ' ')
     .replace(/\s+/g, ' ')
     .trim();
-});
+}
+
+const normalizeForMatchLong = memoizeLongText(normalizeForMatchUncached);
+
+/** Stable comparison form for parser dictionaries. */
+export function normalizeForMatch(value) {
+  if (typeof value !== 'string' || value.length >= MEMO_MIN_LENGTH) return normalizeForMatchLong(value);
+  const hit = shortMatchCache.get(value);
+  if (hit !== undefined) return hit;
+  const result = normalizeForMatchUncached(value);
+  if (shortMatchCache.size < SHORT_CACHE_MAX_ENTRIES) shortMatchCache.set(value, result);
+  return result;
+}
 
 /** Search-only apostrophe compaction for Uzbek/Karakalpak variants. */
 const normalizeCompactApostropheForMatch = memoizeLongText(function normalizeCompactApostropheForMatch(value) {
@@ -87,39 +106,50 @@ const KARAKALPAK_LATIN_PATTERN_EQUIVALENCE = Object.freeze({
   u: '[uú]', ú: '[uú]',
 });
 
+// Every map below is keyed by single BMP characters, so one regex replace is
+// identical to mapping the string character by character.
+function foldByMap(map) {
+  const re = new RegExp(`[${Object.keys(map).join('')}]`, 'g');
+  return (text) => text.replace(re, (char) => map[char]);
+}
+const foldCyrillicChars = foldByMap(CYRILLIC_SEARCH_MAP);
+const foldKazakhChars = foldByMap(KAZAKH_SEARCH_EQUIVALENCE);
+const foldKarakalpakChars = foldByMap(KARAKALPAK_LATIN_SEARCH_EQUIVALENCE);
+
 /** Search-oriented Cyrillic folding; canonical identity still comes from explicit aliases. */
 export const foldCyrillicForSearch = memoizeLongText(function foldCyrillicForSearch(value) {
-  return normalizeUnicode(value)
-    .toLocaleLowerCase()
-    .split('')
-    .map((char) => CYRILLIC_SEARCH_MAP[char] ?? char)
-    .join('');
+  return foldCyrillicChars(normalizeUnicode(value).toLocaleLowerCase());
 });
 
 const foldKazakhForSearch = memoizeLongText(function foldKazakhForSearch(value) {
-  return normalizeUnicode(value)
-    .toLocaleLowerCase()
-    .split('')
-    .map((char) => KAZAKH_SEARCH_EQUIVALENCE[char] ?? char)
-    .join('');
+  return foldKazakhChars(normalizeUnicode(value).toLocaleLowerCase());
 });
 
-function foldKarakalpakLatinForSearch(value) {
-  return normalizeUnicode(value)
-    .toLocaleLowerCase()
-    .split('')
-    .map((char) => KARAKALPAK_LATIN_SEARCH_EQUIVALENCE[char] ?? char)
-    .join('');
-}
+const foldKarakalpakLatinForSearch = memoizeLongText(function foldKarakalpakLatinForSearch(value) {
+  return foldKarakalpakChars(normalizeUnicode(value).toLocaleLowerCase());
+});
 
-export function normalizedAliasKeys(value, { transliteration = true } = {}) {
+function computeAliasKeys(value, transliteration) {
   const forms = transliteration
     ? [value, foldCyrillicForSearch(value), foldKazakhForSearch(value), foldKarakalpakLatinForSearch(value)]
     : [value];
-  return [...new Set(forms.flatMap((form) => [
+  return Object.freeze([...new Set(forms.flatMap((form) => [
     normalizeForMatch(form),
     normalizeCompactApostropheForMatch(form),
-  ]).filter(Boolean))];
+  ]).filter(Boolean))]);
+}
+
+// One parse asks every matcher for the keys of the same text, and each
+// derivation folds the text through four scripts. Keyed by text, per mode.
+const aliasKeysWithTransliteration = memoizeLongText((value) => computeAliasKeys(value, true));
+const aliasKeysDirect = memoizeLongText((value) => computeAliasKeys(value, false));
+
+function aliasKeys(value, transliteration) {
+  return (transliteration ? aliasKeysWithTransliteration : aliasKeysDirect)(value);
+}
+
+export function normalizedAliasKeys(value, { transliteration = true } = {}) {
+  return [...aliasKeys(value, transliteration)];
 }
 
 export function aliasesOf(entry) {
@@ -137,7 +167,7 @@ function createAliasIndex(entries, { transliteration = true } = {}) {
   const index = new Map();
   for (const entry of entries || []) {
     for (const value of valuesOf(entry)) {
-      for (const key of normalizedAliasKeys(value, { transliteration })) {
+      for (const key of aliasKeys(value, transliteration)) {
         if (!index.has(key)) index.set(key, entry);
       }
     }
@@ -206,6 +236,32 @@ export function getAliasOwnersIndex(entries, { transliteration = true } = {}) {
   return index;
 }
 
+const PARTIAL_INFO = new WeakMap();
+
+// An alias key is letters and digits joined by single spaces, and so is a text
+// key, so `${alias}` is contained in the padded text exactly when the alias
+// equals a run of whole words of the text. That lets a partial lookup probe the
+// text's word n-grams instead of scanning every alias in the index. `ordinal`
+// keeps each alias's position in the index, which is what orders a tie.
+function partialInfo(index) {
+  let info = PARTIAL_INFO.get(index);
+  if (!info) {
+    const ordinal = new Map();
+    let maxWords = 1;
+    let position = 0;
+    for (const alias of index.keys()) {
+      ordinal.set(alias, position);
+      position += 1;
+      let words = 1;
+      for (let i = alias.indexOf(' '); i !== -1; i = alias.indexOf(' ', i + 1)) words += 1;
+      if (words > maxWords) maxWords = words;
+    }
+    info = { ordinal, maxWords };
+    PARTIAL_INFO.set(index, info);
+  }
+  return info;
+}
+
 /**
  * Every entry tied for the longest partial alias match, in the order they
  * first reach that length. Exact matches always resolve unambiguously to a
@@ -216,24 +272,35 @@ export function getAliasOwnersIndex(entries, { transliteration = true } = {}) {
 export function findCanonicalCandidates(value, entries, { partial = false, transliteration = true } = {}) {
   if (!value) return [];
   const index = getAliasIndex(entries, { transliteration });
-  for (const key of normalizedAliasKeys(value, { transliteration })) {
+  const textKeys = aliasKeys(value, transliteration);
+  for (const key of textKeys) {
     const exact = index.get(key);
     if (exact) return [exact];
   }
   if (!partial) return [];
 
-  const textKeys = normalizedAliasKeys(value, { transliteration });
-  let tied = [];
-  let bestLength = 0;
-  for (const [alias, entry] of index) {
-    if (alias.length < bestLength) continue;
-    if (!textKeys.some((text) => ` ${text} `.includes(` ${alias} `))) continue;
-    if (alias.length > bestLength) {
-      bestLength = alias.length;
-      tied = [entry];
-    } else if (!tied.includes(entry)) {
-      tied.push(entry);
+  const { ordinal, maxWords } = partialInfo(index);
+  const matched = new Map();
+  for (const key of textKeys) {
+    const words = key.split(' ');
+    for (let start = 0; start < words.length; start += 1) {
+      let phrase = '';
+      const stop = Math.min(words.length, start + maxWords);
+      for (let end = start; end < stop; end += 1) {
+        phrase = end === start ? words[end] : `${phrase} ${words[end]}`;
+        const position = ordinal.get(phrase);
+        if (position !== undefined) matched.set(phrase, position);
+      }
     }
+  }
+
+  let bestLength = 0;
+  for (const alias of matched.keys()) if (alias.length > bestLength) bestLength = alias.length;
+  const longest = [...matched].filter(([alias]) => alias.length === bestLength).sort((a, b) => a[1] - b[1]);
+  const tied = [];
+  for (const [alias] of longest) {
+    const entry = index.get(alias);
+    if (!tied.includes(entry)) tied.push(entry);
   }
   return tied;
 }

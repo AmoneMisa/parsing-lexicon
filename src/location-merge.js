@@ -31,18 +31,29 @@ export const LOCATION_LIST_KEYS = Object.freeze([
   'searchClusters',
 ]);
 
+// One shared accessor compiles an entry's alias regex on first use. Giving
+// every entry its own getter closure cost ~100 bytes per entry, and the full
+// dictionary set holds over 130,000 entries. The compiled regex lives in a
+// WeakMap because entries are frozen.
+const COMPILED_RE = new WeakMap();
+const ENTRY_PROTOTYPE = Object.freeze({
+  get re() {
+    let re = COMPILED_RE.get(this);
+    if (!re) {
+      re = aliasesToRegex(this.aliases);
+      COMPILED_RE.set(this, re);
+    }
+    return re;
+  },
+});
+
+function frozenEntry(fields) {
+  return Object.freeze(Object.assign(Object.create(ENTRY_PROTOTYPE), fields));
+}
+
 export function locationEntry(name, ...aliases) {
   const all = [...new Set([name, ...aliases].flat().filter(Boolean))];
-  let re = null;
-  return Object.freeze({
-    canonical: name,
-    name,
-    aliases: Object.freeze(all),
-    get re() {
-      re ||= aliasesToRegex(all);
-      return re;
-    },
-  });
+  return frozenEntry({ canonical: name, name, aliases: Object.freeze(all) });
 }
 
 export function locationEntries(rows = []) {
@@ -61,6 +72,26 @@ function entryData(entry) {
   return data;
 }
 
+function uniqueTruthy(values) {
+  if (values.length > 32) return new Set(values).size === values.length && values.every(Boolean);
+  for (let i = 0; i < values.length; i += 1) {
+    if (!values[i]) return false;
+    for (let j = 0; j < i; j += 1) if (values[j] === values[i]) return false;
+  }
+  return true;
+}
+
+// Merging one entry with nothing returns an entry equal to itself when it is
+// already frozen, canonical, untyped and carries a unique alias list that
+// names it (every locationEntry()/mergeEntry() result does). Nearly every
+// group at import time is a single such entry, so reuse it instead of
+// rebuilding it. Map-data marking is by identity, so it is preserved as is.
+function isFinishedEntry(entry) {
+  if (!Object.isFrozen(entry) || !entry.canonical || entry.type !== undefined || entry.entityType !== undefined) return false;
+  const aliases = entry.aliases;
+  return Array.isArray(aliases) && Object.isFrozen(aliases) && aliases.includes(entry.name) && uniqueTruthy(aliases);
+}
+
 function mergeEntry(existing, incoming) {
   const aliases = [...new Set([
     ...(existing?.aliases || []),
@@ -73,19 +104,14 @@ function mergeEntry(existing, incoming) {
   // aliases. It remains fallback-only only when every merged source is map
   // data; otherwise the reviewed owner must retain its matching precedence.
   const mapData = existing ? isMapDataEntry(existing) && isMapDataEntry(incoming) : isMapDataEntry(incoming);
-  let re = null;
-  const result = {
+  const result = frozenEntry({
     ...base,
     canonical: base.canonical || base.name,
     type: base.type || base.entityType,
     aliases: Object.freeze(aliases),
-    get re() {
-      re ||= aliasesToRegex(aliases);
-      return re;
-    },
-  };
+  });
   if (mapData) MAP_DATA_ENTRIES.add(result);
-  return Object.freeze(result);
+  return result;
 }
 
 function parentKey(entry) {
@@ -111,6 +137,10 @@ export function mergeLocationEntries(...lists) {
   const result = [];
   for (const canonical of order) {
     const group = groups.get(canonical) || [];
+    if (group.length === 1) {
+      result.push(isFinishedEntry(group[0]) ? group[0] : mergeEntry(null, group[0]));
+      continue;
+    }
     const scopedParents = [...new Set(group.map(parentKey).filter(Boolean))];
 
     if (scopedParents.length <= 1) {
