@@ -342,7 +342,8 @@ function landmarkIdentity(text, match) {
   if (numbered) {
     const localStart = before.length - numbered[0].length;
     const previous = localStart > 0 ? before[localStart - 1] : '';
-    if (!previous || !/[\p{L}\p{N}_]/u.test(previous)) {
+    // "24/7 korzinka" is an opening-hours phrase, not branch number 7.
+    if (!previous || !/[\p{L}\p{N}_/]/u.test(previous)) {
       number = Number(numbered[1]);
       rawStart = match.start - numbered[0].length;
     }
