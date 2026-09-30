@@ -110,3 +110,18 @@ test('mergeLocationCountries merges same-named cities across country sources wit
   assert.equal(merged.Tashkent.streets.length, 2);
   assert.equal(merged.Samarkand.streets.length, 1);
 });
+
+test('merging a single finished entry reuses it, and unfinished entries are still rebuilt', async () => {
+  const { locationEntry, mergeLocationEntries } = await import('../src/location-merge.js');
+  const finished = locationEntry('Sergeli', 'Сергели');
+  const [same] = mergeLocationEntries([finished]);
+  assert.equal(same, finished);
+
+  const typed = Object.freeze({ ...locationEntry('Yunusobod'), entityType: 'district' });
+  const [rebuilt] = mergeLocationEntries([typed]);
+  assert.notEqual(rebuilt, typed);
+  assert.equal(rebuilt.type, 'district');
+
+  const duplicateAliases = Object.freeze({ name: 'Chilonzor', canonical: 'Chilonzor', aliases: Object.freeze(['Chilonzor', 'Chilonzor']) });
+  assert.deepEqual([...mergeLocationEntries([duplicateAliases])[0].aliases], ['Chilonzor']);
+});

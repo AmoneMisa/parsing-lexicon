@@ -61,6 +61,26 @@ function entryData(entry) {
   return data;
 }
 
+function uniqueTruthy(values) {
+  if (values.length > 32) return new Set(values).size === values.length && values.every(Boolean);
+  for (let i = 0; i < values.length; i += 1) {
+    if (!values[i]) return false;
+    for (let j = 0; j < i; j += 1) if (values[j] === values[i]) return false;
+  }
+  return true;
+}
+
+// Merging one entry with nothing returns an entry equal to itself when it is
+// already frozen, canonical, untyped and carries a unique alias list that
+// names it (every locationEntry()/mergeEntry() result does). Nearly every
+// group at import time is a single such entry, so reuse it instead of
+// rebuilding it. Map-data marking is by identity, so it is preserved as is.
+function isFinishedEntry(entry) {
+  if (!Object.isFrozen(entry) || !entry.canonical || entry.type !== undefined || entry.entityType !== undefined) return false;
+  const aliases = entry.aliases;
+  return Array.isArray(aliases) && Object.isFrozen(aliases) && aliases.includes(entry.name) && uniqueTruthy(aliases);
+}
+
 function mergeEntry(existing, incoming) {
   const aliases = [...new Set([
     ...(existing?.aliases || []),
@@ -111,6 +131,10 @@ export function mergeLocationEntries(...lists) {
   const result = [];
   for (const canonical of order) {
     const group = groups.get(canonical) || [];
+    if (group.length === 1) {
+      result.push(isFinishedEntry(group[0]) ? group[0] : mergeEntry(null, group[0]));
+      continue;
+    }
     const scopedParents = [...new Set(group.map(parentKey).filter(Boolean))];
 
     if (scopedParents.length <= 1) {

@@ -130,3 +130,11 @@ test('candidateEntries handles empty and missing inputs', () => {
   assert.deepEqual(candidateEntries(null, 'text'), []);
   assert.deepEqual(candidateEntries([{ name: 'x', aliases: ['xxxx'], re: /xxxx/iu }], ''), []);
 });
+
+test('alias keys are cached without sharing mutable state, and folds map every character', async () => {
+  const { normalizedAliasKeys, foldCyrillicForSearch } = await import('../src/normalization.js');
+  const first = normalizedAliasKeys("Ўзбекистон o'zgarish");
+  first.push('mutated');
+  assert.ok(!normalizedAliasKeys("Ўзбекистон o'zgarish").includes('mutated'));
+  assert.equal(foldCyrillicForSearch('Щука Ъ ёж'), 'shchuka  ezh');
+});
