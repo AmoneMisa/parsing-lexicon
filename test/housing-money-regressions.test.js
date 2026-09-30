@@ -322,3 +322,12 @@ test('Uzbek "ko\'chasi N-uy" and trailing district do not pollute the street', a
   }
   assert.equal(parseHousingAddress("Manzil: Sergeli 5 104").street, null);
 });
+
+test('a building after the house number survives trimming the trailing district', async () => {
+  const {parseHousingAddress} = await import('../src/housing-address.js');
+  const r = parseHousingAddress("Shota Rustaveli ko'chasi 58, korpus 2");
+  assert.equal(r.street, 'Shota Rustaveli');
+  assert.equal(r.houseNumber, '58');
+  assert.equal(r.building, '2');
+  assert.equal(parseHousingAddress("Qatortol ko'chasi 45, Sergeli").street, 'Qatortol');
+});
