@@ -28,6 +28,8 @@ const POSTFIX_STREET_MARKER = `(?:${combinedMarkerPattern(STREET_POSTFIX_MARKERS
 const POSTFIX_STREET_TYPE = `(?:${combinedMarkerPattern(STREET_TYPE_MARKERS)})`;
 const HOUSE_MARKER = `(?:${combinedMarkerPattern(HOUSE_MARKERS)})`;
 const BUILDING_MARKER = `(?:${combinedMarkerPattern(BUILDING_MARKERS)})`;
+// Uzbek/Kazakh put the house word after the number: "12-uy", "45 uy".
+const HOUSE_NUMBER_SUFFIX = String.raw`(?:\s*-?\s*(?:uy|уй|үй)(?![\p{L}\p{N}]))?`;
 const NUMBER_TOKEN = String.raw`\d{1,5}(?:[-\/]?[\p{L}]\d{0,4})?(?:[\/-]\d{1,4}(?:[-\/]?[\p{L}]\d{0,4})?){0,2}`;
 const STREET_WORD = String.raw`[\p{L}'’.-]{2,48}`;
 // Common post-Soviet street names lead with a bare numeral ("8 Марта",
@@ -390,7 +392,7 @@ function tashkentMassifHouseAddress(value) {
 }
 
 function splitAddressTail(raw) {
-  const text = clean(raw);
+  const text = clean(raw).replace(new RegExp(`(${NUMBER_TOKEN})${HOUSE_NUMBER_SUFFIX}(?=\\s*[,;]|\\s*$)`, 'iu'), '$1');
   if (!text) return null;
 
   const buildingRe = new RegExp(`(?:\\s*[,;]?\\s*${BUILDING_MARKER}\\s*(${NUMBER_TOKEN}))\\s*$`, 'iu');
@@ -419,7 +421,7 @@ function splitAddressTail(raw) {
 function postfixTypedStreetAddress(line) {
   const suffix = line.match(new RegExp(
     `(?:^|[^\\p{L}\\p{N}])((?:${LEADING_STREET_NUMERAL}\\s+)?(?:${STREET_WORD}\\s+){0,4}${STREET_WORD}\\s+${POSTFIX_STREET_TYPE})` +
-      `\\s*[,;]?\\s*(${NUMBER_TOKEN})` +
+      `\\s*[,;]?\\s*(${NUMBER_TOKEN})${HOUSE_NUMBER_SUFFIX}` +
       `(?:\\s*[,;]?\\s*${BUILDING_MARKER}\\s*(${NUMBER_TOKEN}))?` +
       `(?=$|[^\\p{L}\\p{N}])`,
     'iu',
@@ -443,7 +445,7 @@ function prefixTypedStreetAddress(line) {
   const prefix = line.match(new RegExp(
     `(?:^|[\\s,;])${PREFIX_STREET_MARKER}\\s+` +
       `((?:${LEADING_STREET_NUMERAL}\\s+)?(?:${STREET_WORD}\\s+){0,4}${STREET_WORD})` +
-      `\\s*[,;]?\\s*(?:${HOUSE_MARKER}\\s*)?(${NUMBER_TOKEN})` +
+      `\\s*[,;]?\\s*(?:${HOUSE_MARKER}\\s*)?(${NUMBER_TOKEN})${HOUSE_NUMBER_SUFFIX}` +
       `(?:\\s*[,;]?\\s*${BUILDING_MARKER}\\s*(${NUMBER_TOKEN}))?` +
       `(?=$|[^\\p{L}\\p{N}])`,
     'iu',
@@ -548,7 +550,9 @@ function collectExplicitStreetCandidates(text) {
 
     const postfix = line.match(new RegExp(`^(.+?)\\s+(${POSTFIX_STREET_MARKER})(.*)$`, 'iu'));
     if (postfix) {
-      const tailText = clean(`${postfix[1]} ${postfix[3]}`);
+      // Whatever follows the first comma ("..., Sergeli") is a district or
+      // landmark, not part of the street/house.
+      const tailText = clean(`${postfix[1]} ${postfix[3].split(/[,;]/u, 1)[0]}`);
       const tail = splitAddressTail(tailText);
       if (tail) {
         add(result(

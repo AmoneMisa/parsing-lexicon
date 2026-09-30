@@ -308,3 +308,17 @@ test('Tashkent "Sergeli 5 104" yields massif and house number', async () => {
   assert.deepEqual(r.quarter, {number: 5, suffix: ''});
   assert.equal(r.addressHouseNumber, '104');
 });
+
+test('Uzbek "ko\'chasi N-uy" and trailing district do not pollute the street', async () => {
+  const {parseHousingAddress} = await import('../src/housing-address.js');
+  for (const [text, street, house] of [
+    ["Manzil: Bunyodkor ko'chasi 12-uy", 'Bunyodkor', '12'],
+    ["Bunyodkor ko'chasi 12 uy", 'Bunyodkor', '12'],
+    ["Manzil: Qatortol ko'chasi 45 uy, Sergeli", 'Qatortol', '45'],
+  ]) {
+    const r = parseHousingAddress(text);
+    assert.equal(r.street, street, text);
+    assert.equal(r.houseNumber, house, text);
+  }
+  assert.equal(parseHousingAddress("Manzil: Sergeli 5 104").street, null);
+});
