@@ -284,3 +284,10 @@ test('bare "сом" resolves via fallback currency instead of always defaulting 
     approximate: false,
   });
 });
+
+test('unlabelled Uzbek "Narxi 900 000" is so\'m when the deal type is unknown', () => {
+  const text = "Kimga: student qizlarga\nXona: 2 xonali\nNarxi: 900 000\n";
+  assert.deepEqual(parseHousingPrice(text, 'UZ'), {amount: 900000, currency: 'UZS', approximate: false});
+  assert.deepEqual(parseHousingPrice(text, {country: 'UZ', dealType: 'longRent'}), {amount: 900000, currency: 'UZS', approximate: false});
+  assert.equal(parseHousingPrice('Narxi: 500', 'UZ').currency, 'USD');
+});

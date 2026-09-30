@@ -634,8 +634,9 @@ export function parseHousingPrice(value, context = '') {
   if (!explicit && !hasExplicitUzbekThousandScale && fallbackCurrency === 'UZS' && price != null) {
     const dailyUzbek = /(?:kunlik|sutkaga|kecha[- ]?kunduz|посуточн|суточн)/i.test(priceText);
     // A monthly rent of 100,000+ is only plausible in so'm; the USD reading
-    // turned "800 000" per person into an 800,000 USD rent.
-    const monthlyRent = dealType === 'longRent' && price >= 100_000;
+    // turned "800 000" per person into an 800,000 USD rent. When the deal type
+    // is unknown, 100,000+ is still so'm: only a known sale may be dollars.
+    const monthlyRent = dealType !== 'sale' && price >= 100_000;
     currency = price >= 1_000_000 || monthlyRent || (dailyUzbek && price >= 10_000) ? 'UZS' : 'USD';
   } else if (!explicit && currency === fallbackCurrency) {
     currency = lowLocalAmountCurrency(price, currency, dealType, priceText);
