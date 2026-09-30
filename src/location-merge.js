@@ -31,18 +31,29 @@ export const LOCATION_LIST_KEYS = Object.freeze([
   'searchClusters',
 ]);
 
+// One shared accessor compiles an entry's alias regex on first use. Giving
+// every entry its own getter closure cost ~100 bytes per entry, and the full
+// dictionary set holds over 130,000 entries. The compiled regex lives in a
+// WeakMap because entries are frozen.
+const COMPILED_RE = new WeakMap();
+const ENTRY_PROTOTYPE = Object.freeze({
+  get re() {
+    let re = COMPILED_RE.get(this);
+    if (!re) {
+      re = aliasesToRegex(this.aliases);
+      COMPILED_RE.set(this, re);
+    }
+    return re;
+  },
+});
+
+function frozenEntry(fields) {
+  return Object.freeze(Object.assign(Object.create(ENTRY_PROTOTYPE), fields));
+}
+
 export function locationEntry(name, ...aliases) {
   const all = [...new Set([name, ...aliases].flat().filter(Boolean))];
-  let re = null;
-  return Object.freeze({
-    canonical: name,
-    name,
-    aliases: Object.freeze(all),
-    get re() {
-      re ||= aliasesToRegex(all);
-      return re;
-    },
-  });
+  return frozenEntry({ canonical: name, name, aliases: Object.freeze(all) });
 }
 
 export function locationEntries(rows = []) {
@@ -93,19 +104,14 @@ function mergeEntry(existing, incoming) {
   // aliases. It remains fallback-only only when every merged source is map
   // data; otherwise the reviewed owner must retain its matching precedence.
   const mapData = existing ? isMapDataEntry(existing) && isMapDataEntry(incoming) : isMapDataEntry(incoming);
-  let re = null;
-  const result = {
+  const result = frozenEntry({
     ...base,
     canonical: base.canonical || base.name,
     type: base.type || base.entityType,
     aliases: Object.freeze(aliases),
-    get re() {
-      re ||= aliasesToRegex(aliases);
-      return re;
-    },
-  };
+  });
   if (mapData) MAP_DATA_ENTRIES.add(result);
-  return Object.freeze(result);
+  return result;
 }
 
 function parentKey(entry) {

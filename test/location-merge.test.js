@@ -12,12 +12,20 @@ import {
   mergeLocationEntries,
 } from '../src/location-merge.js';
 
-test('locationEntry exposes re as a lazily-computed accessor', () => {
+test('locationEntry exposes re as a lazily-computed accessor shared by every entry', () => {
   const entry = locationEntry('Test Street', 'Тестовая улица');
-  const descriptor = Object.getOwnPropertyDescriptor(entry, 're');
+  const other = locationEntry('Other Street');
+  // One inherited accessor serves all entries (no per-entry closure), so an
+  // entry owns no 're' value and spreading it can never compile a regex.
+  assert.equal(Object.getOwnPropertyDescriptor(entry, 're'), undefined);
+  const descriptor = Object.getOwnPropertyDescriptor(Object.getPrototypeOf(entry), 're');
   assert.equal(typeof descriptor.get, 'function', 're must stay an accessor, not a precomputed value');
+  assert.equal(Object.getPrototypeOf(other), Object.getPrototypeOf(entry));
+  assert.ok(!Object.keys({ ...entry }).includes('re'));
   assert.ok(entry.re.test('Test Street'));
   assert.ok(entry.re.test('Тестовая улица'));
+  assert.equal(entry.re, entry.re, 'the compiled regex is cached per entry');
+  assert.ok(!other.re.test('Test Street'));
 });
 
 test('merging location entries does not force each input entry\'s lazy regex getter to compute', () => {
