@@ -138,3 +138,25 @@ test('alias keys are cached without sharing mutable state, and folds map every c
   assert.ok(!normalizedAliasKeys("Ўзбекистон o'zgarish").includes('mutated'));
   assert.equal(foldCyrillicForSearch('Щука Ъ ёж'), 'shchuka  ezh');
 });
+
+test('partial lookup picks the longest whole-word alias and breaks ties in index order', async () => {
+  const { findCanonicalCandidates } = await import('../src/normalization.js');
+  const entries = [
+    { canonical: 'parent', aliases: ['parent'] },
+    { canonical: 'rent', aliases: ['rent', 'sdam'] },
+    { canonical: 'long-term', aliases: ['long term rent'] },
+    { canonical: 'first-tie', aliases: ['ijara'] },
+    { canonical: 'second-tie', aliases: ['arenda'] },
+    { canonical: 'same-length-a', aliases: ['abcd'] },
+    { canonical: 'same-length-b', aliases: ['wxyz'] },
+  ];
+  const names = (text) => findCanonicalCandidates(text, entries, { partial: true }).map((entry) => entry.canonical);
+  // "rent" is also inside "parent", but only a whole word may match.
+  assert.deepEqual(names('flat for rent'), ['rent']);
+  assert.deepEqual(names('my parents'), []);
+  // The longest alias wins over a shorter one it contains.
+  assert.deepEqual(names('Long-term RENT, Chilonzor'), ['long-term']);
+  // Equal-length matches come back in index order, each entry once.
+  assert.deepEqual(names('wxyz abcd abcd'), ['same-length-a', 'same-length-b']);
+  assert.deepEqual(findCanonicalCandidates('', entries, { partial: true }), []);
+});

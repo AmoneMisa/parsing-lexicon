@@ -236,17 +236,30 @@ export function getAliasOwnersIndex(entries, { transliteration = true } = {}) {
   return index;
 }
 
-const PADDED_ALIAS_LISTS = new WeakMap();
+const PARTIAL_INFO = new WeakMap();
 
-// The alias index in insertion order, with each alias padded for whole-word
-// containment checks. Built once per index; ties resolve in this same order.
-function paddedAliasList(index) {
-  let list = PADDED_ALIAS_LISTS.get(index);
-  if (!list) {
-    list = [...index].map(([alias, entry]) => ({ alias, padded: ` ${alias} `, entry }));
-    PADDED_ALIAS_LISTS.set(index, list);
+// An alias key is letters and digits joined by single spaces, and so is a text
+// key, so `${alias}` is contained in the padded text exactly when the alias
+// equals a run of whole words of the text. That lets a partial lookup probe the
+// text's word n-grams instead of scanning every alias in the index. `ordinal`
+// keeps each alias's position in the index, which is what orders a tie.
+function partialInfo(index) {
+  let info = PARTIAL_INFO.get(index);
+  if (!info) {
+    const ordinal = new Map();
+    let maxWords = 1;
+    let position = 0;
+    for (const alias of index.keys()) {
+      ordinal.set(alias, position);
+      position += 1;
+      let words = 1;
+      for (let i = alias.indexOf(' '); i !== -1; i = alias.indexOf(' ', i + 1)) words += 1;
+      if (words > maxWords) maxWords = words;
+    }
+    info = { ordinal, maxWords };
+    PARTIAL_INFO.set(index, info);
   }
-  return list;
+  return info;
 }
 
 /**
@@ -259,26 +272,35 @@ function paddedAliasList(index) {
 export function findCanonicalCandidates(value, entries, { partial = false, transliteration = true } = {}) {
   if (!value) return [];
   const index = getAliasIndex(entries, { transliteration });
-  for (const key of aliasKeys(value, transliteration)) {
+  const textKeys = aliasKeys(value, transliteration);
+  for (const key of textKeys) {
     const exact = index.get(key);
     if (exact) return [exact];
   }
   if (!partial) return [];
 
-  // Pad each text once, and each alias once per index: this loop visits the
-  // whole index on every partial lookup.
-  const paddedTexts = aliasKeys(value, transliteration).map((text) => ` ${text} `);
-  let tied = [];
-  let bestLength = 0;
-  for (const { alias, padded, entry } of paddedAliasList(index)) {
-    if (alias.length < bestLength) continue;
-    if (!paddedTexts.some((text) => text.includes(padded))) continue;
-    if (alias.length > bestLength) {
-      bestLength = alias.length;
-      tied = [entry];
-    } else if (!tied.includes(entry)) {
-      tied.push(entry);
+  const { ordinal, maxWords } = partialInfo(index);
+  const matched = new Map();
+  for (const key of textKeys) {
+    const words = key.split(' ');
+    for (let start = 0; start < words.length; start += 1) {
+      let phrase = '';
+      const stop = Math.min(words.length, start + maxWords);
+      for (let end = start; end < stop; end += 1) {
+        phrase = end === start ? words[end] : `${phrase} ${words[end]}`;
+        const position = ordinal.get(phrase);
+        if (position !== undefined) matched.set(phrase, position);
+      }
     }
+  }
+
+  let bestLength = 0;
+  for (const alias of matched.keys()) if (alias.length > bestLength) bestLength = alias.length;
+  const longest = [...matched].filter(([alias]) => alias.length === bestLength).sort((a, b) => a[1] - b[1]);
+  const tied = [];
+  for (const [alias] of longest) {
+    const entry = index.get(alias);
+    if (!tied.includes(entry)) tied.push(entry);
   }
   return tied;
 }
