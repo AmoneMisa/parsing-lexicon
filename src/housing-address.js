@@ -552,7 +552,10 @@ function collectExplicitStreetCandidates(text) {
     if (postfix) {
       // Whatever follows the first comma ("..., Sergeli") is a district or
       // landmark, not part of the street/house.
-      const tailText = clean(`${postfix[1]} ${postfix[3].split(/[,;]/u, 1)[0]}`);
+      // A building marker after the comma ("58, korpus 2") still belongs to it.
+      const afterStreet = postfix[3];
+      const cut = afterStreet.search(new RegExp(`[,;](?!\\s*${BUILDING_MARKER}\\s*${NUMBER_TOKEN})`, 'iu'));
+      const tailText = clean(`${postfix[1]} ${cut < 0 ? afterStreet : afterStreet.slice(0, cut)}`);
       const tail = splitAddressTail(tailText);
       if (tail) {
         add(result(
