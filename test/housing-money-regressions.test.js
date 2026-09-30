@@ -291,3 +291,20 @@ test('unlabelled Uzbek "Narxi 900 000" is so\'m when the deal type is unknown', 
   assert.deepEqual(parseHousingPrice(text, {country: 'UZ', dealType: 'longRent'}), {amount: 900000, currency: 'UZS', approximate: false});
   assert.equal(parseHousingPrice('Narxi: 500', 'UZ').currency, 'USD');
 });
+
+test('"student qizlarga" keeps students as an audience and "24/7 korzinka" has no branch number', async () => {
+  const {parseHousingAudience} = await import('../src/housing-listing-enrichment.js');
+  const {parseHousingInfrastructure} = await import('../src/housing-structured.js');
+  assert.deepEqual(parseHousingAudience('Kimga: student qizlarga'), {primary: 'women', alternatives: ['women', 'students']});
+  const [korzinka] = parseHousingInfrastructure('metro yonida 24/7 korzinka').filter((item) => item.poi === 'Korzinka');
+  assert.equal(korzinka.number, null);
+  assert.equal(korzinka.raw, 'korzinka');
+});
+
+test('Tashkent "Sergeli 5 104" yields massif and house number', async () => {
+  const {parseHousingListingEnrichment} = await import('../src/housing-listing-enrichment.js');
+  const r = parseHousingListingEnrichment("Manzil: Sergeli 5 104 ( o'zgarish netrosi yonida)", {country: 'UZ', city: 'Tashkent'});
+  assert.equal(r.district, 'Sergeli');
+  assert.deepEqual(r.quarter, {number: 5, suffix: ''});
+  assert.equal(r.addressHouseNumber, '104');
+});

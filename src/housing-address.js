@@ -338,12 +338,31 @@ function attachCatalogReferences(parsed, options) {
   return Object.keys(geoEntities).length ? Object.freeze({ ...parsed, geoEntities }) : parsed;
 }
 
+// "Sergeli 5 104": numbered massif followed by the house number.
+function tashkentAreaThenHouseAddress(text) {
+  const re = /(?:^|[^\p{L}\p{N}_])([\p{L}'’ʻʼ-]+)\s+(\d{1,2})\s*[,;]?\s+(?:(?:dom|дом|uy|уй)\s*)?(\d{1,4})([\p{L}])?(?=$|[^\p{L}\p{N}_/])/giu;
+  for (const match of text.matchAll(re)) {
+    const quarterNumber = Number(match[2]);
+    const district = Object.keys(TASHKENT_NUMBERED_AREA_ALIASES).find((canonical) => (
+      matchTashkentNumberedArea(`${match[1]} ${quarterNumber}`, canonical)?.number === quarterNumber
+    ));
+    if (!district) continue;
+    return Object.freeze({
+      ...result(null, null, `${Number(match[3])}${match[4] ? match[4].toUpperCase() : ''}`, null,
+        scoreAddressConfidence(text, { source: 'structured', hasHouse: true })),
+      district,
+      quarter: Object.freeze({ number: quarterNumber, suffix: matchTashkentNumberedArea(`${match[1]} ${quarterNumber}`, district)?.suffix || '' }),
+    });
+  }
+  return null;
+}
+
 function tashkentMassifHouseAddress(value) {
   const text = String(value ?? '');
   const match = text.match(
     /(?:^|[^\p{L}\p{N}_])(\d{1,2})\s+(?:mavze(?:si)?|мавзе(?:си)?)\s+(\d{1,5})\s*([\p{L}])?\s*(?:dom|дом|uy|уй)(?=$|[^\p{L}\p{N}_])/iu,
   );
-  if (!match) return null;
+  if (!match) return tashkentAreaThenHouseAddress(text);
 
   const quarterNumber = Number(match[1]);
   const district = Object.keys(TASHKENT_NUMBERED_AREA_ALIASES).find((canonical) => {

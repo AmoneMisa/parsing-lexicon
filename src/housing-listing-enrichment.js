@@ -209,7 +209,9 @@ export function parseHousingAudience(value) {
   if (family && students) return deepFreeze({ primary: 'family', alternatives: ['family', 'students'] });
   if (family && women) return deepFreeze({ primary: 'family', alternatives: ['family', 'women'] });
   // "Student qizlarga" narrows students to girls: the gender is the binding
-  // restriction, and studentTarget still reports the student part.
+  // primary restriction, but the student audience stays in the alternatives.
+  if (students && women && !men) return deepFreeze({ primary: 'women', alternatives: ['women', 'students'] });
+  if (students && men && !women) return deepFreeze({ primary: 'men', alternatives: ['men', 'students'] });
   if (students && !women && !men) return deepFreeze({ primary: 'students', alternatives: ['students'] });
   if (family) return deepFreeze({ primary: 'family', alternatives: ['family'] });
   if (women) return deepFreeze({ primary: 'women', alternatives: ['women'] });
