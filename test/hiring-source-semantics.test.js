@@ -111,3 +111,13 @@ test('marks approximate experience wording', () => {
   const [exact] = extractCandidateExperienceMentions('Experience: 4 years');
   assert.equal(exact?.approximate, undefined);
 });
+
+test('▶️-marked multi-vacancy posts split per role and keep shared footer out', async () => {
+  const { splitHiringVacancyEntries } = await import('../src/hiring-source-semantics.js');
+  const split = splitHiringVacancyEntries('Открыты вакансии: ▶️ АДМИНИСТРАТОР (девушки): 💰 Заработная плата: 7 000 000–8 000 000 сум ▶️ ТЕХНОЛОГ ХИМЧИСТКИ: 💰 Заработная плата: от 8 000 000 +KPI 👍 ГРАФИК РАБОТЫ: 6/1. Отправляйте резюме');
+  assert.deepEqual(split.entries.map((entry) => entry.title), ['АДМИНИСТРАТОР (девушки)', 'ТЕХНОЛОГ ХИМЧИСТКИ']);
+  assert.match(split.suffix, /^👍 ГРАФИК РАБОТЫ/u);
+  assert.equal(split.entries[1].text.includes('ГРАФИК'), false);
+  // Benefit bullets with mixed case are not vacancy headings.
+  assert.equal(splitHiringVacancyEntries('🧹 Горничная ▶️ График: 5/2 ▶️ Бесплатный обед').entries.length, 0);
+});

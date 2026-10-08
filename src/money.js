@@ -1,4 +1,4 @@
-import { findPhoneLikeSpans } from './contact.js';
+import { findPhoneLikeSpans, parsePhoneNumbers } from './contact.js';
 import { aliasesOf, findCanonical, normalizeUnicode } from './normalization.js';
 import {
   CURRENCY_SYMBOL_CANDIDATES,
@@ -56,7 +56,15 @@ function hasModifier(text, key) {
 function protectedPhoneSpans(text) {
   return findPhoneLikeSpans(text).filter((span) => {
     const prefix = text.slice(Math.max(0, span.start - 32), span.start);
-    return CONTACT_MARKER_RE.test(prefix);
+    if (CONTACT_MARKER_RE.test(prefix)) return true;
+    // A label-less international number ("998 953 506 090", typically scraped
+    // into a pay field) is a contact, not a 12-digit salary. Require a valid
+    // E.164 number of 11+ digits so ordinary grouped salaries stay money.
+    // A "998 95… - 998 95…" pair is merged into one span, so test each part.
+    return span.raw.split(/\s*[-–—]\s*/u).some((part) => {
+      const digits = part.replace(/\D/g, '');
+      return digits.length >= 11 && parsePhoneNumbers(`+${digits}`).length > 0;
+    });
   });
 }
 

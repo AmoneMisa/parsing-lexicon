@@ -76,8 +76,8 @@ export function extractJobStructuredField(value, key, maxLength = 220) {
   return extractField(value, JOB_FIELD_TERMS[key], FIELD_EXTRA_ALIASES.job[key] || [], maxLength);
 }
 
-const INLINE_VACANCY_HEADING_RE = /✔️?\s*([A-ZА-ЯЁЎҚҒҲІЇЄ][A-ZА-ЯЁЎҚҒҲІЇЄ\s()\/-]{2,100}?)(?=\s*(?:[•⏳✔📍✈📞]|$))/gu;
-const SHARED_HIRING_CONTACT_RE = /(?:✈️?\s*Telegram\s*:|📞\s*Контакт\s*:)/iu;
+const INLINE_VACANCY_HEADING_RE = /(?:✔️?|▶️?)\s*([A-ZА-ЯЁЎҚҒҲІЇЄ][A-ZА-ЯЁЎҚҒҲІЇЄ\s()\/-]{2,100}?(?:\s*\([^)\n]{1,30}\))?)(?=\s*(?:[:•⏳✔▶📍✈📞💰]|$))/gu;
+const SHARED_HIRING_CONTACT_RE = /(?:✈️?\s*Telegram\s*:|📞\s*Контакт\s*:|👍\s*ГРАФИК\s+РАБОТЫ)/iu;
 
 /** Split a multi-vacancy source post into role-local blocks and shared context. */
 export function splitHiringVacancyEntries(value) {

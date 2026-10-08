@@ -39,3 +39,9 @@ test('shared skill matcher handles contextual non-adjacent phrases', () => {
   }
   assert.equal(extractSkillNames('functional programming and governance policy').includes('Cross-functional Collaboration'), false);
 });
+
+test('KPI as a pay bonus is not a skill, but a stated KPI skill still is', async () => {
+  const { extractSkillNames } = await import('../src/hiring-skills.js');
+  assert.equal(extractSkillNames('Заработная плата: от 8 000 000 +KPI').includes('KPI'), false);
+  assert.equal(extractSkillNames('Навыки: KPI, Microsoft Word').includes('KPI'), true);
+});

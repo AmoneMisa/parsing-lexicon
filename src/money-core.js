@@ -22,7 +22,10 @@ export const MONEY_SCALE_PATTERN = 'k|к|тыс\\.?|тысяч(?:а|и)?|тис\
 // present at all) would stop matching, since "до" doesn't satisfy the
 // boundary either.
 export const MONEY_RANGE_RE = new RegExp(`(${MONEY_NUMBER_PATTERN})\\s*(?:(${MONEY_SCALE_PATTERN})(?=$|[^\\p{L}\\p{N}_]))?\\s*(?:-|–|—|до|to|bis|dan\\s+gacha)\\s*(${MONEY_NUMBER_PATTERN})\\s*(?:(${MONEY_SCALE_PATTERN})(?=$|[^\\p{L}\\p{N}_]))?`, 'iu');
-export const MONEY_SINGLE_RE = new RegExp(`(${MONEY_NUMBER_PATTERN})\\s*(${MONEY_SCALE_PATTERN})?(?=$|[^\\p{L}\\p{N}_])`, 'giu');
+// Boards often glue the currency to the number ("10 000 000сум"); without this
+// the boundary check fails on the full number and backtracks to "10 000".
+const ATTACHED_CURRENCY = "сум|сўм|so['’ʻʼ`]?m|som|uzs|usd|eur|rub|руб|грн|kzt|kgs";
+export const MONEY_SINGLE_RE = new RegExp(`(${MONEY_NUMBER_PATTERN})\\s*(${MONEY_SCALE_PATTERN})?(?=$|[^\\p{L}\\p{N}_]|(?:${ATTACHED_CURRENCY})(?![\\p{L}\\p{N}_]))`, 'giu');
 
 export function parseNumericAmount(raw) {
   let value = String(raw || '').replace(/\u00a0/g, ' ').trim();

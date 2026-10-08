@@ -368,8 +368,11 @@ export function canonicalSkillName(value) {
   return CANONICAL_BY_ALIAS.get(normalized) ?? extractSkillNames(normalized)[0]
 }
 
+const PAY_BONUS_KPI_RE = /(?:\+|plus|плюс)\s*(?:%\s*\/?\s*)?kpi(?![\p{L}\p{N}_])/giu
+
 export function extractSkillDetails(text) {
-  const normalized = normalizeSkillText(cleanHiringSourceText(text))
+  // "+ KPI" / "plus KPI" after a pay figure is a bonus scheme, not a skill.
+  const normalized = normalizeSkillText(cleanHiringSourceText(text).replace(PAY_BONUS_KPI_RE, ' '))
   const found = []
   const names = new Set()
   for (const { definition, patterns } of COMPILED_SKILLS) {

@@ -105,3 +105,16 @@ test('explicit Russian monthly marker wins for UZS vacancy salary', () => {
   assert.equal(salary.period, 'month');
   assert.equal(salary.periodSource, 'explicit');
 });
+
+test('label-less international phone number in a pay field is not a salary', () => {
+  const options = { country: 'UZ', currencyFallback: 'country' };
+  assert.equal(parseHiringSalaryWithContext('998 953 506 090–998 953 506 090 /час', options), null);
+  assert.equal(parseHiringSalaryWithContext('Оплата 998 953 506 090', options), null);
+  assert.equal(parseHiringSalaryWithContext('Оплата 12 000 000 000 сум', options).min, 12_000_000_000);
+});
+
+test('currency glued to the amount does not truncate the salary', () => {
+  const options = { country: 'UZ', currencyFallback: 'country' };
+  assert.equal(parseHiringSalaryWithContext('💰 Заработная плата: от 10 000 000сум.', options).min, 10_000_000);
+  assert.equal(parseHiringSalaryWithContext('Заработная плата: от 6 000 000сум+ KPI', options).min, 6_000_000);
+});
