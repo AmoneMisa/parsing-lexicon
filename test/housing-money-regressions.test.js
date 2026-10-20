@@ -331,3 +331,11 @@ test('a building after the house number survives trimming the trailing district'
   assert.equal(r.building, '2');
   assert.equal(parseHousingAddress("Qatortol ko'chasi 45, Sergeli").street, 'Qatortol');
 });
+
+test('a "+998" phone prefix or pagination digits are never a broker commission amount', async () => {
+  const {parseHousingCommissionAmount} = await import('../src/housing-listing-enrichment.js');
+  const page = 'Обновлено 07.09.2026, 12:29 Шерхан Хайдаркулов Риелтор Написать автору +998 ** *** **** 1 … 19 20 21 … 549';
+  assert.equal(parseHousingCommissionAmount(page), null);
+  assert.equal(parseHousingCommissionAmount('Риелтор +998901234567'), null);
+  assert.deepEqual(parseHousingCommissionAmount('Услуги риелтора 50$'), {amount: 50, currency: 'USD', approximate: false});
+});

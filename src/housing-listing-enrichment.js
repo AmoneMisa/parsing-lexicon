@@ -254,10 +254,11 @@ export function parseHousingPerPersonPrice(value, { country = '' } = {}) {
 }
 
 const COMMISSION_AMOUNT_RE = /(?:риэлтор\p{L}*|риелтор\p{L}*|маклер(?:у|ской)?|агентств\p{L}*|makler(?:ga)?|vositachi(?:ga)?|commission|broker(?:'s)?\s+fee)[^\r\n\d]{0,24}(\d{1,3}(?:[\s.,]\d{3})*|\d+(?:[.,]\d+)?)\s*(\$|usd|€|eur|сум|uzs|₴|грн|uah|тг|kzt)?/iu;
-const COMMISSION_AMOUNT_LEADING_RE = /(\d{1,3}(?:[\s.,]\d{3})*|\d+(?:[.,]\d+)?)\s*(\$|usd|€|eur|сум|uzs|₴|грн|uah|тг|kzt)?[^\r\n\d]{0,24}(?:риэлтор\p{L}*|риелтор\p{L}*|маклер(?:у|ской)?|агентств\p{L}*|makler(?:ga)?|vositachi(?:ga)?|commission|broker(?:'s)?\s+fee)/iu;
+const COMMISSION_AMOUNT_LEADING_RE = /(?<![\d:./,+-])(\d{1,3}(?:[\s.,]\d{3})*|\d+(?:[.,]\d+)?)\s*(\$|usd|€|eur|сум|uzs|₴|грн|uah|тг|kzt)?[^\r\n\d]{0,24}(?:риэлтор\p{L}*|риелтор\p{L}*|маклер(?:у|ской)?|агентств\p{L}*|makler(?:ga)?|vositachi(?:ga)?|commission|broker(?:'s)?\s+fee)/iu;
 
 export function parseHousingCommissionAmount(value) {
-  const text = normalizeUnicode(value ?? '');
+  // Phone numbers ("+998 ...") are not amounts, whatever word precedes them.
+  const text = normalizeUnicode(value ?? '').replace(/\+\d[\d\s\-()*]{4,}/gu, '\n');
   // A listing that explicitly says "no broker/commission" cannot also have a
   // commission amount — without this guard, an unrelated number near the
   // negated broker word (e.g. a room count in "2 xonali ... maklersiz")

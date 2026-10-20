@@ -81,9 +81,28 @@ export function detectHousingSource(value) {
   return username && hasAge && hasThreadsUi ? 'Threads' : null;
 }
 
+// Listing portals append their own site footer (about/rules/legal entity and
+// head-office address) to copied pages. It describes the portal, not the flat,
+// so its addresses and phone numbers must never reach the parsers.
+const PORTAL_FOOTER_RE = new RegExp([
+  'Площадка для покупки, продажи и аренды недвижимости',
+  'Пользователям\\s+О нас\\s+Правила пользования',
+  'Контак(?:ты|ы)\\s+(?:ИП|ООО|АО|ЧП)(?![\\p{L}])',
+  '©\\s*\\d{4}(?:\\s*[-–]\\s*\\d{4})?\\s+(?:ИП|ООО|АО|ЧП)(?![\\p{L}])',
+  'Все права защищены',
+].join('|'), 'iu');
+const PAGINATION_RE = /\s\d{1,3}\s*…\s*(?:\d{1,3}\s+){1,5}…\s*\d{1,4}(?=\s|$)/gu;
+const PORTAL_FOOTER_MIN_BODY = 40;
+
+function stripPortalChrome(text) {
+  const cut = text.search(PORTAL_FOOTER_RE);
+  const body = cut >= PORTAL_FOOTER_MIN_BODY ? text.slice(0, cut) : text;
+  return body.replace(PAGINATION_RE, '').trim();
+}
+
 /** Remove source UI chrome while preserving the actual listing description. */
 export function cleanHousingSourceText(value, options = {}) {
-  const text = String(value || '').replace(/\r\n?/g, '\n');
+  const text = stripPortalChrome(String(value || '').replace(/\r\n?/g, '\n'));
   if (!text.trim()) return '';
   const source = options.source || detectHousingSource(text);
   if (!isThreadsSource(source)) return text.trim();
