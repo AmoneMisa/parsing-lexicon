@@ -21,3 +21,10 @@ test('parses internet, courtyard, gazebo and pet allowance from Odessa free-text
     petsAllowed: true,
   });
 });
+
+test('Uzbek "N ta qiz yashaydi" / "2 tadan" / "N tagacha odam qabul" posts are shared stays', async () => {
+  const { parseHousingRoomShare } = await import('../src/housing-listing-enrichment.js');
+  assert.equal(parseHousingRoomShare('Jami 6 ta qiz yashaydi 1 xonada 2 tadan qiz turadi 175$ dan'), true);
+  assert.equal(parseHousingRoomShare('odam kop 80 tagacha odam qabul qilamiz hovli'), true);
+  assert.equal(parseHousingRoomShare('Сдам в аренду однокомнатную квартиру семье на долгий срок'), false);
+});
