@@ -401,3 +401,19 @@ test('"евро ремонт" describes the flat and is not a euro price', () =>
   assert.equal(parseHousingPrice('Состояние: евро ре… $125 000', {country: 'UZ', currency: 'UZS'}).currency, 'USD');
   assert.equal(parseHousingPrice('Цена 500 евро', 'UZS').currency, 'EUR');
 });
+
+test('cheap-looking Tashkent listings from the report read their real price and currency', () => {
+  const uz = {country: 'UZ', currency: 'UZS'};
+  // "450000ming som" is already expanded: 450 000, not 450 million.
+  assert.deepEqual(parseHousingPrice('Arenda hovli kvartira emas Oyiga 450000ming som kamunalka aloxida', uz), {amount: 450_000, currency: 'UZS', approximate: false});
+  // "800 MINGDAN" is "from 800 thousand", and "TG: @user" is Telegram, not tenge.
+  assert.deepEqual(parseHousingPrice('KIMLARGA: 2ta qiz NARXI: 800 MINGDAN TEL: 932414500 TG: @ledi_030', uz), {amount: 800_000, currency: 'UZS', approximate: false});
+  // The utilities line "300 т сум" must not beat "Цена 300 у.е.".
+  assert.deepEqual(parseHousingPrice('Мирзо-Улугбекский район 300 $ 1-комн 38 м² Цена 300 у.е. + 300 т сум коммунальные Есть комиссия', uz), {amount: 300, currency: 'USD', approximate: false});
+  // "1.700у.е." glues the currency to its digits.
+  assert.deepEqual(parseHousingPrice('Новый ремонт Цена: 1.700у.е. Депозит: 1.700у.е. Услуги риэлтора 50%', uz), {amount: 1700, currency: 'USD', approximate: false});
+  // "тг юзер" is a Telegram handle label.
+  assert.deepEqual(parseHousingPrice('Мирабадский район 1 000 $ 5-комн 150 м² звонить по номеру: * тг юзер: *', uz), {amount: 1000, currency: 'USD', approximate: false});
+  // A bare "тг" after an amount is still tenge.
+  assert.equal(parseHousingPrice('Аренда 150000 тг', 'KZT').currency, 'KZT');
+});

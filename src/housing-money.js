@@ -496,7 +496,9 @@ export function parseHousingPrice(value, context = '') {
   // `т` (tonne) and `гр` (gram) to the shared money lexicon. A nearby price
   // keyword plus an explicit hryvnia shorthand makes the intent unambiguous.
   const compactThousandUah = priceText.match(new RegExp(
-    `${PRICE_KEYWORD}[^\\r\\n]{0,48}?(\\d{1,6}(?:[.,]\\d{1,2})?)\\s*т(?:ыс)?\\.?\\s*(${CURRENCY_ALT}|гр(?:н)?)(?![\\p{L}\\p{N}_])`,
+    // No other currency amount may sit between the keyword and the amount: "Цена 300 у.е. + 300 т сум
+    // коммунальные" must not read the utilities line as the price.
+    `${PRICE_KEYWORD}(?:(?!${CURRENCY_ALT}(?![\\p{L}\\p{N}_]))[^\\r\\n]){0,48}?(\\d{1,6}(?:[.,]\\d{1,2})?)\\s*т(?:ыс)?\\.?\\s*(${CURRENCY_ALT}|гр(?:н)?)(?![\\p{L}\\p{N}_])`,
     'iu',
   ));
   if (compactThousandUah) {
@@ -563,6 +565,12 @@ export function parseHousingPrice(value, context = '') {
       : baseAmount;
     if (amount != null && amount >= 50 && amount <= 5_000_000_000) {
       price = Math.round(amount);
+      // The currency written right after the labelled amount belongs to it, not
+      // the first currency word anywhere in the text ("Цена 300 у.е. + 300 т сум
+      // коммунальные" is dollars; the sum is the utilities line).
+      const tail = priceText.slice((labelled.index ?? 0) + labelled[0].length, (labelled.index ?? 0) + labelled[0].length + 8).trimStart();
+      const adjacent = tail ? moneyCurrencyFromText(tail.split(/[+,;]/u)[0], '') : '';
+      if (adjacent) currency = adjacent;
       // `ming` is an explicit Uzbek amount scale, not an unlabelled amount
       // awaiting the historical UZS/USD fallback heuristic.
       if (/^(?:ming|минг)$/iu.test(labelled[2] || '') && country === 'UZ') currency = 'UZS';
@@ -609,7 +617,10 @@ export function parseHousingPrice(value, context = '') {
     // "1к", "2к" are room counts in Russian/Ukrainian listings, not 1000/2000.
     const match = [...priceText.matchAll(scaleRe)].find((candidate) => !(/^к$/iu.test(candidate[2]) && Number(candidate[1]) <= 9));
     if (match) {
-      const amount = parseScaledAmount(match[1], match[2]);
+      // "450000ming som" is already expanded; scaling it again gives 450 million.
+      const base = parseNumericAmount(match[1]);
+      const expanded = /^(?:ming|минг)(?:dan|gacha)?$/iu.test(match[2]) && base != null && base >= 10_000;
+      const amount = expanded ? base : parseScaledAmount(match[1], match[2]);
       if (amount != null && amount >= 1000 && amount <= 5_000_000_000) price = Math.round(amount);
     }
   }

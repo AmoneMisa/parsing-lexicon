@@ -81,6 +81,10 @@ function explicitCurrencyCandidates(value) {
   // "евро ремонт" / "евро ре…" / "евро планировка" describe the flat, not a price in euro.
   const lexicalText = text
     .replace(/(?<![\p{L}\p{N}_])евро[\s-]+(?:р[её]\p{L}*|р[её]?(?:…|\.{3})|планир\p{L}*|окн\p{L}*)/giu, ' ')
+    // "TG: @user" / "тг юзер" is Telegram, not tenge.
+    .replace(/(?<![\p{L}\p{N}_])(?:тг|tg)(?=\s*[:@]|\s+(?:юзер|user|канал|channel|чат|chat|бот|bot|ник))/giu, ' ')
+    // "1.700у.е." / "300$": a currency glued to its digits is still a currency.
+    .replace(/(\d)(?=\p{L})/gu, '$1 ')
     .replace(/[$¥￥]/g, ' ');
   return findCanonicalCandidates(lexicalText, CURRENCY_TERMS, { partial: true })
     .map((entry) => entry?.canonical)
