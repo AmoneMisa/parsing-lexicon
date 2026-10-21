@@ -73,3 +73,10 @@ test('marketing copy and roommate searches are not seeker posts', async () => {
   // A real seeker next to such copy is still found.
   assert.equal(resolveHousingIntent('Для тих, хто шукає житло. Сім\'я шукає квартиру в оренду')?.listingKind, 'propertyWanted');
 });
+
+test('"дом" inside another word (рядом) does not make an offer a seeker post', async () => {
+  const { resolveHousingIntent } = await import('../src/housing-intent.js');
+  assert.notEqual(resolveHousingIntent('Развитая инфраструктура - все что нужно есть рядом: супермаркеты, кафе')?.listingKind, 'propertyWanted');
+  assert.equal(resolveHousingIntent('Ищем дом для семьи')?.listingKind, 'propertyWanted');
+  assert.equal(resolveHousingIntent('Шукаємо квартиру/дім у Львові')?.listingKind, 'propertyWanted');
+});
