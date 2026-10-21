@@ -11,7 +11,7 @@ import {
 // Local boards also occasionally split a salary with a mistyped first group
 // ("4 00 000" instead of "400 000"). Accept that only when there are at least
 // two spaced groups, which keeps ordinary two-number prose out of money parsing.
-export const MONEY_NUMBER_PATTERN = '(?:\\d{1,3}(?:[ \\u00a0]\\d{2,3}){2,}(?:[.,]\\d+)?|\\d{1,3}(?:[ \\u00a0]\\d{3})+(?:[.,]\\d+)?|\\d{1,3}(?:,\\d{3})+(?:\\.\\d+)?|\\d{1,3}(?:\\.\\d{3})+(?:,\\d+)?|\\d+(?:[.,]\\d+)?)';
+export const MONEY_NUMBER_PATTERN = '(?<!\\d)(?<!\\d\\s?\\/\\s?)(?:\\d{1,3}(?:[ \\u00a0]\\d{2,3}){2,}(?:[.,]\\d+)?|\\d{1,3}(?:[ \\u00a0]\\d{3})+(?:[.,]\\d+)?|\\d{1,3}(?:,\\d{3})+(?:\\.\\d+)?|\\d{1,3}(?:\\.\\d{3})+(?:,\\d+)?|\\d+(?:[.,]\\d+)?)';
 export const MONEY_SCALE_PATTERN = 'k|к|тыс\\.?|тысяч(?:а|и)?|тис\\.?|thousand|ming|минг|мың|mii|m|м|млн\\.?|mln|million|миллион(?:ов)?|мільйон(?:ів)?|mil|milioane|bn|млрд|mlrd|billion|mld|miliard(?:e)?';
 // Each scale group needs the token-boundary guard MONEY_SINGLE_RE already has
 // below: without it, "2 до 3 месяцев" reads "м" off "месяцев" as the million
@@ -78,7 +78,10 @@ export function parseScaledAmount(raw, scale) {
 function explicitCurrencyCandidates(value) {
   const text = String(value || '');
   // Ambiguous glyphs are removed so they cannot hide an explicit ISO/name token.
-  const lexicalText = text.replace(/[$¥￥]/g, ' ');
+  // "евро ремонт" / "евро ре…" / "евро планировка" describe the flat, not a price in euro.
+  const lexicalText = text
+    .replace(/(?<![\p{L}\p{N}_])евро[\s-]+(?:р[её]\p{L}*|р[её]?(?:…|\.{3})|планир\p{L}*|окн\p{L}*)/giu, ' ')
+    .replace(/[$¥￥]/g, ' ');
   return findCanonicalCandidates(lexicalText, CURRENCY_TERMS, { partial: true })
     .map((entry) => entry?.canonical)
     .filter(Boolean);

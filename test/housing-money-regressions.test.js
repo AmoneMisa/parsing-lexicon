@@ -388,3 +388,16 @@ test('the new Kyrgyz som sign (⃀) is KGS and a truncated "+996 …" phone is n
   );
   assert.equal(parseHousingPrice('Сдам, звоните +996 998 880 …', kg).amount, null);
 });
+
+test('"3/16 500$" is floors then 500 USD, not 16 500', () => {
+  assert.equal(parseHousingPrice('1-комн 44 м² 3/16 эт 1в2 / 3 / 16 500$ ЖК Green park', {country: 'UZ', currency: 'USD'}).amount, 500);
+  assert.equal(parseHousingPrice('Цена 16 500$', {country: 'UZ', currency: 'USD'}).amount, 16_500);
+  assert.equal(parseHousingPrice('1 500 000$', 'USD').amount, 1_500_000);
+});
+
+test('"евро ремонт" describes the flat and is not a euro price', () => {
+  assert.equal(parseHousingPrice('Состояние: евро ремонт 4 000 000 сум', {country: 'UZ', currency: 'UZS'}).currency, 'UZS');
+  assert.equal(parseHousingPrice('Состояние: евро ре… 4 000 000 сум', {country: 'UZ', currency: 'UZS'}).currency, 'UZS');
+  assert.equal(parseHousingPrice('Состояние: евро ре… $125 000', {country: 'UZ', currency: 'UZS'}).currency, 'USD');
+  assert.equal(parseHousingPrice('Цена 500 евро', 'UZS').currency, 'EUR');
+});
