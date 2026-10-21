@@ -61,3 +61,15 @@ test('third-person and plural "looking for / will rent" posts are wanted, not of
   ]) assert.equal(resolveHousingIntent(text)?.listingKind, 'propertyWanted', text);
   assert.equal(resolveHousingIntent('Здається квартира, власник шукає порядних орендарів')?.listingKind, 'propertyOffer');
 });
+
+test('marketing copy and roommate searches are not seeker posts', async () => {
+  const { resolveHousingIntent } = await import('../src/housing-intent.js');
+  for (const text of [
+    'Чудова пропозиція для тих, хто шукає комфортне житло в центрі',
+    'Ідеальний варіант для сім’ї, яка шукає просторе житло',
+    'Идеальный выбор для тех, кто ищет не просто квартиру, а дом',
+    'ЖК Гулдер ищем 3-ю девушку в квартиру',
+  ]) assert.notEqual(resolveHousingIntent(text)?.listingKind, 'propertyWanted', text);
+  // A real seeker next to such copy is still found.
+  assert.equal(resolveHousingIntent('Для тих, хто шукає житло. Сім\'я шукає квартиру в оренду')?.listingKind, 'propertyWanted');
+});

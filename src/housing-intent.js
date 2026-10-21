@@ -27,16 +27,23 @@ const EXPLICIT_SHORT_STAY_RE = /(?:^|[^\p{L}\p{N}_])(?:сут(?:ки|ок)|по�
 // between the verb and the noun, and the gap is inspected for a "buy" marker
 // so "ищу купить 2-комнатную квартиру" still resolves to buy, not rentIn.
 const WANTED_GAP = '([^.!?\\r\\n]{0,40}?)';
+const RELATIVE_SEEKER_LOOKBEHIND = '(?<!(?:хто|кто|кому|кого|яка|який|яке|які|яких|которая|который|которое|которые|которых)[\\s,]+)';
 const WANTED_CONTEXT_RE = Object.freeze([
-  new RegExp(`(?:^|[^\\p{L}\\p{N}_])(?:ищу|ищем|ищет|сниму|снимем|снимет|хочу\\s+снять|хотим\\s+снять|хочу\\s+купить|нужна|нужно|нужен)(?=$|[^\\p{L}\\p{N}_])${WANTED_GAP}(?:квартир\\p{L}*|жиль[ёе]\\p{L}*|комнат\\p{L}*|дом(?:а|у)?)(?=$|[^\\p{L}\\p{N}_])`, 'iu'),
-  new RegExp(`(?:^|[^\\p{L}\\p{N}_])(?:шукаю|шукаємо|шукає|зніму|знімемо|зніме|знімаємо|хочу\\s+зняти|хочемо\\s+зняти|хочу\\s+купити|потрібна|потрібно|потрібен)(?=$|[^\\p{L}\\p{N}_])${WANTED_GAP}(?:квартир\\p{L}*|житл\\p{L}*|кімнат\\p{L}*|будин\\p{L}*|дім|дому)(?=$|[^\\p{L}\\p{N}_])`, 'iu'),
+  new RegExp(`(?:^|[^\\p{L}\\p{N}_])${RELATIVE_SEEKER_LOOKBEHIND}(?:ищу|ищем|ищет|сниму|снимем|снимет|хочу\\s+снять|хотим\\s+снять|хочу\\s+купить|нужна|нужно|нужен)(?=$|[^\\p{L}\\p{N}_])${WANTED_GAP}(?:квартир\\p{L}*|жиль[ёе]\\p{L}*|комнат\\p{L}*|дом(?:а|у)?)(?=$|[^\\p{L}\\p{N}_])`, 'giu'),
+  new RegExp(`(?:^|[^\\p{L}\\p{N}_])${RELATIVE_SEEKER_LOOKBEHIND}(?:шукаю|шукаємо|шукає|зніму|знімемо|зніме|знімаємо|хочу\\s+зняти|хочемо\\s+зняти|хочу\\s+купити|потрібна|потрібно|потрібен)(?=$|[^\\p{L}\\p{N}_])${WANTED_GAP}(?:квартир\\p{L}*|житл\\p{L}*|кімнат\\p{L}*|будин\\p{L}*|дім|дому)(?=$|[^\\p{L}\\p{N}_])`, 'giu'),
 ]);
+// "для тих, хто шукає комфортне житло" / "для тех, кто ищет квартиру" is
+// marketing copy of an offer, not a seeker. And "ищем 3-ю девушку в квартиру"
+// looks for a roommate (an offer of a room), not for a flat.
+const SEEKS_A_PERSON_RE = /(?:девушк|парн|соседк|сосед|жильц|подсел|квартирант|арендатор|орендар|мешканц|сусід|дівчин|хлопц|студент)/iu;
 const WANTED_BUY_MARKER_RE = /(?:купить|покупки|покупку|купити|купівлі)/iu;
 
 function detectContextualWantedAction(text) {
   for (const re of WANTED_CONTEXT_RE) {
-    const match = text.match(re);
-    if (match) return WANTED_BUY_MARKER_RE.test(match[1] || '') ? 'buy' : 'rentIn';
+    for (const match of text.matchAll(re)) {
+      if (SEEKS_A_PERSON_RE.test(match[1] || '')) continue;
+      return WANTED_BUY_MARKER_RE.test(match[1] || '') ? 'buy' : 'rentIn';
+    }
   }
   return null;
 }
