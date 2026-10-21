@@ -50,3 +50,14 @@ test('long-term wording is unaffected', () => {
 test('a landlord label alone classifies nothing', () => {
   assert.equal(classifyHousingDealType('Перевірений орендодавець Харків 32 м²'), null);
 });
+
+test('third-person and plural "looking for / will rent" posts are wanted, not offers', async () => {
+  const { resolveHousingIntent } = await import('../src/housing-intent.js');
+  for (const text of [
+    'Сімʼя терміново шукає квартиру/дім в районі Вишеньки',
+    "Доброго дня! Сім'я шукає 1–2-кімнатну квартиру в довгострокову оренду",
+    'Сімейна пара з двома дітьми знімемо квартиру 2 х кім',
+    'Ищем квартиру на длительный срок',
+  ]) assert.equal(resolveHousingIntent(text)?.listingKind, 'propertyWanted', text);
+  assert.equal(resolveHousingIntent('Здається квартира, власник шукає порядних орендарів')?.listingKind, 'propertyOffer');
+});

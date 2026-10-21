@@ -441,7 +441,9 @@ function lowLocalAmountCurrency(amount, currency, dealType, text) {
 
 export function parseHousingPrice(value, context = '') {
   const { country, currency: fallbackCurrency, dealType } = moneyParsingContext(context);
-  const original = String(value || '');
+  // Currency emoji are dollar/euro signs in listing prose ("73 т. 💵"). Same
+  // UTF-16 length as the replacement, so offsets stay comparable.
+  const original = String(value || '').replace(/💵/gu, ' $').replace(/💶/gu, ' €');
   if (!original) return Object.freeze({ amount: null, currency: fallbackCurrency || '', approximate: false });
 
   // Contact spans are removed once, before every money branch. A phone can

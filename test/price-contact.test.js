@@ -42,3 +42,15 @@ test('salary parser preserves shared money behavior after core extraction', () =
     approximate: false,
   });
 });
+
+test('a dash-grouped national phone next to a currency is a phone, not a price', () => {
+  const text = 'Ціна 47500 у.о. 050-123-45-67';
+  assert.equal(maskPhoneLikeSpans(text, ' ', { country: 'UA' }).includes('050-123'), false);
+  assert.deepEqual(parseHousingPrice(text, { country: 'UA', currency: 'UAH' }), { amount: 47500, currency: 'USD', approximate: false });
+  // A real price range keeps its single separator.
+  assert.equal(findPhoneLikeSpans('Цена 500-600 $ в месяц').length, 0);
+});
+
+test('a dollar emoji is a dollar sign next to a thousands shorthand', () => {
+  assert.deepEqual(parseHousingPrice('СТОИМОСТЬ: 73 т. 💵 торг ☎️063-148-21-07', 'UAH'), { amount: 73_000, currency: 'USD', approximate: false });
+});

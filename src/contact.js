@@ -44,6 +44,9 @@ function normalizedCountryHint(value) {
 // not weaken validated national-phone parsing below.
 function isExplicitPriceSpan(text, start, raw) {
   if (!/[\-–—]/u.test(raw)) return false;
+  // A price range has one separator ("500-600 $"). Three or more digit groups
+  // ("050-123-45-67") is a grouped national phone number, even next to a currency.
+  if ((raw.match(/[\-–—]/gu) || []).length >= 2) return false;
   const before = text.slice(Math.max(0, start - 48), start);
   if (PRICE_LABEL_BEFORE_NUMBER_RE.test(before)) return true;
   const end = start + raw.length;
