@@ -216,6 +216,9 @@ function isPaymentScopedAmount(text, start, end) {
   // This prevents the listing price in "6000грн+комуналка+6000(залог)" from
   // being suppressed merely because the later deposit keyword is nearby, while
   // still excluding direct suffix forms such as "500$ deposit".
+  // "9000 грн+ком+залог" lists the price first and the extras after a "+":
+  // a label behind a separator belongs to the next item, not to this amount.
+  if (/^\s*[+/&,]/u.test(right)) return false;
   const nextDigit = right.search(/\d/u);
   const suffixScope = nextDigit === -1 ? right : right.slice(0, nextDigit);
   return !PRICE_KEYWORD_RE.test(left)
@@ -234,6 +237,8 @@ function parseContextualSingleLetterMillion(text, context) {
 
 function candidatePaymentRole(text, start, end) {
   if (isPaymentScopedAmount(text, start, end)) return 'depositOrCommission';
+  // "9000 грн + 1000 грн": a number introduced by "+" is an add-on to the base price.
+  if (/\+\s*$/u.test(text.slice(Math.max(0, start - 3), start))) return 'nonListingPayment';
   const around = text.slice(Math.max(0, start - 48), Math.min(text.length, end + 48));
   if (/(?:коммун|utilities?|utility|per\s*(?:sqm|m2|м2)|\/\s*(?:sqm|m2|м2)|за\s*м[²2])/iu.test(around)) return 'nonListingPayment';
   if (/(?:new\s+price|now|yangi\s+narx)/iu.test(text.slice(Math.max(0, start - 28), start))) return 'currentPrice';
@@ -489,14 +494,14 @@ export function parseHousingPrice(value, context = '') {
   // `т` (tonne) and `гр` (gram) to the shared money lexicon. A nearby price
   // keyword plus an explicit hryvnia shorthand makes the intent unambiguous.
   const compactThousandUah = priceText.match(new RegExp(
-    `${PRICE_KEYWORD}[^\\r\\n]{0,48}?(\\d{1,6}(?:[.,]\\d{1,2})?)\\s*т(?:ыс\\.?)?\\s*(?:гр(?:н)?|₴|uah)(?=$|[^\\p{L}\\p{N}_])`,
+    `${PRICE_KEYWORD}[^\\r\\n]{0,48}?(\\d{1,6}(?:[.,]\\d{1,2})?)\\s*т(?:ыс)?\\.?\\s*(${CURRENCY_ALT}|гр(?:н)?)(?![\\p{L}\\p{N}_])`,
     'iu',
   ));
   if (compactThousandUah) {
     const amount = parseNumericAmount(compactThousandUah[1]);
     if (amount != null && amount >= 1 && amount <= 5_000_000) {
       price = Math.round(amount * 1000);
-      currency = 'UAH';
+      currency = /^гр/iu.test(compactThousandUah[2]) ? 'UAH' : moneyCurrencyFromText(compactThousandUah[2], '') || 'UAH';
     }
   }
 
@@ -587,15 +592,20 @@ export function parseHousingPrice(value, context = '') {
         // The amount before a stated replacement is the old price, even if it
         // is numerically larger than the current price.
         if (/(?:\$|usd)?\s*(?:\.\.\.|dan|from|was|old\s+price)[^\d]{0,16}\d+(?:[.,]\d+)?\s*(?:\$|usd)?\s*(?:tushirilgan|tushdi|reduced|now)/iu.test(priceText.slice(start, start + 90))) score -= 90;
-        tagged.push({ amount, score, start });
+        tagged.push({ amount, score, start, currency: moneyCurrencyFromText(match[0], fallbackCurrency || '') || '' });
       }
     }
     tagged.sort((a, b) => b.score - a.score || b.start - a.start || a.amount - b.amount);
     price = tagged[0]?.amount ?? null;
+    // The span that won owns its currency: "2000.000 сум ... 100$" is 100 USD,
+    // not 100 of whichever currency word happens to come first.
+    if (price != null && tagged[0].currency) currency = tagged[0].currency;
   }
 
   if (price == null) {
-    const match = priceText.match(new RegExp(`(\\d+(?:[.,]\\d+)?)\\s*(${SCALE_PATTERN})(?=$|[^\\p{L}\\p{N}_])`, 'iu'));
+    const scaleRe = new RegExp(`(\\d+(?:[.,]\\d+)?)\\s*(${SCALE_PATTERN})(?=$|[^\\p{L}\\p{N}_])`, 'giu');
+    // "1к", "2к" are room counts in Russian/Ukrainian listings, not 1000/2000.
+    const match = [...priceText.matchAll(scaleRe)].find((candidate) => !(/^к$/iu.test(candidate[2]) && Number(candidate[1]) <= 9));
     if (match) {
       const amount = parseScaledAmount(match[1], match[2]);
       if (amount != null && amount >= 1000 && amount <= 5_000_000_000) price = Math.round(amount);

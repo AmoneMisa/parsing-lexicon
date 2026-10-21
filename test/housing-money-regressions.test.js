@@ -339,3 +339,34 @@ test('a "+998" phone prefix or pagination digits are never a broker commission a
   assert.equal(parseHousingCommissionAmount('Риелтор +998901234567'), null);
   assert.deepEqual(parseHousingCommissionAmount('Услуги риелтора 50$'), {amount: 50, currency: 'USD', approximate: false});
 });
+
+test('Ukrainian conventional units (у.о.) are dollars, not the local default', () => {
+  assert.deepEqual(parseHousingPrice('Здам 2к 350 у.о.', 'UAH'), {amount: 350, currency: 'USD', approximate: false});
+  assert.deepEqual(parseHousingPrice('Оренда 150 уе', 'UAH'), {amount: 150, currency: 'USD', approximate: false});
+  // A hryvnia amount must stay hryvnia.
+  assert.equal(parseHousingPrice('Оренда 8000 грн', 'USD').currency, 'UAH');
+});
+
+test('"2к" is a room count, never two thousand', () => {
+  assert.deepEqual(parseHousingPrice('Сдается 1к, 4 млн сум', 'EUR'), {amount: 4_000_000, currency: 'UZS', approximate: false});
+  assert.equal(parseHousingPrice('Здам 2к квартиру', 'UAH').amount, null);
+  assert.equal(parseHousingPrice('Цена 5к usd', 'UZS').amount, 5000);
+});
+
+test('the currency of the chosen amount wins over an earlier currency word', () => {
+  assert.deepEqual(parseHousingPrice('5 МИК 2 ЭТАЖ 1 ХОНА 2000.000 СУМ ОЙИЛА Берилади ХИЗМАТИ БОР 100$', 'UZS'), {amount: 100, currency: 'USD', approximate: false});
+  assert.deepEqual(parseHousingPrice('Alohida xona — 3 kishi, 100$ dan', 'UZS'), {amount: 100, currency: 'USD', approximate: false});
+});
+
+test('"+1000 грн" after the base price is an add-on and "грн+ком+залог" lists extras', () => {
+  assert.deepEqual(parseHousingPrice('1 к квартира 43 м2 9000 грн+ком+залог животные обсуждаются +1000 грн', 'UAH'), {amount: 9000, currency: 'UAH', approximate: false});
+  assert.deepEqual(parseHousingPrice('9000 грн+ком+залог', 'UAH'), {amount: 9000, currency: 'UAH', approximate: false});
+  // A deposit written directly after its amount is still not the price.
+  assert.equal(parseHousingPrice('Сдам, 500$ deposit', 'UAH').amount, null);
+});
+
+test('"73 т." with a price label and a dollar sign is thousands of dollars', () => {
+  assert.equal(parseHousingPrice('СТОИМОСТЬ: 73 т. $ торг', 'UAH').amount, 73_000);
+  assert.equal(parseHousingPrice('СТОИМОСТЬ: 73 т. $ торг', 'UAH').currency, 'USD');
+  assert.deepEqual(parseHousingPrice('Цена 10 т грн', 'UAH'), {amount: 10_000, currency: 'UAH', approximate: false});
+});

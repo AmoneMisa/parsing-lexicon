@@ -3,7 +3,7 @@ import { lexiconEntity } from './lexicon-core.js';
 const group = (canonical, aliases, extra = {}) => lexiconEntity(canonical, aliases, extra);
 
 export const CURRENCY_TERMS = Object.freeze([
-  group('USD', { ru: ['$', 'usd', 'доллар', 'доллара', 'долларов', 'бакс', 'у.е.', 'у е'], en: ['$', 'usd', 'dollar', 'dollars', 'us dollar'], uk: ['$', 'usd', 'долар', 'долари', 'доларів'], ro: ['$', 'usd', 'dolar', 'dolari'], uzLatn: ['$', 'usd', 'dollar'], uzCyrl: ['$', 'доллар'], kk: ['$', 'usd', 'доллар'] }),
+  group('USD', { ru: ['$', '💵', 'usd', 'доллар', 'доллара', 'долларов', 'бакс', 'у.е.', 'у е', 'уе'], en: ['$', 'usd', 'dollar', 'dollars', 'us dollar'], uk: ['$', '💵', 'usd', 'долар', 'долари', 'доларів', 'у.о.', 'у.о', 'уо', 'у.е.', 'уе'], ro: ['$', 'usd', 'dolar', 'dolari'], uzLatn: ['$', 'usd', 'dollar'], uzCyrl: ['$', 'доллар'], kk: ['$', 'usd', 'доллар'] }),
   group('EUR', { ru: ['€', 'eur', 'евро'], en: ['€', 'eur', 'euro', 'euros'], uk: ['€', 'eur', 'євро'], ro: ['€', 'eur', 'euro'], uzLatn: ['€', 'eur', 'yevro'], uzCyrl: ['€', 'евро'], kk: ['€', 'eur', 'еуро'] }),
   group('UZS', { ru: ['сум', 'сумов', 'узс'], en: ['uzs', 'uzbek som'], uk: ['uzs', 'сум'], ro: ['uzs'], uzLatn: ["so'm", 'so‘m', 'soʻm', 'sum', 'uzs', "so'mdan", 'so‘mdan', 'soʻmdan', 'somdan', 'sumdan', "so'mgacha", 'so‘mgacha', 'soʻmgacha'], uzCyrl: ['сўм', 'сум', 'сўмдан', 'сумдан', 'сўмгача'], kk: ['uzs'] }),
   group('KZT', { ru: ['₸', 'тенге', 'тг', 'kzt'], en: ['₸', 'kzt', 'tenge'], uk: ['₸', 'тенге', 'kzt'], ro: ['₸', 'kzt', 'tenge'], uzLatn: ['₸', 'kzt', 'tenge'], uzCyrl: ['₸', 'kzt', 'тенге'], kk: ['₸', 'теңге', 'тенге', 'тг', 'kzt'] }),
