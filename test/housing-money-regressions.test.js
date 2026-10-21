@@ -370,3 +370,11 @@ test('"73 т." with a price label and a dollar sign is thousands of dollars', ()
   assert.equal(parseHousingPrice('СТОИМОСТЬ: 73 т. $ торг', 'UAH').currency, 'USD');
   assert.deepEqual(parseHousingPrice('Цена 10 т грн', 'UAH'), {amount: 10_000, currency: 'UAH', approximate: false});
 });
+
+test('Latin "som" without an apostrophe follows a KGS context, while so\'m and sum stay UZS', () => {
+  assert.deepEqual(parseHousingPrice('16 000 som', 'KGS'), {amount: 16_000, currency: 'KGS', approximate: false});
+  assert.deepEqual(parseHousingPrice('Bishkek $182.88 "> 16 000 som Individual', 'KGS'), {amount: 16_000, currency: 'KGS', approximate: false});
+  assert.equal(parseHousingPrice('16 000 som', 'UZS').currency, 'UZS');
+  assert.equal(parseHousingPrice("16000 so'm", 'KGS').currency, 'UZS');
+  assert.equal(parseHousingPrice('3 mln sum', 'KGS').currency, 'UZS');
+});

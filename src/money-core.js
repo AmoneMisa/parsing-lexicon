@@ -84,10 +84,18 @@ function explicitCurrencyCandidates(value) {
     .filter(Boolean);
 }
 
+// Latin "som" with no apostrophe ("16 000 som") is how Kyrgyz sites write their
+// currency in English, while Uzbek writes "so'm"/"sum". The lexicon resolves the
+// bare spelling to UZS, so a KGS caller context must be allowed to win.
+const BARE_LATIN_SOM_RE = /(?<![\p{L}\p{N}_'’ʻʼ`‘])som(?![\p{L}\p{N}_'’ʻʼ`‘])/iu;
+const UZBEK_SUM_RE = /so['’ʻʼ`‘]m|сум|сўм|uzs|(?<![\p{L}\p{N}_])sum(?![\p{L}\p{N}_])/iu;
+
 function explicitCurrencyFromText(value, fallbackCurrency = null) {
   const candidates = explicitCurrencyCandidates(value);
   if (!candidates.length) return null;
   const fallback = String(fallbackCurrency || '').trim().toUpperCase();
+  if (fallback === 'KGS' && candidates[0] === 'UZS'
+    && BARE_LATIN_SOM_RE.test(String(value || '')) && !UZBEK_SUM_RE.test(String(value || ''))) return 'KGS';
   return fallback && candidates.includes(fallback) ? fallback : candidates[0];
 }
 
