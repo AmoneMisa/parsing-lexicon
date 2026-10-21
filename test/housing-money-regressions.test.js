@@ -378,3 +378,13 @@ test('Latin "som" without an apostrophe follows a KGS context, while so\'m and s
   assert.equal(parseHousingPrice("16000 so'm", 'KGS').currency, 'UZS');
   assert.equal(parseHousingPrice('3 mln sum', 'KGS').currency, 'UZS');
 });
+
+test('the new Kyrgyz som sign (⃀) is KGS and a truncated "+996 …" phone is never the price', () => {
+  const kg = {country: 'KG', currency: 'KGS'};
+  assert.deepEqual(parseHousingPrice('Бишкек 27 000 ⃀ / мес Не отвечаю на звонки! Квартира-Студия', kg), {amount: 27_000, currency: 'KGS', approximate: false});
+  assert.deepEqual(
+    parseHousingPrice('Уметалиева 127/Фрунзе 131 400 ⃀ / мес Сдам на длительный срок. Агентство недвижимости +996 998 880 … Написать', kg),
+    {amount: 131_400, currency: 'KGS', approximate: false},
+  );
+  assert.equal(parseHousingPrice('Сдам, звоните +996 998 880 …', kg).amount, null);
+});

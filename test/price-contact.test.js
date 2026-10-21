@@ -54,3 +54,11 @@ test('a dash-grouped national phone next to a currency is a phone, not a price',
 test('a dollar emoji is a dollar sign next to a thousands shorthand', () => {
   assert.deepEqual(parseHousingPrice('СТОИМОСТЬ: 73 т. 💵 торг ☎️063-148-21-07', 'UAH'), { amount: 73_000, currency: 'USD', approximate: false });
 });
+
+test('a truncated international phone with an explicit +CC is masked', () => {
+  const text = 'Агентство +996 998 880 … Написать';
+  assert.equal(findPhoneLikeSpans(text).length, 1);
+  assert.equal(maskPhoneLikeSpans(text).includes('998 880'), false);
+  // A plus-prefixed price add-on is not a phone.
+  assert.equal(findPhoneLikeSpans('9000 грн +1000 грн').length, 0);
+});

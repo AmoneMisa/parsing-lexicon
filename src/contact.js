@@ -4,6 +4,7 @@ import { moneyCurrencyPattern } from './money-core.js';
 // Broad phone-like detection used by other parsers for exclusion/classification.
 // It deliberately stays tolerant and does not validate against a country plan.
 const PHONE_LIKE_RE = /\+?\d(?:[\t \u00a0().-]*\d){9,}/g;
+const TRUNCATED_INTL_PHONE_RE = /\+(?:998|996|380)(?:[\t \u00a0().-]*\d){6,}/gu;
 
 // Contact extraction may start from shorter national formats, but candidates are
 // only returned after libphonenumber validation.
@@ -79,6 +80,16 @@ export function findPhoneLikeSpans(value, options = {}) {
       raw,
       digits,
     }));
+  }
+
+  // Catalogue cards often truncate a shown phone ("+996 998 880 …"): too few
+  // digits for the broad mask above, but an explicit +CC of a country we parse
+  // followed by a digit run is a contact, never an amount.
+  for (const match of text.matchAll(TRUNCATED_INTL_PHONE_RE)) {
+    const start = match.index ?? 0;
+    const end = start + match[0].length;
+    if (spans.some((span) => span.start <= start && span.end >= end)) continue;
+    spans.push(Object.freeze({ start, end, raw: match[0], digits: match[0].replace(/\D/g, '') }));
   }
 
   // Uzbekistan's ordinary national presentation is nine digits (for example
