@@ -28,3 +28,10 @@ test('plain vacancy salary text keeps working', () => {
   assert.deepEqual(pick('Salary 3 000 - 4 500 USD per month'), { min: 3000, max: 4500, currency: 'USD' });
   assert.deepEqual(pick('З/п от 15 лет опыта не требуется, 500$'), { min: 500, max: null, currency: 'USD' });
 });
+
+test('the loose first-number reading never runs on a whole card', async () => {
+  const { parseHiringSourceSalary } = await import('../src/hiring-source-semantics.js');
+  assert.equal(parseHiringSourceSalary('Менеджер\nЖенщина, 24 лет\nОпыт 3 года\nГотов рассмотреть 500 $ ... уточнить'.replace('500 $', '')), null);
+  assert.deepEqual(pick('150 000 сум'), { min: 150000, max: 150000, currency: 'UZS' });
+  assert.equal(parseHiringSourceSalary('120 000 сом', { fallbackCurrency: 'KGS' }).currency, 'KGS');
+});

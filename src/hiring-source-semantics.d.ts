@@ -15,7 +15,7 @@ export type SplitHiringVacancyPost = Readonly<{
 export function splitHiringVacancyEntries(value: unknown): SplitHiringVacancyPost;
 export function extractCandidateDisplayName(value: unknown): string;
 export function extractCandidateExperienceMentions(value: unknown): readonly CandidateExperienceMention[];
-export function parseHiringSourceSalary(value: unknown): SalaryParseResult | null;
+export function parseHiringSourceSalary(value: unknown, options?: { fallbackCurrency?: string | null }): SalaryParseResult | null;
 export function parseCandidateSalary(value: unknown, country?: string): SalaryParseResult | null;
 export function detectUsLocation(value: unknown): boolean;
 export function detectVisaSponsorshipWording(value: unknown): VisaSponsorshipWording;

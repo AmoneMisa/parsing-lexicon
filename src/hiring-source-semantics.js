@@ -195,10 +195,16 @@ function parseLooseNumber(raw, suffix = '') {
 
 const SOURCE_AMOUNT_RE = /(\d[\d\s.,]*\d|\d)(?:\s*(кк|kk|млн|mln|million|к|k|тыс|тис|ming|thousand))?(?:\s*(?:[-–—…]{1,3}|до|to|dan\s+gacha|gacha)\s*(\d[\d\s.,]*\d|\d)(?:\s*(кк|kk|млн|mln|million|к|k|тыс|тис|ming|thousand))?)?/iu;
 
-export function parseHiringSourceSalary(value) {
+// The loose "first number plus any currency" reading below is for a salary chip or field
+// ("150 000 сум"). On a whole card it would pick the age or an update date, so longer or
+// multi-line text only gets the context-scored parse.
+const LOOSE_SALARY_MAX_LENGTH = 80;
+
+export function parseHiringSourceSalary(value, options = {}) {
   const text = String(value || '').replace(/(?<=\d)\s*(?:кк|kk)(?![\p{L}\p{N}_])/giu, ' mln ');
-  const parsed = parseSalary(text);
+  const parsed = parseSalary(text, options);
   if (parsed?.currency && (parsed.min != null || parsed.max != null)) return parsed;
+  if (text.trim().length > LOOSE_SALARY_MAX_LENGTH || /\n/.test(text.trim())) return parsed;
   const currency = sourceCurrency(text);
   if (!currency) return parsed;
   const match = text.match(SOURCE_AMOUNT_RE);
@@ -223,7 +229,7 @@ export function parseCandidateSalary(value, country = '') {
   const field = extractCandidateStructuredField(value, 'salary', 140);
   if (!field) return null;
   const defaultCurrency = defaultHiringCurrency(country);
-  let parsed = parseHiringSourceSalary(field);
+  let parsed = parseHiringSourceSalary(field, { fallbackCurrency: defaultCurrency });
   if (!parsed || (parsed.min == null && parsed.max == null)) {
     const match = field.match(SOURCE_AMOUNT_RE);
     if (!match) return null;

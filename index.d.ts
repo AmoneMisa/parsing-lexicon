@@ -348,7 +348,7 @@ export const CURRENCY_TERMS: readonly LexiconEntity[];
 export const SALARY_PERIODS: readonly LexiconEntity[];
 export const SALARY_MODIFIERS: Readonly<Record<string, LexiconEntity>>;
 export const NUMBER_MULTIPLIERS: readonly LexiconEntity[];
-export function parseSalary(value: unknown): SalaryParseResult | null;
+export function parseSalary(value: unknown, options?: { fallbackCurrency?: string | null }): SalaryParseResult | null;
 export function salaryCurrency(value: unknown): string | null;
 export function salaryPeriod(value: unknown): SalaryParseResult['period'];
 export function currencyAliases(code: string): readonly string[];
