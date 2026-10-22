@@ -71,3 +71,17 @@ test('Romanian "dormitor" is a bedroom, not a dormitory', async () => {
   }
   assert.equal(parseHousingWeakShareSignal('Student dormitory near the metro, 15 USD a night'), true);
 });
+
+test('a price per person ("odam boshiga", "битта одамга", "с человека", "1 ta xonada 2 kishi") is a shared stay', async () => {
+  const { parseHousingRoomShare } = await import('../src/housing-listing-enrichment.js');
+  for (const text of [
+    'narxi komulla icida 125 dollardan odam boshiga kvartira 2 xonali obshiy 4 kishimiz 1 ta xonada 2 kishi bolasila',
+    'Аренда ишловчи студентов битта одамга 1 500',
+    '800$ с человека, комната на двоих',
+  ]) assert.equal(parseHousingRoomShare(text), true, text);
+  for (const text of [
+    'Сдам квартиру на 2 человека 500$',
+    'Ijaraga 2 xonali kvartira, 4 kishilik oila uchun 400$',
+    'Сдам 2-комнатную квартиру, в комнате 2 окна, 500$',
+  ]) assert.equal(parseHousingRoomShare(text), false, text);
+});
