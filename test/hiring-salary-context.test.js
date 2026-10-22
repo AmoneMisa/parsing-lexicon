@@ -118,3 +118,10 @@ test('currency glued to the amount does not truncate the salary', () => {
   assert.equal(parseHiringSalaryWithContext('💰 Заработная плата: от 10 000 000сум.', options).min, 10_000_000);
   assert.equal(parseHiringSalaryWithContext('Заработная плата: от 6 000 000сум+ KPI', options).min, 6_000_000);
 });
+
+test('the context country settles an ambiguous "сом" but never invents a currency', async () => {
+  const { parseHiringSalaryWithContext } = await import('../src/hiring-salary-context.js');
+  assert.equal(parseHiringSalaryWithContext('Зарплата 120 000 сом', { country: 'KG' }).currency, 'KGS');
+  assert.equal(parseHiringSalaryWithContext('Зарплата 120 000 сом', { country: 'UZ' }).currency, 'UZS');
+  assert.equal(parseHiringSalaryWithContext('Зарплата 120 000', { country: 'KG' }).currency, null);
+});

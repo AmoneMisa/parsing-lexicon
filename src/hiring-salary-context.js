@@ -108,7 +108,10 @@ function withContext(parsed, value, options) {
  * distinguish explicit values from contextual defaults.
  */
 export function parseHiringSalaryWithContext(value, options = {}) {
-  return withContext(parseSalary(value), value, options);
+  // The country also settles an ambiguous currency word ("сом" is both Kyrgyz and Uzbek).
+  const country = contextCountry(options);
+  const fallbackCurrency = country ? COUNTRY_DEFAULT_CURRENCIES[country] || null : null;
+  return withContext(parseSalary(value, { fallbackCurrency }), value, options);
 }
 
 // Include short local-board labels/markers used in real vacancy feeds: `З/п`,
