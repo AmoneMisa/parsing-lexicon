@@ -417,3 +417,12 @@ test('cheap-looking Tashkent listings from the report read their real price and 
   // A bare "тг" after an amount is still tenge.
   assert.equal(parseHousingPrice('Аренда 150000 тг', 'KZT').currency, 'KZT');
 });
+
+test('an under-a-dollar so\'m fragment does not beat the real so\'m price next to it', () => {
+  const uz = {country: 'UZ', currency: 'UZS'};
+  const card = "3xonalik uy ijaraga beriladi Бухара 2 500 000 сўм 3-комн 72 м² 3/5 эт Narxi 2500UZS 5-MIR JOMIY TARAFDAN";
+  assert.deepEqual(parseHousingPrice(card, uz), {amount: 2_500_000, currency: 'UZS', approximate: false});
+  // Alone, or scaled, nothing changes.
+  assert.equal(parseHousingPrice('Narxi 2500UZS', uz).amount, 2500);
+  assert.equal(parseHousingPrice('Narxi 2500 ming', uz).amount, 2_500_000);
+});

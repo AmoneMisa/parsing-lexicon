@@ -389,8 +389,17 @@ export function extractHousingMoneyCandidates(value, context = '') {
 
 /** Rank candidate semantics; this intentionally never uses amount magnitude. */
 export function rankHousingPriceCandidates(candidates) {
+  // Under 10 000 so'm is less than a dollar. Next to a real so'm amount it is a fragment ("Narxi 2500UZS"
+  // beside "2 500 000 сўм") or a number the currency word merely sits beside ("сўм 3"): demote it and let
+  // the real amount stand. Alone, such a number is left as it was.
+  const isSumFragment = (c) => c.currency === 'UZS' && c.amount < 10_000 && !c.scale;
+  const isRealSum = (c) => c.currency === 'UZS' && c.amount >= 100_000;
+  const hasFragment = candidates.some(isSumFragment);
+  const hasRealSum = candidates.some(isRealSum);
   return Object.freeze([...candidates].map((candidate) => {
     let confidence = candidate.explicitCurrency ? 0.6 : 0.3;
+    if (hasRealSum && isSumFragment(candidate)) confidence -= 0.5;
+    if (hasFragment && isRealSum(candidate)) confidence += 0.1;
     if (candidate.priceKeyword) confidence += 0.2;
     if (candidate.scale) confidence += 0.15;
     if (candidate.paymentRole === 'currentPrice') confidence += 0.25;
