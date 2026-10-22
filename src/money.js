@@ -79,8 +79,19 @@ function regexSpans(text, pattern) {
   return spans;
 }
 
+// Candidate cards put the amount next to age, work history and update dates:
+// "45 лет • Обновлено 26 августа", "1 год стажа", "32 года 11 месяцев", "07.10.2026".
+// None of those numbers is money, whatever currency sign sits on a neighbouring line.
+const NON_MONEY_UNIT = String.raw`(?:лет|года|год|г\.|роки|рік|років|yosh(?:da)?|yo['’ʻʼ]?sh|years?|yrs?|y\.o\.|месяц\p{L}*|мес\.?|місяц\p{L}*|oy(?:lik)?|months?|класс\p{L}*|клас\p{L}*|мест[оа]?\s+работы|места\s+работы)`;
+const AGE_OR_TENURE_RE = new RegExp(String.raw`(?<![\p{L}\p{N}.,])\d{1,2}(?:[.,]\d)?\s*${NON_MONEY_UNIT}(?![\p{L}\p{N}_])`, 'giu');
+const DAY_MONTH_RE = /(?<![\p{L}\p{N}.,])\d{1,2}\s+(?:янв|фев|мар|апр|ма[йя]|июн|июл|авг|сен|окт|ноя|дек|січ|лют|бер|кві|тра|чер|лип|сер|вер|жов|лис|гру|jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec|yanvar|fevral|mart|aprel|iyun|iyul|avgust|sentyabr|oktyabr|noyabr|dekabr)\p{L}*/giu;
+const NUMERIC_DATE_RE = /(?<![\d.])\d{1,2}[./]\d{1,2}[./](?:\d{4}|\d{2})(?![\d])/gu;
+
 function protectedNonMoneySpans(text) {
   return [
+    ...regexSpans(text, AGE_OR_TENURE_RE),
+    ...regexSpans(text, DAY_MONTH_RE),
+    ...regexSpans(text, NUMERIC_DATE_RE),
     ...protectedPhoneSpans(text),
     ...regexSpans(text, TIME_RANGE_RE),
     ...regexSpans(text, WORK_RATIO_RE),
@@ -92,7 +103,12 @@ function overlapsProtectedSpan(start, end, spans) {
 }
 
 function moneyContextScore(text, start, end, scaled = false) {
-  const window = text.slice(Math.max(0, start - 36), Math.min(text.length, end + 40));
+  // The evidence has to be on the amount's own line: a "$" two lines further down
+  // belongs to another field of the card, not to this number.
+  const lineStart = text.lastIndexOf('\n', start - 1) + 1;
+  const lineEndAt = text.indexOf('\n', end);
+  const lineEnd = lineEndAt === -1 ? text.length : lineEndAt;
+  const window = text.slice(Math.max(lineStart, start - 36), Math.min(lineEnd, end + 40));
   let score = 0;
   if (moneyCurrencyFromText(window)) score += 5;
   if (hasSalaryContext(window)) score += 4;
@@ -149,11 +165,18 @@ function bestRange(text, protectedSpans) {
   return candidates[0]?.match || null;
 }
 
-export function parseSalary(value) {
+/**
+ * `options.fallbackCurrency` only settles an ambiguous word ("сом"/"som" is both the Kyrgyz
+ * and the Uzbek currency); it is never used when the text names no currency at all.
+ */
+export function parseSalary(value, options = {}) {
   const text = normalizeUnicode(value ?? '');
   if (!text) return null;
 
-  const currency = moneyCurrencyFromText(text);
+  const mentioned = moneyCurrencyFromText(text);
+  const currency = mentioned && options?.fallbackCurrency
+    ? moneyCurrencyFromText(text, options.fallbackCurrency)
+    : mentioned;
   const negotiable = hasModifier(text, 'negotiable');
   const gross = hasModifier(text, 'gross') ? true : hasModifier(text, 'net') ? false : null;
   const period = periodFromText(text);

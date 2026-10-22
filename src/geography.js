@@ -1,5 +1,5 @@
 import { UZ_CITIES, KZ_CITIES } from './geography-central-asia.js';
-import { findCanonical } from './normalization.js';
+import { findCanonical, stripSettlementPrefix } from './normalization.js';
 import { canonicalCountryCode } from './countries.js';
 import { lexiconEntity } from './lexicon-core.js';
 import { RO_CITY_EXTENSIONS } from './romania-geography.js';
@@ -135,7 +135,7 @@ export const CITIES_BY_COUNTRY = Object.freeze(Object.fromEntries(
 export function canonicalCity(value, country = null) {
   const code = country ? canonicalCountryCode(country) : null;
   const catalog = country ? (code ? (CITIES_BY_COUNTRY[code] || []) : []) : CITIES;
-  return findCanonical(value, catalog)?.canonical || null;
+  return findCanonical(value, catalog)?.canonical || findCanonical(stripSettlementPrefix(value), catalog)?.canonical || null;
 }
 
 // Backward-compatible aliases. New code should use CITIES/CITIES_BY_COUNTRY/canonicalCity.

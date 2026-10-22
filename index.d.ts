@@ -187,6 +187,7 @@ export function buildAliasIndex<T>(entries: readonly T[], options?: { transliter
 export function getAliasIndex<T>(entries: readonly T[], options?: { transliteration?: boolean }): Map<string, T>;
 export function getAliasOwnersIndex<T>(entries: readonly T[], options?: { transliteration?: boolean }): Map<string, ReadonlyArray<Readonly<{ entry: T; sourceAlias: string; searchAlias: string }>>>;
 export function findCanonical<T extends { canonical?: string; name?: string; aliases?: AliasMap | readonly string[] }>(value: unknown, entries: readonly T[], options?: { partial?: boolean; transliteration?: boolean }): T | null;
+export function stripSettlementPrefix(value: unknown): string;
 export function findAllCanonical<T extends { canonical?: string; name?: string; aliases?: AliasMap | readonly string[] }>(value: unknown, entries: readonly T[], options?: { transliteration?: boolean }): CanonicalMatch<T>[];
 export function collectAliasCollisions(entries: readonly unknown[], options?: { includeSearchFolds?: boolean; allowed?: readonly string[] }): ReadonlyArray<Readonly<{ alias: string; canonicals: readonly string[] }>>;
 export function validateAliasCollisions(entries: readonly unknown[], options?: { includeSearchFolds?: boolean; allowed?: readonly string[] }): true;

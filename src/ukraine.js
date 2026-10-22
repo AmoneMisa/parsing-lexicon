@@ -1,5 +1,5 @@
 import { UA_CITIES } from './geography.js';
-import { findCanonical } from './normalization.js';
+import { findCanonical, stripSettlementPrefix } from './normalization.js';
 import { UA_SECONDARY_CITY_NAMES } from './ua-secondary-cities.js';
 
 const HISTORICAL_CITY_ALIASES = Object.freeze({
@@ -60,7 +60,7 @@ export const UA_CITY_CATALOG = Object.freeze([
 export const UA_CITY_HISTORICAL_ALIASES = HISTORICAL_CITY_ALIASES;
 
 export function canonicalUkraineCity(value) {
-  return findCanonical(value, UA_CITY_CATALOG)?.canonical || null;
+  return findCanonical(value, UA_CITY_CATALOG)?.canonical || findCanonical(stripSettlementPrefix(value), UA_CITY_CATALOG)?.canonical || null;
 }
 
 export const UA_LOCATION_TERMS = Object.freeze({

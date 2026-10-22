@@ -552,3 +552,14 @@ export function aliasesToRegex(values, flags = 'i') {
     flags.replace('u', ''),
   );
 }
+
+// "город Бишкек", "г. Токмак", "місто Ялта", "oraș Cluj": the settlement-type word is
+// part of how a source wrote the place, not of its name. Without removing it the same
+// city appears twice in a city filter ("Bishkek" and "город Бишкек").
+const SETTLEMENT_PREFIX_RE = /^\s*(?:город|гор\.|г\.|г(?=\s)|місто|м\.(?=\s*\p{L})|шаар|city\s+of|oraș(?:ul)?|orasul|municipiul|mun\.|shahar(?:i)?|qalasi)\s*(?=\p{L})/iu;
+
+export function stripSettlementPrefix(value) {
+  const text = String(value ?? '').trim();
+  const stripped = text.replace(SETTLEMENT_PREFIX_RE, '').trim();
+  return stripped || text;
+}
