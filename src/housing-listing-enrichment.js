@@ -42,7 +42,7 @@ const FAMILY_RE = /(?:семь\p{L}*|family|oila(?:ga|lar|li)?|oyla(?:ga|lar|li)
 // preference.  Keep this narrow and local to avoid rejecting ordinary
 // "oila uchun" / "для семьи" invitations elsewhere in the listing.
 const FAMILY_EXCLUSION_RE = /(?:oila|oyla|семь\p{L}*|family|famil(?:ie|ia)|cuplu(?:ri)?|отбас\p{L}*|жанұя\p{L}*)[^\r\n.!?]{0,48}(?:bezovta\s+qilmasin|murojaat\s+qilmasin|kerak\s+emas|qabul\s+qilinmaydi|не\s+(?:беспокоить|принимаем)|not\s+(?:allowed|welcome))/iu;
-const ROOM_SHARE_RE = /(?:sherik(?:ka|lik|likga)?|шерик(?:ка|лик)?|roommate|flatmate|подселени|койко[-\s]?мест|место\s+в\s+(?:комнат|квартир)|birga\s+yashash(?:ga)?|\d+\s*tadan\s+(?:qiz|yigit|odam|kishi|bola)|\d+\s*ta\s+(?:qiz|yigit|odam|kishi|bola)\s+(?:yashaydi|turadi)|\d+\s*(?:ta|tagacha)\s+(?:odam|kishi)\s+qabul|kvartira(?:ga|da)?[^\r\n.!?]{0,36}(?:\d+|bitta|1)\s*(?:ta\s*)?(?:qiz|ayol)[^\r\n.!?]{0,20}(?:ijarachi\s*)?(?:kerak|kere)|yotoqxona|ётоқхона|ётоккона|ёткохона|общежити\p{L}*|dormitory|хостел|hostel|\d+\s*kishi(?:ga|lik)(?![\p{L}\p{N}_])|sher[ei]l?ik\p{L}*|(?<![\p{L}\p{N}_])(?:ogil\s+bollarga|o[gʻ‘’']{1,2}il\s+bollarga|bollarga|yigitlarga|yigitlar\s+uchun)(?![\p{L}\p{N}_])|coleg\s+de\s+(?:apartament|camer[ăa])|bed\s+space|бөлмелес(?:\s+керек)?|көрші\s+керек)/iu;
+const ROOM_SHARE_RE = /(?:sherik(?:ka|lik|likga)?|шерик(?:ка|лик)?|roommate|flatmate|подселени|койко[-\s]?мест|место\s+в\s+(?:комнат|квартир)|birga\s+yashash(?:ga)?|\d+\s*tadan\s+(?:qiz|yigit|odam|kishi|bola)|\d+\s*ta\s+(?:qiz|yigit|odam|kishi|bola)\s+(?:yashaydi|turadi)|\d+\s*(?:ta|tagacha)\s+(?:odam|kishi)\s+qabul|kvartira(?:ga|da)?[^\r\n.!?]{0,36}(?:\d+|bitta|1)\s*(?:ta\s*)?(?:qiz|ayol)[^\r\n.!?]{0,20}(?:ijarachi\s*)?(?:kerak|kere)|sher[ei]l?ik\p{L}*|coleg\s+de\s+(?:apartament|camer[ăa])|bed\s+space|бөлмелес(?:\s+керек)?|көрші\s+керек)/iu;
 const AIR_CONDITIONER_RE = /(?:кондицион|air\s*con|konditsioner|kandit(?:s|c)?aner|kanditsaner|кандитсанер)/iu;
 const PER_PERSON_PRICE_RE = /(?:kishi\s+boshiga|киши\s+бошига)\s*(\d{1,3}(?:[\s.,]\d{3})*|\d+(?:[.,]\d+)?)\s*(ming|минг|million|mln|млн)?(?:dan|дан)?/iu;
 // Shared-flat posts price each tenant with the ablative "-dan" ("800 000
@@ -222,6 +222,15 @@ export function parseHousingAudience(value) {
 // "комната А - 800$, комната Б - 700$" / "1-xona - 800 ming, 2-xona - 700 ming": a price per room is a
 // list of rooms let separately, never one whole flat.
 const ROOM_PRICE_LIST_RE = /(?:комнат[аыу]?\s*[A-Za-zА-Яа-я0-9№]|\d+\s*-?\s*xona|xona\s*\d+|\d+\s*-?\s*комн\p{L}*)\s*[-—–:]\s*\d[\d\s.,]*(?:\$|usd|сум|so['’ʻ]?m|ming|тыс|к)?[^\n]{0,70}?(?:комнат[аыу]?\s*[A-Za-zА-Яа-я0-9№]|\d+\s*-?\s*xona|xona\s*\d+|\d+\s*-?\s*комн\p{L}*)\s*[-—–:]\s*\d/iu;
+
+// Weaker shared-stay wording. "yotoqxona" is also a bedroom, "bollarga" appears in plain family
+// flats and a dormitory can be a landmark ("бывшее общежитие"), so these only mean a shared stay
+// when the price is low too; the caller applies that price test.
+const WEAK_SHARE_RE = /(?:yotoqxona|ётоқхона|ётоккона|ёткохона|общежити\p{L}*|dormitory|хостел|hostel|\d+\s*kishi(?:ga|lik)(?![\p{L}\p{N}_])|(?<![\p{L}\p{N}_])(?:ogil\s+bollarga|o[gʻ‘’']{1,2}il\s+bollarga|bollarga|yigitlarga|yigitlar\s+uchun)(?![\p{L}\p{N}_]))/iu;
+
+export function parseHousingWeakShareSignal(value) {
+  return WEAK_SHARE_RE.test(normalizeUnicode(value ?? ''));
+}
 
 export function parseHousingRoomShare(value) {
   const text = normalizeUnicode(value ?? '');

@@ -93,6 +93,7 @@ export function parseHousingNearby(value: unknown): readonly string[];
 export function extractHousingPoiRelations(value: unknown, options?: { country?: string; city?: string; resolveGeoCandidates?: GeoCandidateResolver }): readonly HousingPoiRelation[];
 export function parseHousingAudience(value: unknown): Readonly<{ primary: HousingAudience | null; alternatives: readonly HousingAudience[] }>;
 export function parseHousingRoomShare(value: unknown): boolean;
+export function parseHousingWeakShareSignal(value: unknown): boolean;
 export function parseHousingLandlordPresent(value: unknown): boolean;
 export function parseHousingStudentTarget(value: unknown): boolean;
 export function parseHousingCommission(value: unknown): boolean | null;
