@@ -28,3 +28,23 @@ test('Uzbek "N ta qiz yashaydi" / "2 tadan" / "N tagacha odam qabul" posts are s
   assert.equal(parseHousingRoomShare('odam kop 80 tagacha odam qabul qilamiz hovli'), true);
   assert.equal(parseHousingRoomShare('Сдам в аренду однокомнатную квартиру семье на долгий срок'), false);
 });
+
+test('dormitories, "for 1 person", boys-only quarters and per-room price lists are shared stays', async () => {
+  const { parseHousingRoomShare } = await import('../src/housing-listing-enrichment.js');
+  for (const text of [
+    'Talabalar uchun yotoqxona 1 000 000 so‘m',
+    'Аренда Студентла учун Ётоккона 100 м²',
+    'Kvartira bor 1 kishiga 90 d',
+    'Tuzel metroga 100 metir sherelika kerak',
+    'Faqat ogil bollarga qizla bezovta qmela',
+    'Комната А — 800$, комната Б — 700$. Проживание студентов',
+    '1-xona - 800 ming, 2-xona - 700 ming',
+    'Сдам общежитие для рабочих',
+  ]) assert.equal(parseHousingRoomShare(text), true, text);
+  for (const text of [
+    'Сдам 2-комнатную квартиру семье, 500$',
+    'Ijaraga 3 xonali kvartira 400$',
+    'Квартира для семьи, комната 1 - спальня 12 м2, комната 2 - зал 18 м2 цена 500$',
+    'Bollar uchun bog‘cha yonida kvartira',
+  ]) assert.equal(parseHousingRoomShare(text), false, text);
+});
