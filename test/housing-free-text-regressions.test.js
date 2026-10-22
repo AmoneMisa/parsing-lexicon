@@ -48,3 +48,10 @@ test('dormitories, "for 1 person", boys-only quarters and per-room price lists a
     'Bollar uchun bog‘cha yonida kvartira',
   ]) assert.equal(parseHousingRoomShare(text), false, text);
 });
+
+test('Romanian "dormitor" is a bedroom, not a dormitory', async () => {
+  const { parseHousingRoomShare } = await import('../src/housing-listing-enrichment.js');
+  assert.equal(parseHousingRoomShare('Închiriez apartament premium cu 2 dormitoare în zona Coresi, Brașov'), false);
+  assert.equal(parseHousingRoomShare('Inchiriez ap 2 cam, 1 dormitor, living, bucatarie, 600 EUR'), false);
+  assert.equal(parseHousingRoomShare('Student dormitory near the metro, 15 USD a night'), true);
+});
