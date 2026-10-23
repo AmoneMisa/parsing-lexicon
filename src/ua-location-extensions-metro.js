@@ -1,6 +1,8 @@
 import { locationEntries } from './location-merge.js';
 import { UA_KHARKIV_LOCATION_TRANSLATIONS } from './ua-kharkiv-location-translations.js';
 
+const stationMentions = (...names) => names.flatMap((name) => [`метро ${name}`, `станція метро ${name}`, `станция метро ${name}`]);
+
 export const UA_METRO_LOCATION_EXTENSIONS = Object.freeze({
   Kyiv: Object.freeze({
     // This extension is merged after the legacy UA seeds. Keep newly verified
@@ -57,6 +59,41 @@ export const UA_METRO_LOCATION_EXTENSIONS = Object.freeze({
       ['Palats Ukraina', 'Палац Україна', 'Дворец Украина'],
       ['Olimpiiska', 'Олімпійська', 'Олимпийская'],
       ['Pecherska', 'Печерська', 'Печерская'],
+      ['Arsenalna', 'Арсенальна', 'Арсенальная'],
+      ['Beresteiska', 'Берестейська', 'Берестейская'],
+      ['Chernihivska', 'Чернігівська', 'Черниговская'],
+      ['Demiivska', 'Деміївська', 'Демиевская'],
+      ['Dorohozhychi', 'Дорогожичі', 'Дорогожичи'],
+      ['Heroiv Dnipra', 'Героїв Дніпра', 'Героев Днепра'],
+      ['Holosiivska', 'Голосіївська', 'Голосеевская'],
+      ['Klovska', 'Кловська', 'Кловская'],
+      ['Kontraktova Ploshcha', 'Контрактова площа', 'Контрактовая площадь'],
+      ['Lvivska Brama', 'Львівська брама', 'Львовская брама'],
+      ['Lybidska', 'Либідська', 'Лыбедская'],
+      ['Palats Sportu', 'Палац спорту', 'Дворец спорта'],
+      ['Ploshcha Ukrainskykh Heroiv', 'Площа Українських Героїв', 'Площадь Украинских Героев'],
+      ['Politekhnichnyi Instytut', 'Політехнічний інститут', 'Политехнический институт'],
+      ['Poshtova Ploshcha', 'Поштова площа', 'Почтовая площадь'],
+      ['Shuliavska', 'Шулявська', 'Шулявская'],
+      ['Tarasa Shevchenka', 'Тараса Шевченка', 'Тараса Шевченко'],
+      ['Vasylkivska', 'Васильківська', 'Васильковская'],
+      ['Vydubychi', 'Видубичі', 'Выдубичи'],
+      ['Vystavkovyi Tsentr', 'Виставковий центр', 'Выставочный центр'],
+      ['Zvirynetska', 'Звіринецька', 'Зверинецкая'],
+      // These names are also a city, a district, a street or a park, so a bare
+      // mention must not become a station; require the "metro" keyword.
+      ['Darnytsia', ...stationMentions('Дарниця', 'Дарница')],
+      ['Dnipro', ...stationMentions('Дніпро', 'Днепр')],
+      ['Hydropark', ...stationMentions('Гідропарк', 'Гидропарк')],
+      ['Ipodrom', ...stationMentions('Іподром', 'Ипподром')],
+      ['Lisova', ...stationMentions('Лісова', 'Лесная')],
+      ['Minska', ...stationMentions('Мінська', 'Минская')],
+      ['Nyvky', ...stationMentions('Нивки')],
+      ['Obolon', ...stationMentions('Оболонь')],
+      ['Pochaina', ...stationMentions('Почайна')],
+      ['Slavutych', ...stationMentions('Славутич')],
+      ['Syrets', ...stationMentions('Сирець', 'Сырец')],
+      ['Teatralna', ...stationMentions('Театральна', 'Театральная')],
     ]),
   }),
   Kharkiv: Object.freeze({
