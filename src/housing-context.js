@@ -125,6 +125,19 @@ export const LOCATION_RELATIONS = Object.freeze([
   group('drivingDistance', { ru: ['минут на машине', 'минут на авто'], en: ['minutes by car', 'minutes drive'], uk: ['хвилин машиною'], ro: ['minute cu mașina'], uzLatn: ['daqiqa mashinada'], uzCyrl: ['дақиқа машинада'], kk: ['минут көлікпен'] }),
 ]);
 
+// "спуск на Поділ", "15 хвилин до Подолу": the place is where one can go from the
+// property, not where the property is. Motion/travel-time words before the
+// preposition separate that from "квартира на Подолі".
+const DESTINATION_LEAD_RE = /(?:спуск|з['’ʼ]?їзд|виїзд|вихід|доїзд|шлях|дорога|доїхати|дістатися|выезд|выход|проезд|доехать|добраться|хвилин[иа]?|минут[аы]?|хв\.?|мин\.?)\s+(?:пішки\s+|пешком\s+|на\s+авто\s+|транспортом\s+|на\s+машине\s+)?(?:швидкий\s+|быстрый\s+)?(?:на|до|в|у|к|ко|від|от)\s+$/iu;
+
+/** Whether the mention starting at `start` names a place the text travels to, not the property's own area. */
+export function isDestinationMention(value, start) {
+  const text = String(value ?? '');
+  const index = Number(start);
+  if (!Number.isInteger(index) || index <= 0) return false;
+  return DESTINATION_LEAD_RE.test(text.slice(Math.max(0, index - 40), index));
+}
+
 export const AVAILABILITY_TERMS = Object.freeze([
   group('availableNow', { ru: ['свободна', 'свободно', 'можно заезжать', 'готова к заселению'], en: ['available now', 'ready to move in', 'move in now'], uk: ['вільна', 'можна заселятися'], ro: ['disponibil acum'], uzLatn: ['hozir bo‘sh', 'ko‘chib kirish mumkin'], uzCyrl: ['ҳозир бўш'], kk: ['қазір бос', 'кіруге болады'] }),
   group('availableFrom', { ru: ['с 1 сентября', 'будет свободна с', 'освободится'], en: ['available from', 'move-in from'], uk: ['вільна з'], ro: ['disponibil din'], uzLatn: ['dan boshlab bo‘sh'], uzCyrl: ['дан бошлаб бўш'], kk: ['бастап бос'] }),

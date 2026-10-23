@@ -33,4 +33,5 @@ export const FINANCING_TERMS: readonly unknown[];
 export const LOCATION_RELATIONS: readonly unknown[];
 export const AVAILABILITY_TERMS: readonly unknown[];
 export const LISTING_STATUS_TERMS: readonly unknown[];
+export function isDestinationMention(value: unknown, start: number): boolean;
 export function parseHousingContext(value: unknown): HousingContextResult;

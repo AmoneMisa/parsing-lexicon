@@ -34,3 +34,13 @@ test('street aliases do not carry the place a street is named after', () => {
   assert.equal(matchFirstEntry(streets, 'Швидкий спуск на Поділ та Глибочицьку')?.name ?? null, null);
   assert.notEqual(matchFirstEntry(streets, 'історична місцевість Татарка')?.name, 'Татарська вулиця');
 });
+
+test('a place one travels to is not the property area', async () => {
+  const { isDestinationMention } = await import('../src/housing-context.js');
+  const at = (text, word) => isDestinationMention(text, text.indexOf(word));
+  assert.equal(at('Швидкий спуск на Поділ та Глибочицьку.', 'Поділ'), true);
+  assert.equal(at('10 хвилин до Подолу', 'Подолу'), true);
+  assert.equal(at('15 минут пешком до Подола', 'Подола'), true);
+  assert.equal(at('Квартира на Подолі, тихий двір', 'Подолі'), false);
+  assert.equal(at('Поділ, вул. Сагайдачного', 'Поділ'), false);
+});
