@@ -1,5 +1,28 @@
 import { aliasesToRegex, normalizeForMatch } from './normalization.js';
 import { ROMANIAN_GROUP_ALIASES, ROMANIAN_PROFESSION_ALIASES, ROMANIAN_SENIORITY_ALIASES } from './hiring-professions-ro.js';
+import { PROFESSION_TERMS } from './hiring-profession-terms.js';
+import { EXTENDED_ROWS } from './hiring-professions-extended.js';
+
+// Keys are folded the same way as the title tokens (see translateProfessionTerms),
+// so "şofer", "sofer" and "шофёр" reach one key each.
+const FOLDED_PROFESSION_TERMS = new Map(
+  Object.entries(PROFESSION_TERMS).map(([term, russian]) => [foldProfessionTerm(term), russian]),
+);
+
+function foldProfessionTerm(value) {
+  return value
+    .normalize('NFD')
+    .replace(/\p{M}/gu, '')
+    .toLowerCase()
+    .replace(/['’‘`ʼʻ]/g, '');
+}
+
+const PROFESSION_TOKEN_RE = /[\p{L}\p{M}'’‘`ʼʻ]+/gu;
+
+/** Replace known Ukrainian/Romanian/Uzbek/Kazakh/Kyrgyz head nouns by their Russian form. */
+function translateProfessionTerms(text) {
+  return text.replace(PROFESSION_TOKEN_RE, (token) => FOLDED_PROFESSION_TERMS.get(foldProfessionTerm(token)) ?? token);
+}
 
 const GROUP_DEFINITIONS = Object.freeze([
   ['software_development', 'engineering', ['software development', 'разработка', 'программирование', 'розробка', 'dasturlash', 'бағдарламалау']],
@@ -29,6 +52,10 @@ const GROUP_DEFINITIONS = Object.freeze([
   ['media_content', 'creative', ['media', 'content', 'контент', 'медиа']],
   ['beauty_wellness', 'service', ['beauty', 'wellness', 'красота', 'бьюти']],
   ['cleaning', 'service', ['cleaning', 'cleaning services', 'уборка', 'клининг', 'прибирання']],
+  ['repair_services', 'service', ['repair', 'repair services', 'ремонт', 'сервисный центр', 'сервис техники']],
+  ['auto_service', 'service', ['auto service', 'автосервис', 'автосервисный', 'шиномонтаж']],
+  ['telecom', 'engineering', ['telecom', 'telecommunications', 'связь', 'телеком']],
+  ['emergency', 'service', ['emergency service', 'rescue service', 'экстренные службы', 'спасение', 'полиция']],
   ['agriculture', 'trades', ['agriculture', 'farm', 'сельское хозяйство', 'агро']],
 ]);
 
@@ -36,6 +63,52 @@ const groupAliases = (canonical, aliases) => [...new Set([...aliases, ...(ROMANI
 const GROUP_META = new Map(GROUP_DEFINITIONS.map(([canonical, family, aliases]) => [canonical, { family, aliases: groupAliases(canonical, aliases) }]));
 
 const rows = [
+  ...EXTENDED_ROWS,
+  // General and office roles
+  ['manager','administration',['manager','менеджер']],
+  ['general_manager','administration',['general manager','управляющий','управляющая','управляющий директор','управляющий делами','генеральный менеджер']],
+  ['general_director','administration',['генеральный директор','general director','директор']],
+  ['commercial_director','sales',['коммерческий директор','commercial director','коммерческий директор по продажам']],
+  ['finance_director','finance',['финансовый директор','финансовий директор','фінансовий директор','finance director','financial director']],
+  ['administrative_assistant','administration',['administrative assistant','admin assistant','административный ассистент','ассистент','ассистентка','assistant']],
+  ['computer_operator','administration',['оператор пк','пк оператор','оператор компьютера','computer operator','pc operator']],
+  ['analyst','data',['analyst','аналитик']],
+  ['designer','design',['designer','дизайнер']],
+  ['technologist','manufacturing',['технолог','technologist','технолог производства','production technologist']],
+  ['goods_specialist','retail',['товаровед','goods specialist','merchandise specialist','merchandising specialist']],
+
+  // Marketing, HR and people
+  ['marketing_specialist','marketing',['marketing specialist','marketer','маркетолог','маркетологом','маркетинг специалист','маркетинг-специалист','маркетолог специалист']],
+  ['targeted_advertising_specialist','marketing',['targeting specialist','targeted advertising specialist','таргетолог','таргетологом','специалист по таргетированной рекламе','таргетированная реклама специалист','facebook ads specialist','meta ads specialist','ads specialist']],
+  ['event_manager','marketing',['event manager','event-manager','event менеджер','event-менеджер','ивент менеджер','ивент-менеджер','менеджер мероприятий','event coordinator','event-координатор']],
+  ['hr_specialist','human_resources',['hr specialist','hr-специалист','hr специалист','hr-менеджер','hr','кадровик','специалист по кадрам','специалист отдела кадров','эйчар','эйчар hr']],
+
+  // Repair, auto service, telecom, emergency and more medicine
+  ['phone_repair_technician','repair_services',['phone repair technician','phone repair','mobile phone repair','ремонт телефонов','мастер по ремонту телефонов','ремонт мобильных телефонов','ремонт смартфонов','мастер по ремонту смартфонов','техник по ремонту телефонов']],
+  ['printer_repair_technician','repair_services',['printer repair technician','printer repair','ремонт принтеров','мастер по ремонту принтеров','техник по ремонту принтеров','ремонт оргтехники','мастер по ремонту оргтехники']],
+  ['appliance_repair_technician','repair_services',['appliance repair technician','мастер по ремонту техники','мастер по ремонту бытовой техники','ремонт бытовой техники','ремонт техники']],
+  ['computer_repair_technician','repair_services',['computer repair technician','ремонт компьютеров','мастер по ремонту компьютеров','ремонт ноутбуков','компьютерный мастер','мастер ремонта компьютеров']],
+  ['service_engineer','repair_services',['service engineer','сервисный инженер','инженер сервисного обслуживания','сервис инженер']],
+  ['repair_master','repair_services',['мастер ремонта','мастер по ремонту','repair technician','repair master']],
+  ['auto_electrician','auto_service',['auto electrician','автоэлектрик','автоэлектрик-диагност','автомобильный электрик']],
+  ['auto_painter','auto_service',['auto painter','автомаляр','автомаляр-кузовщик','маляр автомобилей']],
+  ['car_wash_worker','auto_service',['car wash worker','автомойщик','автомойщица','мойщик автомобилей']],
+  ['tire_fitter','auto_service',['tire fitter','tyre fitter','шиномонтажник','шиномонтажница','шинный мастер']],
+  ['cable_technician','telecom',['cable technician','cable installer','кабельщик','монтажник кабеля','монтажник связи','монтажник слаботочных систем']],
+  ['rescuer','emergency',['rescuer','спасатель','спасатель мчс','lifeguard','спасатель-водолаз']],
+  ['firefighter','emergency',['firefighter','пожарный','пожарный спасатель']],
+  ['police_officer','emergency',['police officer','полицейский','полиция','сотрудник полиции','участковый','патрульный полицейский']],
+  ['psychotherapist','medicine',['psychotherapist','психотерапевт','детский психотерапевт','child psychotherapist']],
+  ['psychiatrist','medicine',['psychiatrist','психиатр','детский психиатр','врач психиатр','врач-психиатр','child psychiatrist']],
+  ['nephrologist','medicine',['nephrologist','нефролог','врач нефролог','врач-нефролог']],
+  ['phlebologist','medicine',['phlebologist','флеболог','врач флеболог','врач-флеболог']],
+  ['ent_doctor','medicine',['ent doctor','ent specialist','otolaryngologist','лор','лор врач','врач лор','врач-лор','отоларинголог','лор-врач']],
+
+  // Care, education and services
+  ['caregiver','medicine',['сиделка','caregiver','caretaker','помощник по уходу','уход за пожилыми','санитарка','сиделка-санитарка']],
+  ['social_worker','service',['социальный работник','социальный педагог','social worker','соцработник','соціальний працівник']],
+  ['trainer','education',['тренер','trainer','coach','корпоративный тренер','corporate trainer','бизнес тренер','бизнес-тренер','business trainer']],
+  ['builder','construction',['строитель','builder','construction worker','строительный рабочий','рабочий строительства']],
   // Software development
   ['software_developer','software_development',['software developer','software developers','software engineer','software engineers','programmer','programmers','программист','программисты','разработчик ПО','разработчики ПО','розробник ПЗ','розробники ПЗ','dasturchi','бағдарламашы'],['developer','developers','разработчик','разработчики','разработчиками']],
   ['frontend_developer','software_development',['frontend developer','front-end developer','frontend engineer','фронтенд разработчик','фронтендер','фронтенд розробник','frontend dasturchi','frontend әзірлеуші','frontend-разработчик','front-end-разработчик','front-end разработчик','frontend разработчик','фронтенд-разработчик','frontend-розробник','фронтенд-розробник','team lead frontend','frontend team lead','тимлид фронтенд','фронтенд тимлид','фронтенд-тимлид']],
@@ -143,12 +216,12 @@ const rows = [
   ['sales_operations_manager','sales',['sales operations manager','sales ops manager','sales ops']],
 
   // Marketing
-  ['marketing_manager','marketing',['marketing manager','менеджер по маркетингу','маркетолог менеджер']],
+  ['marketing_manager','marketing',['маркетинг менеджер','маркетинг-менеджер','marketing manager','менеджер по маркетингу','маркетолог менеджер']],
   ['digital_marketer','marketing',['digital marketer','digital marketing specialist','интернет маркетолог','диджитал маркетолог']],
   ['performance_marketer','marketing',['performance marketer','performance marketing manager','перформанс маркетолог']],
   ['seo_specialist','marketing',['seo specialist','seo manager','seo специалист']],
   ['ppc_specialist','marketing',['ppc specialist','paid search specialist','контекстолог','ppc специалист']],
-  ['smm_specialist','marketing',['smm specialist','social media manager','smm менеджер','смм специалист']],
+  ['smm_specialist','marketing',['smm специалист','smm-специалист','смм-специалист','smm-менеджер','смм-менеджер','smm manager','smm specialist','social media manager','smm менеджер','смм специалист']],
   ['content_marketer','marketing',['content marketer','content marketing manager','контент маркетолог']],
   ['brand_manager','marketing',['brand manager','бренд менеджер']],
   ['pr_manager','marketing',['pr manager','public relations manager','пиар менеджер','pr специалист']],
@@ -182,16 +255,16 @@ const rows = [
   ['learning_development_specialist','human_resources',['learning and development specialist','l&d specialist','специалист по обучению и развитию']],
 
   // Support/admin
-  ['customer_support_specialist','customer_support',['customer support specialist','support specialist','специалист поддержки','специалист служби підтримки']],
+  ['customer_support_specialist','customer_support',['customer support','customer service','customer service representative','customer care','саппорт','саппорт-специалист','саппорт специалист','служба поддержки','оператор поддержки','работа с клиентами','специалист по работе с клиентами','customer support specialist','support specialist','специалист поддержки','специалист служби підтримки']],
   ['technical_support_specialist','customer_support',['technical support specialist','technical support engineer','специалист технической поддержки']],
   ['helpdesk_specialist','customer_support',['helpdesk specialist','help desk specialist','helpdesk engineer','специалист helpdesk']],
-  ['call_center_operator','customer_support',['call center operator','call-center operator','оператор колл центра','оператор колл-центра','call markaz operatori']],
+  ['call_center_operator','customer_support',['оператор call center','колл-центр оператор','колл центр оператор','оператор call-центра','call center agent','call center operator','call-center operator','оператор колл центра','оператор колл-центра','call markaz operatori']],
   ['chat_operator','customer_support',['chat operator','оператор чата','чат оператор']],
   ['customer_success_manager','customer_support',['customer success manager','csm','менеджер по успеху клиентов']],
   ['office_manager','administration',['office manager','офис менеджер','офіс менеджер']],
   ['administrator','administration',['administrator','администратор','администратором','адміністратор','адміністратором']],
   ['receptionist','administration',['receptionist','ресепшионист','ресепшн','рецепционист']],
-  ['executive_assistant','administration',['executive assistant','personal assistant','ассистент руководителя','личный помощник']],
+  ['executive_assistant','administration',['помощник руководителя','помощник директора','executive assistant','personal assistant','ассистент руководителя','личный помощник']],
   ['secretary','administration',['secretary','секретарь','секретар']],
   ['data_entry_operator','administration',['data entry operator','data entry specialist','оператор ввода данных']],
 
@@ -234,17 +307,17 @@ const rows = [
 
   // Medicine
   ['doctor','medicine',['doctor','physician','врач','лікар','shifokor','дәрігер']],
-  ['nurse','medicine',['nurse','медсестра','медбрат','медична сестра','hamshira','медбике']],
+  ['nurse','medicine',['asistent medical','асистент медичний','nurse','медсестра','медбрат','медична сестра','hamshira','медбике']],
   ['dentist','medicine',['dentist','стоматолог','tish shifokor']],
   ['pharmacist','medicine',['pharmacist','фармацевт','провизор']],
   ['medical_assistant','medicine',['medical assistant','фельдшер','медицинский ассистент']],
   ['surgeon','medicine',['surgeon','хирург','хірург']],
-  ['therapist_doctor','medicine',['general practitioner','family doctor','терапевт врач','семейный врач']],
+  ['therapist_doctor','medicine',['терапевт','врач-терапевт','врач терапевт','general practitioner','family doctor','терапевт врач','семейный врач']],
   ['pediatrician','medicine',['pediatrician','педиатр']],
   ['gynecologist','medicine',['gynecologist','gynaecologist','гинеколог']],
   ['laboratory_technician','medicine',['laboratory technician','lab technician','лаборант','медицинский лаборант']],
   ['radiologist','medicine',['radiologist','рентгенолог','врач радиолог']],
-  ['psychologist','medicine',['psychologist','психолог','психолог']],
+  ['psychologist','medicine',['детский психолог','child psychologist','psychologist','психолог','психолог']],
   ['veterinarian','medicine',['veterinarian','vet','ветеринар']],
   ['cardiologist','medicine',['cardiologist','cardiology doctor','кардиолог','врач кардиолог','врач-кардиолог','кардиолог врач','kardiolog']],
   ['neurologist','medicine',['neurologist','невролог','врач невролог','врач-невролог']],
@@ -263,7 +336,7 @@ const rows = [
   ['tutor','education',['tutor','репетитор']],
   ['kindergarten_teacher','education',['kindergarten teacher','воспитатель','вихователь','tarbiyachi']],
   ['nanny','education',['nanny','няня','enaga']],
-  ['university_lecturer','education',['university lecturer','lecturer','преподаватель вуза','викладач університету']],
+  ['university_lecturer','education',['преподаватель','university lecturer','lecturer','преподаватель вуза','викладач університету']],
   ['school_principal','education',['school principal','директор школы','директор школи']],
   ['education_methodologist','education',['education methodologist','методист','методист образования']],
   ['speech_therapist','education',['speech therapist','логопед']],
@@ -302,7 +375,7 @@ const rows = [
   ['bus_driver','transport',['bus driver','водитель автобуса']],
   ['courier','transport',['courier','delivery courier','курьер','кур’єр','kuryer']],
   ['forklift_operator','transport',['forklift operator','forklift driver','водитель погрузчика','карщик']],
-  ['auto_mechanic','transport',['auto mechanic','car mechanic','автомеханик','автослесарь']],
+  ['auto_mechanic','transport',['auto mechanic','car mechanic','автомеханик','автослесарь'],['механик','mechanic']],
   ['fleet_manager','transport',['fleet manager','менеджер автопарка','начальник автопарка']],
   ['security_guard','security',['security guard','guard','охранник','охоронець','qorovul','күзетші']],
   ['bodyguard','security',['bodyguard','телохранитель','охоронець особистий']],
@@ -399,9 +472,7 @@ export const SENIORITY_LEVELS = Object.freeze([
   });
 }));
 
-export function matchProfessions(value, { limit = 5, allowWeak = true } = {}) {
-  const text = String(value || '');
-  if (!text) return [];
+function collectProfessionMatches(text, allowWeak) {
   const matches = [];
   for (const entry of PROFESSION_CATALOG) {
     const strong = text.match(entry.strongRe);
@@ -414,6 +485,17 @@ export function matchProfessions(value, { limit = 5, allowWeak = true } = {}) {
       if (weak) matches.push({ entry, score: 0.55, matched: weak[0].trim(), index: weak.index ?? 0, strength: 'weak' });
     }
   }
+  return matches;
+}
+
+// The original title and its translated form both take part, so a translation
+// can add a match but never hide one the original text already has.
+export function matchProfessions(value, { limit = 5, allowWeak = true } = {}) {
+  const text = String(value || '');
+  if (!text) return [];
+  const matches = collectProfessionMatches(text, allowWeak);
+  const translated = translateProfessionTerms(text);
+  if (translated !== text) matches.push(...collectProfessionMatches(translated, allowWeak));
   matches.sort((a, b) => b.score - a.score || b.matched.length - a.matched.length || a.index - b.index);
   const seen = new Set();
   return matches.filter((match) => {
