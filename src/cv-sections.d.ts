@@ -1,5 +1,6 @@
 export type CvSection = 'profile' | 'experience' | 'projects' | 'skills' | 'education' | 'languages' | 'certifications' | 'contact' | 'additional';
 export const CV_SECTIONS: readonly CvSection[];
+export const CV_SECTION_HEADINGS: Readonly<Record<CvSection, readonly string[]>>;
 
 export type CvSectionSpan = Readonly<{
   section: CvSection | 'preamble';

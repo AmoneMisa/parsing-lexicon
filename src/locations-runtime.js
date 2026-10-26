@@ -150,6 +150,9 @@ export const LOCATION_DICTIONARIES = Object.freeze({
   KG: KG_RUNTIME_LOCATION_DICTIONARIES,
 });
 
+/** @deprecated Use LOCATION_DICTIONARIES.UA. Kept as the same canonical object. */
+export const UA_EXTRA_LOCATION_DICTIONARIES = LOCATION_DICTIONARIES.UA;
+
 function canonicalDictionaryCity(countryCode, city) {
   if (!city) return null;
   return canonicalCity(city, countryCode) || city;

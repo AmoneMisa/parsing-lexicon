@@ -1,4 +1,5 @@
 import { deepFreeze } from './lexicon-core.js';
+export { extractHousingPoiRelations } from './housing-poi-relations.js';
 import { findAllCanonical, normalizeUnicode } from './normalization.js';
 import { GENERIC_LANDMARK_TERMS } from './landmarks.js';
 import { matchTashkentHousingDistrict, matchTashkentHousingMetro, matchTashkentHousingMetros, matchTashkentHousingQuarter } from './tashkent-housing-geography.js';

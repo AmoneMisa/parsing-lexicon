@@ -2,6 +2,22 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { parseHousingFeatures } from '../src/housing-features.js';
 import { parseHousingPrice } from '../src/housing-money.js';
+import { resolveHousingIntent } from '../src/housing-intent.js';
+
+test('Ukrainian future rent-seeking verbs require housing context and exclude relative-clause marketing', () => {
+  for (const text of [
+    "Сім'я винайме 2-3 кімнатну квартиру на тривалий термін!",
+    'Винайму затишну квартиру.',
+    'Винаймемо будинок на рік.',
+  ]) assert.deepEqual(resolveHousingIntent(text), { action: 'rentIn', listingKind: 'propertyWanted', dealType: 'longRent' }, text);
+  for (const text of [
+    'Комфортне житло для тих, хто винайме квартиру.',
+    'Орендар, який винайме квартиру, отримає знижку.',
+    'Сімейний винаймець квартири.',
+    'Винайме.',
+  ]) assert.notEqual(resolveHousingIntent(text)?.listingKind, 'propertyWanted', text);
+  assert.equal(resolveHousingIntent('Здам квартиру для тих, хто винайме житло на рік.')?.listingKind, 'propertyOffer');
+});
 
 const ODESA_LISTING = `Сдам 1 комнатную квартиру улица львовская 1 /2х этажного дома ( дом переделан под квартиры , двор общий для квартирантов ) отдельно спальня и кухня , газ плита , двухконтурный котел , есть генератор , душ кабина , кровать , телевизор , роутер ,во дворе есть беседка .цена до 1 июля 10 т гр можно с небольшим животным или средним но не бойцовской породы .🍑0636207853`;
 

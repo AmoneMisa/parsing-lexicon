@@ -170,7 +170,18 @@ Requires Node.js 20+.
 ```bash
 npm install
 npm test
+npm run typecheck
 npm pack
 ```
 
 `npm pack` produces the distributable `@whiteslove/parsing-lexicon` tarball from the files declared in `package.json`.
+
+Every public entry point has a declaration entry. Tests check runtime/declaration
+value-export parity and compile strict TypeScript consumer fixtures; CI runs
+both tests and typechecking on Node 20, 22 and 24.
+
+The root `parseHousingAudience` keeps the legacy scalar contract
+(`'family' | 'women' | 'men' | null`). Import the function from
+`@whiteslove/parsing-lexicon/housing-listing-enrichment` for its structured
+`{ primary, alternatives }` result. `UA_EXTRA_LOCATION_DICTIONARIES` is a
+deprecated compatibility reference to `LOCATION_DICTIONARIES.UA`.

@@ -1,6 +1,6 @@
 {
   "name": "@whiteslove/parsing-lexicon",
-  "version": "0.10.26",
+  "version": "0.10.27",
   "description": "Shared deterministic multilingual parsing lexicon for WhitesLove housing and hiring services",
   "repository": {
     "type": "git",
@@ -14,9 +14,18 @@
       "types": "./index.d.ts",
       "import": "./src/index.js"
     },
-    "./lexicon-core": "./src/lexicon-core.js",
-    "./normalization": "./src/normalization.js",
-    "./alias-prefilter": "./src/alias-prefilter.js",
+    "./lexicon-core": {
+      "types": "./src/lexicon-core.d.ts",
+      "import": "./src/lexicon-core.js"
+    },
+    "./normalization": {
+      "types": "./src/normalization.d.ts",
+      "import": "./src/normalization.js"
+    },
+    "./alias-prefilter": {
+      "types": "./src/alias-prefilter.d.ts",
+      "import": "./src/alias-prefilter.js"
+    },
     "./provenance": {
       "types": "./src/provenance.d.ts",
       "import": "./src/provenance.js"
@@ -57,13 +66,22 @@
       "types": "./src/temporal.d.ts",
       "import": "./src/temporal.js"
     },
-    "./countries": "./src/countries.js",
+    "./countries": {
+      "types": "./src/countries.d.ts",
+      "import": "./src/countries.js"
+    },
     "./country-context": {
       "types": "./src/country-context.d.ts",
       "import": "./src/country-context.js"
     },
-    "./geo": "./src/geo.js",
-    "./geography": "./src/geography.js",
+    "./geo": {
+      "types": "./src/geo.d.ts",
+      "import": "./src/geo.js"
+    },
+    "./geography": {
+      "types": "./src/geography.d.ts",
+      "import": "./src/geography.js"
+    },
     "./geography-display": {
       "types": "./src/geography-display.d.ts",
       "import": "./src/geography-display.js"
@@ -76,28 +94,82 @@
       "types": "./src/geography-detection.d.ts",
       "import": "./src/geography-detection.js"
     },
-    "./central-asia": "./src/central-asia.js",
-    "./ukraine": "./src/ukraine.js",
-    "./location-merge": "./src/location-merge.js",
-    "./locations": "./src/locations-runtime.js",
-    "./kg-location-extensions": "./src/kg-location-extensions.js",
-    "./kz-location-extensions": "./src/kz-location-extensions.js",
-    "./uz-location-extensions": "./src/uz-location-extensions.js",
-    "./central-asia-locations": "./src/central-asia-locations.js",
-    "./ua-location-extensions-major": "./src/ua-location-extensions-major.js",
-    "./ua-location-extensions-regional": "./src/ua-location-extensions-regional.js",
-    "./ua-location-extensions-metro": "./src/ua-location-extensions-metro.js",
-    "./landmarks": "./src/landmarks.js",
-    "./tashkent-colloquial": "./src/tashkent-colloquial.js",
-    "./tashkent-residential-complexes": "./src/tashkent-residential-complexes.js",
-    "./tashkent-pois": "./src/tashkent-pois.js",
-    "./tashkent-gastronomic-streets": "./src/tashkent-gastronomic-streets.js",
+    "./central-asia": {
+      "types": "./src/central-asia.d.ts",
+      "import": "./src/central-asia.js"
+    },
+    "./ukraine": {
+      "types": "./src/ukraine.d.ts",
+      "import": "./src/ukraine.js"
+    },
+    "./location-merge": {
+      "types": "./src/location-merge.d.ts",
+      "import": "./src/location-merge.js"
+    },
+    "./locations": {
+      "types": "./src/locations-runtime.d.ts",
+      "import": "./src/locations-runtime.js"
+    },
+    "./kg-location-extensions": {
+      "types": "./src/kg-location-extensions.d.ts",
+      "import": "./src/kg-location-extensions.js"
+    },
+    "./kz-location-extensions": {
+      "types": "./src/kz-location-extensions.d.ts",
+      "import": "./src/kz-location-extensions.js"
+    },
+    "./uz-location-extensions": {
+      "types": "./src/uz-location-extensions.d.ts",
+      "import": "./src/uz-location-extensions.js"
+    },
+    "./central-asia-locations": {
+      "types": "./src/central-asia-locations.d.ts",
+      "import": "./src/central-asia-locations.js"
+    },
+    "./ua-location-extensions-major": {
+      "types": "./src/ua-location-extensions-major.d.ts",
+      "import": "./src/ua-location-extensions-major.js"
+    },
+    "./ua-location-extensions-regional": {
+      "types": "./src/ua-location-extensions-regional.d.ts",
+      "import": "./src/ua-location-extensions-regional.js"
+    },
+    "./ua-location-extensions-metro": {
+      "types": "./src/ua-location-extensions-metro.d.ts",
+      "import": "./src/ua-location-extensions-metro.js"
+    },
+    "./landmarks": {
+      "types": "./src/landmarks.d.ts",
+      "import": "./src/landmarks.js"
+    },
+    "./tashkent-colloquial": {
+      "types": "./src/tashkent-colloquial.d.ts",
+      "import": "./src/tashkent-colloquial.js"
+    },
+    "./tashkent-residential-complexes": {
+      "types": "./src/tashkent-residential-complexes.d.ts",
+      "import": "./src/tashkent-residential-complexes.js"
+    },
+    "./tashkent-pois": {
+      "types": "./src/tashkent-pois.d.ts",
+      "import": "./src/tashkent-pois.js"
+    },
+    "./tashkent-gastronomic-streets": {
+      "types": "./src/tashkent-gastronomic-streets.d.ts",
+      "import": "./src/tashkent-gastronomic-streets.js"
+    },
     "./tashkent-housing-geography": {
       "types": "./src/tashkent-housing-geography.d.ts",
       "import": "./src/tashkent-housing-geography.js"
     },
-    "./odesa-metropolitan": "./src/odesa-metropolitan.js",
-    "./housing": "./src/housing.js",
+    "./odesa-metropolitan": {
+      "types": "./src/odesa-metropolitan.d.ts",
+      "import": "./src/odesa-metropolitan.js"
+    },
+    "./housing": {
+      "types": "./src/housing.d.ts",
+      "import": "./src/housing.js"
+    },
     "./housing-intent": {
       "types": "./src/housing-intent.d.ts",
       "import": "./src/housing-intent.js"
@@ -146,7 +218,10 @@
       "types": "./src/housing-source-aliases.d.ts",
       "import": "./src/housing-source-aliases.js"
     },
-    "./housing-poi-extensions": "./src/housing-poi-extensions.js",
+    "./housing-poi-extensions": {
+      "types": "./src/housing-poi-extensions.d.ts",
+      "import": "./src/housing-poi-extensions.js"
+    },
     "./housing-poi-relations": {
       "types": "./src/housing-poi-relations.d.ts",
       "import": "./src/housing-poi-relations.js"
@@ -163,8 +238,14 @@
       "types": "./src/housing-card-fields.d.ts",
       "import": "./src/housing-card-fields.js"
     },
-    "./hiring": "./src/hiring.js",
-    "./hiring-languages": "./src/hiring-languages.js",
+    "./hiring": {
+      "types": "./src/hiring.d.ts",
+      "import": "./src/hiring.js"
+    },
+    "./hiring-languages": {
+      "types": "./src/hiring-languages.d.ts",
+      "import": "./src/hiring-languages.js"
+    },
     "./hiring-language-extensions": {
       "types": "./src/hiring-language-extensions.d.ts",
       "import": "./src/hiring-language-extensions.js"
@@ -213,7 +294,10 @@
       "types": "./src/hiring-salary-context.d.ts",
       "import": "./src/hiring-salary-context.js"
     },
-    "./money": "./src/money.js",
+    "./money": {
+      "types": "./src/money.d.ts",
+      "import": "./src/money.js"
+    },
     "./currency": {
       "types": "./src/currency.d.ts",
       "import": "./src/currency.js"
@@ -234,7 +318,10 @@
       "types": "./src/address-grammar.d.ts",
       "import": "./src/address-grammar.js"
     },
-    "./hiring-professions": "./src/hiring-professions.js",
+    "./hiring-professions": {
+      "types": "./src/hiring-professions.d.ts",
+      "import": "./src/hiring-professions.js"
+    },
     "./hiring-profession-display": {
       "types": "./src/hiring-profession-display.d.ts",
       "import": "./src/hiring-profession-display.js"
@@ -243,7 +330,10 @@
       "types": "./src/hiring-skills.d.ts",
       "import": "./src/hiring-skills.js"
     },
-    "./hiring-advanced": "./src/hiring-advanced.js",
+    "./hiring-advanced": {
+      "types": "./src/hiring-advanced.d.ts",
+      "import": "./src/hiring-advanced.js"
+    },
     "./hiring-ats": {
       "types": "./src/hiring-ats.d.ts",
       "import": "./src/hiring-ats.js"
@@ -261,12 +351,15 @@
       "import": "./src/parse-document.js"
     },
     "./city-hypotheses": {
+      "types": "./src/city-hypotheses.d.ts",
       "import": "./src/city-hypotheses.js"
     },
     "./micro-grammars": {
+      "types": "./src/micro-grammars.d.ts",
       "import": "./src/micro-grammars.js"
     },
     "./resolver-weights": {
+      "types": "./src/resolver-weights.d.ts",
       "import": "./src/resolver-weights.js"
     }
   },
@@ -281,6 +374,7 @@
   },
   "scripts": {
     "test": "node --test",
+    "typecheck": "tsc -p tsconfig.types.json",
     "sync:geo-map-data": "node ./scripts/sync-geo-map-data-lexicon.js",
     "audit:geo-map-data": "node ./scripts/audit-geo-map-data-lexicon.js",
     "benchmark:parser": "node benchmarks/parser-baseline.js",
@@ -306,5 +400,8 @@
     "professions",
     "geography"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "~6.0.2"
+  }
 }

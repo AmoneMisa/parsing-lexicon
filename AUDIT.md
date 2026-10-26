@@ -120,3 +120,137 @@ not independently re-audited end-to-end as their own section.
   every source.
 - This also explains the test-suite runtime: each test file paid the same
   43s import cost, and `geo-catalog` paid it too through its pinned dependency.
+
+## Public API repair and parser improvement assessment — 2026-10-26
+
+Baseline: remote master `a1e2476054f9734d041767754c6c2bc000754824`, npm version
+`0.10.26`. The fixes prepare version `0.10.27` for the normal CI publishing path.
+
+### Confirmed defects and repairs
+
+- The root's two star exports made `parseHousingAudience` ambiguous: a named
+  import failed during ESM linking. The root now explicitly selects the legacy
+  scalar function from `housing-text`; the enrichment subpath keeps its existing
+  `{ primary, alternatives }` contract.
+- `UA_EXTRA_LOCATION_DICTIONARIES` was declared but absent at runtime. Its
+  deprecated compatibility export now references `LOCATION_DICTIONARIES.UA`
+  directly, without copying or rebuilding a registry.
+- 76 existing root values had no declarations. Existing declaration owners are
+  re-exported, and public JavaScript modules without declarations now have
+  adjacent declarations and explicit `types` entries in the package exports map.
+- Checking all 88 entry points found additional drift: `CV_SECTION_HEADINGS`
+  and `looksLikeGroupWelcomeMessage` needed declarations;
+  `extractHousingPoiRelations` needed its already-declared re-export from the
+  enrichment subpath. The stale `HIRING_GLOBAL_CITIES` declaration is removed:
+  it had no runtime export, and restoring an obsolete geography catalog name
+  would conflict with the repository's existing architecture regression.
+
+`test/public-api-contract.test.js` checks runtime/declaration value-export parity
+for every public entry point and critical named-import compatibility. Strict
+consumer fixtures live in `test-types/`, outside Node's automatic test directory
+discovery. CI and publishing now use the lockfile and run both `npm test` and
+`npm run typecheck` on the configured supported Node versions. The pack dry run
+contains every configured runtime and declaration entry point.
+
+### Reuse of the supplied human reviews
+
+The original source sets were located through Claude's scratch files in the
+existing backend owner, `ml/apartment-encoder/review-hard2/items.json` and
+`review-hard3/items.json`. Their IDs match the supplied result exports:
+`48df71bb5c` (20 cards) and `dfcd07dce2` (40 cards).
+
+All four inputs are read-only. SHA-256 checks verified that neither source set
+nor supplied review export changed. There are 60 distinct IDs, 59 reviewed
+non-skipped cards, and one skipped card. All manually selected ranges match
+their original text in Unicode code points. Two missed-label flags have no
+selected range; these are unknown spans, not negative examples.
+
+`LANDMARK` means a specific named place; `NEARBY` means generic nearby amenities
+such as schools or shops. This distinction is retained. The existing
+`review_to_training.py` converter was reused in memory for the sv5 exports; its
+compatibility projection yields 80 LANDMARK and 59 NEARBY spans. This is the
+existing converter's projection, not a new manual annotation. Its casing-based
+legacy heuristic is approximate and must not be treated as independent semantic
+ground truth, especially for lowercase proper names. No source review or stored
+gold file was rewritten. The other projected counts are: ADDRESS 49, COMPLEX 43,
+MICRODISTRICT 22, DISTRICT 29, METRO 17, PRICE 45, CURRENCY 40, LOCALITY 27 and
+DEPOSIT 4.
+
+The saved prediction verdicts and added selections reveal where to investigate:
+25 rejected address predictions with 25 added address selections; 18 rejected
+district predictions; 26 added locality selections. These are counts on curated
+hard cases, not production precision/recall. The reviews have already been used
+in earlier development, so they are a regression corpus, not an untouched
+holdout. An independent evaluation needs a separate, deduplicated split.
+
+One concrete error was fixed in the existing Ukrainian wanted-intent grammar:
+`Сім'я винайме ... квартиру` now resolves to `propertyWanted`. Future forms
+`винайму`/`винаймемо` share the same bounded housing context. Relative clauses
+such as `для тих, хто винайме квартиру` remain excluded. A minimal regression
+uses no card IDs or contact data.
+
+Replaying the 59 reviewed texts against the baseline and fixed package found
+no differences in `parseHousingV2` data/confidence or listing enrichment. Intent
+changed on exactly the reviewed family-seeking-rent example, from null to
+`rentIn/propertyWanted/longRent`. This demonstrates that fix; it is not a claim
+of general accuracy improvement.
+
+The reviews also expose a data-preparation error: one source text already has
+its rent amount replaced by `[PHONE]`. No downstream parser can recover the
+removed number. That needs a regression in the existing redaction owner;
+changing this frozen review text would hide the defect.
+
+### Additional methods worth testing
+
+The package already has lazy shared parse documents and original offsets,
+rare-gram alias retrieval, evidence ledgers, a bounded beam resolver, rejection
+thresholds, city hypotheses, micro-grammars and offline weight fitting. They
+should be reused rather than duplicated behind another parser API.
+
+1. **Address composition and role constraints first.** Extend the existing
+   address grammar and token/candidate pipeline for multiple house numbers,
+   building qualifiers and bounded address phrases. The review notes give
+   concrete examples: multiple suffix numbers, a boulevard plus a building,
+   and street phrases with unwanted tails. Resolve price/phone and
+   property-location/proximity conflicts using existing semantic spans and
+   provenance before accepting candidates. Finite-state composition is a useful
+   model for these bounded patterns, not a reason to add a parallel parser
+   ([Mohri, 1997](https://aclanthology.org/J97-2003/)). Gate changes on exact span
+   boundaries and wrong-role counts, as well as recall.
+2. **Constrained sequence decoding in the ML owner.**
+   `ml/apartment-encoder/train_spans.py` currently describes its decoder as
+   greedy BIO and uses token argmax. A small Viterbi decoder with valid BIO
+   transitions is a concrete ablation before training a CRF head. Joint sequence
+   decisions are established for NER
+   ([Lample et al., 2016](https://aclanthology.org/N16-1030/)). This belongs in
+   apartment-encoder, not the deterministic lexicon. It will not by itself fix
+   every overlong but valid span; compare exact span F1 and boundary errors on
+   independent data before claiming a gain.
+3. **Calibrate the existing rejection gates.** Expand the reviewed corpus with
+   difficult negatives and source/language diversity, split by duplicate cluster
+   and source/time, and evaluate accepted-error rate versus coverage. Reuse
+   `fitLogisticWeights`, existing margins and independent-evidence gates. Keep
+   heuristic scores distinct from probabilities. The selective-prediction
+   literature motivates measuring rejection/coverage, but its formal DNN
+   guarantees do not transfer automatically to these heuristic scores
+   ([Geifman and El-Yaniv, 2017](https://proceedings.neurips.cc/paper/2017/hash/4a8423d5e91fda00bb7e46540e2b0cf1-Abstract.html)).
+4. **Multi-pattern automata only after profiling.** Aho-Corasick can retrieve
+   literal aliases in one text pass
+   ([Aho and Corasick, 1975](https://par.cse.nsysu.edu.tw/resource/paper/2022/220913/Efficient%20String%20Matching%20an%20Aid%20to%20Bibliographic%20Search.pdf)).
+   Preserve city scope, normalization equivalences, original offsets and final
+   regex verification. It is not the first priority here: the existing
+   4002-street retrieval probe returns only 6 candidates for Shifokorlar, with
+   warm p95 about 0.010 ms on this Node 24 run. The synthetic corpus's slowest
+   warm cases were CV/ATS, not that street retrieval. Measure cold startup,
+   memory and end-to-end latency before replacing the current index.
+
+The existing 20-case synthetic benchmark reports 38 true-positive labels, one
+false positive and no false negatives against its fixture gold. These figures
+describe that small corpus only. No production metrics, new model training or
+unmeasured algorithmic speedup are claimed. Research proposals above remain
+separate from the API repair and the demonstrated wanted-intent correction.
+
+Local verification on Node v24.13.1: **1153 tests passed**, strict typecheck
+passed, and the actual packed `0.10.27` tarball passed both a fresh consumer's
+strict TypeScript compilation and named JavaScript imports. CI is responsible
+for the separate Node 20/22/24 matrix; the local result is not that matrix.

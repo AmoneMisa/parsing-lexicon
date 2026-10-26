@@ -55,6 +55,9 @@ export * from './housing-structured.js';
 export * from './housing-parser-v2.js';
 export * from './housing-source-aliases.js';
 export * from './housing-text.js';
+// Keep the legacy scalar contract at the root; enrichment's structured result
+// remains available from the housing-listing-enrichment subpath.
+export { parseHousingAudience } from './housing-text.js';
 export * from './housing-poi-extensions.js';
 export * from './housing-poi-relations.js';
 export * from './housing-display.js';

@@ -126,6 +126,13 @@ A data-coverage change should normally require no public API change.
 
 If a public export is deprecated, keep compatibility deliberately and document the canonical replacement.
 
+Every package export must have a matching `types` entry and matching runtime
+value exports. `test/public-api-contract.test.js` checks this for every public
+entry point; `test-types/` contains strict consumer fixtures and stays outside
+Node's automatic test-directory discovery. Run both `npm test` and
+`npm run typecheck`. Declaration-only legacy names with no runtime implementation
+must not reintroduce a second canonical geography registry.
+
 ## Files and complexity
 
 Do not create extra files for small data additions. Put data into the existing country/city source that owns it.

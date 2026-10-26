@@ -289,6 +289,7 @@ export function mergeLocationCityDictionaries(...dictionaries: readonly Location
 export function mergeLocationCountries(...countries: readonly Readonly<Record<string, LocationCityDictionary>>[]): Readonly<Record<string, LocationCityDictionary>>;
 
 export const LOCATION_DICTIONARIES: Readonly<Record<string, Readonly<Record<string, LocationCityDictionary>>>>;
+/** @deprecated Use LOCATION_DICTIONARIES.UA. References that same canonical registry. */
 export const UA_EXTRA_LOCATION_DICTIONARIES: Readonly<Record<string, LocationCityDictionary>>;
 export const UA_REGION_ENTRIES: readonly LocationEntry[];
 export const UA_SECONDARY_CITIES: Readonly<Record<string, { aliases: readonly string[]; re: RegExp; microdistricts?: readonly LocationEntry[] }>>;
@@ -395,3 +396,126 @@ export function resolveHousingOccupancy(value: unknown): 'wholeProperty' | 'room
 export function looksHousingRoomOnly(value: unknown): boolean;
 export function resolveHousingPropertyType(value: unknown): 'flat' | 'house' | 'room' | 'studio' | 'townhouse' | 'dormitory' | null;
 
+
+// Public runtime exports keep their existing declaration owners.
+export {
+  COUNTRY_DEFAULT_CURRENCIES,
+  COUNTRY_DEFAULT_SALARY_PERIODS,
+  defaultCurrencyForCountry,
+  defaultSalaryPeriodForCountry,
+  parseHiringSalaryWithContext,
+  parseHiringVacancySalary,
+} from './src/hiring-salary-context.js';
+export {
+  CYRILLIC_SEARCH_MAP,
+  findCanonicalCandidates,
+} from './src/normalization.js';
+export {
+  GEOGRAPHY_DISPLAY_NAMES,
+  geographyDisplayName,
+  geographyMetroLabelWithAlias,
+} from './src/geography-display.js';
+export {
+  HOUSING_DEAL_TYPE_EXTENSIONS,
+  HOUSING_ROOM_ONLY_EXTENSIONS,
+  cleanHousingSourceText,
+  detectHousingSource,
+  isRoomOnlyHousing,
+  parseHousingSourcePost,
+  resolveExtendedHousingIntent,
+} from './src/housing-source-aliases.js';
+export {
+  HOUSING_LANDMARK_EXTENSIONS,
+  HOUSING_POI_EXTENSIONS,
+} from './src/housing-poi-extensions.js';
+export {
+  KG_CITY_CATALOG,
+  KG_LOCATION_TERMS,
+  canonicalKyrgyzstanCity,
+} from './src/central-asia.js';
+export {
+  KG_LOCATION_EXTENSIONS,
+} from './src/kg-location-extensions.js';
+export {
+  KZ_DISTRICT_EXTENSIONS,
+} from './src/kz-district-extensions.js';
+export {
+  LANGUAGES,
+  LANGUAGE_CONTEXT_TERMS,
+  LANGUAGE_LEVELS,
+  languageByCode,
+  parseLanguageMentions,
+} from './src/hiring-languages.js';
+export {
+  MONEY_NUMBER_PATTERN,
+  MONEY_RANGE_RE,
+  MONEY_SCALE_PATTERN,
+  MONEY_SINGLE_RE,
+  moneyCurrencyFromText,
+  moneyCurrencyPattern,
+  moneyMentionPattern,
+  moneyScaleMultiplier,
+  parseNumericAmount,
+  parseScaledAmount,
+} from './src/money.js';
+export {
+  TASHKENT_GASTRONOMIC_STREETS,
+  resolveTashkentGastronomicStreet,
+} from './src/tashkent-gastronomic-streets.js';
+export {
+  TASHKENT_SCHOOLS,
+} from './src/tashkent-pois.js';
+export {
+  UA_MAJOR_LOCATION_EXTENSIONS,
+} from './src/ua-location-extensions-major.js';
+export {
+  UA_METRO_LOCATION_EXTENSIONS,
+} from './src/ua-location-extensions-metro.js';
+export {
+  UA_REGIONAL_LOCATION_EXTENSIONS,
+} from './src/ua-location-extensions-regional.js';
+export {
+  classifyHousingCommercialAdvertisement,
+  hasZeroCommissionSignal,
+  isDirectOwner,
+  looksCommercialHousing,
+  looksLikeGroupWelcomeMessage,
+  looksParkingOnly,
+} from './src/housing-commercial.js';
+export {
+  detectCitiesFromText,
+  detectCityFromText,
+  detectCountryCodeFromText,
+} from './src/geography-detection.js';
+export {
+  extractHousingPoiRelations,
+} from './src/housing-poi-relations.js';
+export {
+  housingSemanticCanonical,
+  housingSemanticDisplayName,
+} from './src/housing-display.js';
+export {
+  isMapDataEntry,
+  markMapDataEntries,
+} from './src/location-merge.js';
+export {
+  parseHousingAmenities,
+  parseHousingAreaFromText,
+  parseHousingAudience,
+  parseHousingFloorFromText,
+  parseHousingResidentialComplex,
+  parseHousingRoomsFromText,
+} from './src/housing-text.js';
+export {
+  parseHousingCommission,
+  parseHousingCommissionAmount,
+  parseHousingLandlordPresent,
+  parseHousingListingEnrichment,
+  parseHousingNearby,
+  parseHousingObservedAmenities,
+  parseHousingPerPersonPrice,
+  parseHousingRoomShare,
+  parseHousingStudentTarget,
+  parseHousingTransitRoutes,
+  parseHousingWeakShareSignal,
+} from './src/housing-listing-enrichment.js';
