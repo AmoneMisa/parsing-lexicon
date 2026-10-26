@@ -28,6 +28,7 @@ const GROUP_DEFINITIONS = Object.freeze([
   ['legal', 'business', ['legal', 'law', 'юристы', 'право', 'юридический']],
   ['media_content', 'creative', ['media', 'content', 'контент', 'медиа']],
   ['beauty_wellness', 'service', ['beauty', 'wellness', 'красота', 'бьюти']],
+  ['cleaning', 'service', ['cleaning', 'cleaning services', 'уборка', 'клининг', 'прибирання']],
   ['agriculture', 'trades', ['agriculture', 'farm', 'сельское хозяйство', 'агро']],
 ]);
 
@@ -37,10 +38,10 @@ const GROUP_META = new Map(GROUP_DEFINITIONS.map(([canonical, family, aliases]) 
 const rows = [
   // Software development
   ['software_developer','software_development',['software developer','software developers','software engineer','software engineers','programmer','programmers','программист','программисты','разработчик ПО','разработчики ПО','розробник ПЗ','розробники ПЗ','dasturchi','бағдарламашы'],['developer','developers','разработчик','разработчики','разработчиками']],
-  ['frontend_developer','software_development',['frontend developer','front-end developer','frontend engineer','фронтенд разработчик','фронтендер','фронтенд розробник','frontend dasturchi','frontend әзірлеуші']],
-  ['backend_developer','software_development',['backend developer','back-end developer','backend engineer','бэкенд разработчик','бекенд розробник','backend dasturchi','backend әзірлеуші']],
+  ['frontend_developer','software_development',['frontend developer','front-end developer','frontend engineer','фронтенд разработчик','фронтендер','фронтенд розробник','frontend dasturchi','frontend әзірлеуші','frontend-разработчик','front-end-разработчик','front-end разработчик','frontend разработчик','фронтенд-разработчик','frontend-розробник','фронтенд-розробник','team lead frontend','frontend team lead','тимлид фронтенд','фронтенд тимлид','фронтенд-тимлид']],
+  ['backend_developer','software_development',['backend developer','back-end developer','backend engineer','бэкенд разработчик','бекенд розробник','backend dasturchi','backend әзірлеуші','backend-разработчик','back-end-разработчик','backend разработчик','бэкенд-разработчик','бекенд-розробник','golang backend','golang backend developer','backend golang','golang developer','golang разработчик','go developer','go backend developer','go разработчик','go-разработчик']],
   ['fullstack_developer','software_development',['fullstack developer','full-stack developer','full stack developer','фулстек разработчик','фулстек розробник','fullstack dasturchi']],
-  ['mobile_developer','software_development',['mobile developer','mobile engineer','мобильный разработчик','мобільний розробник']],
+  ['mobile_developer','software_development',['mobile developer','mobile engineer','мобильный разработчик','мобільний розробник','mobile-разработчик','mobile frontend','mobile frontend developer','мобильный фронтенд','мобильный фронтенд разработчик','фронтенд мобильных приложений','фронтенд разработчик мобильных приложений','frontend мобильных приложений','frontend-разработчик мобильных приложений']],
   ['ios_developer','software_development',['ios developer','ios engineer','swift developer','ios разработчик']],
   ['android_developer','software_development',['android developer','android engineer','kotlin android developer','android разработчик']],
   ['flutter_developer','software_development',['flutter developer','flutter engineer','flutter разработчик']],
@@ -245,6 +246,16 @@ const rows = [
   ['radiologist','medicine',['radiologist','рентгенолог','врач радиолог']],
   ['psychologist','medicine',['psychologist','психолог','психолог']],
   ['veterinarian','medicine',['veterinarian','vet','ветеринар']],
+  ['cardiologist','medicine',['cardiologist','cardiology doctor','кардиолог','врач кардиолог','врач-кардиолог','кардиолог врач','kardiolog']],
+  ['neurologist','medicine',['neurologist','невролог','врач невролог','врач-невролог']],
+  ['endocrinologist','medicine',['endocrinologist','эндокринолог','врач эндокринолог','врач-эндокринолог']],
+  ['oncologist','medicine',['oncologist','онколог','врач онколог','врач-онколог']],
+  ['ophthalmologist','medicine',['ophthalmologist','окулист','офтальмолог','врач офтальмолог','врач-офтальмолог']],
+  ['dermatologist','medicine',['dermatologist','дерматолог','врач дерматолог','врач-дерматолог']],
+  ['urologist','medicine',['urologist','уролог','врач уролог','врач-уролог']],
+  ['gastroenterologist','medicine',['gastroenterologist','гастроэнтеролог','гастроентеролог','врач гастроэнтеролог']],
+  ['traumatologist','medicine',['traumatologist','orthopedist','orthopaedist','травматолог','ортопед','врач травматолог','врач-травматолог','врач ортопед']],
+  ['cleaner','cleaning',['cleaner','cleaning worker','office cleaner','уборщик','уборщица','клинер','клінер','прибиральник','прибиральниця']],
 
   // Education
   ['teacher','education',['teacher','учитель','вчитель','o‘qituvchi','мұғалім']],
