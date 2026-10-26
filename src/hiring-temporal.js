@@ -1,4 +1,7 @@
 export const HIRING_MONTHS = Object.freeze({
+  // Three-letter English abbreviations are the most common CV form. Missing
+  // ones made "Jun 2021" read as year-only, i.e. January, overcounting tenure.
+  mar: 2, apr: 3, jun: 5, jul: 6, aug: 7, sep: 8, sept: 8, oct: 9, nov: 10, dec: 11,
   январь: 0, января: 0, january: 0, jan: 0, february: 1, feb: 1, февраль: 1, февраля: 1,
   march: 2, март: 2, марта: 2, april: 3, апрель: 3, апреля: 3,
   may: 4, май: 4, мая: 4, june: 5, июнь: 5, июня: 5,

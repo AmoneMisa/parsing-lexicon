@@ -33,6 +33,21 @@ export function detectHiringSeniority(value) {
   return checks.find(([, pattern]) => pattern.test(text))?.[0] || null;
 }
 
+/** Seniority of the candidate's most recent dated job. An earlier title such as
+ * "Junior Frontend Developer" records where they started, not the level they
+ * are at now, so it must not win over the current role. Falls back to the whole
+ * CV only when there is no dated experience entry to read. */
+export function detectCvSeniority(value, referenceDate = new Date()) {
+  const raw = String(value || '');
+  const periods = parseCvEmploymentPeriods(raw, { referenceDate, sections: ['experience'] });
+  if (!periods.length) return detectHiringSeniority(raw);
+  const latest = periods.reduce((best, period) => (period.endIndex > best.endIndex || (period.endIndex === best.endIndex && period.startIndex > best.startIndex) ? period : best));
+  // The title sits on the lines under the dates. Stop at the first bullet so
+  // achievement text does not leak into the title.
+  const title = raw.slice(latest.sectionRange.start, latest.sectionRange.end).split('\n').slice(0, 3).join(' ').split('•')[0];
+  return detectHiringSeniority(title);
+}
+
 export function detectDegreeLevel(value) {
   const text = String(value || '');
   if (/\b(?:ph\.?d\.?|doctorate|doctoral degree)\b|доктор(?:ская| наук)/i.test(text)) return 'doctorate';

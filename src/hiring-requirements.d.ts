@@ -6,6 +6,7 @@ export { classifyCvSectionHeading, detectCvSections, CV_SECTIONS } from './cv-se
 export { extractCvSectionText as extractCvSection } from './cv-sections.js';
 export const SENIORITY_RANK: Readonly<Record<HiringSeniority, number>>;
 export function detectHiringSeniority(value: unknown): HiringSeniority | null;
+export function detectCvSeniority(value: unknown, referenceDate?: Date): HiringSeniority | null;
 export function detectDegreeLevel(value: unknown): DegreeLevel | null;
 export function detectDegreeFields(value: unknown): readonly DegreeField[];
 export function extractRequiredExperienceYears(value: unknown): number | null;

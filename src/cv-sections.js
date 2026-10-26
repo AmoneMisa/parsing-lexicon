@@ -109,6 +109,14 @@ export function classifyCvSectionHeading(value) {
   if (!key) return null;
   const section = ALIAS_TO_SECTION.get(key);
   if (section) return section;
+  // Compound headings such as "Education & Languages" open the section named
+  // first. Without this the experience span never closes and degree dates are
+  // read as employment.
+  const [first, ...rest] = captured.split(/\s*(?:&|\s+and\s+|\s+и\s+|\s+та\s+)\s*/iu);
+  if (rest.length) {
+    const leading = ALIAS_TO_SECTION.get(fold(first));
+    if (leading) return leading;
+  }
   // An unrecognized but heading-shaped line is not a section break. Returning
   // null keeps the previous section active instead of silently resetting it.
   return null;
