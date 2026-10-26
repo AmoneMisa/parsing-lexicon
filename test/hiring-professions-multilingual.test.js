@@ -5,6 +5,13 @@ import { PROFESSION_TERMS } from '../src/hiring-profession-terms.js';
 
 const canonicalsOf = (value) => matchProfessions(value, { limit: 3 }).map((match) => match.canonical);
 
+test('generic roles stay out of the sphere groups that workforce maps', () => {
+  const groupOf = (canonical) => PROFESSION_CATALOG.find((entry) => entry.canonical === canonical)?.group;
+  assert.equal(groupOf('engineer'), 'engineering');
+  assert.equal(groupOf('specialist'), 'general');
+  assert.equal(groupOf('operator'), 'operations');
+});
+
 test('every canonical profession is defined once', () => {
   const canonicals = PROFESSION_CATALOG.map((entry) => entry.canonical);
   assert.deepEqual(canonicals.filter((value, index) => canonicals.indexOf(value) !== index), []);

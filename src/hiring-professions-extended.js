@@ -5,9 +5,9 @@
 
 export const EXTENDED_ROWS = [
   // Generic roles that the translation table points at
-  ['engineer', 'manufacturing', ['инженер', 'engineer']],
-  ['specialist', 'administration', ['специалист', 'specialist']],
-  ['operator', 'administration', ['оператор', 'operator']],
+  ['engineer', 'engineering', ['инженер', 'engineer']],
+  ['specialist', 'general', ['специалист', 'specialist']],
+  ['operator', 'operations', ['оператор', 'operator']],
   ['consultant', 'sales', ['консультант', 'consultant']],
   ['banker', 'finance', ['банкир', 'banker', 'bank manager']],
   ['locksmith', 'construction', ['слесарь', 'locksmith', 'слесарь-монтажник']],
