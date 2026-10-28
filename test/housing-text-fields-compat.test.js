@@ -15,6 +15,17 @@ test('housing text area parser preserves legacy free-text forms', () => {
   assert.equal(parseHousingAreaFromText('Chilonzor 16кв'), null);
 });
 
+test('Romanian and Ukrainian forms of area and floors', () => {
+  assert.equal(parseHousingAreaFromText('suprafața de 34,80 mp'), 34.8);
+  assert.equal(parseHousingAreaFromText('70 mp'), 70);
+  assert.equal(parseHousingAreaFromText('46 m 2'), 46);
+  assert.equal(parseHousingAreaFromText('mp3 player 5'), null, '"mp" is a unit only on its own');
+  assert.deepEqual(parseHousingFloorFromText('situat la etajul 6 din 8'), { floor: 6, totalFloors: 8 });
+  assert.deepEqual(parseHousingFloorFromText('Etaj 3 din 4'), { floor: 3, totalFloors: 4 });
+  assert.deepEqual(parseHousingFloorFromText('Этаж: 6 Этажность дома: 10'), { floor: 6, totalFloors: 10 });
+  assert.deepEqual(parseHousingFloorFromText('розташована на 13 поверсі 21 поверхового будинку'), { floor: 13, totalFloors: 21 });
+});
+
 test('housing text floor parser preserves compact and labelled forms', () => {
   assert.deepEqual(parseHousingFloorFromText('2/5/16'), { floor: 5, totalFloors: 16 });
   assert.deepEqual(parseHousingFloorFromText('• Этаж - 3\n• Этажность - 9'), { floor: 3, totalFloors: 9 }, 'a dash after the label, as in a structured post');

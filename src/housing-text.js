@@ -75,7 +75,7 @@ export function parseHousingResidentialComplex(value) {
   return /[a-zA-Zа-яёіїґ]{2,}/i.test(name) ? name : null;
 }
 
-const AREA_UNIT = String.raw`(?:m2|m²|мкв|м2|м²|sq\s?m|кв\.?\s*м|квадрат[а-яёіїґ]*(?:\s*м(?:етр(?:а|ов)?)?)?)`;
+const AREA_UNIT = String.raw`(?:m2|m\s2|m²|mp(?![\p{L}\p{N}])|мкв|м2|м²|sq\s?m|кв\.?\s*м|квадрат[а-яёіїґ]*(?:\s*м(?:етр(?:а|ов)?)?)?)`;
 // Built once: parseHousingAreaFromText() runs per listing card, and neither
 // pattern depends on the text being parsed (see the CURRENCY_ALT comment in
 // housing-money.js for why rebuilding a regex on every call is costly).
@@ -108,7 +108,7 @@ export function parseHousingFloorFromText(value) {
   const text = String(value || '');
   if (!text) return { floor: null, totalFloors: null };
   const t = text.toLowerCase();
-  const floorWord = '(?:этаж(?:да)?|поверх|qavat(?:da)?|қабат(?:та)?|кават(?:да)?|қават(?:да)?|etaj|floor|эт\\.)';
+  const floorWord = '(?:этаж(?:да)?|поверх|поверс[іи]|qavat(?:da)?|қабат(?:та)?|кават(?:да)?|қават(?:да)?|etaj|floor|эт\\.)';
   const valid = (floor, total) => floor >= 0 && floor <= 200 && (total == null || (total >= floor && total <= 200));
 
   if (/(?:^|\n)[^\d\r\n]{0,8}[1-9]\s*\/\s*0\s*\/\s*-1\s*(?:этаж|эт\.?)?[^\r\n]*(?:подвал|цоколь)/im.test(t)) return { floor: -1, totalFloors: null };
@@ -127,7 +127,7 @@ export function parseHousingFloorFromText(value) {
     if (floor <= 40 && total <= 40 && floor <= total) return { floor, totalFloors: total };
   }
 
-  const sep = '(?:\\/|из|iz|of)';
+  const sep = '(?:\\/|из|iz|of|din)';
   const pair = t.match(new RegExp(`${floorWord}\\D{0,4}(\\d{1,2})\\s*${sep}\\s*(\\d{1,2})`)) || t.match(new RegExp(`(\\d{1,2})\\s*${sep}\\s*(\\d{1,2})\\s*${floorWord}`));
   if (pair) {
     const floor = Number(pair[1]);
@@ -142,7 +142,7 @@ export function parseHousingFloorFromText(value) {
   if (single) {
     const floor = Number(single[1]);
     if (valid(floor, null)) {
-      const explicitTotal = t.match(/(?:этажность|этажей|поверховість|qavatlar(?:\s*soni)?)\D{0,6}(\d{1,2})/);
+      const explicitTotal = t.match(/(?:этажность|этажей|поверховість|qavatlar(?:\s*soni)?)(?:\s+(?:дома|здания|будинку))?\D{0,6}(\d{1,2})/);
       const leadingTotal = t.match(/([1-9]\d?)\s*-?\s*(?:этаж(?:н[а-яё]*|лик)|поверхов[а-яіїґ]*|qavatli|қабатты?|каватли|қаватли)\s*(?:дом|здани|будин|uy|bino)?/i);
       const total = explicitTotal ? Number(explicitTotal[1]) : leadingTotal ? Number(leadingTotal[1]) : null;
       return { floor, totalFloors: total && total >= floor && total <= 200 ? total : null };
@@ -159,7 +159,7 @@ export function parseHousingFloorFromText(value) {
   // A building's total floor count ("8 qavatli uy", "этажность: 9") is still
   // worth reporting even when no unit floor is stated at all.
   const totalOnly =
-    t.match(/(?:этажность|этажей|поверховість|qavatlar(?:\s*soni)?)\D{0,6}(\d{1,2})/) ||
+    t.match(/(?:этажность|этажей|поверховість|qavatlar(?:\s*soni)?)(?:\s+(?:дома|здания|будинку))?\D{0,6}(\d{1,2})/) ||
     t.match(/([1-9]\d?)\s*-?\s*(?:этаж(?:н[а-яё]*|лик)|поверхов[а-яіїґ]*|qavatli|қабатты?|каватли|қаватли)\s*(?:дом|здани|будин|uy|bino)?/i);
   if (totalOnly) {
     const total = Number(totalOnly[1]);
