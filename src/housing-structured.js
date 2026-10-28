@@ -11,7 +11,7 @@ import { findTelegramContacts, maskPhoneLikeSpans, parsePhoneNumbers } from './c
 import { parseHousingAddress } from './housing-address.js';
 import { parseHousingListingFields } from './housing-listing-fields.js';
 import { parseHousingPrice } from './housing-money.js';
-import { parseHousingAmenities, parseHousingResidentialComplex } from './housing-text.js';
+import { parseHousingAmenities, parseHousingEuroRooms, parseHousingResidentialComplex } from './housing-text.js';
 import { parseHousingSourcePost } from './housing-source-aliases.js';
 import {
   classifyHousingSingleMSpans,
@@ -94,6 +94,8 @@ export function parseHousingRoomCount(value) {
     const total = describedRooms.reduce((sum, match) => sum + Number(match[1]), 0);
     if (total >= 1 && total <= 20) return total;
   }
+  const euro = parseHousingEuroRooms(text); // a euro two-room flat has one room, a euro three-room flat two
+  if (euro != null) return euro;
   for (const [re, rooms] of NUMBER_WORDS) if (re.test(text)) return rooms;
   // "5-х комн.кв" / "3-ех комнатная": a Russian case ending may sit between
   // the number and the room word, which may itself be abbreviated.

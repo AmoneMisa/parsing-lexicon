@@ -1,9 +1,11 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import { parseHousingRoomCount } from '../src/housing-structured.js';
 import {
   parseDepositMonths,
   parseHousingAmenities,
   parseHousingAreaFromText,
+  parseHousingEuroRooms,
   parseHousingFloorFromText,
   parseHousingResidentialComplex,
   parseHousingRoomsFromText,
@@ -13,6 +15,19 @@ test('housing text area parser preserves legacy free-text forms', () => {
   assert.equal(parseHousingAreaFromText('Площадь 80 квадратов'), 80);
   assert.equal(parseHousingAreaFromText('2/5/16 56кв'), 56);
   assert.equal(parseHousingAreaFromText('Chilonzor 16кв'), null);
+});
+
+test('euro layouts have one room fewer than their name, a studio has none, plain slang counts as written', () => {
+  assert.equal(parseHousingEuroRooms('Евродвушка 40 м2'), 1);
+  assert.equal(parseHousingEuroRooms('евротрёшка'), 2);
+  assert.equal(parseHousingEuroRooms('евро-3'), 2);
+  assert.equal(parseHousingEuroRooms('двушка'), null);
+  assert.equal(parseHousingRoomsFromText('Евро-двушка'), 1);
+  assert.equal(parseHousingRoomsFromText('Продам трёшку'), 3);
+  assert.equal(parseHousingRoomsFromText('Студия 25 м2'), null);
+  assert.equal(parseHousingRoomCount('евродвушка'), 1);
+  assert.equal(parseHousingRoomCount('Евротрёшка'), 2);
+  assert.equal(parseHousingRoomCount('студия'), null);
 });
 
 test('Romanian and Ukrainian forms of area and floors', () => {

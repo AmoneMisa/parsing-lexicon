@@ -1,5 +1,20 @@
 const ok10 = (n) => (n >= 1 && n <= 10 ? n : null);
 
+const SLANG_ROOMS = Object.freeze([[/однушк/iu, 1], [/двушк|dvushk/iu, 2], [/тр[её]шк|treshk/iu, 3], [/четыр[её]шк|chetyreshk/iu, 4]]);
+const EURO_LAYOUT_ROOMS_RE = /(?<![\p{L}\p{N}])(?:евро|євро|euro|evro)[- ]?(?:(двушк|тр[её]шк|четыр[её]шк|dvushk|treshk|chetyreshk)\p{L}*|([2-9])(?![\p{N}]))/iu;
+
+/**
+ * Rooms of a euro-layout flat: "евродвушка" is one room plus a kitchen-living room, "евротрёшка" two, "евро-3" two.
+ * The euro flag itself is `euroLayout` of parseHousingListingFields; a studio has no rooms at all. Null when the text
+ * names no euro flat.
+ */
+export function parseHousingEuroRooms(value) {
+  const match = EURO_LAYOUT_ROOMS_RE.exec(String(value || ''));
+  if (!match) return null;
+  const nominal = match[2] ? Number(match[2]) : SLANG_ROOMS.find(([re]) => re.test(match[1]))?.[1];
+  return nominal >= 2 ? nominal - 1 : null;
+}
+
 const WORD_ROOMS = Object.freeze({
   одно: 1, одн: 1, двух: 2, двох: 2, трех: 3, трёх: 3, трих: 3, трьох: 3,
   четырех: 4, четырёх: 4, чотирьох: 4, чотирох: 4, пяти: 5,
@@ -8,6 +23,8 @@ const WORD_ROOMS = Object.freeze({
 export function parseHousingRoomsFromText(value) {
   const text = String(value || '');
   if (!text) return null;
+  const euro = parseHousingEuroRooms(text);
+  if (euro != null) return ok10(euro);
   const basement = text.match(/(?:^|\n)[^\d\r\n]{0,8}([1-9])\s*\/\s*0\s*\/\s*-1\s*(?:этаж|эт\.?)?[^\r\n]*(?:подвал|цоколь)/im);
   if (basement) return ok10(Number(basement[1]));
   const compact = text.match(/(?:^|\n)[^\d\r\n]{0,8}([1-9])\s*([¹²³⁴⁵⁶⁷⁸⁹])?\s*\/\s*([0-9]{1,2})\s*\/\s*([0-9]{1,2})[.,;:]?(?=\s|$)/m);
@@ -25,7 +42,8 @@ export function parseHousingRoomsFromText(value) {
   const before = text.match(/(\d+)\s*(?:-\s*[хx]?|[хx])?\s*(?:camer|комнатн|комн|ком\.|кімнатн|кімн|кім\.|room|bedroom|xonali|xona|хонали|хона|бөлмел|бөлме)|(\d+)\s*-\s*к(?:омн|\.?\s*кв)/i);
   if (before) return ok10(Number(before[1] ?? before[2]));
   const word = text.toLowerCase().match(/(одно|одн|двух|двох|тр[еёи]х|трьох|четыр[её]х|чотир(?:ьох|ох)|пяти)\s*-?\s*(?:комнат|кімнат)/);
-  return word ? ok10(WORD_ROOMS[word[1]] ?? null) : null;
+  if (word) return ok10(WORD_ROOMS[word[1]] ?? null);
+  return SLANG_ROOMS.find(([re]) => re.test(text))?.[1] ?? null; // slang such as the word for a two-room flat
 }
 
 const RC_STOP_WORD_RE = /^(?:жк|жм|продаётся|продается|продам|продажа|продаю|срочно|сдаётся|сдается|сдаю|сдам|аренда|арендую|новая|новый|новое|новые|новостройка|вторичка|квартира|квартиры|квартиру|комната|комнаты|комнат|комнатная|комнатной|этаж|этажа|этаж[её]м|ремонт|ремонтом|евроремонт|мебель|мебелью|мебелированная|дом|дома|тел|телефон|цена|торг|собственник|риелтор|посредник|uy|kvartira|xonali|sotiladi|ijaraga|yangi|arzon|tel|narx|new|newbuild|apartment|apartments|flat|for|sale|rent|rooms?|floor|предлагается|предлагаются|предлагаем|продаже|продаж|куплю|обмен|просторные|просторная|две|три|четыре|пять|район|районе|районы|туман|тумани|tumani|district|массив|массиве|massiv|метро|metro|рядом|около|возле|яндекс|город|шахар|shahar)$/iu;

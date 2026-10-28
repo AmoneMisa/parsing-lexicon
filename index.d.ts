@@ -503,6 +503,7 @@ export {
   parseHousingAmenities,
   parseHousingAreaFromText,
   parseHousingAudience,
+  parseHousingEuroRooms,
   parseHousingFloorFromText,
   parseHousingResidentialComplex,
   parseHousingRoomsFromText,
