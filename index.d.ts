@@ -499,6 +499,7 @@ export {
   markMapDataEntries,
 } from './src/location-merge.js';
 export {
+  parseDepositMonths,
   parseHousingAmenities,
   parseHousingAreaFromText,
   parseHousingAudience,

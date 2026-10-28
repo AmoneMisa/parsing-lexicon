@@ -23,4 +23,5 @@ export declare function parseHousingAmenities(value: unknown): readonly (
   | 'bedLinen'
   | 'towels'
 )[];
-
+/** Months of rent a deposit stands for ("2 месяца" -> 2, "месячная оплата" -> 1); null when no count is stated. */
+export declare function parseDepositMonths(value: unknown): number | null;

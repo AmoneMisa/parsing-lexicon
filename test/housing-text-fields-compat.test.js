@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {
+  parseDepositMonths,
   parseHousingAmenities,
   parseHousingAreaFromText,
   parseHousingFloorFromText,
@@ -16,6 +17,7 @@ test('housing text area parser preserves legacy free-text forms', () => {
 
 test('housing text floor parser preserves compact and labelled forms', () => {
   assert.deepEqual(parseHousingFloorFromText('2/5/16'), { floor: 5, totalFloors: 16 });
+  assert.deepEqual(parseHousingFloorFromText('• Этаж - 3\n• Этажность - 9'), { floor: 3, totalFloors: 9 }, 'a dash after the label, as in a structured post');
   assert.deepEqual(parseHousingFloorFromText('2³/4/4'), { floor: 4, totalFloors: 4 });
   assert.deepEqual(parseHousingFloorFromText('2-qavat / 14-qavatli'), { floor: 2, totalFloors: 14 });
   assert.deepEqual(parseHousingFloorFromText('на 5-м этаже, этажность: 9'), { floor: 5, totalFloors: 9 });
@@ -75,4 +77,18 @@ test('housing text parsers cover the Dream House listing fields', () => {
   assert.equal(parseHousingRoomsFromText(text), 2);
   assert.deepEqual(parseHousingFloorFromText(text), { floor: 8, totalFloors: 10 });
   assert.equal(parseHousingAreaFromText(text), 80);
+});
+
+test('deposit months: the count with its unit, in the languages listings use', () => {
+  const cases = [
+    ['2 месяца', 2], ['одного месяца', 1], ['в размере двух месяцев', 2], ['месячная оплата', 1], ['месячной арендной платы', 1],
+    ['1 місяць', 1], ['півтора місяця', 1.5], ['три місяці', 3], ['1,5 месяца', 1.5],
+    ['două luni', 2], ['o lună', 1], ['3 luni', 3],
+    ['ikki oy', 2], ['1 oylik', 1], ['bir oy', 1],
+    ['месяц', 1],
+  ];
+  for (const [text, months] of cases) assert.equal(parseDepositMonths(text), months, text);
+  for (const text of ['', null, '300$', '2 дня', 'много месяцев', '24 месяца', 'через 2 года']) {
+    assert.equal(parseDepositMonths(text), null, String(text));
+  }
 });

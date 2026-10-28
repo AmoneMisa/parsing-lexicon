@@ -138,7 +138,7 @@ export function parseHousingFloorFromText(value) {
   // "li" excludes Uzbek "N qavatli" (an N-storey building), which states the
   // building's total floor count, not which floor this unit is on.
   const notLetter = '(?!н|ей|ів|ност|ка|ки|s|li|ли|лик)';
-  const single = t.match(new RegExp(`(\\d{1,2})[^\\S\\r\\n]*-?[^\\S\\r\\n]*(?:го|ом|ым|ой|ий|nd|rd|th|st|й|м|е)?[^\\S\\r\\n]*${floorWord}${notLetter}`)) || t.match(new RegExp(`${floorWord}\\s*[:№#]?\\s*(\\d{1,2})\\b`));
+  const single = t.match(new RegExp(`(\\d{1,2})[^\\S\\r\\n]*-?[^\\S\\r\\n]*(?:го|ом|ым|ой|ий|nd|rd|th|st|й|м|е)?[^\\S\\r\\n]*${floorWord}${notLetter}`)) || t.match(new RegExp(`${floorWord}\\s*[:№#=\\-–—]?\\s*(\\d{1,2})\\b`));
   if (single) {
     const floor = Number(single[1]);
     if (valid(floor, null)) {
@@ -203,4 +203,33 @@ export function parseHousingAmenities(value) {
   if (/(?:постельн\p{L}*\s+бель|bed\s*linen|toza\s+choyshab|yostiq\s+jild)/iu.test(text)) amenities.push('bedLinen');
   if (/(?:полотенц|towels?|sochiq)/iu.test(text)) amenities.push('towels');
   return Object.freeze(amenities);
+}
+
+const MONTH_COUNT_WORDS = Object.freeze({
+  один: 1, одна: 1, одного: 1, одну: 1, два: 2, двух: 2, две: 2, двох: 2, три: 3, трёх: 3, трех: 3, трьох: 3,
+  четыре: 4, четырёх: 4, четырех: 4, чотири: 4, чотирьох: 4, пять: 5, пяти: 5, "п'ять": 5, "п'яти": 5, шесть: 6, шести: 6,
+  полтора: 1.5, півтора: 1.5,
+  bir: 1, ikki: 2, uch: 3, "to'rt": 4, besh: 5, olti: 6,
+  o: 1, doua: 2, două: 2, trei: 3, patru: 4, cinci: 5, sase: 6, șase: 6,
+});
+
+/**
+ * How many months of rent a deposit is, from the words that state it: "2 месяца", "залог одного месяца",
+ * "două luni", "ikki oy", "месячная оплата" (one month). Null when the text states no number of months.
+ * The result is a count of months, not money: multiply it by the monthly rent in the consumer.
+ */
+export function parseDepositMonths(value) {
+  const text = String(value || '').toLowerCase().replace(/ /g, ' ').trim();
+  if (!text) return null;
+  if (/^месячн\p{L}*(?:\s+арендн\p{L}*)?\s+(?:оплат|плат|аренд)\p{L}*/u.test(text)) return 1;
+  const match = text.match(/(?:^|[^\p{L}\p{N}'’])([\p{L}\p{N}'’.,]+)?\s*(?:мес\p{L}*|місяц\p{L}*|luni|lun[ăa]|oy(?![\p{L}])|oylik)(?![\p{L}])/u);
+  if (!match) return null;
+  const count = match[1];
+  if (!count) return 1; // a bare "месяц": one month
+  if (/^\d{1,2}(?:[.,]\d)?$/.test(count)) {
+    const months = Number(count.replace(',', '.'));
+    return months > 0 && months <= 12 ? months : null;
+  }
+  const word = count.replace(/[’]/g, "'");
+  return Object.hasOwn(MONTH_COUNT_WORDS, word) ? MONTH_COUNT_WORDS[word] : null;
 }
