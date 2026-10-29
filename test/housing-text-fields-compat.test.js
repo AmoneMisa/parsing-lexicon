@@ -30,6 +30,14 @@ test('euro layouts have one room fewer than their name, a studio has none, plain
   assert.equal(parseHousingRoomCount('студия'), null);
 });
 
+test('floor and floors written with a Ukrainian "з", an abbreviation, or Bulgarian spelling', () => {
+  assert.deepEqual(parseHousingFloorFromText('Поверх — 6 з 9'), { floor: 6, totalFloors: 9 });
+  assert.deepEqual(parseHousingFloorFromText('Поверх: 29 з 30'), { floor: 29, totalFloors: 30 });
+  assert.deepEqual(parseHousingFloorFromText('2-ком 3эт/5эт'), { floor: 3, totalFloors: 5 });
+  assert.deepEqual(parseHousingFloorFromText('етаж 3 из 5'), { floor: 3, totalFloors: 5 });
+  assert.deepEqual(parseHousingFloorFromText('5 з 9 років'), { floor: null, totalFloors: null });
+});
+
 test('Romanian and Ukrainian forms of area and floors', () => {
   assert.equal(parseHousingAreaFromText('suprafața de 34,80 mp'), 34.8);
   assert.equal(parseHousingAreaFromText('70 mp'), 70);

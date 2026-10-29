@@ -126,7 +126,7 @@ export function parseHousingFloorFromText(value) {
   const text = String(value || '');
   if (!text) return { floor: null, totalFloors: null };
   const t = text.toLowerCase();
-  const floorWord = '(?:этаж(?:да)?|поверх|поверс[іи]|qavat(?:da)?|қабат(?:та)?|кават(?:да)?|қават(?:да)?|etaj|floor|эт\\.)';
+  const floorWord = '(?:этаж(?:да)?|етаж|поверх|поверс[іи]|qavat(?:da)?|қабат(?:та)?|кават(?:да)?|қават(?:да)?|etaj|floor|эт\\.)';
   const valid = (floor, total) => floor >= 0 && floor <= 200 && (total == null || (total >= floor && total <= 200));
 
   if (/(?:^|\n)[^\d\r\n]{0,8}[1-9]\s*\/\s*0\s*\/\s*-1\s*(?:этаж|эт\.?)?[^\r\n]*(?:подвал|цоколь)/im.test(t)) return { floor: -1, totalFloors: null };
@@ -145,7 +145,15 @@ export function parseHousingFloorFromText(value) {
     if (floor <= 40 && total <= 40 && floor <= total) return { floor, totalFloors: total };
   }
 
-  const sep = '(?:\\/|из|iz|of|din)';
+  // "3эт/5эт": the floor and the floors of the house, each with its abbreviation
+  const abbreviated = t.match(/(?<![\d/])([1-9]\d?)\s*эт\.?\s*\/\s*([1-9]\d?)\s*эт(?![\p{L}])/u);
+  if (abbreviated) {
+    const floor = Number(abbreviated[1]);
+    const total = Number(abbreviated[2]);
+    if (valid(floor, total)) return { floor, totalFloors: total };
+  }
+
+  const sep = '(?:\\/|из|iz|of|din|з)';
   const pair = t.match(new RegExp(`${floorWord}\\D{0,4}(\\d{1,2})\\s*${sep}\\s*(\\d{1,2})`)) || t.match(new RegExp(`(\\d{1,2})\\s*${sep}\\s*(\\d{1,2})\\s*${floorWord}`));
   if (pair) {
     const floor = Number(pair[1]);
