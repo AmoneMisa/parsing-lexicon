@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { parseHousingListingEnrichment, parseHousingCommissionAmount } from '../src/housing-listing-enrichment.js';
+import { parseHousingListingEnrichment, parseHousingCommissionAmount, parseHousingRoomShare } from '../src/housing-listing-enrichment.js';
 import { parseHousingAddress } from '../src/housing-address.js';
 import { parseHousingPrice } from '../src/housing-money.js';
 import { parseHousingSeller, parseHousingStructured } from '../src/housing-structured.js';
@@ -477,4 +477,15 @@ test('every named Tashkent metro station is kept, primary first', () => {
   assert.deepEqual(parseHousingListingEnrichment(LISTING_9453542, { country: 'UZ', city: 'Tashkent' }).metros, []);
   // "Nizomiy" is a street/university, not a station.
   assert.deepEqual(parseHousingListingEnrichment(LISTING_9381797, { country: 'UZ', city: 'Tashkent' }).metros, ['Chilonzor']);
+});
+
+const LISTING_CHILONZOR_SHARE = "Toza ozoda o'qib ishlidigan 2 ta bolaga chilonzor 7 da 3 xonali uy bor obshiy 4 kishi turiladi bitta xona 2 kishiga beriladi Maklerlar bezovta qilmasin !";
+
+test('Chilonzor OLX listing: one room of a flat given to two people is a room share, not the whole flat', () => {
+  const enrichment = parseHousingListingEnrichment(LISTING_CHILONZOR_SHARE, { country: 'UZ' });
+  assert.equal(enrichment.roomOnly, true);
+  assert.equal(enrichment.commission, false);
+  assert.equal(parseHousingRoomShare('Одна комната на 2 человек, остальные заняты'), true);
+  // a whole flat for one family is still a whole flat
+  assert.equal(parseHousingRoomShare(LISTING_SERGELI_500), false);
 });
